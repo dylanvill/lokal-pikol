@@ -25,7 +25,7 @@ function LandingPageLayout({ children, title }: LandingPageLayoutProps) {
             <Container maxW="7xl" py={4}>
                 <Flex justify="space-between" align="center">
                     {/* Logo/Brand */}
-                    <HStack spacing={3}>
+                    <HStack gap={3}>
                         <Box 
                             w="10" 
                             h="10" 
@@ -41,17 +41,18 @@ function LandingPageLayout({ children, title }: LandingPageLayoutProps) {
                     </HStack>
 
                     {/* Header Buttons */}
-                    <HStack spacing={4}>
+                    <HStack gap={4}>
                         <Button colorScheme="orange" variant="solid" size="md">
                             Search Courts
                         </Button>
                         <IconButton
                             aria-label="My Account"
-                            icon={<FiUser />}
                             variant="ghost"
                             size="md"
                             color="gray.600"
-                        />
+                        >
+                            <FiUser />
+                        </IconButton>
                     </HStack>
                 </Flex>
             </Container>
