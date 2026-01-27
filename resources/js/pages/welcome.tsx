@@ -13,18 +13,12 @@ import {
     Flex,
     SimpleGrid,
 } from '@chakra-ui/react';
-import { Head } from '@inertiajs/react';
 import { FiUser, FiClock } from 'react-icons/fi';
+import RootLayout from '@/layouts/RootLayout';
 
 export default function Welcome() {
     return (
-        <>
-            <Head title="Welcome">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-            </Head>
-            
-            <Box minH="100vh" bg="gray.50">
+        <RootLayout title="Welcome">
                 {/* Header */}
                 <Box bg="white" shadow="sm" borderBottom="1px" borderColor="gray.200">
                     <Container maxW="7xl" py={4}>
@@ -206,7 +200,6 @@ export default function Welcome() {
                         </SimpleGrid>
                     </VStack>
                 </Container>
-            </Box>
-        </>
+        </RootLayout>
     );
 }
