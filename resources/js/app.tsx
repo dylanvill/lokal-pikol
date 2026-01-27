@@ -15,7 +15,7 @@ createInertiaApp({
         root.render(
             <Provider>
                 <App {...props} />
-            </Provider>
+            </Provider>,
         );
     },
     progress: {
