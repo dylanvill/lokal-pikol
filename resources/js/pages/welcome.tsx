@@ -1,63 +1,24 @@
 
 import {
-    Box,
     Container,
-    Heading,
     Text,
     VStack,
     HStack,
-    Button,
-    IconButton,
     Badge,
     Image,
     Flex,
     SimpleGrid,
+    Box,
+    Heading,
 } from '@chakra-ui/react';
-import { FiUser, FiClock } from 'react-icons/fi';
-import RootLayout from '@/layouts/RootLayout';
+import { FiClock } from 'react-icons/fi';
+import LandingPageLayout from '@/layouts/LandingPageLayout';
 
 export default function Welcome() {
     return (
-        <RootLayout title="Welcome">
-                {/* Header */}
-                <Box bg="white" shadow="sm" borderBottom="1px" borderColor="gray.200">
-                    <Container maxW="7xl" py={4}>
-                        <Flex justify="space-between" align="center">
-                            {/* Logo/Brand */}
-                            <HStack spacing={3}>
-                                <Box 
-                                    w="10" 
-                                    h="10" 
-                                    bg="orange.400" 
-                                    borderRadius="lg" 
-                                    display="flex" 
-                                    alignItems="center" 
-                                    justifyContent="center"
-                                >
-                                    <Text color="white" fontWeight="bold" fontSize="lg">🏓</Text>
-                                </Box>
-                                <Heading size="md" color="gray.800">Lokal Pikol</Heading>
-                            </HStack>
-
-                            {/* Header Buttons */}
-                            <HStack spacing={4}>
-                                <Button colorScheme="orange" variant="solid" size="md">
-                                    Search Courts
-                                </Button>
-                                <IconButton
-                                    aria-label="My Account"
-                                    icon={<FiUser />}
-                                    variant="ghost"
-                                    size="md"
-                                    color="gray.600"
-                                />
-                            </HStack>
-                        </Flex>
-                    </Container>
-                </Box>
-
-                {/* Main Content */}
-                <Container maxW="7xl" py={8}>
+        <LandingPageLayout title="Welcome">
+            {/* Main Content */}
+            <Container maxW="7xl" py={8}>
                     <VStack spacing={6} align="stretch">
                         {/* Courts Available Now Indicator */}
                         <HStack spacing={2} align="center">
@@ -200,6 +161,6 @@ export default function Welcome() {
                         </SimpleGrid>
                     </VStack>
                 </Container>
-        </RootLayout>
+        </LandingPageLayout>
     );
 }

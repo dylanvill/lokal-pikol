@@ -1,6 +1,6 @@
 
-import { Head } from '@inertiajs/react';
 import { Box } from '@chakra-ui/react';
+import { Head } from '@inertiajs/react';
 import React from 'react'
 
 interface RootLayoutProps {
