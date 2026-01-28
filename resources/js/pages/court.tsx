@@ -5,7 +5,7 @@ export default function Court() {
     return (
         <LandingPageLayout title="Court">
             <Container maxW="7xl" py={8}>
-                <VStack spacing={6} align="stretch">
+                <VStack gap={6} align="stretch">
                     <Text fontSize="lg" color="gray.600">
                         Court page content will go here
                     </Text>
