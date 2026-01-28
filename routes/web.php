@@ -1,14 +1,9 @@
 <?php
 
+use App\Http\Controllers\CourtController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', HomeController::class)->name('home');
 
-Route::get('/court/{court}', function ($court) {
-    return Inertia::render('court', [
-        'court' => $court
-    ]);
-})->name('court');
+Route::get('/court/{court}', CourtController::class)->name('court');
