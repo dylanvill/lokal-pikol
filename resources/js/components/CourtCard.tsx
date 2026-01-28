@@ -1,4 +1,5 @@
 import { Box, VStack, HStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
 
 interface CourtCardProps {
     id: number;
@@ -10,9 +11,24 @@ interface CourtCardProps {
     availableTimes: string[];
 }
 
-export default function CourtCard({ imageUrl, name, address, numberOfCourts, covered, availableTimes }: CourtCardProps) {
+export default function CourtCard({ id, imageUrl, name, address, numberOfCourts, covered, availableTimes }: CourtCardProps) {
+    const handleCardClick = () => {
+        router.visit(`/court/${id}`);
+    };
+
     return (
-        <Box bg="white" borderRadius="xl" shadow="sm" overflow="hidden" border="1px" borderColor="gray.200">
+        <Box 
+            bg="white" 
+            borderRadius="xl" 
+            shadow="sm" 
+            overflow="hidden" 
+            border="1px" 
+            borderColor="gray.200"
+            cursor="pointer"
+            _hover={{ shadow: "md", borderColor: "gray.300" }}
+            transition="all 0.2s"
+            onClick={handleCardClick}
+        >
             <Image src={imageUrl} alt="Court Photo" w="full" h="48" objectFit="cover" />
             <VStack p={4} align="stretch" gap={3}>
                 <HStack justify="space-between" align="start">
