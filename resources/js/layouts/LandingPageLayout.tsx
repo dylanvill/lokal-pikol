@@ -16,9 +16,7 @@ function LandingPageLayout({ children, title }: LandingPageLayoutProps) {
             <Box bgGradient="to-t" gradientFrom="gray.300" gradientTo="gray.100" paddingBottom="65px">
                 <Container maxW="7xl" py={4}>
                     <VStack gap={4} align="stretch">
-                        {/* First Row: Branding and Account */}
                         <Flex justify="space-between" align="center">
-                            {/* Logo/Brand */}
                             <HStack gap={3}>
                                 <Box w="10" h="10" bg="orange.400" borderRadius="lg" display="flex" alignItems="center" justifyContent="center">
                                     <Text color="white" fontWeight="bold" fontSize="lg">
@@ -29,14 +27,10 @@ function LandingPageLayout({ children, title }: LandingPageLayoutProps) {
                                     Lokal Pikol
                                 </Heading>
                             </HStack>
-
-                            {/* Account Icon */}
                             <IconButton aria-label="My Account" variant="ghost" size="md" color="gray.600">
                                 <FiUser />
                             </IconButton>
                         </Flex>
-
-                        {/* Second Row: Search Bar */}
                         <SearchBar />
                     </VStack>
                 </Container>

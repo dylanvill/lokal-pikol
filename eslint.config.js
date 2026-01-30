@@ -70,6 +70,7 @@ export default [
                     fixStyle: 'separate-type-imports',
                 },
             ],
+            '@typescript-eslint/no-empty-object-type': 'off',
         },
     },
     {
