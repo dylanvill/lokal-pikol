@@ -1,5 +1,6 @@
 import { Box, Button, Field, Grid } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { LuSearch } from 'react-icons/lu';
 import { z } from 'zod';
@@ -18,20 +19,15 @@ type SearchFormData = z.infer<typeof searchSchema>;
 
 // Helper functions to get default values
 const getTodayString = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
+    return dayjs().format('YYYY-MM-DD');
 };
 
 const getNextHourString = () => {
-    const now = new Date();
-    const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0);
-    return nextHour.toTimeString().slice(0, 5);
+    return dayjs().add(1, 'hour').startOf('hour').format('HH:mm');
 };
 
 const getHourAfterNextString = () => {
-    const now = new Date();
-    const hourAfterNext = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 2, 0);
-    return hourAfterNext.toTimeString().slice(0, 5);
+    return dayjs().add(2, 'hour').startOf('hour').format('HH:mm');
 };
 
 function SearchBar() {
