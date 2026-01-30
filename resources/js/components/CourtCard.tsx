@@ -46,7 +46,7 @@ export default function CourtCard({ id, imageUrl, name, address, numberOfCourts,
                 />
             </VStack>
             <Box p={4}>
-                <Heading size="md" color="gray.800" marginBottom={4}>
+                <Heading size="lg" color="gray.800" marginBottom={4}>
                     {name}
                 </Heading>
                 <VStack justifyItems="flex-start" alignItems="flex-start" gap={0}>
