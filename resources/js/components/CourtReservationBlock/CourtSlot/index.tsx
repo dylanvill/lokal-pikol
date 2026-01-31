@@ -20,6 +20,8 @@ function CourtSlot({ id, onClick, state, label }: CourtSlotProps) {
             size="lg"
             onClick={state === 'reserved' ? undefined : () => onClick(id, state)}
             _hover={{ cursor: state === 'reserved' ? 'default' : 'pointer' }}
+            fontFamily="mono"
+            fontWeight="bold"
         >
             <Icon />
             {label}
