@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Source\Client\Actions\UpdateProfileImage\Tests;
+namespace App\Source\Client\Actions\UpdateProfilePhoto\Tests;
 
 use App\Source\Client\Models\Client;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UpdateProfileImageTest extends TestCase
+class UpdateProfilePhotoTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,13 +23,13 @@ class UpdateProfileImageTest extends TestCase
 
         // Act - Add profile image
         $client->addMedia($this->getFixturePath('sample-profile-image.jpg'))
-            ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value);
+            ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
 
         // Assert
-        $this->assertTrue($client->hasMedia(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value));
+        $this->assertTrue($client->hasMedia(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value));
         
-        $media = $client->getFirstMedia(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value);
+        $media = $client->getFirstMedia(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
         $this->assertNotNull($media);
-        $this->assertEquals(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value, $media->collection_name);
+        $this->assertEquals(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value, $media->collection_name);
     }
 }

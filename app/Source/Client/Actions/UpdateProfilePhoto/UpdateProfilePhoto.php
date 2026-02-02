@@ -10,11 +10,11 @@ class UpdateProfileImage
 {
     public function update(Client $client, SplFileObject $image): Client
     {
-        $client->clearMediaCollection(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value);
+        $client->clearMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
 
         $client->addMedia($image->getRealPath())
             ->usingFileName($image->getBasename())
-            ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value);
+            ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
 
         return $client;
     }

@@ -36,7 +36,7 @@ class ClientFactory extends Factory
         return $this->afterCreating(function (Client $client) {
             $client
                 ->addMediaFromUrl('https://dummyimage.com/1:1x600')
-                ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_IMAGE->value);
+                ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
         });
     }
 }
