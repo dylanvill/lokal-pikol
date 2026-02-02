@@ -10,11 +10,11 @@ class UpdateCoverPhoto
 {
     public function update(Client $client, SplFileObject $image): Client
     {
-        $client->clearMediaCollection(MediaTypeEnum::CLIENT_COVER_IMAGE->value);
+        $client->clearMediaCollection(MediaTypeEnum::CLIENT_COVER_PHOTO->value);
 
         $client->addMedia($image->getRealPath())
             ->usingFileName($image->getBasename())
-            ->toMediaCollection(MediaTypeEnum::CLIENT_COVER_IMAGE->value);
+            ->toMediaCollection(MediaTypeEnum::CLIENT_COVER_PHOTO->value);
 
         return $client;
     }

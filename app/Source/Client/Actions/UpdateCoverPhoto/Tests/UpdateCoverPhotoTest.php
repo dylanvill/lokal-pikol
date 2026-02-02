@@ -23,13 +23,13 @@ class UpdateCoverPhotoTest extends TestCase
 
         // Act - Add cover photo
         $client->addMedia($this->getFixturePath('sample-cover-image.jpg'))
-            ->toMediaCollection(MediaTypeEnum::CLIENT_COVER_IMAGE->value);
+            ->toMediaCollection(MediaTypeEnum::CLIENT_COVER_PHOTO->value);
 
         // Assert
-        $this->assertTrue($client->hasMedia(MediaTypeEnum::CLIENT_COVER_IMAGE->value));
+        $this->assertTrue($client->hasMedia(MediaTypeEnum::CLIENT_COVER_PHOTO->value));
         
-        $media = $client->getFirstMedia(MediaTypeEnum::CLIENT_COVER_IMAGE->value);
+        $media = $client->getFirstMedia(MediaTypeEnum::CLIENT_COVER_PHOTO->value);
         $this->assertNotNull($media);
-        $this->assertEquals(MediaTypeEnum::CLIENT_COVER_IMAGE->value, $media->collection_name);
+        $this->assertEquals(MediaTypeEnum::CLIENT_COVER_PHOTO->value, $media->collection_name);
     }
 }
