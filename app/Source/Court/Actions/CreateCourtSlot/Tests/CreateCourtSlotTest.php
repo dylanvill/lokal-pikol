@@ -37,7 +37,7 @@ class CreateCourtSlotTest extends TestCase
         // Assert
         $this->assertDatabaseHas('court_slots', [
             'time' => '09:00:00',
-            'courtId' => $court->id
+            'court_id' => $court->id
         ]);
 
         $this->assertInstanceOf(CourtSlot::class, $courtSlot);
@@ -58,8 +58,8 @@ class CreateCourtSlotTest extends TestCase
         $courtSlot = $this->createCourtSlot->create($data);
 
         // Assert
-        $this->assertEquals('14:30:00', $courtSlot->time);
-        $this->assertEquals($court->id, $courtSlot->courtId);
+        $this->assertEquals('14:30', $courtSlot->time->format('H:i'));
+        $this->assertEquals($court->id, $courtSlot->court_id);
         $this->assertNotNull($courtSlot->uuid); // Should have UUID from HasUuid trait
     }
 
@@ -77,8 +77,8 @@ class CreateCourtSlotTest extends TestCase
         $courtSlot = $this->createCourtSlot->create($data);
 
         // Assert
-        $this->assertEquals('18:45:00', $courtSlot->time);
-        $this->assertEquals($court->id, $courtSlot->courtId);
+        $this->assertEquals('18:45', $courtSlot->time->format('H:i'));
+        $this->assertEquals($court->id, $courtSlot->court_id);
     }
 
     public function test_it_establishes_court_relationship(): void
@@ -119,10 +119,10 @@ class CreateCourtSlotTest extends TestCase
         $courtSlot2 = $this->createCourtSlot->create($afternoonSlot);
 
         // Assert
-        $this->assertEquals('09:00:00', $courtSlot1->time);
-        $this->assertEquals('15:00:00', $courtSlot2->time);
-        $this->assertEquals($court->id, $courtSlot1->courtId);
-        $this->assertEquals($court->id, $courtSlot2->courtId);
+        $this->assertEquals('09:00', $courtSlot1->time->format('H:i'));
+        $this->assertEquals('15:00', $courtSlot2->time->format('H:i'));
+        $this->assertEquals($court->id, $courtSlot1->court_id);
+        $this->assertEquals($court->id, $courtSlot2->court_id);
         $this->assertNotEquals($courtSlot1->id, $courtSlot2->id);
     }
 }
