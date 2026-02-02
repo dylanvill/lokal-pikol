@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Source\Client\Models;
 
+use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -9,7 +10,8 @@ use Illuminate\Support\Str;
 class Client extends Model
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
-    use HasFactory;
+    use HasFactory, HasUuid;
+
     protected $fillable = [
         'uuid',
         'name',
@@ -17,15 +19,4 @@ class Client extends Model
         'email',
         'phone',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($client) {
-            if (empty($client->uuid)) {
-                $client->uuid = Str::uuid();
-            }
-        });
-    }
 }
