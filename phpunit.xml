@@ -6,10 +6,10 @@
 >
     <testsuites>
         <testsuite name="Client">
-            <directory>app/Source/Client/Actions/CreateClient/Tests</directory>
-            <directory>app/Source/Client/Actions/UpdateProfilePhoto/Tests</directory>
-            <directory>app/Source/Client/Actions/UpdateCoverPhoto/Tests</directory>
-            <directory>app/Source/Court/Actions/CreateCourt/Tests</directory>
+            <directory suffix="Test.php">app/Source/Client</directory>
+        </testsuite>
+        <testsuite name="Court">
+            <directory suffix="Test.php">app/Source/Court</directory>
         </testsuite>
     </testsuites>
     <source>
