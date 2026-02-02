@@ -14,7 +14,6 @@ class Court extends Model
     use HasFactory, HasUuid;
 
     protected $fillable = [
-        'uuid',
         'name',
         'covered',
         'client_id',
