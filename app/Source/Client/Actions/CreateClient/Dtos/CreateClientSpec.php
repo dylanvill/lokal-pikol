@@ -3,6 +3,7 @@
 namespace App\Source\Client\Actions\CreateClient\Dtos;
 
 use Illuminate\Contracts\Support\Arrayable;
+use SplFileObject;
 
 readonly class CreateClientSpec implements Arrayable
 {
@@ -11,6 +12,7 @@ readonly class CreateClientSpec implements Arrayable
         public string $address,
         public string $email,
         public ?string $phone = null,
+        public ?SplFileObject $logo = null,
     ) {}
 
     public function toArray(): array
