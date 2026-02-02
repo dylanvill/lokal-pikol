@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Source\Court\Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Source\Court\Models\Court;
 use Illuminate\Database\Seeder;
 
 class CourtSeeder extends Seeder
@@ -12,6 +12,6 @@ class CourtSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Court::factory(20)->create();
     }
 }
