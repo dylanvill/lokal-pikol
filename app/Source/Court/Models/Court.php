@@ -4,6 +4,7 @@ namespace App\Source\Court\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Client\Models\Client;
+use App\Source\Court\Database\Factories\CourtFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,5 +27,10 @@ class Court extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    protected static function newFactory()
+    {
+        return CourtFactory::new();
     }
 }

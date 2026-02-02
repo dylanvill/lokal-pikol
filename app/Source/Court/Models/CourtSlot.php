@@ -3,6 +3,7 @@
 namespace App\Source\Court\Models;
 
 use App\Models\Traits\HasUuid;
+use App\Source\Court\Database\Factories\CourtSlotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,5 +26,10 @@ class CourtSlot extends Model
     public function court(): BelongsTo
     {
         return $this->belongsTo(Court::class);
+    }
+
+    protected static function newFactory()
+    {
+        return CourtSlotFactory::new();
     }
 }
