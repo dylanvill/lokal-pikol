@@ -7,7 +7,8 @@
     <testsuites>
         <testsuite name="Client">
             <directory>app/Source/Client/Actions/CreateClient/Tests</directory>
-            <directory>app/Source/Client/Actions/UpdateProfileImage/Tests</directory>
+            <directory>app/Source/Client/Actions/UpdateProfilePhoto/Tests</directory>
+            <directory>app/Source/Client/Actions/UpdateCoverPhoto/Tests</directory>
         </testsuite>
     </testsuites>
     <source>
