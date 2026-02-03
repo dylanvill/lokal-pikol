@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AdminDashboardController extends Controller
+class ReservationsController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -15,6 +15,6 @@ class AdminDashboardController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('admin/dashboard');
+        return Inertia::render('admin/reservations');
     }
 }

@@ -1,0 +1,12 @@
+import React from 'react';
+import AdminLayout from '../../layouts/admin/AdminLayout';
+
+function dashboard() {
+    return (
+        <AdminLayout>
+            <div>reservations</div>
+        </AdminLayout>
+    );
+}
+
+export default dashboard;
