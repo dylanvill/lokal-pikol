@@ -1,7 +1,12 @@
 import React from 'react';
+import AdminLayout from '../../layouts/admin/AdminLayout';
 
 function dashboard() {
-    return <div>dashboard</div>;
+    return (
+        <AdminLayout>
+            <div>Test</div>
+        </AdminLayout>
+    );
 }
 
 export default dashboard;
