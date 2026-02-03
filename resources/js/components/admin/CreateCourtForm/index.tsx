@@ -4,6 +4,7 @@ import React from 'react';
 import { LuFileText, LuCamera, LuClock, LuEye, LuCheck } from 'react-icons/lu';
 import DetailsStepContent from './DetailsStepContent';
 import PhotosStepContent from './PhotosStepContent';
+import TimeStepContent from './TimeStepContent';
 
 const steps = [
     {
@@ -54,6 +55,7 @@ function CreateCourtForm() {
 
             <DetailsStepContent />
             <PhotosStepContent />
+            <TimeStepContent />
 
             <Steps.CompletedContent>
                 <div style={{ padding: '2rem 0' }}>
