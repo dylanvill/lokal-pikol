@@ -1,5 +1,11 @@
-import { CheckboxCard, CheckboxGroup, Icon, SimpleGrid } from '@chakra-ui/react';
+import { CheckboxCard, CheckboxGroup, Field, Fieldset, Icon, SimpleGrid, useStepsContext } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
 import { LuCloudMoon, LuCloudSun, LuMoonStar, LuSun } from 'react-icons/lu';
+import { z } from 'zod';
+import CtaButtonContainer from './CtaButtonContainer';
+import NextButton from './NextButton';
+import PreviousButton from './PreviousButton';
 import StepContentContainer from './StepContentContainer';
 
 const items = [
@@ -29,26 +35,69 @@ const items = [
     { value: '23:00', title: '11:00 PM', icon: <LuMoonStar /> },
 ];
 
-function TimeStepContent() {
+const timeSchema = z.object({
+    timeSlots: z
+        .array(z.string())
+        .min(1, 'Please select at least one time slot')
+        .refine((slots) => slots.every((slot) => items.some((item) => item.value === slot)), 'Invalid time slot selected'),
+});
+
+export type TimeFormData = z.infer<typeof timeSchema>;
+
+export interface TimeStepContentProps {
+    onTimeSlotsSubmitted: (data: TimeFormData) => void;
+}
+
+function TimeStepContent({ onTimeSlotsSubmitted }: TimeStepContentProps) {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isValid },
+    } = useForm<TimeFormData>({
+        resolver: zodResolver(timeSchema),
+        defaultValues: {
+            timeSlots: [],
+        },
+    });
+
+    const { goToNextStep } = useStepsContext();
+
+    const onSubmit = (data: TimeFormData) => {
+        onTimeSlotsSubmitted(data);
+        goToNextStep();
+    };
+
     return (
         <StepContentContainer key={2} index={2} title="Available Time Slots">
-            <CheckboxGroup defaultValue={[]}>
-                <SimpleGrid columns={4} gap={4}>
-                    {items.map((item) => (
-                        <CheckboxCard.Root key={item.value} value={item.value}>
-                            <CheckboxCard.HiddenInput />
-                            <CheckboxCard.Control>
-                                <CheckboxCard.Label display="flex" flexDirection="column">
-                                    <Icon fontSize="2xl" color="fg.subtle">
-                                        {item.icon}
-                                    </Icon>
-                                    {item.title}
-                                </CheckboxCard.Label>
-                            </CheckboxCard.Control>
-                        </CheckboxCard.Root>
-                    ))}
-                </SimpleGrid>
-            </CheckboxGroup>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Fieldset.Root invalid={!!errors.timeSlots}>
+                    <Controller
+                        name="timeSlots"
+                        control={control}
+                        render={({ field }) => (
+                            <CheckboxGroup value={field.value} onValueChange={field.onChange}>
+                                <SimpleGrid columns={4} gap={4}>
+                                    {items.map((item) => (
+                                        <CheckboxCard.Root key={item.value} value={item.value}>
+                                            <CheckboxCard.HiddenInput />
+                                            <CheckboxCard.Control>
+                                                <CheckboxCard.Label display="flex" flexDirection="column">
+                                                    <Icon fontSize="2xl" color="fg.subtle">
+                                                        {item.icon}
+                                                    </Icon>
+                                                    {item.title}
+                                                </CheckboxCard.Label>
+                                            </CheckboxCard.Control>
+                                        </CheckboxCard.Root>
+                                    ))}
+                                </SimpleGrid>
+                            </CheckboxGroup>
+                        )}
+                    />
+                    {errors.timeSlots && <Field.ErrorText>{errors.timeSlots.message}</Field.ErrorText>}
+                </Fieldset.Root>
+                <CtaButtonContainer renderPrevious={<PreviousButton />} renderNext={<NextButton type="submit" disabled={!isValid} />} />
+            </form>
         </StepContentContainer>
     );
 }
