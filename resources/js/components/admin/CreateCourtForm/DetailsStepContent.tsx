@@ -19,23 +19,24 @@ const detailsSchema = z.object({
     type: z.enum(['outdoor', 'indoor']),
 });
 
-type DetailsFormData = z.infer<typeof detailsSchema>;
+export type DetailsFormData = z.infer<typeof detailsSchema>;
 
-function DetailsStepContent() {
+export interface DetailsStepContentProps {
+    onDetailsSubmitted: (data: DetailsFormData) => void;
+}
+
+function DetailsStepContent({ onDetailsSubmitted }: DetailsStepContentProps) {
     const {
         control,
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
     } = useForm<DetailsFormData>({
         resolver: zodResolver(detailsSchema),
-        defaultValues: {
-            type: 'outdoor',
-        },
     });
 
     const onSubmit = (data: DetailsFormData) => {
-        console.log(data);
+        onDetailsSubmitted(data);
     };
 
     return (
@@ -57,7 +58,6 @@ function DetailsStepContent() {
                                     name={field.name}
                                     value={field.value}
                                     required
-                                    defaultValue="outdoor"
                                     onValueChange={({ value }) => {
                                         field.onChange(value);
                                     }}
@@ -77,7 +77,7 @@ function DetailsStepContent() {
                         {errors.type && <Field.ErrorText>{errors.type.message}</Field.ErrorText>}
                     </Field.Root>
                 </VStack>
-                <CtaButtonContainer renderNext={<NextButton type="submit" />} />
+                <CtaButtonContainer renderNext={<NextButton type="submit" disabled={!isValid} />} />
             </form>
         </StepContentContainer>
     );

@@ -3,6 +3,7 @@ import { LuFileImage } from 'react-icons/lu';
 import AppSmallText from '../../app/AppSmallText';
 import ImageListPreview from './ImageListPreview';
 import StepContentContainer from './StepContentContainer';
+
 function PhotosStepContent() {
     return (
         <StepContentContainer index={1} key={1} title="Photos">
