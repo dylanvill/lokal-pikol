@@ -9,7 +9,7 @@ interface AdminLayoutProps {
 
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
     return (
-        <Box minH="100vh" bg="white">
+        <Box minH="100vh" bg="gray.50">
             <NavigationBar />
             <Flex>
                 <Sidebar />
