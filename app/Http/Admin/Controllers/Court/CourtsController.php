@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Admin\Controllers;
+namespace App\Http\Admin\Controllers\Court;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,6 +15,6 @@ class CourtsController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('admin/courts');
+        return Inertia::render('admin/courts/index');
     }
 }

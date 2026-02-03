@@ -1,7 +1,7 @@
 import { Box, Text, Button, SimpleGrid, Flex } from '@chakra-ui/react';
 import React from 'react';
-import CourtCard from '../../components/admin/CourtCard';
-import AdminLayout from '../../layouts/admin/AdminLayout';
+import CourtCard from '../../../components/admin/CourtCard';
+import AdminLayout from '../../../layouts/admin/AdminLayout';
 
 // Mock data for demonstration
 const mockCourts = [
@@ -68,7 +68,7 @@ function Courts() {
                 </Flex>
 
                 {/* Courts Grid */}
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 4, "2xl": 6 }} gap={6}>
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 4, '2xl': 6 }} gap={6}>
                     {mockCourts.map((court) => (
                         <CourtCard key={court.id} id={court.id} name={court.name} image={court.image} slots={court.slots} type={court.type} />
                     ))}
