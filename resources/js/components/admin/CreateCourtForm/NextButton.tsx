@@ -5,7 +5,7 @@ export type NextButtonProps = Omit<ButtonProps, 'children'>;
 
 function NextButton({ ...props }: NextButtonProps) {
     return (
-        <Button {...props}>
+        <Button {...props} variant="solid" size="sm">
             Next
             <LuArrowRight />
         </Button>

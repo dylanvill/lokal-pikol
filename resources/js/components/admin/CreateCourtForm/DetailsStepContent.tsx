@@ -1,4 +1,4 @@
-import { Field, HStack, RadioGroup, VStack } from '@chakra-ui/react';
+import { Field, HStack, RadioGroup, useStepsContext, VStack } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -35,8 +35,11 @@ function DetailsStepContent({ onDetailsSubmitted }: DetailsStepContentProps) {
         resolver: zodResolver(detailsSchema),
     });
 
+    const { goToNextStep } = useStepsContext();
+
     const onSubmit = (data: DetailsFormData) => {
         onDetailsSubmitted(data);
+        goToNextStep();
     };
 
     return (

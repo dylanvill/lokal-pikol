@@ -1,6 +1,4 @@
 import { Steps } from '@chakra-ui/react';
-import { useState } from 'react';
-
 import { LuFileText, LuCamera, LuClock, LuEye, LuCheck } from 'react-icons/lu';
 import DetailsStepContent, { type DetailsFormData } from './DetailsStepContent';
 import useCreateCourtForm from './hooks/useCreateCourtForm';
@@ -33,29 +31,21 @@ const steps = [
 function CreateCourtForm() {
     const { setCreateFormData } = useCreateCourtForm();
 
-    const [formStep, setFormStep] = useState(0);
-
     const handleOnDetailsSubmitted = (data: DetailsFormData) => {
         setCreateFormData({
             name: data.name,
             type: data.type,
         });
-        setFormStep(1);
+    };
+
+    const handlePhotosSubmitted = (photos: File[]) => {
+        setCreateFormData({
+            photos,
+        });
     };
 
     return (
-        <Steps.Root
-            defaultStep={0}
-            colorPalette="blue"
-            backgroundColor="white"
-            p={8}
-            borderRadius={12}
-            shadow="md"
-            count={steps.length}
-            size="sm"
-            step={formStep}
-            onStepChange={(e) => setFormStep(e.step)}
-        >
+        <Steps.Root defaultStep={0} colorPalette="blue" backgroundColor="white" p={8} borderRadius={12} shadow="md" count={steps.length} size="sm">
             <Steps.List marginBottom={6}>
                 {steps.map((step, index) => (
                     <Steps.Item key={index} index={index}>
@@ -68,7 +58,7 @@ function CreateCourtForm() {
             </Steps.List>
 
             <DetailsStepContent onDetailsSubmitted={handleOnDetailsSubmitted} />
-            <PhotosStepContent />
+            <PhotosStepContent onPhotosSubmitted={handlePhotosSubmitted} />
             <TimeStepContent />
 
             <Steps.CompletedContent>
