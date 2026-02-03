@@ -63,15 +63,6 @@ function CreateCourtForm() {
                     <p>Your court has been created successfully.</p>
                 </div>
             </Steps.CompletedContent>
-
-            <ButtonGroup size="sm" variant="outline" style={{ marginTop: '2rem' }}>
-                <Steps.PrevTrigger asChild>
-                    <Button>Previous</Button>
-                </Steps.PrevTrigger>
-                <Steps.NextTrigger asChild>
-                    <Button>Next</Button>
-                </Steps.NextTrigger>
-            </ButtonGroup>
         </Steps.Root>
     );
 }
