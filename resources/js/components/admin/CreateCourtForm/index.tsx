@@ -1,4 +1,5 @@
 import { Steps } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
 import { LuFileText, LuCamera, LuClock, LuEye, LuCheck } from 'react-icons/lu';
 import DetailsStepContent, { type DetailsFormData } from './DetailsStepContent';
 import useCreateCourtForm from './hooks/useCreateCourtForm';
@@ -55,7 +56,7 @@ function CreateCourtForm() {
     };
 
     const handleFinalSubmit = () => {
-        // Here you would typically make an API call to create the court
+        router.post('/admin/courts/create', createFormData);
         console.log('Submitting court data:', createFormData);
         // For now, just log the data - you can replace this with actual API call
     };

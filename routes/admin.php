@@ -14,5 +14,6 @@ Route::get('/account', AccountController::class)->name('account');
 
 Route::prefix("courts")->name("courts.")->group(function () {
     Route::get('/', CourtsController::class)->name('index');
-    Route::get('/create', [CreateCourtController::class, 'show'])->name('create');
+    Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
+    Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
 });
