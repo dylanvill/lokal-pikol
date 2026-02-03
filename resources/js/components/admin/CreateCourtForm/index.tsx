@@ -3,6 +3,7 @@ import { LuFileText, LuCamera, LuClock, LuEye, LuCheck } from 'react-icons/lu';
 import DetailsStepContent, { type DetailsFormData } from './DetailsStepContent';
 import useCreateCourtForm from './hooks/useCreateCourtForm';
 import PhotosStepContent from './PhotosStepContent';
+import ReviewStepContent from './ReviewStepContent';
 import TimeStepContent from './TimeStepContent';
 
 const steps = [
@@ -29,19 +30,34 @@ const steps = [
 ];
 
 function CreateCourtForm() {
-    const { setCreateFormData } = useCreateCourtForm();
+    const { createFormData, setCreateFormData } = useCreateCourtForm();
 
     const handleOnDetailsSubmitted = (data: DetailsFormData) => {
-        setCreateFormData({
+        setCreateFormData((prev) => ({
+            ...prev,
             name: data.name,
             type: data.type,
-        });
+        }));
     };
 
     const handlePhotosSubmitted = (photos: File[]) => {
-        setCreateFormData({
+        setCreateFormData((prev) => ({
+            ...prev,
             photos,
-        });
+        }));
+    };
+
+    const handleTimeSlotsSubmitted = (slots: string[]) => {
+        setCreateFormData((prev) => ({
+            ...prev,
+            slots,
+        }));
+    };
+
+    const handleFinalSubmit = () => {
+        // Here you would typically make an API call to create the court
+        console.log('Submitting court data:', createFormData);
+        // For now, just log the data - you can replace this with actual API call
     };
 
     return (
@@ -59,7 +75,8 @@ function CreateCourtForm() {
 
             <DetailsStepContent onDetailsSubmitted={handleOnDetailsSubmitted} />
             <PhotosStepContent onPhotosSubmitted={handlePhotosSubmitted} />
-            <TimeStepContent />
+            <TimeStepContent onTimeSlotsSubmitted={handleTimeSlotsSubmitted} />
+            <ReviewStepContent formData={createFormData} onSubmit={handleFinalSubmit} />
 
             <Steps.CompletedContent>
                 <div style={{ padding: '2rem 0' }}>

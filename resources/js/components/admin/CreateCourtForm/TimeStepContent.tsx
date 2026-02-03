@@ -45,7 +45,7 @@ const timeSchema = z.object({
 export type TimeFormData = z.infer<typeof timeSchema>;
 
 export interface TimeStepContentProps {
-    onTimeSlotsSubmitted: (data: TimeFormData) => void;
+    onTimeSlotsSubmitted: (slots: string[]) => void;
 }
 
 function TimeStepContent({ onTimeSlotsSubmitted }: TimeStepContentProps) {
@@ -63,7 +63,7 @@ function TimeStepContent({ onTimeSlotsSubmitted }: TimeStepContentProps) {
     const { goToNextStep } = useStepsContext();
 
     const onSubmit = (data: TimeFormData) => {
-        onTimeSlotsSubmitted(data);
+        onTimeSlotsSubmitted(data.timeSlots);
         goToNextStep();
     };
 
