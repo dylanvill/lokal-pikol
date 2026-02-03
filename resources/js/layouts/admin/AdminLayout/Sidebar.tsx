@@ -1,56 +1,46 @@
-import { Box, VStack, Button, Text } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
 import React from 'react';
-
-interface SidebarProps {
-    onNavigate?: (route: string) => void;
-}
+import { LuCalendar, LuGrid2X2, LuUser } from 'react-icons/lu';
+import AppButton from '../../../components/app/AppButton';
 
 const sidebarItems = [
     {
         label: 'Courts',
         route: '/admin/courts',
+        icon: () => <LuGrid2X2 />,
+    },
+    {
+        label: 'Reservations',
+        route: '/admin/reservations',
+        icon: () => <LuCalendar />,
     },
     {
         label: 'Account',
         route: '/admin/account',
+        icon: () => <LuUser />,
     },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ onNavigate }) => {
+export const Sidebar = () => {
     const handleItemClick = (route: string) => {
-        if (onNavigate) {
-            onNavigate(route);
-        }
+        router.visit(route);
     };
 
     return (
-        <Box
-            bg="gray.50"
-            borderRight="1px"
-            borderColor="gray.200"
-            position="fixed"
-            left={0}
-            top="60px"
-            bottom={0}
-            width="250px"
-            overflowY="auto"
-        >
-            <VStack gap={0} align="stretch" p={4}>
-                <Text fontSize="sm" fontWeight="bold" color="gray.600" mb={4}>
-                    Navigation
-                </Text>
-
+        <Box bg="gray.100" position="fixed" p={0} left={0} top="60px" bottom={0} width="200px" overflowY="auto">
+            <VStack gap={0} align="stretch">
                 {sidebarItems.map((item) => (
-                    <Button
+                    <AppButton
                         key={item.route}
-                        variant="ghost"
+                        backgroundColor="transparent"
                         justifyContent="flex-start"
-                        size="sm"
-                        mb={1}
+                        borderRadius={0}
                         onClick={() => handleItemClick(item.route)}
+                        color="black"
                     >
-                        {item.label}
-                    </Button>
+                        {item.icon()} {item.label}
+                    </AppButton>
                 ))}
             </VStack>
         </Box>
