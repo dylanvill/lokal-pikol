@@ -1,18 +1,19 @@
-import { Box, Heading, Steps } from '@chakra-ui/react';
+import { Box, Heading, Steps, Text } from '@chakra-ui/react';
 import React from 'react';
 
 export interface StepContentContainerProps {
-    key: number;
     index: number;
     children: React.ReactNode;
     title: string;
+    description: string;
 }
 
-function StepContentContainer({ key, index, title, children }: StepContentContainerProps) {
+function StepContentContainer({ index, title, description, children }: StepContentContainerProps) {
     return (
-        <Steps.Content key={key} index={index}>
+        <Steps.Content index={index}>
             <Box>
-                <Heading marginBottom={4}>{title}</Heading>
+                <Heading>{title}</Heading>
+                <Text marginBottom={8}>{description}</Text>
                 {children}
             </Box>
         </Steps.Content>

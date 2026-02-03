@@ -68,7 +68,11 @@ function TimeStepContent({ onTimeSlotsSubmitted }: TimeStepContentProps) {
     };
 
     return (
-        <StepContentContainer key={2} index={2} title="Available Time Slots">
+        <StepContentContainer
+            index={2}
+            title="Available Time Slots"
+            description="Select the time slots when your court will be available for bookings."
+        >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Fieldset.Root invalid={!!errors.timeSlots}>
                     <Controller

@@ -43,7 +43,12 @@ function DetailsStepContent({ onDetailsSubmitted }: DetailsStepContentProps) {
     };
 
     return (
-        <StepContentContainer key={0} index={0} title="Name and Type">
+        <StepContentContainer
+            key={0}
+            index={0}
+            title="Name and Type"
+            description="Assign your court a name and specify its type for customers to see."
+        >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack gap={4}>
                     <Field.Root invalid={!!errors.name}>

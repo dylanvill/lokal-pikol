@@ -50,7 +50,7 @@ function ReviewStepContent({ formData, onSubmit }: ReviewStepContentProps) {
     const selectedTimeSlots = formData.slots?.map((slotValue) => timeSlotItems.find((item) => item.value === slotValue)).filter(Boolean) || [];
 
     return (
-        <StepContentContainer key={3} index={3} title="Review Details">
+        <StepContentContainer index={3} title="Review Details" description="Almost there! Review all the details of your court before creating it.">
             <VStack gap={4} align="stretch">
                 <FieldDisplay label="Name">{formData.name || 'Not provided'}</FieldDisplay>
                 <FieldDisplay label="Type">
@@ -95,7 +95,7 @@ function ReviewStepContent({ formData, onSubmit }: ReviewStepContentProps) {
                 </FieldDisplay>
 
                 <CtaButtonContainer
-                    renderPrevious={<PreviousButton disabled={true} />}
+                    renderPrevious={<PreviousButton disabled={false} />}
                     renderNext={
                         <Button
                             colorPalette="blue"
@@ -103,7 +103,7 @@ function ReviewStepContent({ formData, onSubmit }: ReviewStepContentProps) {
                             onClick={handleSubmit}
                             disabled={!formData.name || !formData.type || !formData.photos?.length || !formData.slots?.length}
                             loadingText="Creating Court"
-                            loading={true}
+                            loading={false}
                         >
                             Create Court
                         </Button>
