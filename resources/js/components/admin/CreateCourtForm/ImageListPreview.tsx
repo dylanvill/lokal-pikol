@@ -1,4 +1,4 @@
-import { FileUpload, Float, IconButton, SimpleGrid, useFileUploadContext } from '@chakra-ui/react';
+import { Box, FileUpload, Float, SimpleGrid, useFileUploadContext } from '@chakra-ui/react';
 import { LuTrash } from 'react-icons/lu';
 
 function ImageListPreview() {
@@ -13,9 +13,9 @@ function ImageListPreview() {
                         <FileUpload.ItemPreviewImage borderRadius={4} width="100%" height="100%" objectFit="cover" />
                         <Float placement="top-end" offsetX={5} offsetY={5}>
                             <FileUpload.ItemDeleteTrigger>
-                                <IconButton colorPalette="red" size="xs" aria-label="Delete Image" >
-                                    <LuTrash />
-                                </IconButton>
+                                <Box backgroundColor="red.500" borderRadius={4} padding={1} aria-label="Delete Image" >
+                                    <LuTrash color="white" size={16} />
+                                </Box>
                             </FileUpload.ItemDeleteTrigger>
                         </Float>
                     </FileUpload.Item>
