@@ -1,53 +1,32 @@
-import { Box, Button, FileUpload, useFileUpload, useStepsContext } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { Box, Button, FileUpload, useFileUpload } from '@chakra-ui/react';
 import { LuFileImage } from 'react-icons/lu';
-import CtaButtonContainer from './CtaButtonContainer';
 import ImageListPreview from './ImageListPreview';
-import NextButton from './NextButton';
-import PreviousButton from './PreviousButton';
-import StepContentContainer from './StepContentContainer';
+import SectionContainer from './SectionContainer';
 
-export interface PhotosStepContentProps {
-    onPhotosSubmitted: (photos: File[]) => void;
-}
-
-function PhotosStepContent({ onPhotosSubmitted }: PhotosStepContentProps) {
-    const { handleSubmit } = useForm();
-    const { goToNextStep } = useStepsContext();
-
-    const handleOnSubmit = () => {
-        onPhotosSubmitted(fileUpload.acceptedFiles);
-        goToNextStep();
-    };
-
+function PhotosStepContent() {
     const fileUpload = useFileUpload({
         maxFiles: 6,
         accept: ['image/jpeg', 'image/png'],
     });
 
-    const disableSubmit = fileUpload.acceptedFiles.length === 0 || fileUpload.rejectedFiles.length > 6;
-
     return (
-        <StepContentContainer
-            index={1}
+        <SectionContainer
+            renderIcon={() => <LuFileImage size={24} />}
             title="Photos"
             description="Upload photos of your court to showcase it to customers. You can upload up to 6 images."
         >
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
-                <FileUpload.RootProvider value={fileUpload}>
-                    <FileUpload.HiddenInput />
-                    <ImageListPreview />
-                    <Box>
-                        <FileUpload.Trigger asChild>
-                            <Button size="sm">
-                                <LuFileImage /> Select Images
-                            </Button>
-                        </FileUpload.Trigger>
-                    </Box>
-                </FileUpload.RootProvider>
-                <CtaButtonContainer renderPrevious={<PreviousButton />} renderNext={<NextButton type="submit" disabled={disableSubmit} />} />
-            </form>
-        </StepContentContainer>
+            <FileUpload.RootProvider value={fileUpload}>
+                <FileUpload.HiddenInput name="photos" />
+                <ImageListPreview />
+                <Box>
+                    <FileUpload.Trigger asChild>
+                        <Button size="sm">
+                            <LuFileImage /> Select Images
+                        </Button>
+                    </FileUpload.Trigger>
+                </Box>
+            </FileUpload.RootProvider>
+        </SectionContainer>
     );
 }
 

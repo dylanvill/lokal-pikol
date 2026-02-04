@@ -7,7 +7,7 @@ function CreateCourtPage() {
     return (
         <AdminLayout>
             <AppTitle>Create New Court</AppTitle>
-            <Box maxWidth="xl">
+            <Box maxWidth="2xl">
                 <CreateCourtForm />
             </Box>
         </AdminLayout>

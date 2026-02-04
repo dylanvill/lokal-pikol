@@ -1,93 +1,42 @@
-import { Field, HStack, RadioGroup, useStepsContext, VStack } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Field, HStack, RadioGroup, VStack } from '@chakra-ui/react';
+import { LuFileText } from 'react-icons/lu';
 import AppFormInput from '../../app/AppFormInput';
 import AppFormLabel from '../../app/AppFormLabel';
-import CtaButtonContainer from './CtaButtonContainer';
-import NextButton from './NextButton';
-import StepContentContainer from './StepContentContainer';
+import SectionContainer from './SectionContainer';
 
 const items = [
     { label: 'Outdoor', value: 'outdoor' },
     { label: 'Indoor', value: 'indoor' },
 ];
 
-const detailsSchema = z.object({
-    name: z.string().min(1, 'Name is required').min(3, 'Name must be at least 3 characters'),
-    type: z.enum(['outdoor', 'indoor']),
-});
-
-export type DetailsFormData = z.infer<typeof detailsSchema>;
-
-export interface DetailsStepContentProps {
-    onDetailsSubmitted: (data: DetailsFormData) => void;
-}
-
-function DetailsStepContent({ onDetailsSubmitted }: DetailsStepContentProps) {
-    const {
-        control,
-        register,
-        handleSubmit,
-        formState: { errors, isValid },
-    } = useForm<DetailsFormData>({
-        resolver: zodResolver(detailsSchema),
-    });
-
-    const { goToNextStep } = useStepsContext();
-
-    const onSubmit = (data: DetailsFormData) => {
-        onDetailsSubmitted(data);
-        goToNextStep();
-    };
-
+function DetailsStepContent() {
     return (
-        <StepContentContainer
-            key={0}
-            index={0}
+        <SectionContainer
+            renderIcon={() => <LuFileText size={24} />}
             title="Name and Type"
             description="Assign your court a name and specify its type for customers to see."
         >
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <VStack gap={4}>
-                    <Field.Root invalid={!!errors.name}>
-                        <AppFormLabel>Name</AppFormLabel>
-                        <AppFormInput type="text" {...register('name')} required />
-                        {errors.name && <Field.ErrorText>{errors.name.message}</Field.ErrorText>}
-                    </Field.Root>
-                    <Field.Root invalid={!!errors.type}>
-                        <AppFormLabel>Type</AppFormLabel>
-                        <Controller
-                            name="type"
-                            control={control}
-                            render={({ field }) => (
-                                <RadioGroup.Root
-                                    name={field.name}
-                                    value={field.value}
-                                    required
-                                    onValueChange={({ value }) => {
-                                        field.onChange(value);
-                                    }}
-                                >
-                                    <HStack gap={4}>
-                                        {items.map((item) => (
-                                            <RadioGroup.Item key={item.value} value={item.value}>
-                                                <RadioGroup.ItemHiddenInput onBlur={field.onBlur} />
-                                                <RadioGroup.ItemIndicator />
-                                                <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
-                                            </RadioGroup.Item>
-                                        ))}
-                                    </HStack>
-                                </RadioGroup.Root>
-                            )}
-                        />
-                        {errors.type && <Field.ErrorText>{errors.type.message}</Field.ErrorText>}
-                    </Field.Root>
-                </VStack>
-                <CtaButtonContainer renderNext={<NextButton type="submit" disabled={!isValid} />} />
-            </form>
-        </StepContentContainer>
+            <VStack gap={4}>
+                <Field.Root>
+                    <AppFormLabel>Name</AppFormLabel>
+                    <AppFormInput type="text" name="name" required />
+                </Field.Root>
+                <Field.Root>
+                    <AppFormLabel>Type</AppFormLabel>
+                    <RadioGroup.Root name="type" required>
+                        <HStack gap={4}>
+                            {items.map((item) => (
+                                <RadioGroup.Item key={item.value} value={item.value}>
+                                    <RadioGroup.ItemHiddenInput />
+                                    <RadioGroup.ItemIndicator />
+                                    <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
+                                </RadioGroup.Item>
+                            ))}
+                        </HStack>
+                    </RadioGroup.Root>
+                </Field.Root>
+            </VStack>
+        </SectionContainer>
     );
 }
 
