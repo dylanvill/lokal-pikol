@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('uuid')->unique();
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('court_id')->constrained();
+            $table->date('reservation_date');
             $table->string('status');
             $table->timestamps();
         });

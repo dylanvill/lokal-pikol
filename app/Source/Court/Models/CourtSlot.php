@@ -4,9 +4,11 @@ namespace App\Source\Court\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Court\Database\Factories\CourtSlotFactory;
+use App\Source\Reservation\Models\ReservationSlot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourtSlot extends Model
 {
@@ -26,6 +28,11 @@ class CourtSlot extends Model
     public function court(): BelongsTo
     {
         return $this->belongsTo(Court::class);
+    }
+
+    public function reservationSlots(): HasMany
+    {
+        return $this->hasMany(ReservationSlot::class);
     }
 
     protected static function newFactory()
