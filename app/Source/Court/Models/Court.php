@@ -5,7 +5,10 @@ namespace App\Source\Court\Models;
 use App\Models\Traits\HasUuid;
 use App\Source\Client\Models\Client;
 use App\Source\Court\Database\Factories\CourtFactory;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Models\Reservation;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,5 +49,13 @@ class Court extends Model implements HasMedia
     protected static function newFactory()
     {
         return CourtFactory::new();
+    }
+
+    #[Scope]
+    protected function photos(Builder $query): void
+    {
+        $query->with(['media' => function ($query) {
+            $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS->value);
+        }]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Client\Court\Controllers;
 
+use App\Http\Client\Court\Resources\CourtResource;
 use App\Http\Controllers\Controller;
 use App\Source\Authentication\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CourtsController extends Controller
@@ -19,11 +19,16 @@ class CourtsController extends Controller
         /** @var User $client */
         $client = $request->user('client');
 
-        $courts = $client->client->courts()->get();
+        $courts = $client
+            ->client
+            ->courts()
+            ->with("courtSlots")
+            ->photos()
+            ->get();
 
         // You can add validation, database queries, etc. here
         return Inertia::render('client/courts/index', [
-            "courts" => $courts,
+            "courts" => CourtResource::collection($courts),
         ]);
     }
 }

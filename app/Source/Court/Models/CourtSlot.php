@@ -21,10 +21,6 @@ class CourtSlot extends Model
         'court_id',
     ];
 
-    protected $casts = [
-        'time' => 'datetime:H:i',
-    ];
-
     public function court(): BelongsTo
     {
         return $this->belongsTo(Court::class);
