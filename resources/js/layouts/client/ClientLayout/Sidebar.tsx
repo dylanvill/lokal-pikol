@@ -1,10 +1,15 @@
 import { Box, VStack } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import React from 'react';
-import { LuCalendar, LuGrid2X2, LuUser } from 'react-icons/lu';
+import { LuCalendar, LuGrid2X2, LuHouse, LuUser } from 'react-icons/lu';
 import AppButton from '../../../components/app/AppButton';
 
 const sidebarItems = [
+    {
+        label: 'Dashboard',
+        route: '/client/dashboard',
+        icon: () => <LuHouse />,
+    },
     {
         label: 'Courts',
         route: '/client/courts',
