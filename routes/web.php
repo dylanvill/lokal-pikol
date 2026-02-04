@@ -6,5 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::get('/court/{court}', CourtController::class)->name('court');
+Route::get('/courts', fn () => redirect(route("home")))->name('login');
 
+Route::get('/court/{court}', CourtController::class)->name('court');

@@ -17,7 +17,13 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt($request->only('email', 'password'))) {
+
+        $authData = array_merge(
+            $request->only('email', 'password'),
+            ['role' => 'client']
+        );
+
+        if (Auth::guard('client')->attempt($authData)) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('client.dashboard'));

@@ -15,12 +15,14 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
 });
 
-Route::get('/dashboard', DashboardController::class)->name('dashboard');
-Route::get('/reservations', ReservationsController::class)->name('reservations');
-Route::get('/account', AccountController::class)->name('account');
+Route::group(["middleware" => "auth:client"], function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/reservations', ReservationsController::class)->name('reservations');
+    Route::get('/account', AccountController::class)->name('account');
 
-Route::prefix("courts")->name("courts.")->group(function () {
-    Route::get('/', CourtsController::class)->name('index');
-    Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
-    Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
+    Route::prefix("courts")->name("courts.")->group(function () {
+        Route::get('/', CourtsController::class)->name('index');
+        Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
+        Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
+    });
 });
