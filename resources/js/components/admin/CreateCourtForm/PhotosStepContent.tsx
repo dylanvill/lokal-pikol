@@ -16,7 +16,7 @@ function PhotosStepContent() {
             description="Upload photos of your court to showcase it to customers. You can upload up to 6 images."
         >
             <FileUpload.RootProvider value={fileUpload}>
-                <FileUpload.HiddenInput name="photos" />
+                <FileUpload.HiddenInput name="photos[]" />
                 <ImageListPreview />
                 <Box>
                     <FileUpload.Trigger asChild>

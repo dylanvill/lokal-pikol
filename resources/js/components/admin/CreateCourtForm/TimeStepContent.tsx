@@ -41,7 +41,7 @@ function TimeStepContent() {
                     <SimpleGrid columns={4} gap={4}>
                         {items.map((item) => (
                             <CheckboxCard.Root key={item.value} value={item.value}>
-                                <CheckboxCard.HiddenInput name="slots" />
+                                <CheckboxCard.HiddenInput name="slots[]" />
                                 <CheckboxCard.Control>
                                     <CheckboxCard.Label display="flex" flexDirection="column">
                                         <Icon fontSize="2xl" color="fg.subtle">

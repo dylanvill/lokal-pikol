@@ -22,13 +22,13 @@ class CreateCourtController extends Controller
     public function store(CreateCourtRequest $request)
     {
 
-        $this->createCourtService->create(
-            new CreateCourtData(
-                name: $request->name,
-                covered: $request->type === "covered",
-                clientId: 1
-            )
-        );
+        // $this->createCourtService->create(
+        //     new CreateCourtData(
+        //         name: $request->name,
+        //         covered: $request->type === "covered",
+        //         clientId: 1
+        //     )
+        // );
 
         // Handle form submission, validation, and saving to the database here
 
