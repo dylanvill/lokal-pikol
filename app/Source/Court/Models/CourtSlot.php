@@ -19,6 +19,7 @@ class CourtSlot extends Model
         'uuid',
         'time',
         'court_id',
+        'rate'
     ];
 
     public function court(): BelongsTo

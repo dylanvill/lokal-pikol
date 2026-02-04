@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->time('time');
+            $table->decimal('rate', 8, 2);
             $table->foreignId('court_id')->constrained();
             $table->timestamps();
         });

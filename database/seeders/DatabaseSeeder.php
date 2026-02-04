@@ -103,6 +103,7 @@ class DatabaseSeeder extends Seeder
                     CourtSlot::create([
                         'uuid' => Str::uuid(),
                         'time' => sprintf('%02d:00:00', $hour),
+                        'rate' => fake()->randomElement([150, 200, 250, 300, 500]),
                         'court_id' => $court->id,
                     ]);
                 }

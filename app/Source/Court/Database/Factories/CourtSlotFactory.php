@@ -22,6 +22,7 @@ class CourtSlotFactory extends Factory
     {
         return [
             'time' => $this->faker->time('H:i:s'),
+            'rate' => $this->faker->randomElement([150, 200, 250, 300, 500]),
             'court_id' => Court::factory(),
         ];
     }

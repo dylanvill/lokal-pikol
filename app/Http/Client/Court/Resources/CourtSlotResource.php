@@ -17,6 +17,7 @@ class CourtSlotResource extends JsonResource
         return [
             "uuid" => $this->uuid,
             "time" => $this->time,
+            "rate" => $this->rate,
         ];
     }
 }
