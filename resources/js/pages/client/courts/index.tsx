@@ -49,7 +49,8 @@ const mockCourts = [
     },
 ];
 
-function Courts() {
+function Courts(props) {
+    console.log('🚀 ~ Courts ~ props:', props);
     const handleRegisterNewCourt = () => {
         console.log('Register new court');
     };
