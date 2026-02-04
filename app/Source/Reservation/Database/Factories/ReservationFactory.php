@@ -25,6 +25,7 @@ class ReservationFactory extends Factory
             'customer_id' => Customer::factory(),
             'court_id' => Court::factory(),
             'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled', 'completed']),
+            'reservation_date' => $this->faker->date(),
         ];
     }
 }
