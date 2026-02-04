@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'client'
             ]);
 
-            Client::create([
+            $client = Client::create([
                 'uuid' => Str::uuid(),
                 'user_id' => $clientUser->id,
                 'name' => "Court Business {$i}",
@@ -36,6 +36,17 @@ class DatabaseSeeder extends Seeder
                 'email' => $clientUser->email,
                 'phone' => fake()->phoneNumber(),
             ]);
+
+            // Add client profile photo and cover photo
+            try {
+                $client->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection('client profile photo');
+                
+                $client->addMediaFromUrl('https://picsum.photos/1200/400')
+                    ->toMediaCollection('client cover photo');
+            } catch (\Exception $e) {
+                $this->command->warn("Failed to download images for client {$i}: " . $e->getMessage());
+            }
 
             $clientUsers->push($clientUser);
         }
@@ -75,6 +86,17 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 $courts->push($court);
+
+                // Add 3-6 court photos
+                $photoCount = rand(3, 6);
+                for ($p = 1; $p <= $photoCount; $p++) {
+                    try {
+                        $court->addMediaFromUrl('https://picsum.photos/800/600')
+                            ->toMediaCollection('court photos');
+                    } catch (\Exception $e) {
+                        $this->command->warn("Failed to download court photo {$p} for court {$j}: " . $e->getMessage());
+                    }
+                }
 
                 // Create Court Slots for each Court (hourly slots from 8 AM to 10 PM)
                 for ($hour = 8; $hour <= 22; $hour++) {
