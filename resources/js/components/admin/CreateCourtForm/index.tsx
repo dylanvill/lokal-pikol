@@ -8,15 +8,14 @@ function CreateCourtForm() {
     return (
         <Box colorPalette="blue" backgroundColor="white" p={8} borderRadius={12} shadow="md">
             <Form method="post" action="/admin/courts/create" resetOnSuccess>
-                {({ errors }) => (
+                {({ processing }) => (
                     <Box gap={8} display="flex" flexDirection="column">
-                        <pre>{JSON.stringify(errors, null, 2)}</pre>
                         <DetailsStepContent />
                         <Separator />
                         <PhotosStepContent />
                         <Separator />
                         <TimeStepContent />
-                        <Button type="submit" colorScheme="blue" mt={4}>
+                        <Button type="submit" colorScheme="blue" mt={4} disabled={processing} loading={processing}>
                             Create Court
                         </Button>
                     </Box>

@@ -1,4 +1,5 @@
-import { CheckboxCard, CheckboxGroup, Fieldset, Icon, SimpleGrid } from '@chakra-ui/react';
+import { CheckboxCard, CheckboxGroup, Fieldset, Icon, SimpleGrid, Text } from '@chakra-ui/react';
+import { useFormContext } from '@inertiajs/react';
 import { LuClock, LuCloudMoon, LuCloudSun, LuMoonStar, LuSun } from 'react-icons/lu';
 import SectionContainer from './SectionContainer';
 
@@ -30,6 +31,8 @@ const items = [
 ];
 
 function TimeStepContent() {
+    const form = useFormContext()!;
+
     return (
         <SectionContainer
             renderIcon={() => <LuClock size={24} />}
@@ -37,6 +40,7 @@ function TimeStepContent() {
             description="Select the time slots when your court will be available for bookings."
         >
             <Fieldset.Root>
+                <Text fontSize="sm" color="red.500">{form.errors.slots}</Text>
                 <CheckboxGroup>
                     <SimpleGrid columns={4} gap={4}>
                         {items.map((item) => (
