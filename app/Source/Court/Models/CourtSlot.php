@@ -22,6 +22,10 @@ class CourtSlot extends Model
         'rate'
     ];
 
+    protected $cats = [
+        "rate" => "decimal:2",
+    ];
+
     public function court(): BelongsTo
     {
         return $this->belongsTo(Court::class);
