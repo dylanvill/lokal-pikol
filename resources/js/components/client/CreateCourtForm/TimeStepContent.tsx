@@ -1,7 +1,8 @@
-import { CheckboxCard, CheckboxGroup, Fieldset, Icon, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, CheckboxCard, CheckboxGroup, Fieldset, Icon, Input, SimpleGrid, Text } from '@chakra-ui/react';
 import { useFormContext } from '@inertiajs/react';
 import { LuClock, LuCloudMoon, LuCloudSun, LuMoonStar, LuSun } from 'react-icons/lu';
 import SectionContainer from './SectionContainer';
+import { useMemo } from 'react';
 
 const items = [
     { value: '00:00', title: '12:00 AM', icon: <LuCloudMoon /> },
@@ -33,6 +34,10 @@ const items = [
 function TimeStepContent() {
     const form = useFormContext()!;
 
+    const hasSlotError = useMemo(() => {
+        return !!form.errors.slots || Object.keys(form.errors).some((key) => key.startsWith('slots.') && key.endsWith('.rate'));
+    }, [form.errors]);
+
     return (
         <SectionContainer
             renderIcon={() => <LuClock size={24} />}
@@ -40,21 +45,33 @@ function TimeStepContent() {
             description="Select the time slots when your court will be available for bookings."
         >
             <Fieldset.Root>
-                <Text fontSize="sm" color="red.500">{form.errors.slots}</Text>
+                {!!form.errors.slots && (
+                    <Text fontSize="sm" color="red.500">
+                        {form.errors.slots}
+                    </Text>
+                )}
+                {!!hasSlotError && (
+                    <Text fontSize="sm" color="red.500">
+                        Please ensure that all selected time slots have valid rates.
+                    </Text>
+                )}
                 <CheckboxGroup>
                     <SimpleGrid columns={4} gap={4}>
                         {items.map((item) => (
-                            <CheckboxCard.Root key={item.value} value={item.value}>
-                                <CheckboxCard.HiddenInput name="slots[]" />
-                                <CheckboxCard.Control>
-                                    <CheckboxCard.Label display="flex" flexDirection="column">
-                                        <Icon fontSize="2xl" color="fg.subtle">
-                                            {item.icon}
-                                        </Icon>
-                                        {item.title}
-                                    </CheckboxCard.Label>
-                                </CheckboxCard.Control>
-                            </CheckboxCard.Root>
+                            <Box>
+                                <CheckboxCard.Root key={item.value} value={item.value}>
+                                    <CheckboxCard.HiddenInput name={`slot-${item.value}`} />
+                                    <CheckboxCard.Control>
+                                        <CheckboxCard.Label display="flex" flexDirection="column">
+                                            <Icon fontSize="2xl" color="fg.subtle">
+                                                {item.icon}
+                                            </Icon>
+                                            {item.title}
+                                        </CheckboxCard.Label>
+                                    </CheckboxCard.Control>
+                                </CheckboxCard.Root>
+                                <Input type="number" color="blue.700" fontWeight="bold" name={`rate-${item.value}`} marginTop={2} placeholder="₱xxx.xx" textAlign="center" />
+                            </Box>
                         ))}
                     </SimpleGrid>
                 </CheckboxGroup>
