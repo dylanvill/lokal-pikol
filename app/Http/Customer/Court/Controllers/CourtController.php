@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Customer\Court\Controllers;
 
+use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
