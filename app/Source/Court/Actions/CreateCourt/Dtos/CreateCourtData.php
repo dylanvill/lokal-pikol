@@ -2,16 +2,15 @@
 
 namespace App\Source\Court\Actions\CreateCourt\Dtos;
 
-use App\Source\Client\Models\Client;
 use Illuminate\Contracts\Support\Arrayable;
-use SplFileObject;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @property string $name
  * @property bool $covered
  * @property int $clientId
  * @property CourtSlotData[] $slots
- * @property SplFileObject[] $photos
+ * @property UploadedFile[] $photos
  */
 readonly class CreateCourtData implements Arrayable
 {
@@ -23,7 +22,7 @@ readonly class CreateCourtData implements Arrayable
         public array $photos = [],
     ) {
         collect($slots)->ensure(CourtSlotData::class);
-        collect($photos)->ensure(SplFileObject::class);
+        collect($photos)->ensure(UploadedFile::class);
     }
 
     public function toArray(): array
@@ -32,7 +31,8 @@ readonly class CreateCourtData implements Arrayable
             'name' => $this->name,
             'covered' => $this->covered,
             'client_id' => $this->clientId,
-            'slots' => $this->slots
+            'slots' => $this->slots,
+            'photos' => $this->photos,
         ];
     }
 }

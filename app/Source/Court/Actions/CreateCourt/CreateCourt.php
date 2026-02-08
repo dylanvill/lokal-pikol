@@ -32,7 +32,10 @@ class CreateCourt
     protected function savePhotos(array $photos, Court $court)
     {
         foreach ($photos as $photo) {
-            $court->addMedia($photo->getRealPath())->toMediaCollection(MediaTypeEnum::COURT_PHOTOS->value);
+            $court->addMedia($photo->getRealPath())
+                ->usingName($photo->getClientOriginalName())
+                ->usingFileName($photo->getClientOriginalName())
+                ->toMediaCollection(MediaTypeEnum::COURT_PHOTOS->value);
         }
     }
 }

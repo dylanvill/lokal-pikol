@@ -24,29 +24,17 @@ class CreateCourtController extends Controller
     public function store(CreateCourtRequest $request)
     {
         $slots = $this->processSlots($request->slots);
-        $photos = $this->processPhotos($request->photos);
         $this->createCourtService->create(
             new CreateCourtData(
                 name: $request->name,
                 covered: $request->type === "covered",
                 clientId: 1,
                 slots: $slots,
-                photos: $photos
+                photos: $request->photos
             )
         );
 
         return redirect()->route('client.courts.index')->with('success', 'Court created successfully!');
-    }
-
-    /**
-     * @param UploadedFile[] $photos
-     * @return UploadedFile[]
-     */
-    protected function processPhotos(array $photos): array
-    {
-        return array_map(function ($photo) {
-            return new SplFileObject($photo->getRealPath());
-        }, $photos);
     }
 
     protected function processSlots(array $slots): array
