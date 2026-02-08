@@ -1,5 +1,5 @@
 import { Box, Container, Heading, Text, HStack, VStack, IconButton, Flex } from '@chakra-ui/react';
-import React from 'react';
+import { Link } from '@inertiajs/react';
 import { FiUser } from 'react-icons/fi';
 import RootLayout from '@/layouts/RootLayout';
 import SearchBar from '../components/SearchBar';
@@ -17,16 +17,18 @@ function LandingPageLayout({ children, title }: LandingPageLayoutProps) {
                 <Container maxW="7xl" py={4}>
                     <VStack gap={4} align="stretch">
                         <Flex justify="space-between" align="center">
-                            <HStack gap={3}>
-                                <Box w="10" h="10" bg="orange.400" borderRadius="lg" display="flex" alignItems="center" justifyContent="center">
-                                    <Text color="white" fontWeight="bold" fontSize="lg">
-                                        🏓
-                                    </Text>
-                                </Box>
-                                <Heading size="md" color="gray.800">
-                                    Lokal Pikol
-                                </Heading>
-                            </HStack>
+                            <Link href="/">
+                                <HStack gap={3}>
+                                    <Box w="10" h="10" bg="orange.400" borderRadius="lg" display="flex" alignItems="center" justifyContent="center">
+                                        <Text color="white" fontWeight="bold" fontSize="lg">
+                                            🏓
+                                        </Text>
+                                    </Box>
+                                    <Heading size="md" color="gray.800">
+                                        Lokal Pikol
+                                    </Heading>
+                                </HStack>
+                            </Link>
                             <IconButton aria-label="My Account" variant="ghost" size="md" color="gray.600">
                                 <FiUser />
                             </IconButton>

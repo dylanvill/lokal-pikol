@@ -14,7 +14,7 @@ interface CourtCardProps {
 
 export default function CourtCard({ id, imageUrl, name, address, numberOfCourts, covered, availableTimes }: CourtCardProps) {
     const handleCardClick = () => {
-        router.visit(`/court/${id}`);
+        router.visit(`/courts/${id}`);
     };
 
     return (
