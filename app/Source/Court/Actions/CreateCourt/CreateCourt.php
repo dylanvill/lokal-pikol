@@ -5,6 +5,7 @@ namespace App\Source\Court\Actions\CreateCourt;
 use App\Source\Client\Models\Client;
 use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
 use App\Source\Court\Models\Court;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 
 class CreateCourt
 {
@@ -17,7 +18,7 @@ class CreateCourt
         $court->save();
 
         $this->createSlots($data->slots, $court);
-
+        $this->savePhotos($data->photos, $court);
         return $court->refresh()->load('courtSlots');
     }
 
@@ -25,6 +26,13 @@ class CreateCourt
     {
         foreach ($slots as $slot) {
             $court->courtSlots()->create($slot->toArray());
+        }
+    }
+
+    protected function savePhotos(array $photos, Court $court)
+    {
+        foreach ($photos as $photo) {
+            $court->addMedia($photo->getRealPath())->toMediaCollection(MediaTypeEnum::COURT_PHOTOS->value);
         }
     }
 }

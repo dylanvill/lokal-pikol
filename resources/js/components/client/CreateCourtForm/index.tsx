@@ -7,6 +7,7 @@ import TimeStepContent from './TimeStepContent';
 
 function CreateCourtForm() {
     const handleTransform = (data: Record<string, FormDataConvertible>): Record<string, FormDataConvertible> => {
+        console.log("🚀 ~ handleTransform ~ data:", data)
         let slots = Object.entries(data).filter(([key]) => key.startsWith('slot-'));
 
         slots = slots.map(([key, value]) => {
