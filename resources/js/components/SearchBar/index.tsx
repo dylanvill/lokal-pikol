@@ -1,43 +1,40 @@
-import { Box, Button, Field, Grid } from '@chakra-ui/react';
+import { Box, Button, Field, Grid, Input, NativeSelect } from '@chakra-ui/react';
+import { Form } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { LuSearch } from 'react-icons/lu';
-import AppFormInput from '../app/AppFormInput';
-import AppFormLabel from '../app/AppFormLabel';
-import AppSelect from '../app/AppSelect';
-import type { SearchFormData } from './useSearchBarForm';
-import useSearchBarForm from './useSearchBarForm';
 
 function SearchBar() {
-    const { register, handleSubmit } = useSearchBarForm();
-
-    const onSubmit = (data: SearchFormData) => {
-        console.log('Search data:', data);
-        // Handle form submission here
-    };
+    const currentDate = dayjs().format('YYYY-MM-DD');
+    const nextHour = dayjs().add(1, 'hour').format('HH:00');
+    const endHour = dayjs().add(3, 'hour').format('HH:00');
 
     return (
         <Box bg="white" borderRadius={16} borderColor="gray.200" p={{ base: 4, md: 4 }} shadow="sm">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <Form method="get" action="/search">
                 <Grid gap={4} alignItems="flex-end" gridTemplateColumns={{ base: '1fr 1fr', md: '1fr 1fr 1fr 1fr auto' }}>
                     <Field.Root>
-                        <AppFormLabel>City</AppFormLabel>
-                        <AppSelect {...register('city')}>
-                            <option value="Dumaguete">Dumaguete</option>
-                            <option value="Sibulan">Sibulan</option>
-                            <option value="Valencia">Valencia</option>
-                            <option value="Bacong">Bacong</option>
-                        </AppSelect>
+                        <Field.Label>City</Field.Label>
+                        <NativeSelect.Root>
+                            <NativeSelect.Field defaultValue="Dumaguete" name="city">
+                                <option value="Dumaguete">Dumaguete</option>
+                                <option value="Sibulan">Sibulan</option>
+                                <option value="Valencia">Valencia</option>
+                                <option value="Bacong">Bacong</option>
+                            </NativeSelect.Field>
+                            <NativeSelect.Indicator />
+                        </NativeSelect.Root>
                     </Field.Root>
                     <Field.Root>
-                        <AppFormLabel>Date</AppFormLabel>
-                        <AppFormInput type="date" {...register('date')} />
+                        <Field.Label>Date</Field.Label>
+                        <Input type="date" name="date" defaultValue={currentDate} />
                     </Field.Root>
                     <Field.Root>
-                        <AppFormLabel>Start Time</AppFormLabel>
-                        <AppFormInput type="time" {...register('startTime')} />
+                        <Field.Label>Start Time</Field.Label>
+                        <Input type="time" name="startTime" defaultValue={nextHour} />
                     </Field.Root>
                     <Field.Root>
-                        <AppFormLabel>End Time</AppFormLabel>
-                        <AppFormInput type="time" {...register('endTime')} />
+                        <Field.Label>End Time</Field.Label>
+                        <Input type="time" name="endTime" defaultValue={endHour} />
                     </Field.Root>
                     <Button
                         type="submit"
@@ -50,7 +47,7 @@ function SearchBar() {
                         Search
                     </Button>
                 </Grid>
-            </form>
+            </Form>
         </Box>
     );
 }
