@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Source\Court\Actions\CreateCourtSlot\Dtos;
+namespace App\Source\Court\Actions\CreateCourt\Dtos;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-readonly class CreateCourtSlotData implements Arrayable
+readonly class CourtSlotData  implements Arrayable
 {
     public function __construct(
         public string $time,
-        public int $courtId,
+        public float $rate
     ) {}
 
     public function toArray(): array
     {
         return [
             'time' => $this->time,
-            'court_id' => $this->courtId,
+            'rate' => $this->rate
         ];
     }
 }

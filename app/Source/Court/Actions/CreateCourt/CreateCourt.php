@@ -10,6 +10,21 @@ class CreateCourt
 {
     public function create(CreateCourtData $data): Court
     {
-        return Court::create($data->toArray());
+        $court = new Court();
+        $court->name = $data->name;
+        $court->covered = $data->covered;
+        $court->client_id = $data->clientId;
+        $court->save();
+
+        $this->createSlots($data->slots, $court);
+
+        return $court->refresh()->load('courtSlots');
+    }
+
+    protected function createSlots(array $slots, Court $court)
+    {
+        foreach ($slots as $slot) {
+            $court->courtSlots()->create($slot->toArray());
+        }
     }
 }

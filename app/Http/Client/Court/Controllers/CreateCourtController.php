@@ -5,6 +5,7 @@ namespace App\Http\Client\Court\Controllers;
 use App\Http\Client\Court\Requests\CreateCourtRequest;
 use App\Http\Controllers\Controller;
 use App\Source\Court\Actions\CreateCourt\CreateCourt;
+use App\Source\Court\Actions\CreateCourt\Dtos\CourtSlotData;
 use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,17 +22,26 @@ class CreateCourtController extends Controller
 
     public function store(CreateCourtRequest $request)
     {
-
-        // $this->createCourtService->create(
-        //     new CreateCourtData(
-        //         name: $request->name,
-        //         covered: $request->type === "covered",
-        //         clientId: 1
-        //     )
-        // );
-
-        // Handle form submission, validation, and saving to the database here
+        $slots = $this->processSlots($request->slots);
+        $this->createCourtService->create(
+            new CreateCourtData(
+                name: $request->name,
+                covered: $request->type === "covered",
+                clientId: 1,
+                slots: $slots,
+            )
+        );
 
         return redirect()->route('client.courts.index')->with('success', 'Court created successfully!');
+    }
+
+    protected function processSlots(array $slots): array
+    {
+        return array_map(function ($slot) {
+            return new CourtSlotData(
+                time: $slot['time'],
+                rate: $slot['rate']
+            );
+        }, $slots);
     }
 }
