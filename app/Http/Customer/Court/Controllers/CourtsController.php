@@ -29,10 +29,11 @@ class CourtsController extends Controller
                 return [
                     'uuid' => $client->uuid,
                     'name' => $client->name,
-                    'court_count' => $courts->count(),
-                    'court_types' => $courtTypes, // ['covered'], ['open'], or ['covered', 'open']
-                    'profile_photo' => $client->getFirstMediaUrl(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value),
-                    'cover_photo' => $client->getFirstMediaUrl(MediaTypeEnum::CLIENT_COVER_PHOTO->value),
+                    'numberOfCourts' => $courts->count(),
+                    'courtTypes' => $courtTypes, // ['covered'], ['open'], or ['covered', 'open'],
+                    'address' => $client->address,
+                    'profilePhoto' => $client->getFirstMediaUrl(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value),
+                    'coverPhoto' => $client->getFirstMediaUrl(MediaTypeEnum::CLIENT_COVER_PHOTO->value),
                 ];
             });
 

@@ -1,21 +1,32 @@
 import { Box, VStack, HStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
-import { LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
+import React, { useMemo } from 'react';
+import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 
 interface CourtCardProps {
-    id: number;
-    imageUrl: string;
+    id: string;
     name: string;
+    coverPhotoUrl: string;
+    profilePhotoUrl: string;
     address: string;
     numberOfCourts: number;
-    covered: boolean;
+    types: string[];
     availableTimes: string[];
 }
 
-export default function CourtCard({ id, imageUrl, name, address, numberOfCourts, covered, availableTimes }: CourtCardProps) {
+export default function CourtCard({ id, name, coverPhotoUrl, profilePhotoUrl, address, numberOfCourts, types, availableTimes }: CourtCardProps) {
     const handleCardClick = () => {
         router.visit(`/courts/${id}`);
     };
+
+    const typeDisplay = useMemo((): [string, React.ReactNode] => {
+        if (types.length === 1) {
+            if (types[0] === 'covered') return ['Covered', <LuHouse />];
+            if (types[0] === 'open') return ['Outdoor', <LuSun />];
+        }
+
+        return ['Covered & Outdoor', <LuCheckCheck />];
+    }, [types]);
 
     return (
         <Box
@@ -31,9 +42,9 @@ export default function CourtCard({ id, imageUrl, name, address, numberOfCourts,
             onClick={handleCardClick}
         >
             <VStack justifyItems="flex-start" alignItems="flex-start">
-                <Image src={imageUrl} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
+                <Image src={coverPhotoUrl} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
                 <Image
-                    src={imageUrl}
+                    src={profilePhotoUrl}
                     alt="Profile"
                     w="16"
                     h="16"
@@ -63,9 +74,9 @@ export default function CourtCard({ id, imageUrl, name, address, numberOfCourts,
                         </Text>
                     </HStack>
                     <HStack alignItems="center" justify="flex-start" gap={1}>
-                        {covered ? <LuHouse color="gray" /> : <LuSun color="gray" />}
+                        {typeDisplay[1]}
                         <Text fontSize="sm" color="gray">
-                            {covered ? 'Covered' : 'Outdoor'}
+                            {typeDisplay[0]}
                         </Text>
                     </HStack>
                     <HStack alignItems="center" justify="flex-start" gap={1}>
