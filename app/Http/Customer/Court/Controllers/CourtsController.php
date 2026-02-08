@@ -38,6 +38,6 @@ class CourtsController extends Controller
             });
 
 
-        return Inertia::render('home', ['courts' => $clients]);
+        return Inertia::render('customer/home', ['courts' => $clients]);
     }
 }

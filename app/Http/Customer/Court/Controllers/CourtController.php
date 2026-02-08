@@ -40,7 +40,7 @@ class CourtController extends Controller
         $resource = new CourtListResource($clients);
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('court', [
+        return Inertia::render('customer/court', [
             'court' => $court,
             'clients' => $clients
         ]);

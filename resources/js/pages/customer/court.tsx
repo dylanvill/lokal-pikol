@@ -1,8 +1,8 @@
 import { Box, Container, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
 import { LuMapPin, LuGrid2X2 } from 'react-icons/lu';
 import LandingPageLayout from '@/layouts/LandingPageLayout';
-import CourtReservationBlock from '../components/CourtReservationBlock';
-import type { CourtSlotState } from '../components/CourtReservationBlock/CourtSlot/types';
+import CourtReservationBlock from '../../components/CourtReservationBlock';
+import type { CourtSlotState } from '../../components/CourtReservationBlock/CourtSlot/types';
 
 const dummyData: { id: number; state: CourtSlotState; label: string }[] = [
     { id: 1, state: 'reserved', label: '07:00 AM' },
