@@ -14,10 +14,66 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+
+    public function run(): void {
+        // Create Client Users and their profiles
+        $clientUsers = collect();
+        for ($i = 1; $i <= 5; $i++) {
+            $clientUser = User::create([
+                'email' => "client{$i}@example.com",
+                'password' => bcrypt('password'),
+                'role' => 'client'
+            ]);
+
+            $client = Client::create([
+                'uuid' => Str::uuid(),
+                'user_id' => $clientUser->id,
+                'name' => "Court Business {$i}",
+                'address' => fake()->address(),
+                'email' => $clientUser->email,
+                'phone' => fake()->phoneNumber(),
+            ]);
+
+            // Add client profile photo and cover photo
+            try {
+                $client->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection('client profile photo');
+
+                $client->addMediaFromUrl('https://picsum.photos/1200/400')
+                    ->toMediaCollection('client cover photo');
+            } catch (\Exception $e) {
+                $this->command->warn("Failed to download images for client {$i}: " . $e->getMessage());
+            }
+
+            $clientUsers->push($clientUser);
+        }
+
+        // Create Customer Users and their profiles
+        $customerUsers = collect();
+        for ($i = 1; $i <= 15; $i++) {
+            $customerUser = User::create([
+                'email' => "customer{$i}@example.com",
+                'password' => bcrypt('password'),
+                'role' => 'customer'
+            ]);
+
+            Customer::create([
+                'uuid' => Str::uuid(),
+                'user_id' => $customerUser->id,
+                'first_name' => fake()->firstName(),
+                'last_name' => fake()->lastName(),
+                'email' => $customerUser->email,
+            ]);
+
+            $customerUsers->push($customerUser);
+        }
+
+        $this->command->info('Database seeded successfully!');
+        $this->command->info("Created {$clientUsers->count()} client users with business profiles");
+        $this->command->info("Created {$customerUsers->count()} customer users");
+    }
+
+    private function full(): void
     {
         // Create Client Users and their profiles
         $clientUsers = collect();
@@ -41,7 +97,7 @@ class DatabaseSeeder extends Seeder
             try {
                 $client->addMediaFromUrl('https://picsum.photos/600/600')
                     ->toMediaCollection('client profile photo');
-                
+
                 $client->addMediaFromUrl('https://picsum.photos/1200/400')
                     ->toMediaCollection('client cover photo');
             } catch (\Exception $e) {
@@ -76,7 +132,7 @@ class DatabaseSeeder extends Seeder
         foreach ($clientUsers as $clientUser) {
             $client = $clientUser->client;
             $courtCount = rand(2, 4); // Each client has 2-4 courts
-            
+
             for ($j = 1; $j <= $courtCount; $j++) {
                 $court = Court::create([
                     'uuid' => Str::uuid(),
@@ -115,10 +171,10 @@ class DatabaseSeeder extends Seeder
         foreach ($customerUsers as $customerUser) {
             $customer = $customerUser->customer;
             $reservationCount = rand(1, 3); // Each customer has 1-3 reservations
-            
+
             for ($k = 0; $k < $reservationCount; $k++) {
                 $randomCourt = $courts->random();
-                
+
                 $reservation = Reservation::create([
                     'uuid' => Str::uuid(),
                     'customer_id' => $customer->id,
