@@ -31,7 +31,16 @@ class CreateCourtRequest extends FormRequest
             "photos" => ["nullable", "array"],
             "photos.*" => ["file", "image"],
             "slots" => ["required", "array"],
-            "slots.*" => ["required", "date_format:H:i"],
+            "slots.*.time" => ["required", "date_format:H:i"],
+            "slots.*.rate" => ["required", "numeric", "min:1"],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "slots.*.rate.required" => "The rate for each selected slot is required.",
+            "slots" => "At least one time slot must be selected.",
         ];
     }
 }
