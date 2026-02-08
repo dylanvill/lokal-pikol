@@ -16,7 +16,7 @@ class CourtSlotResource extends JsonResource
     {
         return [
             "uuid" => $this->uuid,
-            "time" => $this->time,
+            "time" => date('H:i', strtotime($this->time)),
             "rate" => floatval($this->rate)
         ];
     }
