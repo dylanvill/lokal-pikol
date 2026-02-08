@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Source\Authentication\Models\User;
+use App\Source\Client\Enums\CityEnum;
 use App\Source\Client\Models\Client;
 use App\Source\Customer\Models\Customer;
 use App\Source\Court\Models\Court;
@@ -38,6 +39,8 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->address(),
                 'email' => $clientUser->email,
                 'phone' => fake()->phoneNumber(),
+                'google_maps_url' => fake()->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
+                'city' => fake()->randomElement(CityEnum::cases())->value,
             ]);
 
             // Add client profile photo and cover photo
@@ -97,6 +100,8 @@ class DatabaseSeeder extends Seeder
                 'address' => fake()->address(),
                 'email' => $clientUser->email,
                 'phone' => fake()->phoneNumber(),
+                'google_maps_url' => fake()->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
+                'city' => fake()->randomElement(CityEnum::cases())->value,
             ]);
 
             // Add client profile photo and cover photo

@@ -26,6 +26,8 @@ class Client extends Model implements HasMedia
         'address',
         'email',
         'phone',
+        'google_maps_url',
+        'city',
     ];
 
     public function user(): BelongsTo

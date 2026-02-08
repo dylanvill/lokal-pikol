@@ -2,6 +2,7 @@
 
 namespace App\Source\Client\Database\Factories;
 
+use App\Source\Client\Enums\CityEnum;
 use App\Source\Client\Models\Client;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,6 +26,8 @@ class ClientFactory extends Factory
             'address' => $this->faker->address(),
             'email' => $this->faker->unique()->companyEmail(),
             'phone' => $this->faker->optional(0.8)->phoneNumber(),
+            'google_maps_url' => $this->faker->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
+            'city' => $this->faker->randomElement(CityEnum::cases())->value,
         ];
     }
 
