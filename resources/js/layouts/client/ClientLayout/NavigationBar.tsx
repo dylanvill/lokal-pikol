@@ -1,5 +1,5 @@
 import { Box, Flex, Text, IconButton } from '@chakra-ui/react';
-import React from 'react';
+import { Form } from '@inertiajs/react';
 import { LuLogOut } from 'react-icons/lu';
 
 export const NavigationBar = () => {
@@ -13,9 +13,11 @@ export const NavigationBar = () => {
                 </Box>
                 <Flex alignItems="center" gap={4}>
                     <Text fontSize="sm">Dylan</Text>
-                    <IconButton size="sm" backgroundColor="blue.600">
-                        <LuLogOut color="white" />
-                    </IconButton>
+                    <Form method="post" action="/client/auth/logout">
+                        <IconButton type="submit" size="sm" backgroundColor="blue.600">
+                            <LuLogOut color="white" />
+                        </IconButton>
+                    </Form>
                 </Flex>
             </Flex>
         </Box>

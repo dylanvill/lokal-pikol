@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Client\Auth\Controllers\LoginController;
+use App\Http\Client\Auth\Controllers\LogoutController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Client\Controllers\AccountController;
@@ -13,6 +14,7 @@ use App\Http\Client\Court\Controllers\CreateCourtController;
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
     Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:client');
 });
 
 Route::group(["middleware" => "auth:client"], function () {
