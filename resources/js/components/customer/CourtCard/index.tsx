@@ -1,7 +1,8 @@
-import { Box, VStack, HStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, VStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
+import Detail from './Detail';
 
 interface CourtCardProps {
     id: string;
@@ -61,30 +62,12 @@ export default function CourtCard({ id, name, coverPhotoUrl, profilePhotoUrl, ad
                     {name}
                 </Heading>
                 <VStack justifyItems="flex-start" alignItems="flex-start" gap={0}>
-                    <HStack alignItems="center" justify="flex-start" gap={1}>
-                        <LuMapPin color="gray" />
-                        <Text fontSize="sm" color="gray">
-                            {address}
-                        </Text>
-                    </HStack>
-                    <HStack alignItems="center" justify="flex-start" gap={1}>
-                        <LuClock color="gray" />
-                        <Text fontSize="sm" color="gray">
-                            8:00 AM - 10:00 PM
-                        </Text>
-                    </HStack>
-                    <HStack alignItems="center" justify="flex-start" gap={1}>
-                        {typeDisplay[1]}
-                        <Text fontSize="sm" color="gray">
-                            {typeDisplay[0]}
-                        </Text>
-                    </HStack>
-                    <HStack alignItems="center" justify="flex-start" gap={1}>
-                        <LuGrid2X2 color="gray" />
-                        <Text fontSize="sm" color="gray">
-                            {numberOfCourts} courts
-                        </Text>
-                    </HStack>
+                    <VStack gap={1} alignItems="flex-start">
+                        <Detail icon={<LuMapPin color="gray" />} label={address} />
+                        <Detail icon={<LuClock color="gray" />} label="8:00 AM - 10:00 PM" />
+                        <Detail icon={typeDisplay[1]} label={typeDisplay[0]} />
+                        <Detail icon={<LuGrid2X2 color="gray" />} label={`${numberOfCourts} courts`} />
+                    </VStack>
                     <VStack align="stretch" gap={2} marginTop={4}>
                         <Text fontSize="xs" color="gray.900">
                             Available times today:

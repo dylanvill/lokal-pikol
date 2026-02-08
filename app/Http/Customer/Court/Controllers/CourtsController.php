@@ -27,7 +27,7 @@ class CourtsController extends Controller
                 if ($hasOpenCourts) $courtTypes[] = 'open';
 
                 return [
-                    'uuid' => $client->uuid,
+                    'id' => $client->uuid,
                     'name' => $client->name,
                     'numberOfCourts' => $courts->count(),
                     'courtTypes' => $courtTypes, // ['covered'], ['open'], or ['covered', 'open'],
