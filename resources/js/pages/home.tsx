@@ -1,6 +1,6 @@
 import { Container, Text, VStack, HStack, SimpleGrid } from '@chakra-ui/react';
 import { FiClock } from 'react-icons/fi';
-import CourtCard from '@/components/CourtCard';
+import CourtCard from '@/components/customer/CourtCard';
 import LandingPageLayout from '@/layouts/LandingPageLayout';
 
 export default function Welcome() {

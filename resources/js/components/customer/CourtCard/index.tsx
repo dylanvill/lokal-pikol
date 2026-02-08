@@ -1,6 +1,6 @@
 import { Box, VStack, HStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
-import { LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
+import { LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 
 interface CourtCardProps {
     id: number;
@@ -54,6 +54,12 @@ export default function CourtCard({ id, imageUrl, name, address, numberOfCourts,
                         <LuMapPin color="gray" />
                         <Text fontSize="sm" color="gray">
                             {address}
+                        </Text>
+                    </HStack>
+                    <HStack alignItems="center" justify="flex-start" gap={1}>
+                        <LuClock color="gray" />
+                        <Text fontSize="sm" color="gray">
+                            8:00 AM - 10:00 PM
                         </Text>
                     </HStack>
                     <HStack alignItems="center" justify="flex-start" gap={1}>
