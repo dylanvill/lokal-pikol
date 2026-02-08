@@ -4,6 +4,9 @@ import CourtCard from '@/components/customer/CourtCard';
 import LandingPageLayout from '@/layouts/LandingPageLayout';
 
 export default function Welcome() {
+
+    
+
     return (
         <LandingPageLayout title="Home">
             <Container maxW="7xl" py={8}>

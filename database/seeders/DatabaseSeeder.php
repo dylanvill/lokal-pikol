@@ -15,7 +15,13 @@ use Illuminate\Support\Str;
 class DatabaseSeeder extends Seeder
 {
 
-    public function run(): void {
+    public function run(): void
+    {
+        $this->full();
+    }
+
+    public function bak(): void
+    {
         // Create Client Users and their profiles
         $clientUsers = collect();
         for ($i = 1; $i <= 5; $i++) {
