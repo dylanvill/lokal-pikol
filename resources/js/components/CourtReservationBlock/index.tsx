@@ -3,14 +3,15 @@ import CourtSlot from './CourtSlot';
 import type { CourtSlotState } from './CourtSlot/types';
 
 export interface CourtReservationBlockProps {
-    courtId: number;
-    courtName: string;
+    courtId: string;
+    name: string;
+    photos: string[];
     slots: { id: number; state: CourtSlotState; label: string }[];
     onSlotSelected: (courtId: number, slotId: number) => void;
     onSlotDeselected: (courtId: number, slotId: number) => void;
 }
 
-function CourtReservationBlock({ courtId, courtName, slots, onSlotSelected, onSlotDeselected }: CourtReservationBlockProps) {
+function CourtReservationBlock({ courtId, name, slots, onSlotSelected, onSlotDeselected }: CourtReservationBlockProps) {
     const handleSlotSelected = (slotId: number) => {
         onSlotSelected(courtId, slotId);
     };
@@ -22,12 +23,8 @@ function CourtReservationBlock({ courtId, courtName, slots, onSlotSelected, onSl
     return (
         <div>
             <VStack alignItems="flex-start">
-                <Text fontWeight="bold">{courtName}</Text>
-                <Flex
-                    flexDirection="row"
-                    flexWrap="wrap"
-                    gap={2}
-                >
+                <Text fontWeight="bold">{name}</Text>
+                <Flex flexDirection="row" flexWrap="wrap" gap={2}>
                     {/* {slots.map((slot) => (
                         <CourtSlot
                             key={slot.id}

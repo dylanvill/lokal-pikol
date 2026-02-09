@@ -1,22 +1,25 @@
-import { Box, Container, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
+import { Box, Container, Heading, HStack, Image, Separator, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { usePage } from '@inertiajs/react';
-import { LuMapPin, LuGrid2X2 } from 'react-icons/lu';
+import { LuMapPin, LuGrid2X2, LuPhone, LuMail } from 'react-icons/lu';
 import CourtReservationBlock from '../../components/CourtReservationBlock';
-import type { CourtSlotState } from '../../components/CourtReservationBlock/CourtSlot/types';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
+import { info } from 'console';
 
 export default function Court() {
     const page = usePage();
 
     const courts = (page.props.courts as []) || ([] as []);
+    const information = page.props.information;
+    console.log('🚀 ~ Court ~ courts:', courts);
 
     return (
         <DefaultPageLayout title="Court">
             <Container maxW="7xl" px={4} py={4}>
+                <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}></SimpleGrid>
                 <Box>
                     <VStack justifyItems="center" alignItems="center" gap={0}>
                         <Image
-                            src="https://picsum.photos/1000/1000"
+                            src={information.profilePhoto}
                             alt="Profile"
                             w="36"
                             h="36"
@@ -27,17 +30,26 @@ export default function Court() {
                             marginBottom={4}
                         />
                         <Heading size="xl" textAlign="center">
-                            Sports Center
+                            {information.name}
                         </Heading>
                         <HStack alignItems="center" justify="center" gap={1}>
                             <LuMapPin color="gray" />
                             <Text fontSize="sm" color="gray">
-                                123 Main St, Cityville
+                                {information.address} {information.city}
                             </Text>
                         </HStack>
-                        <Text textAlign="center" marginTop={2}>
-                            A premier sports facility offering top-notch amenities and courts for various sports.
-                        </Text>
+                        <HStack alignItems="center" justify="center" gap={1}>
+                            <LuMail color="gray" />
+                            <Text fontSize="sm" color="gray">
+                                {information.email}
+                            </Text>
+                        </HStack>
+                        <HStack alignItems="center" justify="center" gap={1}>
+                            <LuPhone color="gray" />
+                            <Text fontSize="sm" color="gray">
+                                {information.phone}
+                            </Text>
+                        </HStack>
                     </VStack>
                     <Separator marginY={8} />
                     <HStack gap={1} alignItems="center" marginBottom={4}>
@@ -47,8 +59,10 @@ export default function Court() {
                     <VStack gap={4}>
                         {courts.map((court) => (
                             <CourtReservationBlock
-                                courtId={1}
-                                courtName="Court 1"
+                                courtId={court.id}
+                                name={court.name}
+                                photos={court.photos}
+                                slots={court.slots}
                                 onSlotSelected={(id, slot) => console.log('Clicked slot', id, slot)}
                                 onSlotDeselected={(id, slot) => console.log('Clicked slot', id, slot)}
                             />
