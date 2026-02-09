@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import DashboardCourtCard from '../../components/client/DashboardCourtCard';
 import DashboardHeaderCard from '../../components/client/DashboardHeaderCard';
-import ClientLayout from '../../layouts/client/ClientLayout';
+import ClientLayout from '../../layouts/facility/FacilityLayout';
 
 function Dashboard() {
     // Static data

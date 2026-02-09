@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Client\Court\Controllers;
+namespace App\Http\Facility\Court\Controllers;
 
-use App\Http\Client\Court\Requests\CreateCourtRequest;
+use App\Http\Facility\Court\Requests\CreateCourtRequest;
 use App\Http\Controllers\Controller;
 use App\Source\Court\Actions\CreateCourt\CreateCourt;
 use App\Source\Court\Actions\CreateCourt\Dtos\CourtSlotData;

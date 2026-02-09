@@ -1,5 +1,5 @@
 import React from 'react';
-import ClientLayout from '../../layouts/client/ClientLayout';
+import ClientLayout from '../../layouts/facility/FacilityLayout';
 
 function dashboard() {
     return (

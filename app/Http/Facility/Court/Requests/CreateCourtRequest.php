@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Client\Court\Requests;
+namespace App\Http\Facility\Court\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Client\Auth\Controllers;
+namespace App\Http\Facility\Auth\Controllers;
 
-use App\Http\Client\Auth\Requests\LoginRequest;
+use App\Http\Facility\Auth\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function show()
     {
-        return Inertia::render('client/login');
+        return Inertia::render('facility/login');
     }
 
     public function login(LoginRequest $request)
@@ -20,13 +20,13 @@ class LoginController extends Controller
 
         $authData = array_merge(
             $request->only('email', 'password'),
-            ['role' => 'client']
+            ['role' => 'facility']
         );
 
-        if (Auth::guard('client')->attempt($authData)) {
+        if (Auth::guard('facility')->attempt($authData)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('client.dashboard'));
+            return redirect()->intended(route('facility.dashboard'));
         }
 
         return back()->withErrors([

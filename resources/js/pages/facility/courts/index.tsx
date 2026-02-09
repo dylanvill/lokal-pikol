@@ -2,7 +2,7 @@ import { Box, Text, Button, SimpleGrid, Flex } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { router, usePage } from '@inertiajs/react';
 import CourtCard from '../../../components/client/CourtCard';
-import ClientLayout from '../../../layouts/client/ClientLayout';
+import ClientLayout from '../../../layouts/facility/FacilityLayout';
 import type Court from '../../../models/client/Court';
 
 interface CourtPageProps extends PageProps {

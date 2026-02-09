@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Client\Controllers;
+namespace App\Http\Facility\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DashboardController extends Controller
+class ReservationsController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -15,6 +15,6 @@ class DashboardController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('client/dashboard');
+        return Inertia::render('client/reservations');
     }
 }

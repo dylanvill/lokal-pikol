@@ -1,23 +1,23 @@
 <?php
 
-use App\Http\Client\Auth\Controllers\LoginController;
-use App\Http\Client\Auth\Controllers\LogoutController;
+use App\Http\Facility\Auth\Controllers\LoginController;
+use App\Http\Facility\Auth\Controllers\LogoutController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Client\Controllers\AccountController;
-use App\Http\Client\Controllers\DashboardController;
-use App\Http\Client\Controllers\ReservationsController;
-use App\Http\Client\Court\Controllers\CourtsController;
-use App\Http\Client\Court\Controllers\CreateCourtController;
+use App\Http\Facility\Controllers\AccountController;
+use App\Http\Facility\Controllers\DashboardController;
+use App\Http\Facility\Controllers\ReservationsController;
+use App\Http\Facility\Court\Controllers\CourtsController;
+use App\Http\Facility\Court\Controllers\CreateCourtController;
 
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
     Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:client');
+    Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:facility');
 });
 
-Route::group(["middleware" => "auth:client"], function () {
+Route::group(["middleware" => "auth:facility"], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/reservations', ReservationsController::class)->name('reservations');
     Route::get('/account', AccountController::class)->name('account');

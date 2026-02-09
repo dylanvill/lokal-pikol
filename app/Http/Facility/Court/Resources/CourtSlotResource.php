@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Client\Court\Resources;
+namespace App\Http\Facility\Court\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourtPhotosResource extends JsonResource
+class CourtSlotResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,8 @@ class CourtPhotosResource extends JsonResource
     {
         return [
             "uuid" => $this->uuid,
-            "url" => $this->original_url
+            "time" => date('H:i', strtotime($this->time)),
+            "rate" => floatval($this->rate)
         ];
     }
 }

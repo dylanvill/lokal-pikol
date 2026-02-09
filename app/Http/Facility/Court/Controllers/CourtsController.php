@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Client\Court\Controllers;
+namespace App\Http\Facility\Court\Controllers;
 
-use App\Http\Client\Court\Resources\CourtResource;
+use App\Http\Facility\Court\Resources\CourtResource;
 use App\Http\Controllers\Controller;
 use App\Source\Authentication\Models\User;
 use Illuminate\Http\Request;
