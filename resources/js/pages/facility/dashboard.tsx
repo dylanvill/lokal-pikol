@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import DashboardCourtCard from '../../components/facility/DashboardCourtCard';
 import DashboardHeaderCard from '../../components/facility/DashboardHeaderCard';
-import ClientLayout from '../../layouts/facility/FacilityLayout';
+import FacilityLayout from '../../layouts/facility/FacilityLayout';
 
 function Dashboard() {
     // Static data
@@ -58,7 +58,7 @@ function Dashboard() {
     ];
 
     return (
-        <ClientLayout>
+        <FacilityLayout>
             <VStack gap={8} align="stretch">
                 {/* Header with Welcome and Compact Reservations */}
                 <DashboardHeaderCard clientName={clientName} currentDate={currentDate} reservationRequestsCount={reservationRequestsCount} />
@@ -81,7 +81,7 @@ function Dashboard() {
                     </SimpleGrid>
                 </Box>
             </VStack>
-        </ClientLayout>
+        </FacilityLayout>
     );
 }
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import ClientLayout from '../../layouts/facility/FacilityLayout';
+import FacilityLayout from '../../layouts/facility/FacilityLayout';
 
 function dashboard() {
     return (
-        <ClientLayout>
+        <FacilityLayout>
             <div>account</div>
-        </ClientLayout>
+        </FacilityLayout>
     );
 }
 

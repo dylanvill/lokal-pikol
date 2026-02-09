@@ -3,11 +3,11 @@ import React from 'react';
 import { NavigationBar } from './NavigationBar';
 import { Sidebar } from './Sidebar';
 
-interface ClientLayoutProps {
+interface FacilityLayoutProps {
     children: React.ReactNode;
 }
 
-export const ClientLayout = ({ children }: ClientLayoutProps) => {
+export const FacilityLayout = ({ children }: FacilityLayoutProps) => {
     return (
         <Box minH="100vh" bg="gray.50">
             <NavigationBar />
@@ -21,4 +21,4 @@ export const ClientLayout = ({ children }: ClientLayoutProps) => {
     );
 };
 
-export default ClientLayout;
+export default FacilityLayout;
