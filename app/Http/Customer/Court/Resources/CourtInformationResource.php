@@ -17,7 +17,7 @@ class CourtInformationResource extends JsonResource
             "email" => $this->email,
             "phone" => $this->phone,
             "googleMapsUrl" => $this->google_maps_url,
-            "profilePhoto" => null,
+            "profilePhoto" => $this->media ? $this->media[0]->original_url : null,
         ];
     }
 }
