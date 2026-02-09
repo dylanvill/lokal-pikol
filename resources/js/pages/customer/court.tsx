@@ -3,13 +3,12 @@ import { usePage } from '@inertiajs/react';
 import { LuMapPin, LuGrid2X2, LuPhone, LuMail } from 'react-icons/lu';
 import CourtReservationBlock from '../../components/CourtReservationBlock';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
-import { info } from 'console';
 
 export default function Court() {
     const page = usePage();
 
     const courts = (page.props.courts as []) || ([] as []);
-    const information = page.props.information;
+    const facility = page.props.facility;
     console.log('🚀 ~ Court ~ courts:', courts);
 
     return (
@@ -19,7 +18,7 @@ export default function Court() {
                 <Box>
                     <VStack justifyItems="center" alignItems="center" gap={0}>
                         <Image
-                            src={information.profilePhoto}
+                            src={facility.profilePhoto}
                             alt="Profile"
                             w="36"
                             h="36"
@@ -30,24 +29,24 @@ export default function Court() {
                             marginBottom={4}
                         />
                         <Heading size="xl" textAlign="center">
-                            {information.name}
+                            {facility.name}
                         </Heading>
                         <HStack alignItems="center" justify="center" gap={1}>
                             <LuMapPin color="gray" />
                             <Text fontSize="sm" color="gray">
-                                {information.address} {information.city}
+                                {facility.address} {facility.city}
                             </Text>
                         </HStack>
                         <HStack alignItems="center" justify="center" gap={1}>
                             <LuMail color="gray" />
                             <Text fontSize="sm" color="gray">
-                                {information.email}
+                                {facility.email}
                             </Text>
                         </HStack>
                         <HStack alignItems="center" justify="center" gap={1}>
                             <LuPhone color="gray" />
                             <Text fontSize="sm" color="gray">
-                                {information.phone}
+                                {facility.phone}
                             </Text>
                         </HStack>
                     </VStack>

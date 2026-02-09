@@ -6,4 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', CourtsController::class)->name('home');
 Route::get('/courts', fn() => redirect(route("home")))->name('login');
-Route::get('/courts/{client:uuid}', CourtController::class)->name('court');
+Route::get('/courts/{facility:uuid}', CourtController::class)->name('court');

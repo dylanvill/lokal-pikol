@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Facility\Court\Resources;
+namespace App\Http\Shared\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourtPhotosResource extends JsonResource
+class PhotoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

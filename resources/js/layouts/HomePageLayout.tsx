@@ -20,7 +20,7 @@ function HomePageLayout({ children, title }: HomePageLayoutProps) {
                     </Box>
                 </Container>
             </Container>
-            <Container py={4} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12}>
+            <Container py={8} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12}>
                 {children}
             </Container>
         </RootLayout>

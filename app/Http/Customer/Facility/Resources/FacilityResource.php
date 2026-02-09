@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Customer\Court\Resources;
+namespace App\Http\Customer\Facility\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourtInformationResource extends JsonResource
+class FacilityResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

@@ -2,10 +2,11 @@
 
 namespace App\Http\Customer\Court\Resources;
 
+use App\Http\Shared\Resources\PhotoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourtFacilityResource extends JsonResource
+class CourtResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -13,8 +14,8 @@ class CourtFacilityResource extends JsonResource
             "uuid" => $this->uuid,
             "name" => $this->name,
             "covered" => $this->covered,
-            "photos" => [],
-            "slots" => CourtSlotsResource::collection($this->slots),
+            "photos" => PhotoResource::collection($this->media),
+            "slots" => CourtSlotResource::collection($this->courtSlots),
         ];
     }
 }

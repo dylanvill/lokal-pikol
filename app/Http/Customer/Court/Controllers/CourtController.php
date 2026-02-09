@@ -3,7 +3,8 @@
 namespace App\Http\Customer\Court\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Customer\Court\Resources\CourtInformationResource;
+use App\Http\Customer\Court\Resources\CourtResource;
+use App\Http\Customer\Facility\Resources\FacilityResource;
 use App\Source\Facility\Models\Facility;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Inertia\Inertia;
@@ -31,8 +32,8 @@ class CourtController extends Controller
 
         // You can add validation, database queries, etc. here
         return Inertia::render('customer/court', [
-            'information' => new CourtInformationResource($facility),
-            'courts' => $courts
+            'facility' => new FacilityResource($facility),
+            'courts' => CourtResource::collection($courts),
             // 'court' => $client
         ]);
     }

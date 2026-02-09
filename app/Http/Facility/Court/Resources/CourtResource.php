@@ -2,6 +2,7 @@
 
 namespace App\Http\Facility\Court\Resources;
 
+use App\Http\Shared\Resources\PhotoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +21,7 @@ class CourtResource extends JsonResource
             "uuid" => $this->uuid,
             "name" => $this->name,
             "covered" => $this->covered,
-            "photos" => CourtPhotosResource::collection($this->media),
+            "photos" => PhotoResource::collection($this->media),
             "slots" => CourtSlotResource::collection($this->courtSlots),
         ];
     }
