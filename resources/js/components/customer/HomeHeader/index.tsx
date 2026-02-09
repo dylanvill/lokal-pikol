@@ -1,8 +1,6 @@
 import { Box, Flex, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import { FiUser } from 'react-icons/fi';
-import SearchBar from './SearchBar';
-
 function HomeHeader() {
     return (
         <VStack gap={4} align="stretch">
@@ -20,7 +18,6 @@ function HomeHeader() {
                     <FiUser color="white" />
                 </IconButton>
             </Flex>
-            <SearchBar />
         </VStack>
     );
 }

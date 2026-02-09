@@ -1,23 +1,18 @@
-import { Box, Container } from '@chakra-ui/react';
-import RootLayout from '@/layouts/RootLayout';
+import { Container } from '@chakra-ui/react';
 import HomeHeader from '../components/customer/HomeHeader';
-import SearchBar from '../components/customer/HomeHeader/SearchBar';
+import RootLayout from './RootLayout';
 
-interface HomePageLayoutProps {
+interface DefaultPageLayoutProps {
     children: React.ReactNode;
     title?: string;
 }
 
-function HomePageLayout({ children, title }: HomePageLayoutProps) {
+function DefaultPageLayout({ children, title }: DefaultPageLayoutProps) {
     return (
         <RootLayout title={title}>
             <Container gradientFrom="blue.900" gradientTo="blue.800" bgGradient="to-t" fluid paddingTop={4} paddingBottom={20}>
                 <Container padding={0}>
                     <HomeHeader />
-
-                    <Box marginTop={6}>
-                        <SearchBar />
-                    </Box>
                 </Container>
             </Container>
             <Container py={4} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12}>
@@ -27,4 +22,4 @@ function HomePageLayout({ children, title }: HomePageLayoutProps) {
     );
 }
 
-export default HomePageLayout;
+export default DefaultPageLayout;

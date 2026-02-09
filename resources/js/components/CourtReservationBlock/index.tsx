@@ -28,7 +28,7 @@ function CourtReservationBlock({ courtId, courtName, slots, onSlotSelected, onSl
                     flexWrap="wrap"
                     gap={2}
                 >
-                    {slots.map((slot) => (
+                    {/* {slots.map((slot) => (
                         <CourtSlot
                             key={slot.id}
                             id={slot.id}
@@ -37,7 +37,7 @@ function CourtReservationBlock({ courtId, courtName, slots, onSlotSelected, onSl
                             onSlotSelected={handleSlotSelected}
                             onSlotDeselected={handleSlotDeselected}
                         />
-                    ))}
+                    ))} */}
                 </Flex>
             </VStack>
         </div>
