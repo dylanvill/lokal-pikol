@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import AppTitle from '../../../components/app/AppTitle';
-import CreateCourtForm from '../../../components/client/CreateCourtForm';
+import CreateCourtForm from '../../../components/facility/CreateCourtForm';
 import ClientLayout from '../../../layouts/facility/FacilityLayout';
 
 function CreateCourtPage() {
