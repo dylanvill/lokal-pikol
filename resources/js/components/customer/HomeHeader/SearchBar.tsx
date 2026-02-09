@@ -9,7 +9,7 @@ function SearchBar() {
     const endHour = dayjs().add(3, 'hour').format('HH:00');
 
     return (
-        <Box bg="white" borderRadius={16} borderColor="gray.200" p={{ base: 4, md: 4 }} shadow="sm">
+        <Box bg="white" borderRadius={16} borderColor="gray.200" p={{ base: 4, md: 4 }} shadow="sm" colorPalette="blue">
             <Form method="get" action="/search">
                 <Grid gap={4} alignItems="flex-end" gridTemplateColumns={{ base: '1fr 1fr', md: '1fr 1fr 1fr 1fr auto' }}>
                     <Field.Root>

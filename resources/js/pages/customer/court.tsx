@@ -1,6 +1,6 @@
 import { Box, Container, Heading, HStack, Image, Separator, Text, VStack } from '@chakra-ui/react';
 import { LuMapPin, LuGrid2X2 } from 'react-icons/lu';
-import LandingPageLayout from '@/layouts/LandingPageLayout';
+import LandingPageLayout from '@/layouts/HomePageLayout';
 import CourtReservationBlock from '../../components/CourtReservationBlock';
 import type { CourtSlotState } from '../../components/CourtReservationBlock/CourtSlot/types';
 
