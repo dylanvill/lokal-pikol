@@ -61,7 +61,7 @@ function Dashboard() {
         <FacilityLayout>
             <VStack gap={8} align="stretch">
                 {/* Header with Welcome and Compact Reservations */}
-                <DashboardHeaderCard clientName={clientName} currentDate={currentDate} reservationRequestsCount={reservationRequestsCount} />
+                <DashboardHeaderCard facilityName={clientName} currentDate={currentDate} reservationRequestsCount={reservationRequestsCount} />
 
                 {/* Courts Section */}
                 <Box>

@@ -3,18 +3,18 @@ import { Link } from '@inertiajs/react';
 import { LuCalendar } from 'react-icons/lu';
 
 interface DashboardHeaderCardProps {
-    clientName: string;
+    facilityName: string;
     currentDate: string;
     reservationRequestsCount: number;
 }
 
-function DashboardHeaderCard({ clientName, currentDate, reservationRequestsCount }: DashboardHeaderCardProps) {
+function DashboardHeaderCard({ facilityName, currentDate, reservationRequestsCount }: DashboardHeaderCardProps) {
     return (
         <Box>
             <Flex justify="space-between" align="start" mb={4}>
                 <Box>
                     <Heading size="lg" mb={2}>
-                        Welcome back, {clientName}!
+                        Welcome back, {facilityName}!
                     </Heading>
                     <Flex align="center" gap={2} color="gray.600">
                         <LuCalendar />

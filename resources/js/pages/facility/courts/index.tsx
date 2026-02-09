@@ -15,7 +15,7 @@ function Courts() {
     const courts = page.props.courts || [];
 
     const handleRegisterNewCourt = () => {
-        router.visit('/client/courts/create');
+        router.visit('/facility/courts/create');
     };
 
     return (

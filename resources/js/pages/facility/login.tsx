@@ -7,7 +7,7 @@ function Login() {
             <Card.Root maxWidth="md" width="full" borderRadius={8}>
                 <Card.Header>
                     <Heading size="lg" textAlign="center">
-                        Client Login
+                        Facility Login
                     </Heading>
                     <Text color="gray.600" textAlign="center">
                         Sign in to your account
