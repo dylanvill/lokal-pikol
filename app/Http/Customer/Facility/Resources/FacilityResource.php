@@ -2,6 +2,7 @@
 
 namespace App\Http\Customer\Facility\Resources;
 
+use App\Http\Shared\Resources\PhotoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class FacilityResource extends JsonResource
             "email" => $this->email,
             "phone" => $this->phone,
             "googleMapsUrl" => $this->google_maps_url,
-            "profilePhoto" => $this->media ? $this->media[0]->original_url : null,
+            "profilePhoto" => $this->media ? new PhotoResource($this->media[0]) : null,
         ];
     }
 }

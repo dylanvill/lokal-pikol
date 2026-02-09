@@ -1,17 +1,19 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import type Photo from '../../../models/shared/Photo';
 import CourtSlot from './CourtSlot';
 import type { CourtSlotState } from './CourtSlot/types';
+import ImageCarousel from './ImageCarousel';
 
 export interface CourtReservationBlockProps {
     courtId: string;
     name: string;
-    photos: string[];
+    photos: Photo[];
     slots: { id: number; state: CourtSlotState; label: string }[];
     onSlotSelected: (courtId: number, slotId: number) => void;
     onSlotDeselected: (courtId: number, slotId: number) => void;
 }
 
-function CourtReservationBlock({ courtId, name, slots, onSlotSelected, onSlotDeselected }: CourtReservationBlockProps) {
+function CourtReservationBlock({ courtId, name, photos, onSlotSelected, onSlotDeselected }: CourtReservationBlockProps) {
     const handleSlotSelected = (slotId: number) => {
         onSlotSelected(courtId, slotId);
     };
@@ -21,11 +23,13 @@ function CourtReservationBlock({ courtId, name, slots, onSlotSelected, onSlotDes
     };
 
     return (
-        <div>
-            <VStack alignItems="flex-start">
+        <SimpleGrid columns={{ base: 1, md: 2 }}>
+            <Box width="full">
+                <ImageCarousel photos={photos} />
                 <Text fontWeight="bold">{name}</Text>
-                <Flex flexDirection="row" flexWrap="wrap" gap={2}>
-                    {/* {slots.map((slot) => (
+            </Box>
+            <Flex flexDirection="row" flexWrap="wrap" gap={2}>
+                {/* {slots.map((slot) => (
                         <CourtSlot
                             key={slot.id}
                             id={slot.id}
@@ -35,9 +39,8 @@ function CourtReservationBlock({ courtId, name, slots, onSlotSelected, onSlotDes
                             onSlotDeselected={handleSlotDeselected}
                         />
                     ))} */}
-                </Flex>
-            </VStack>
-        </div>
+            </Flex>
+        </SimpleGrid>
     );
 }
 

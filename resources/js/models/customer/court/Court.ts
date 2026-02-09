@@ -1,11 +1,12 @@
+import type Photo from '../../shared/Photo';
+import type CourtSlot from './CourtSlot';
+
 interface Court {
-    id: string;
+    uuid: string;
     name: string;
-    address: string;
-    numberOfCourts: number;
-    courtTypes: string[]; // ['covered'], ['open'], or ['covered', 'open']
-    profilePhoto: string;
-    coverPhoto: string;
+    covered: boolean;
+    photos: Photo[];
+    slots: CourtSlot[];
 }
 
 export default Court;

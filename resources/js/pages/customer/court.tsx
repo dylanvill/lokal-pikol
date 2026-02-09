@@ -1,24 +1,30 @@
 import { Box, Container, Heading, HStack, Image, Separator, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import { LuMapPin, LuGrid2X2, LuPhone, LuMail } from 'react-icons/lu';
-import CourtReservationBlock from '../../components/CourtReservationBlock';
+import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
+import type Court from '../../models/customer/court/Court';
+import type Facility from '../../models/customer/facility/Facility';
 
-export default function Court() {
-    const page = usePage();
+interface CourtPageProps extends PageProps {
+    courts: Court[];
+    facility: Facility;
+}
 
-    const courts = (page.props.courts as []) || ([] as []);
+export default function CourtPage() {
+    const page = usePage<CourtPageProps>();
+
+    const courts = page.props.courts || [];
     const facility = page.props.facility;
-    console.log('🚀 ~ Court ~ courts:', courts);
 
     return (
         <DefaultPageLayout title="Court">
             <Container maxW="7xl" px={4} py={4}>
-                <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}></SimpleGrid>
                 <Box>
                     <VStack justifyItems="center" alignItems="center" gap={0}>
                         <Image
-                            src={facility.profilePhoto}
+                            src={facility.profilePhoto.url}
                             alt="Profile"
                             w="36"
                             h="36"
@@ -55,19 +61,17 @@ export default function Court() {
                         <LuGrid2X2 />
                         <Heading size="lg">Available Courts</Heading>
                     </HStack>
-                    <VStack gap={4}>
-                        {courts.map((court) => (
-                            <CourtReservationBlock
-                                courtId={court.id}
-                                name={court.name}
-                                photos={court.photos}
-                                slots={court.slots}
-                                onSlotSelected={(id, slot) => console.log('Clicked slot', id, slot)}
-                                onSlotDeselected={(id, slot) => console.log('Clicked slot', id, slot)}
-                            />
-                        ))}
-                    </VStack>
                 </Box>
+                {courts.map((court) => (
+                    <CourtReservationBlock
+                        courtId={court.id}
+                        name={court.name}
+                        photos={court.photos}
+                        slots={court.slots}
+                        onSlotSelected={(id, slot) => console.log('Clicked slot', id, slot)}
+                        onSlotDeselected={(id, slot) => console.log('Clicked slot', id, slot)}
+                    />
+                ))}
             </Container>
         </DefaultPageLayout>
     );
