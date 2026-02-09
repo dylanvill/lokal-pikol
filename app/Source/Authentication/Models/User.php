@@ -5,7 +5,7 @@ namespace App\Source\Authentication\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Source\Authentication\Database\Factories\UserFactory;
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Models\Facility;
 use App\Source\Customer\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;

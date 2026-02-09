@@ -4,23 +4,23 @@ namespace App\Http\Customer\Court\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Court\Resources\CourtInformationResource;
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Models\Facility;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CourtController extends Controller
 {
-    public function __invoke(Client $client): Response
+    public function __invoke(Facility $facility): Response
     {
 
-        $client = $client->load([
+        $facility = $facility->load([
             'media' => function ($query) {
                 $query->where('collection_name', MediaTypeEnum::CLIENT_PROFILE_PHOTO)->first();
             },
         ]);
 
-        $courts = $client->courts()->get();
+        $courts = $facility->courts()->get();
 
         $courts->load([
             'courtSlots',
@@ -31,7 +31,7 @@ class CourtController extends Controller
 
         // You can add validation, database queries, etc. here
         return Inertia::render('customer/court', [
-            'information' => new CourtInformationResource($client),
+            'information' => new CourtInformationResource($facility),
             'courts' => $courts
             // 'court' => $client
         ]);

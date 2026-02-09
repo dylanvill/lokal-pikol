@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Source\Client\Database\Factories;
+namespace App\Source\Facility\Database\Factories;
 
-use App\Source\Client\Enums\CityEnum;
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Enums\CityEnum;
+use App\Source\Facility\Models\Facility;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Source\Client\Models\Client>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Source\Facility\Models\Facility>
  */
-class ClientFactory extends Factory
+class FacilityFactory extends Factory
 {
-    protected $model = Client::class;
+    protected $model = Facility::class;
 
     /**
      * Define the model's default state.
@@ -36,8 +36,8 @@ class ClientFactory extends Factory
      */
     public function configure(): static
     {
-        return $this->afterCreating(function (Client $client) {
-            $client
+        return $this->afterCreating(function (Facility $facility) {
+            $facility
                 ->addMediaFromUrl('https://dummyimage.com/1:1x600')
                 ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
         });

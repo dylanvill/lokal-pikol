@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Source\Authentication\Models\User;
-use App\Source\Client\Enums\CityEnum;
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Enums\CityEnum;
+use App\Source\Facility\Models\Facility;
 use App\Source\Customer\Models\Customer;
 use App\Source\Court\Models\Court;
 use App\Source\Court\Models\CourtSlot;

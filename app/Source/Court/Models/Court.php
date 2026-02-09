@@ -3,7 +3,7 @@
 namespace App\Source\Court\Models;
 
 use App\Models\Traits\HasUuid;
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Models\Facility;
 use App\Source\Court\Database\Factories\CourtFactory;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Models\Reservation;

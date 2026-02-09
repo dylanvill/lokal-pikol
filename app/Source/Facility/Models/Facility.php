@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Source\Client\Models;
+namespace App\Source\Facility\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Authentication\Models\User;
-use App\Source\Client\Database\Factories\ClientFactory;
 use App\Source\Court\Models\Court;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
+use App\Source\Facility\Database\Factories\FacilityFactory;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Client extends Model implements HasMedia
+class Facility extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory, HasUuid, InteractsWithMedia;
@@ -45,6 +44,6 @@ class Client extends Model implements HasMedia
      */
     protected static function newFactory()
     {
-        return ClientFactory::new();
+        return FacilityFactory::new();
     }
 }

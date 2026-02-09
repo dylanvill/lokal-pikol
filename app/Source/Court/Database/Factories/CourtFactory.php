@@ -2,7 +2,7 @@
 
 namespace App\Source\Court\Database\Factories;
 
-use App\Source\Client\Models\Client;
+use App\Source\Facility\Models\Facility;
 use App\Source\Court\Models\Court;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Source\Client\Database\Seeders;
+namespace App\Source\Facility\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,6 +11,6 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Source\Client\Models\Client::factory(10)->create();
+        \App\Source\Facility\Models\Facility::factory(10)->create();
     }
 }
