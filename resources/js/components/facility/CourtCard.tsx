@@ -1,7 +1,7 @@
 import { Box, Image, Badge, HStack, Card } from '@chakra-ui/react';
 import React from 'react';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
-import type CourtSlot from '../../models/client/CourtSlot';
+import type CourtSlot from '../../models/facility/CourtSlot';
 import AppSmallText from '../app/AppSmallText';
 import AppTitle from '../app/AppTitle';
 

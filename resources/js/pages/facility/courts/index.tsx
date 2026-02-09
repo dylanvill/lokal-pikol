@@ -3,7 +3,7 @@ import { type PageProps } from '@inertiajs/core';
 import { router, usePage } from '@inertiajs/react';
 import CourtCard from '../../../components/facility/CourtCard';
 import ClientLayout from '../../../layouts/facility/FacilityLayout';
-import type Court from '../../../models/client/Court';
+import type Court from '../../../models/facility/Court';
 
 interface CourtPageProps extends PageProps {
     courts: Court[];
