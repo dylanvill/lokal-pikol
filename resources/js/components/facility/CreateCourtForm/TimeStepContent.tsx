@@ -1,8 +1,8 @@
 import { Box, CheckboxCard, CheckboxGroup, Fieldset, Icon, Input, SimpleGrid, Text } from '@chakra-ui/react';
 import { useFormContext } from '@inertiajs/react';
+import { useMemo } from 'react';
 import { LuClock, LuCloudMoon, LuCloudSun, LuMoonStar, LuSun } from 'react-icons/lu';
 import SectionContainer from './SectionContainer';
-import { useMemo } from 'react';
 
 const items = [
     { value: '00:00', title: '12:00 AM', icon: <LuCloudMoon /> },
@@ -58,7 +58,7 @@ function TimeStepContent() {
                 <CheckboxGroup>
                     <SimpleGrid columns={4} gap={4}>
                         {items.map((item) => (
-                            <Box>
+                            <Box key={item.value}>
                                 <CheckboxCard.Root key={item.value} value={item.value}>
                                     <CheckboxCard.HiddenInput name={`slot-${item.value}`} />
                                     <CheckboxCard.Control>

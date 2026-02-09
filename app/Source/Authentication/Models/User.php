@@ -47,6 +47,9 @@ class User extends Authenticatable
         return $this->hasOne(Customer::class);
     }
 
+    /**
+     * @return Facility|Customer
+     */
     public function getProfileAttribute()
     {
         return $this->role === 'facility' ? $this->facility : $this->customer;
