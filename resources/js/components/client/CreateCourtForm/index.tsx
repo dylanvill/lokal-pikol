@@ -27,7 +27,7 @@ function CreateCourtForm() {
     };
     return (
         <Box colorPalette="blue" backgroundColor="white" p={8} borderRadius={12} shadow="md">
-            <Form method="post" action="/client/courts/create" resetOnSuccess transform={handleTransform}>
+            <Form method="post" action="/facility/courts/create" resetOnSuccess transform={handleTransform}>
                 {({ processing }) => (
                     <Box gap={8} display="flex" flexDirection="column">
                         <DetailsStepContent />

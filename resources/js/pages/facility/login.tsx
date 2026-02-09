@@ -15,7 +15,7 @@ function Login() {
                 </Card.Header>
 
                 <Card.Body>
-                    <Form method="post" action="/client/auth/login">
+                    <Form method="post" action="/facility/auth/login">
                         {({ processing, errors }) => (
                             <Stack gap={4}>
                                 <Field.Root invalid={!!errors.email}>

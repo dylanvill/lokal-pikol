@@ -7,22 +7,22 @@ import AppButton from '../../../components/app/AppButton';
 const sidebarItems = [
     {
         label: 'Dashboard',
-        route: '/client/dashboard',
+        route: '/facility/dashboard',
         icon: () => <LuHouse />,
     },
     {
         label: 'Courts',
-        route: '/client/courts',
+        route: '/facility/courts',
         icon: () => <LuGrid2X2 />,
     },
     {
         label: 'Reservations',
-        route: '/client/reservations',
+        route: '/facility/reservations',
         icon: () => <LuCalendar />,
     },
     {
         label: 'Account',
-        route: '/client/account',
+        route: '/facility/account',
         icon: () => <LuUser />,
     },
 ];

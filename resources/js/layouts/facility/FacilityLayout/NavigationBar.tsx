@@ -13,7 +13,7 @@ export const NavigationBar = () => {
                 </Box>
                 <Flex alignItems="center" gap={4}>
                     <Text fontSize="sm">Dylan</Text>
-                    <Form method="post" action="/client/auth/logout">
+                    <Form method="post" action="/facility/auth/logout">
                         <IconButton type="submit" size="sm" backgroundColor="blue.600">
                             <LuLogOut color="white" />
                         </IconButton>
