@@ -15,6 +15,6 @@ class ReservationsController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('client/reservations');
+        return Inertia::render('facility/reservations');
     }
 }

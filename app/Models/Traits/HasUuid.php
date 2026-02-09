@@ -11,9 +11,9 @@ trait HasUuid
     {
         parent::boot();
 
-        static::creating(function ($client) {
-            if (empty($client->uuid)) {
-                $client->uuid = Str::uuid();
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = Str::uuid();
             }
         });
     }

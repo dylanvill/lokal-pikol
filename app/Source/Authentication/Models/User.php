@@ -5,8 +5,8 @@ namespace App\Source\Authentication\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Source\Authentication\Database\Factories\UserFactory;
-use App\Source\Facility\Models\Facility;
 use App\Source\Customer\Models\Customer;
+use App\Source\Facility\Models\Facility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +17,11 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
-        'role'
+        'role',
+        'description',
+        'google_maps_url',
+        'city',
+        'address'
     ];
 
     protected $hidden = [
@@ -33,9 +37,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function client(): HasOne
+    public function facility(): HasOne
     {
-        return $this->hasOne(Client::class);
+        return $this->hasOne(Facility::class);
     }
 
     public function customer(): HasOne
@@ -45,12 +49,12 @@ class User extends Authenticatable
 
     public function getProfileAttribute()
     {
-        return $this->role === 'client' ? $this->client : $this->customer;
+        return $this->role === 'facility' ? $this->facility : $this->customer;
     }
 
-    public function isClient(): bool
+    public function isFacility(): bool
     {
-        return $this->role === 'client';
+        return $this->role === 'facility';
     }
 
     public function isCustomer(): bool

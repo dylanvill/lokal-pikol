@@ -23,7 +23,7 @@ class CourtFactory extends Factory
         return [
             'name' => $this->faker->randomElement(['Court A', 'Court B', 'Court C']) . ' - ' . $this->faker->city(),
             'covered' => $this->faker->boolean(60), // 60% chance of being covered
-            'client_id' => Client::factory(),
+            'facility_id' => Facility::factory(),
         ];
     }
 }

@@ -18,7 +18,7 @@ class CreateCourtController extends Controller
 
     public function show()
     {
-        return Inertia::render('client/courts/createCourt');
+        return Inertia::render('facility/courts/createCourt');
     }
 
     public function store(CreateCourtRequest $request)
@@ -28,13 +28,13 @@ class CreateCourtController extends Controller
             new CreateCourtData(
                 name: $request->name,
                 covered: $request->type === "covered",
-                clientId: 1,
+                facilityId: 1,
                 slots: $slots,
                 photos: $request->photos
             )
         );
 
-        return redirect()->route('client.courts.index')->with('success', 'Court created successfully!');
+        return redirect()->route('facility.courts.index')->with('success', 'Court created successfully!');
     }
 
     protected function processSlots(array $slots): array

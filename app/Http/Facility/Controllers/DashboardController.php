@@ -15,6 +15,6 @@ class DashboardController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('client/dashboard');
+        return Inertia::render('facility/dashboard');
     }
 }

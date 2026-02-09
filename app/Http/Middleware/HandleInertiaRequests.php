@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
 
         $data = $request->user()->getProfileAttribute();
 
-        $key = $request->user()->isClient() ? 'client' : 'customer';
+        $key = $request->user()->isFacility() ? 'facility' : 'customer';
 
         $shared[$key] = $data;
 

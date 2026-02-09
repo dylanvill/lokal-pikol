@@ -16,18 +16,18 @@ class CourtsController extends Controller
     public function __invoke(Request $request)
     {
 
-        /** @var User $client */
-        $client = $request->user('client');
+        /** @var User $facility */
+        $facility = $request->user('facility');
 
-        $courts = $client
-            ->client
+        $courts = $facility
+            ->facility
             ->courts()
             ->with("courtSlots")
             ->photos()
             ->get();
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('client/courts/index', [
+        return Inertia::render('facility/courts/index', [
             "courts" => CourtResource::collection($courts),
         ]);
     }

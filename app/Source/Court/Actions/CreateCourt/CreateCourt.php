@@ -14,7 +14,7 @@ class CreateCourt
         $court = new Court();
         $court->name = $data->name;
         $court->covered = $data->covered;
-        $court->client_id = $data->clientId;
+        $court->facility_id = $data->facilityId;
         $court->save();
 
         $this->createSlots($data->slots, $court);

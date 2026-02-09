@@ -10,12 +10,12 @@ class LogoutController extends Controller
 
     public function __invoke()
     {
-        Auth::guard('client')->logout();
+        Auth::guard('facility')->logout();
 
         request()->session()->invalidate();
 
         request()->session()->regenerateToken();
 
-        return redirect()->route('client.auth.show');
+        return redirect()->route('facility.auth.show');
     }
 }

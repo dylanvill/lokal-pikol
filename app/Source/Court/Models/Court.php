@@ -3,8 +3,8 @@
 namespace App\Source\Court\Models;
 
 use App\Models\Traits\HasUuid;
-use App\Source\Facility\Models\Facility;
 use App\Source\Court\Database\Factories\CourtFactory;
+use App\Source\Facility\Models\Facility;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -24,16 +24,16 @@ class Court extends Model implements HasMedia
     protected $fillable = [
         'name',
         'covered',
-        'client_id',
+        'facility_id',
     ];
 
     protected $casts = [
         'covered' => 'boolean',
     ];
 
-    public function client(): BelongsTo
+    public function facility(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Facility::class);
     }
 
     public function courtSlots(): HasMany

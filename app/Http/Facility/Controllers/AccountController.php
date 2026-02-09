@@ -15,6 +15,6 @@ class AccountController extends Controller
     {
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('client/account');
+        return Inertia::render('facility/account');
     }
 }

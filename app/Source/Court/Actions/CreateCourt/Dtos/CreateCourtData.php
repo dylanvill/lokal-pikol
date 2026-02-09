@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 /**
  * @property string $name
  * @property bool $covered
- * @property int $clientId
+ * @property int $facilityId
  * @property CourtSlotData[] $slots
  * @property UploadedFile[] $photos
  */
@@ -17,7 +17,7 @@ readonly class CreateCourtData implements Arrayable
     public function __construct(
         public string $name,
         public bool $covered,
-        public int $clientId,
+        public int $facilityId,
         public array $slots = [],
         public array $photos = [],
     ) {
@@ -30,7 +30,7 @@ readonly class CreateCourtData implements Arrayable
         return [
             'name' => $this->name,
             'covered' => $this->covered,
-            'client_id' => $this->clientId,
+            'facility_id' => $this->facilityId,
             'slots' => $this->slots,
             'photos' => $this->photos,
         ];

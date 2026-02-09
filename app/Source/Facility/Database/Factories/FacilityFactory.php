@@ -39,7 +39,7 @@ class FacilityFactory extends Factory
         return $this->afterCreating(function (Facility $facility) {
             $facility
                 ->addMediaFromUrl('https://dummyimage.com/1:1x600')
-                ->toMediaCollection(MediaTypeEnum::CLIENT_PROFILE_PHOTO->value);
+                ->toMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
         });
     }
 }

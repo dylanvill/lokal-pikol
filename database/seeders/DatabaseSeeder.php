@@ -23,38 +23,38 @@ class DatabaseSeeder extends Seeder
 
     public function bak(): void
     {
-        // Create Client Users and their profiles
-        $clientUsers = collect();
+        // Create Facility Users and their profiles
+        $facilityUsers = collect();
         for ($i = 1; $i <= 5; $i++) {
-            $clientUser = User::create([
-                'email' => "client{$i}@example.com",
+            $facilityUser = User::create([
+                'email' => "facility{$i}@example.com",
                 'password' => bcrypt('password'),
-                'role' => 'client'
+                'role' => 'facility'
             ]);
 
-            $client = Client::create([
+            $facility = Facility::create([
                 'uuid' => Str::uuid(),
-                'user_id' => $clientUser->id,
+                'user_id' => $facilityUser->id,
                 'name' => "Court Business {$i}",
                 'address' => fake()->address(),
-                'email' => $clientUser->email,
+                'email' => $facilityUser->email,
                 'phone' => fake()->phoneNumber(),
                 'google_maps_url' => fake()->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
                 'city' => fake()->randomElement(CityEnum::cases())->value,
             ]);
 
-            // Add client profile photo and cover photo
+            // Add facility profile photo and cover photo
             try {
-                $client->addMediaFromUrl('https://picsum.photos/600/600')
-                    ->toMediaCollection('client profile photo');
+                $facility->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection('facility profile photo');
 
-                $client->addMediaFromUrl('https://picsum.photos/1200/400')
-                    ->toMediaCollection('client cover photo');
+                $facility->addMediaFromUrl('https://picsum.photos/1200/400')
+                    ->toMediaCollection('facility cover photo');
             } catch (\Exception $e) {
-                $this->command->warn("Failed to download images for client {$i}: " . $e->getMessage());
+                $this->command->warn("Failed to download images for facility {$i}: " . $e->getMessage());
             }
 
-            $clientUsers->push($clientUser);
+            $facilityUsers->push($facilityUser);
         }
 
         // Create Customer Users and their profiles
@@ -78,27 +78,27 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info('Database seeded successfully!');
-        $this->command->info("Created {$clientUsers->count()} client users with business profiles");
+        $this->command->info("Created {$facilityUsers->count()} facility users with business profiles");
         $this->command->info("Created {$customerUsers->count()} customer users");
     }
 
     private function full(): void
     {
-        // Create Client Users and their profiles
-        $clientUsers = collect();
+        // Create Facility Users and their profiles
+        $facilityUsers = collect();
         for ($i = 1; $i <= 5; $i++) {
-            $clientUser = User::create([
-                'email' => "client{$i}@example.com",
+            $facilityUser = User::create([
+                'email' => "facility{$i}@example.com",
                 'password' => bcrypt('password'),
-                'role' => 'client'
+                'role' => 'facility'
             ]);
 
-            $client = Client::create([
+            $facility = Facility::create([
                 'uuid' => Str::uuid(),
-                'user_id' => $clientUser->id,
+                'user_id' => $facilityUser->id,
                 'name' => "Court Business {$i}",
                 'address' => fake()->address(),
-                'email' => $clientUser->email,
+                'email' => $facilityUser->email,
                 'phone' => fake()->phoneNumber(),
                 'google_maps_url' => fake()->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
                 'city' => fake()->randomElement(CityEnum::cases())->value,
@@ -106,16 +106,16 @@ class DatabaseSeeder extends Seeder
 
             // Add client profile photo and cover photo
             try {
-                $client->addMediaFromUrl('https://picsum.photos/600/600')
-                    ->toMediaCollection('client profile photo');
+                $facility->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection('facility profile photo');
 
-                $client->addMediaFromUrl('https://picsum.photos/1200/400')
-                    ->toMediaCollection('client cover photo');
+                $facility->addMediaFromUrl('https://picsum.photos/1200/400')
+                    ->toMediaCollection('facility cover photo');
             } catch (\Exception $e) {
                 $this->command->warn("Failed to download images for client {$i}: " . $e->getMessage());
             }
 
-            $clientUsers->push($clientUser);
+            $facilityUsers->push($facilityUser);
         }
 
         // Create Customer Users and their profiles
@@ -138,18 +138,18 @@ class DatabaseSeeder extends Seeder
             $customerUsers->push($customerUser);
         }
 
-        // Create Courts for each Client
+        // Create Courts for each Facility
         $courts = collect();
-        foreach ($clientUsers as $clientUser) {
-            $client = $clientUser->client;
-            $courtCount = rand(2, 4); // Each client has 2-4 courts
+        foreach ($facilityUsers as $facilityUser) {
+            $facility = $facilityUser->facility;
+            $courtCount = rand(2, 4); // Each facility has 2-4 courts
 
             for ($j = 1; $j <= $courtCount; $j++) {
                 $court = Court::create([
                     'uuid' => Str::uuid(),
                     'name' => "Court {$j}",
                     'covered' => fake()->boolean(60), // 60% chance of being covered
-                    'client_id' => $client->id,
+                    'facility_id' => $facility->id,
                 ]);
 
                 $courts->push($court);
@@ -212,7 +212,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info('Database seeded successfully!');
-        $this->command->info("Created {$clientUsers->count()} clients with {$courts->count()} courts");
+        $this->command->info("Created {$facilityUsers->count()} facilities with {$courts->count()} courts");
         $this->command->info("Created {$customerUsers->count()} customers with {$reservations->count()} reservations");
     }
 }

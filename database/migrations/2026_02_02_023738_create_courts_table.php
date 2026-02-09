@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('uuid')->unique();
             $table->string('name');
             $table->boolean('covered');
-            $table->foreignId('client_id')->constrained();
+            $table->foreignId('facility_id')->constrained('facilities');
             $table->timestamps();
         });
     }

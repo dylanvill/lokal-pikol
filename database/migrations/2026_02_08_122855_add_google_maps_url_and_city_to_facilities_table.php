@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
+        Schema::table('facilities', function (Blueprint $table) {
             $table->string('google_maps_url')->nullable();
             $table->string('city');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
+        Schema::table('facilities', function (Blueprint $table) {
             $table->dropColumn(['google_maps_url', 'city']);
         });
     }

@@ -16,7 +16,7 @@ class CourtController extends Controller
 
         $facility = $facility->load([
             'media' => function ($query) {
-                $query->where('collection_name', MediaTypeEnum::CLIENT_PROFILE_PHOTO)->first();
+                $query->where('collection_name', MediaTypeEnum::FACILITY_PROFILE_PHOTO)->first();
             },
         ]);
 

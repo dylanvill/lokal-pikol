@@ -15,7 +15,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Facility extends Model implements HasMedia
 {
-    /** @use HasFactory<\Database\Factories\ClientFactory> */
+    /** @use HasFactory<\Database\Factories\FacilityFactory> */
     use HasFactory, HasUuid, InteractsWithMedia;
 
     protected $fillable = [
