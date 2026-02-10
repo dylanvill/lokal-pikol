@@ -25,8 +25,16 @@ class Facility extends Model implements HasMedia
         'address',
         'email',
         'phone',
+        'description',
+        'opening_time',
+        'closing_time',
         'google_maps_url',
         'city',
+    ];
+
+    protected $casts = [
+        'opening_time' => 'timestamp',
+        'closing_time' => 'timestamp',
     ];
 
     public function user(): BelongsTo

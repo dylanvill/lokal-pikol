@@ -21,11 +21,17 @@ class FacilityFactory extends Factory
      */
     public function definition(): array
     {
+        $openingHour = $this->faker->numberBetween(6, 10);
+        $closingHour = $this->faker->numberBetween(20, 23);
+        
         return [
             'name' => $this->faker->company(),
             'address' => $this->faker->address(),
             'email' => $this->faker->unique()->companyEmail(),
             'phone' => $this->faker->optional(0.8)->phoneNumber(),
+            'description' => $this->faker->optional(0.7)->paragraph(3),
+            'opening_time' => sprintf('%02d:00:00', $openingHour),
+            'closing_time' => sprintf('%02d:00:00', $closingHour),
             'google_maps_url' => $this->faker->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
             'city' => $this->faker->randomElement(CityEnum::cases())->value,
         ];

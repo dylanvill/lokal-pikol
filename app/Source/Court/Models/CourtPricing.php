@@ -22,8 +22,8 @@ class CourtPricing extends Model
     ];
 
     protected $casts = [
-        'start_time' => 'time',
-        'end_time' => 'time',
+        'start_time' => 'timestamp',
+        'end_time' => 'timestamp',
         'price' => 'decimal:2',
     ];
 
