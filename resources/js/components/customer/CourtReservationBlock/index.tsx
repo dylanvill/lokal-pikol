@@ -1,8 +1,8 @@
-import { Box, Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import type Photo from '../../../models/shared/Photo';
-import CourtSlot from './CourtSlot';
 import type { CourtSlotState } from './CourtSlot/types';
 import ImageCarousel from './ImageCarousel';
+import { LuSun } from 'react-icons/lu';
 
 export interface CourtReservationBlockProps {
     courtId: string;
@@ -23,12 +23,17 @@ function CourtReservationBlock({ courtId, name, photos, onSlotSelected, onSlotDe
     };
 
     return (
-        <SimpleGrid columns={{ base: 1, md: 2 }}>
+        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={4}>
             <Box width="full">
                 <ImageCarousel photos={photos} />
-                <Text fontWeight="bold">{name}</Text>
             </Box>
-            <Flex flexDirection="row" flexWrap="wrap" gap={2}>
+            <Box>
+                <Heading fontWeight="bold">{name}</Heading>
+                <HStack marginBottom={4}>
+                    <LuSun />
+                    <Text>Outdoor Court</Text>
+                </HStack>
+                <Text fontSize="sm">Slots</Text>
                 {/* {slots.map((slot) => (
                         <CourtSlot
                             key={slot.id}
@@ -39,7 +44,7 @@ function CourtReservationBlock({ courtId, name, photos, onSlotSelected, onSlotDe
                             onSlotDeselected={handleSlotDeselected}
                         />
                     ))} */}
-            </Flex>
+            </Box>
         </SimpleGrid>
     );
 }

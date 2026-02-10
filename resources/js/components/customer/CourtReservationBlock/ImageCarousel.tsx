@@ -21,7 +21,7 @@ function ImageCarousel({ photos }: ImageCarouselProps) {
                     </ActionButton>
                 </Carousel.PrevTrigger>
 
-                <Carousel.ItemGroup width="full">
+                <Carousel.ItemGroup width="full" borderRadius={12}>
                     {photos.map((photo, index) => (
                         <Carousel.Item key={index} index={index}>
                             <AspectRatio ratio={16 / 9} maxH="72vh" w="full">
