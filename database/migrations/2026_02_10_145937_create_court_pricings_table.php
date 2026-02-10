@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('court_pricings', function (Blueprint $table) {
             $table->id();
             $table->uuid()->unique();
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->decimal('price', 8, 2);
+            $table->foreignId('court_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
