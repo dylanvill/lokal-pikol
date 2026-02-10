@@ -36,11 +36,6 @@ class Court extends Model implements HasMedia
         return $this->belongsTo(Facility::class);
     }
 
-    public function courtSlots(): HasMany
-    {
-        return $this->hasMany(CourtSlot::class);
-    }
-
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);

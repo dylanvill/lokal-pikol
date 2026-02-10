@@ -17,16 +17,8 @@ class CreateCourt
         $court->facility_id = $data->facilityId;
         $court->save();
 
-        $this->createSlots($data->slots, $court);
         $this->savePhotos($data->photos, $court);
-        return $court->refresh()->load('courtSlots');
-    }
-
-    protected function createSlots(array $slots, Court $court)
-    {
-        foreach ($slots as $slot) {
-            $court->courtSlots()->create($slot->toArray());
-        }
+        return $court->refresh();
     }
 
     protected function savePhotos(array $photos, Court $court)

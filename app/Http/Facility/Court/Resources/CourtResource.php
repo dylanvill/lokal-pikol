@@ -22,7 +22,6 @@ class CourtResource extends JsonResource
             "name" => $this->name,
             "covered" => $this->covered,
             "photos" => PhotoResource::collection($this->media),
-            "slots" => CourtSlotResource::collection($this->courtSlots),
         ];
     }
 }
