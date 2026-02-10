@@ -9,14 +9,18 @@ use App\Source\Authentication\Models\User;
 use App\Source\Court\Actions\CreateCourt\CreateCourt;
 use App\Source\Court\Actions\CreateCourt\Dtos\CourtSlotData;
 use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
+use App\Source\Court\Actions\CreateCourtPricing\CreateCourtPricing;
+use App\Source\Court\Actions\CreateCourtPricing\Dtos\CreateCourtPricingData;
+use App\Source\Court\Models\Court;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
-use Illuminate\Http\UploadedFile;
-use SplFileObject;
 
 class CreateCourtController extends Controller
 {
 
-    public function __construct(protected CreateCourt $createCourtService) {}
+    public function __construct(
+        protected CreateCourt $createCourtService
+    ) {}
 
     public function show()
     {
@@ -29,13 +33,11 @@ class CreateCourtController extends Controller
         $user = $request->user(GuardEnum::FACILITY->value);
         $facility = $user->getProfileAttribute();
 
-        $slots = $this->processSlots($request->slots);
         $this->createCourtService->create(
             new CreateCourtData(
                 name: $request->name,
                 covered: $request->type === "covered",
                 facilityId: $facility->id,
-                slots: $slots,
                 photos: $request->photos
             )
         );
@@ -43,13 +45,19 @@ class CreateCourtController extends Controller
         return redirect()->route('facility.courts.index')->with('success', 'Court created successfully!');
     }
 
-    protected function processSlots(array $slots): array
+    protected function processPricing(Court $court, array $pricing): Collection
     {
-        return array_map(function ($slot) {
-            return new CourtSlotData(
-                time: $slot['time'],
-                rate: $slot['rate']
+        $service = new CreateCourtPricing($court);
+        $pricings = [];
+
+        foreach ($pricing as $price) {
+            $pricings[] = new CreateCourtPricingData(
+                startTime: $price['startTime'],
+                endTime: $price['endTime'],
+                price: $price['rate']
             );
-        }, $slots);
+        }
+
+        return $service->create($pricings);
     }
 }
