@@ -30,18 +30,9 @@ class CreateCourtRequest extends FormRequest
             "type" => ["required", "string", "in:indoor,outdoor"],
             "photos" => ["nullable", "array"],
             "photos.*" => ["file", "image"],
-            "pricing" => ["required", "array"],
-            "pricing.*.startTime" => ["required", "date_format:H:i"],
-            "pricing.*.endTime" => ["required", "date_format:H:i"],
-            "pricing.*.rate" => ["required", "numeric", "min:1"],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            "pricing.*.rate.required" => "The rate for each selected slot is required.",
-            "pricing" => "At least one time slot must be selected.",
+            "startTime.*" => ["required", "date_format:H:i"],
+            "endTime.*" => ["required", "date_format:H:i"],
+            "rate.*" => ["required", "numeric", "min:1"],
         ];
     }
 }

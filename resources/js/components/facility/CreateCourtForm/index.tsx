@@ -7,23 +7,9 @@ import TimeStepContent from './TimeStepContent';
 
 function CreateCourtForm() {
     const handleTransform = (data: Record<string, FormDataConvertible>): Record<string, FormDataConvertible> => {
-        console.log("🚀 ~ handleTransform ~ data:", data)
-        let slots = Object.entries(data).filter(([key]) => key.startsWith('slot-'));
+        console.log('🚀 ~ handleTransform ~ data:', data);
 
-        slots = slots.map(([key, value]) => {
-            const time = key.replace('slot-', '');
-            const rateKey = `rate-${time}`;
-            const rate = data[rateKey];
-            delete data[rateKey];
-            return { time, rate };
-        });
-
-        return {
-            name: data?.name || null,
-            type: data?.type || null,
-            photos: data?.photos || [],
-            slots: slots,
-        };
+        return data
     };
     return (
         <Box colorPalette="blue" backgroundColor="white" p={8} borderRadius={12} shadow="md">
