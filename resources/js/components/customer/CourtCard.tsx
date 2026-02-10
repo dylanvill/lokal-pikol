@@ -2,20 +2,22 @@ import { Box, VStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react
 import { router } from '@inertiajs/react';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
-import Detail from './Detail';
+import type Photo from '../../models/shared/Photo';
+import DetailWithIcon from '../shared/DetailWithIcon';
 
 interface CourtCardProps {
     id: string;
     name: string;
-    coverPhotoUrl: string;
-    profilePhotoUrl: string;
+    coverPhoto: Photo | null;
+    profilePhoto: Photo | null;
     address: string;
+    city: string;
     numberOfCourts: number;
     types: string[];
     availableTimes: string[];
 }
 
-export default function CourtCard({ id, name, coverPhotoUrl, profilePhotoUrl, address, numberOfCourts, types, availableTimes }: CourtCardProps) {
+export default function CourtCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, types, availableTimes }: CourtCardProps) {
     const handleCardClick = () => {
         router.visit(`/courts/${id}`);
     };
@@ -43,9 +45,9 @@ export default function CourtCard({ id, name, coverPhotoUrl, profilePhotoUrl, ad
             onClick={handleCardClick}
         >
             <VStack justifyItems="flex-start" alignItems="flex-start">
-                <Image src={coverPhotoUrl} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
+                <Image src={null} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
                 <Image
-                    src={profilePhotoUrl}
+                    src={null}
                     alt="Profile"
                     w="16"
                     h="16"
@@ -58,15 +60,16 @@ export default function CourtCard({ id, name, coverPhotoUrl, profilePhotoUrl, ad
                 />
             </VStack>
             <Box p={4}>
-                <Heading size="lg" color="gray.800" marginBottom={4}>
+                <Heading size="lg" color="gray.800">
                     {name}
                 </Heading>
+                <Badge marginBottom={4}>{city}</Badge>
                 <VStack justifyItems="flex-start" alignItems="flex-start" gap={0}>
                     <VStack gap={1} alignItems="flex-start">
-                        <Detail icon={<LuMapPin color="gray" />} label={address} />
-                        <Detail icon={<LuClock color="gray" />} label="8:00 AM - 10:00 PM" />
-                        <Detail icon={typeDisplay[1]} label={typeDisplay[0]} />
-                        <Detail icon={<LuGrid2X2 color="gray" />} label={`${numberOfCourts} courts`} />
+                        <DetailWithIcon icon={<LuMapPin color="gray" />} label={address} />
+                        <DetailWithIcon icon={<LuClock color="gray" />} label="8:00 AM - 10:00 PM" />
+                        <DetailWithIcon icon={typeDisplay[1]} label={typeDisplay[0]} />
+                        <DetailWithIcon icon={<LuGrid2X2 color="gray" />} label={`${numberOfCourts} courts`} />
                     </VStack>
                     <VStack align="stretch" gap={2} marginTop={4}>
                         <Text fontSize="xs" color="gray.900">

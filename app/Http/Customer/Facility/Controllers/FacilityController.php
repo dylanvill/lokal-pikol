@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Customer\Court\Controllers;
+namespace App\Http\Customer\Facility\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Court\Resources\CourtResource;
@@ -10,7 +10,7 @@ use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CourtController extends Controller
+class FacilityController extends Controller
 {
     public function __invoke(Facility $facility): Response
     {
@@ -31,7 +31,7 @@ class CourtController extends Controller
         ]);
 
         // You can add validation, database queries, etc. here
-        return Inertia::render('customer/court', [
+        return Inertia::render('customer/facility', [
             'facility' => new FacilityResource($facility),
             'courts' => CourtResource::collection($courts),
             // 'court' => $client
