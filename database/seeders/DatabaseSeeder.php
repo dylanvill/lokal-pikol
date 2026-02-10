@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
     {
         // Create Facility Users and their profiles
         $facilityUsers = collect();
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $facilityUser = User::create([
                 'email' => "facility{$i}@example.com",
                 'password' => bcrypt('password'),
@@ -112,7 +112,7 @@ class DatabaseSeeder extends Seeder
                 $facility->addMediaFromUrl('https://picsum.photos/1200/400')
                     ->toMediaCollection('facility cover photo');
             } catch (\Exception $e) {
-                $this->command->warn("Failed to download images for client {$i}: " . $e->getMessage());
+                $this->command->warn("Failed to download images for facility {$i}: " . $e->getMessage());
             }
 
             $facilityUsers->push($facilityUser);
@@ -120,7 +120,7 @@ class DatabaseSeeder extends Seeder
 
         // Create Customer Users and their profiles
         $customerUsers = collect();
-        for ($i = 1; $i <= 15; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $customerUser = User::create([
                 'email' => "customer{$i}@example.com",
                 'password' => bcrypt('password'),
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
         $courts = collect();
         foreach ($facilityUsers as $facilityUser) {
             $facility = $facilityUser->facility;
-            $courtCount = rand(2, 4); // Each facility has 2-4 courts
+            $courtCount = rand(2, 6); // Each facility has 2-6 courts
 
             for ($j = 1; $j <= $courtCount; $j++) {
                 $court = Court::create([
@@ -178,41 +178,41 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create Reservations
-        $reservations = collect();
-        foreach ($customerUsers as $customerUser) {
-            $customer = $customerUser->customer;
-            $reservationCount = rand(1, 3); // Each customer has 1-3 reservations
+        // $reservations = collect();
+        // foreach ($customerUsers as $customerUser) {
+        //     $customer = $customerUser->customer;
+        //     $reservationCount = rand(1, 3); // Each customer has 1-3 reservations
 
-            for ($k = 0; $k < $reservationCount; $k++) {
-                $randomCourt = $courts->random();
+        //     for ($k = 0; $k < $reservationCount; $k++) {
+        //         $randomCourt = $courts->random();
 
-                $reservation = Reservation::create([
-                    'uuid' => Str::uuid(),
-                    'customer_id' => $customer->id,
-                    'court_id' => $randomCourt->id,
-                    'reservation_date' => fake()->dateTimeBetween('now', '+30 days'),
-                    'status' => fake()->randomElement(['pending', 'confirmed', 'completed', 'cancelled']),
-                ]);
+        //         $reservation = Reservation::create([
+        //             'uuid' => Str::uuid(),
+        //             'customer_id' => $customer->id,
+        //             'court_id' => $randomCourt->id,
+        //             'reservation_date' => fake()->dateTimeBetween('now', '+30 days'),
+        //             'status' => fake()->randomElement(['pending', 'confirmed', 'completed', 'cancelled']),
+        //         ]);
 
-                $reservations->push($reservation);
+        //         $reservations->push($reservation);
 
-                // Create Reservation Slots (1-3 consecutive slots per reservation)
-                $availableSlots = $randomCourt->courtSlots;
-                $slotCount = rand(1, 3);
-                $randomSlots = $availableSlots->random($slotCount);
+        //         // Create Reservation Slots (1-3 consecutive slots per reservation)
+        //         $availableSlots = $randomCourt->courtSlots;
+        //         $slotCount = rand(1, 3);
+        //         $randomSlots = $availableSlots->random($slotCount);
 
-                foreach ($randomSlots as $slot) {
-                    ReservationSlot::create([
-                        'uuid' => Str::uuid(),
-                        'reservation_id' => $reservation->id,
-                        'court_slot_id' => $slot->id,
-                    ]);
-                }
-            }
-        }
+        //         foreach ($randomSlots as $slot) {
+        //             ReservationSlot::create([
+        //                 'uuid' => Str::uuid(),
+        //                 'reservation_id' => $reservation->id,
+        //                 'court_slot_id' => $slot->id,
+        //             ]);
+        //         }
+        //     }
+        // }
 
         $this->command->info('Database seeded successfully!');
         $this->command->info("Created {$facilityUsers->count()} facilities with {$courts->count()} courts");
-        $this->command->info("Created {$customerUsers->count()} customers with {$reservations->count()} reservations");
+        // $this->command->info("Created {$customerUsers->count()} customers with {$reservations->count()} reservations");
     }
 }
