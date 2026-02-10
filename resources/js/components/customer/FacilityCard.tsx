@@ -1,11 +1,11 @@
-import { Box, VStack, Badge, Image, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, VStack, Badge, Image, Heading } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 import type Photo from '../../models/shared/Photo';
 import DetailWithIcon from '../shared/DetailWithIcon';
 
-interface CourtCardProps {
+interface FacilityCardProps {
     id: string;
     name: string;
     coverPhoto: Photo | null;
@@ -14,12 +14,11 @@ interface CourtCardProps {
     city: string;
     numberOfCourts: number;
     types: string[];
-    availableTimes: string[];
 }
 
-export default function CourtCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, types, availableTimes }: CourtCardProps) {
+export default function FacilityCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, types }: FacilityCardProps) {
     const handleCardClick = () => {
-        router.visit(`/courts/${id}`);
+        router.visit(`/facilities/${id}`);
     };
 
     const typeDisplay = useMemo((): [string, React.ReactNode] => {
@@ -45,9 +44,9 @@ export default function CourtCard({ id, name, coverPhoto, profilePhoto, address,
             onClick={handleCardClick}
         >
             <VStack justifyItems="flex-start" alignItems="flex-start">
-                <Image src={null} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
+                <Image src={coverPhoto?.url} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />
                 <Image
-                    src={null}
+                    src={profilePhoto?.url}
                     alt="Profile"
                     w="16"
                     h="16"
@@ -71,7 +70,7 @@ export default function CourtCard({ id, name, coverPhoto, profilePhoto, address,
                         <DetailWithIcon icon={typeDisplay[1]} label={typeDisplay[0]} />
                         <DetailWithIcon icon={<LuGrid2X2 color="gray" />} label={`${numberOfCourts} courts`} />
                     </VStack>
-                    <VStack align="stretch" gap={2} marginTop={4}>
+                    {/* <VStack align="stretch" gap={2} marginTop={4}>
                         <Text fontSize="xs" color="gray.900">
                             Available times today:
                         </Text>
@@ -82,7 +81,7 @@ export default function CourtCard({ id, name, coverPhoto, profilePhoto, address,
                                 </Badge>
                             ))}
                         </Flex>
-                    </VStack>
+                    </VStack> */}
                 </VStack>
             </Box>
         </Box>

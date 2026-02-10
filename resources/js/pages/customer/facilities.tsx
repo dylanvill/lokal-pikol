@@ -1,7 +1,7 @@
 import { VStack, SimpleGrid } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
-import CourtCard from '@/components/customer/CourtCard';
+import FacilityCard from '@/components/customer/FacilityCard';
 import HomePageLayout from '@/layouts/HomePageLayout';
 import type FacilityList from '../../models/customer/facility/FacilityList';
 
@@ -19,7 +19,7 @@ export default function Home() {
             <VStack gap={6} align="stretch">
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={6}>
                     {facilities.map((facility) => (
-                        <CourtCard
+                        <FacilityCard
                             id={facility.id}
                             name={facility.name}
                             coverPhoto={facility.coverPhoto}
@@ -27,7 +27,7 @@ export default function Home() {
                             address={facility.address}
                             numberOfCourts={facility.numberOfCourts}
                             types={[]}
-                            availableTimes={['3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM']}
+                            // availableTimes={['3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM']}
                             city={facility.city}
                         />
                     ))}
