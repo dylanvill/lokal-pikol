@@ -24,9 +24,11 @@ class FacilityController extends Controller
         $courts = $facility->courts()->get();
 
         $courts->load([
-            'courtSlots',
             'media' => function ($query) {
                 $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS);
+            },
+            'courtPricings' => function ($query) {
+                $query->orderBy('start_time');
             },
         ]);
 
@@ -34,7 +36,6 @@ class FacilityController extends Controller
         return Inertia::render('customer/facility', [
             'facility' => new FacilityResource($facility),
             'courts' => CourtResource::collection($courts),
-            // 'court' => $client
         ]);
     }
 }

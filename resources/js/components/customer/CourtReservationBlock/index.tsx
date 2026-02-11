@@ -1,6 +1,5 @@
-import { Box, Flex, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { GridItem, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import type Photo from '../../../models/shared/Photo';
-import type { CourtSlotState } from './CourtSlot/types';
 import ImageCarousel from './ImageCarousel';
 import { LuSun } from 'react-icons/lu';
 
@@ -8,26 +7,15 @@ export interface CourtReservationBlockProps {
     courtId: string;
     name: string;
     photos: Photo[];
-    slots: { id: number; state: CourtSlotState; label: string }[];
-    onSlotSelected: (courtId: number, slotId: number) => void;
-    onSlotDeselected: (courtId: number, slotId: number) => void;
 }
 
-function CourtReservationBlock({ courtId, name, photos, onSlotSelected, onSlotDeselected }: CourtReservationBlockProps) {
-    const handleSlotSelected = (slotId: number) => {
-        onSlotSelected(courtId, slotId);
-    };
-
-    const handleSlotDeselected = (slotId: number) => {
-        onSlotDeselected(courtId, slotId);
-    };
-
+function CourtReservationBlock({ courtId, name, photos }: CourtReservationBlockProps) {
     return (
-        <SimpleGrid columns={{ base: 1, lg: 2 }} gap={4}>
-            <Box width="full">
+        <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8}>
+            <GridItem width="full" colSpan={{ base: 1, lg: 1 }}>
                 <ImageCarousel photos={photos} />
-            </Box>
-            <Box>
+            </GridItem>
+            <GridItem colSpan={{ base: 1, lg: 2 }}>
                 <Heading fontWeight="bold">{name}</Heading>
                 <HStack marginBottom={4}>
                     <LuSun />
@@ -44,7 +32,7 @@ function CourtReservationBlock({ courtId, name, photos, onSlotSelected, onSlotDe
                             onSlotDeselected={handleSlotDeselected}
                         />
                     ))} */}
-            </Box>
+            </GridItem>
         </SimpleGrid>
     );
 }

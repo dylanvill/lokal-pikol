@@ -37,14 +37,7 @@ export default function CourtPage() {
                 </HStack>
                 <VStack alignItems="stretch" justifyContent="flex" width="full" gap={8}>
                     {courts.map((court) => (
-                        <CourtReservationBlock
-                            courtId={court.id}
-                            name={court.name}
-                            photos={court.photos}
-                            slots={court.slots}
-                            onSlotSelected={(id, slot) => console.log('Clicked slot', id, slot)}
-                            onSlotDeselected={(id, slot) => console.log('Clicked slot', id, slot)}
-                        />
+                        <CourtReservationBlock courtId={court.id} name={court.name} photos={court.photos} />
                     ))}
                 </VStack>
             </Container>

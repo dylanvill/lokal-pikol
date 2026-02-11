@@ -10,7 +10,7 @@ class CourtListResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "uuid" => $this->uuid,
+            "id" => $this->uuid,
             "name" => $this->name,
             "covered" => $this->covered,
             "coverPhoto" => null,
