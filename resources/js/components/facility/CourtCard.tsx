@@ -1,19 +1,17 @@
-import { Box, Image, Badge, HStack, Card } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Image, Card, VStack, Badge, Text, Heading } from '@chakra-ui/react';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
-import type CourtSlot from '../../models/facility/CourtSlot';
-import AppSmallText from '../app/AppSmallText';
-import AppTitle from '../app/AppTitle';
+import typographyTokens from '../../lib/tokens/typography';
+import type CourtPricing from '../../models/facility/CourtPricing';
 
 interface CourtCardProps {
     id: string;
     name: string;
     photo: string;
-    slots: CourtSlot[];
     covered: boolean;
+    courtPricings: CourtPricing[];
 }
 
-function CourtCard({ name, photo, slots, covered }: CourtCardProps) {
+function CourtCard({ name, photo, covered, courtPricings }: CourtCardProps) {
     const Icon = courtTypeIconParser(covered);
 
     return (
@@ -22,17 +20,19 @@ function CourtCard({ name, photo, slots, covered }: CourtCardProps) {
                 <Image src={photo} alt={name} aspectRatio={16 / 9} width="100%" objectFit="cover" />
 
                 <Box p={4} gap={0}>
-                    <AppTitle marginBottom={0}>{name}</AppTitle>
-                    <AppSmallText display="inline-flex" alignItems="center" gap={1} marginBottom={2}>
-                        <Icon color="gray.500" /> {covered ? 'Covered' : 'Outdoor'}
-                    </AppSmallText>
-                    <HStack wrap="wrap" marginTop={4}>
-                        {slots.map((slot, index) => (
+                    <Heading marginBottom={0} fontSize={typographyTokens.title.fontSize.md}>
+                        {name}
+                    </Heading>
+                    <Text display="inline-flex" alignItems="center" color={typographyTokens.small.colors.gray[500]} gap={1} marginBottom={2}>
+                        <Icon color={typographyTokens.small.colors.gray[500]} /> {covered ? 'Covered' : 'Outdoor'}
+                    </Text>
+                    <VStack wrap="wrap" marginTop={4}>
+                        {courtPricings.map((pricing, index) => (
                             <Badge key={index} size="sm">
-                                {slot.time}
+                                {pricing.startTime} - {pricing.endTime}: ${pricing.rate}
                             </Badge>
                         ))}
-                    </HStack>
+                    </VStack>
                 </Box>
             </Card.Body>
         </Card.Root>

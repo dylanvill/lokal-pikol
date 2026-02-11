@@ -6,7 +6,7 @@ use App\Http\Shared\Resources\PhotoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourtResource extends JsonResource
+class CourtPricingResource extends JsonResource
 {
     public static $wrap = null;
 
@@ -19,9 +19,9 @@ class CourtResource extends JsonResource
     {
         return [
             "id" => $this->uuid,
-            "name" => $this->name,
-            "covered" => $this->covered,
-            "photos" => PhotoResource::collection($this->media),
+            "startTime" => $this->startTime,
+            "endTime" => $this->endTime,
+            "rate" => $this->rate,
         ];
     }
 }

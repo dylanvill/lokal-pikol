@@ -1,12 +1,12 @@
 import type CourtPhoto from './CourtPhoto';
-import type CourtSlot from './CourtSlot';
+import type CourtPricing from './CourtPricing';
 
 interface Court {
-    uuid: string;
+    id: string;
     name: string;
     covered: boolean;
     photos: CourtPhoto[];
-    slots: CourtSlot[];
+    courtPricings: CourtPricing[];
 }
 
 export default Court;

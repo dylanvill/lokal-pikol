@@ -22,8 +22,8 @@ class CourtsController extends Controller
         $courts = $facility
             ->facility
             ->courts()
-            ->with("courtSlots")
             ->photos()
+            ->with('courtPricings')
             ->get();
 
         // You can add validation, database queries, etc. here
