@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $shared = [...parent::share($request), 'name' => config('app.name')];
+        $shared = [...parent::share($request), 'name' => config('app.name'), 'auth' => null];
 
         if (!auth()->check()) return $shared;
 
@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
 
         $key = $request->user()->isFacility() ? 'facility' : 'customer';
 
-        $shared[$key] = $data;
+        $shared['auth'][$key] = $data;
 
 
         return $shared;
