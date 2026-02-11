@@ -3,7 +3,9 @@ const title = {
         lg: 'log',
         md: 'md',
     },
-    fontWeight: ['bold'],
+    fontWeight: {
+        bold: 'bold',
+    },
 };
 
 export default title;
