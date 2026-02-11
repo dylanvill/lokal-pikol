@@ -8,16 +8,16 @@ use Illuminate\Support\Carbon;
 readonly class CreateCourtPricingData implements Arrayable
 {
     public function __construct(
-        public Carbon $startTime,
-        public Carbon $endTime,
+        public string $startTime,
+        public string $endTime,
         public float $price,
     ) {}
 
     public function toArray(): array
     {
         return [
-            'start_time' => $this->startTime->toTimeString(),
-            'end_time' => $this->endTime->toTimeString(),
+            'start_time' => $this->startTime,
+            'end_time' => $this->endTime,
             'price' => $this->price,
         ];
     }

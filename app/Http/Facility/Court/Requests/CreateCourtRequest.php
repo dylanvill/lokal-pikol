@@ -54,18 +54,9 @@ class CreateCourtRequest extends FormRequest
 
     public function after(): array
     {
-
-
         return [
             function (Validator $validator) {
-                if ($this->validator->errors()->isEmpty()) return;
-
-                $sameLength = $this->sameArrayLength();
-                if (!$sameLength) {
-                    $validator->errors()->add('startTime', 'Each time slot must have a start time, end time, and rate.');
-                }
-
-                if ($sameLength) {
+                if ($this->validator->errors()->isEmpty()) {
                     $timeFormatErrors = $this->validateTimeFormat();
                     foreach ($timeFormatErrors as $key => $message) {
                         $validator->errors()->add($key, $message);
@@ -76,7 +67,6 @@ class CreateCourtRequest extends FormRequest
                         $validator->errors()->add($key, $message);
                     }
 
-                    // Only check ranges and overlaps if time format and hours are valid
                     if (empty($timeFormatErrors) && empty($hourErrors)) {
                         $rangeErrors = $this->validateRanges();
                         foreach ($rangeErrors as $key => $message) {
@@ -91,15 +81,6 @@ class CreateCourtRequest extends FormRequest
                 }
             }
         ];
-    }
-
-    private function sameArrayLength(): bool
-    {
-        $startTimes = $this->input('startTime', []);
-        $endTimes = $this->input('endTime', []);
-        $rates = $this->input('rate', []);
-
-        return count($startTimes) === count($endTimes) && count($startTimes) === count($rates);
     }
 
     private function getRanges(): array

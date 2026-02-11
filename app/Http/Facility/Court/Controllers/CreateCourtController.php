@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Enums\GuardEnum;
 use App\Source\Authentication\Models\User;
 use App\Source\Court\Actions\CreateCourt\CreateCourt;
-use App\Source\Court\Actions\CreateCourt\Dtos\CourtSlotData;
 use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
 use App\Source\Court\Actions\CreateCourtPricing\CreateCourtPricing;
 use App\Source\Court\Actions\CreateCourtPricing\Dtos\CreateCourtPricingData;
@@ -33,7 +32,7 @@ class CreateCourtController extends Controller
         $user = $request->user(GuardEnum::FACILITY->value);
         $facility = $user->getProfileAttribute();
 
-        $this->createCourtService->create(
+        $court = $this->createCourtService->create(
             new CreateCourtData(
                 name: $request->name,
                 covered: $request->type === "covered",
@@ -42,19 +41,34 @@ class CreateCourtController extends Controller
             )
         );
 
+        $this->processPricing($court, $request);
+
         return redirect()->route('facility.courts.index')->with('success', 'Court created successfully!');
     }
 
-    protected function processPricing(Court $court, array $pricing): Collection
+    protected function processPricing(Court $court, CreateCourtRequest $request): Collection
     {
+
+        $startTimes = $request->input('startTime', []);
+        $endTimes = $request->input('endTime', []);
+        $rates = $request->input('rate', []);
+
+        $slots = collect($startTimes)->map(function ($startTime, $index) use ($endTimes, $rates) {
+            return [
+                'startTime' => $startTime,
+                'endTime' => $endTimes[$index],
+                'rate' => $rates[$index]
+            ];
+        })->toArray();
+
         $service = new CreateCourtPricing($court);
         $pricings = [];
 
-        foreach ($pricing as $price) {
+        foreach ($slots as $index => $slot) {
             $pricings[] = new CreateCourtPricingData(
-                startTime: $price['startTime'],
-                endTime: $price['endTime'],
-                price: $price['rate']
+                startTime: $slot['startTime'],
+                endTime: $slot['endTime'],
+                price: $slot['rate']
             );
         }
 
