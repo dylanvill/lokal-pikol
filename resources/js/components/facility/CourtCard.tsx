@@ -1,4 +1,4 @@
-import { Box, Image, Card, VStack, Badge, Text, Heading } from '@chakra-ui/react';
+import { Box, Image, Card, VStack, Badge, Text, Heading, HStack } from '@chakra-ui/react';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
 import typographyTokens from '../../lib/tokens/typography';
 import type CourtPricing from '../../models/facility/CourtPricing';
@@ -26,11 +26,19 @@ function CourtCard({ name, photo, covered, courtPricings }: CourtCardProps) {
                     <Text display="inline-flex" alignItems="center" color={typographyTokens.small.colors.gray[500]} gap={1} marginBottom={2}>
                         <Icon color={typographyTokens.small.colors.gray[500]} /> {covered ? 'Covered' : 'Outdoor'}
                     </Text>
-                    <VStack wrap="wrap" marginTop={4}>
-                        {courtPricings.map((pricing, index) => (
-                            <Badge key={index} size="sm">
-                                {pricing.startTime} - {pricing.endTime}: ${pricing.rate}
-                            </Badge>
+                    <VStack wrap="wrap" marginTop={4} alignItems="flex-start" gap={1}>
+                        <Text fontSize={typographyTokens.small.fontSize} color={typographyTokens.small.colors.gray[500]} fontWeight="medium">
+                            Court Hours:
+                        </Text>
+                        {courtPricings.map((pricing) => (
+                            <HStack gap={0}>
+                                <Badge key={pricing.id} size="sm" fontFamily="mono" borderRightRadius={0} colorPalette="blue">
+                                    {pricing.startTime} - {pricing.endTime}
+                                </Badge>
+                                <Badge key={pricing.id} size="sm" fontFamily="mono" borderLeftRadius={0} colorPalette="orange">
+                                    ₱{pricing.rate}
+                                </Badge>
+                            </HStack>
                         ))}
                     </VStack>
                 </Box>

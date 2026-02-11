@@ -19,9 +19,9 @@ class CourtPricingResource extends JsonResource
     {
         return [
             "id" => $this->uuid,
-            "startTime" => $this->startTime,
-            "endTime" => $this->endTime,
-            "rate" => $this->rate,
+            "startTime" => $this->start_time,
+            "endTime" => $this->end_time,
+            "rate" => $this->price,
         ];
     }
 }
