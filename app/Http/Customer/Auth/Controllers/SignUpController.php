@@ -3,7 +3,7 @@
 namespace App\Http\Customer\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Customer\Auth\Requests\SignUpRequest;
 use Inertia\Inertia;
 
 class SignUpController extends Controller
@@ -13,7 +13,7 @@ class SignUpController extends Controller
         return Inertia::render('customer/signUp');
     }
 
-    public function store()
+    public function store(SignUpRequest $request)
     {
         return Inertia::render('customer/signUp');
     }
