@@ -8,7 +8,12 @@ use Inertia\Inertia;
 
 class SignUpController extends Controller
 {
-    public function __invoke(Request $request)
+    public function show()
+    {
+        return Inertia::render('customer/signUp');
+    }
+
+    public function store()
     {
         return Inertia::render('customer/signUp');
     }
