@@ -1,15 +1,18 @@
 import { GridItem, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
-import type Photo from '../../../models/shared/Photo';
-import ImageCarousel from './ImageCarousel';
 import { LuSun } from 'react-icons/lu';
+import type CourtSlot from '../../../models/customer/court/CourtSlot';
+import type Photo from '../../../models/shared/Photo';
+import CourtSlotSection from './CourtSlotSection';
+import ImageCarousel from './ImageCarousel';
 
 export interface CourtReservationBlockProps {
     courtId: string;
     name: string;
     photos: Photo[];
+    slots: CourtSlot[];
 }
 
-function CourtReservationBlock({ courtId, name, photos }: CourtReservationBlockProps) {
+function CourtReservationBlock({ courtId, name, photos, slots }: CourtReservationBlockProps) {
     return (
         <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8}>
             <GridItem width="full" colSpan={{ base: 1, lg: 1 }}>
@@ -22,16 +25,13 @@ function CourtReservationBlock({ courtId, name, photos }: CourtReservationBlockP
                     <Text>Outdoor Court</Text>
                 </HStack>
                 <Text fontSize="sm">Slots</Text>
-                {/* {slots.map((slot) => (
-                        <CourtSlot
-                            key={slot.id}
-                            id={slot.id}
-                            state={slot.state}
-                            label={slot.label}
-                            onSlotSelected={handleSlotSelected}
-                            onSlotDeselected={handleSlotDeselected}
-                        />
-                    ))} */}
+                {slots.map((slot) => (
+                    <CourtSlotSection
+                        key={`${courtId}-${slot.startTime}-${slot.endTime}`}
+                        courtId={courtId}
+                        label={`${slot.startTime} - ${slot.endTime}`}
+                    />
+                ))}
             </GridItem>
         </SimpleGrid>
     );
