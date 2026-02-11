@@ -1,5 +1,5 @@
 interface CourtSlot {
-    uuid: string;
+    id: string;
     time: string;
     rate: number;
 }

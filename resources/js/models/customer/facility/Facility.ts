@@ -1,7 +1,7 @@
 import type Photo from '../../shared/Photo';
 
 interface Facility {
-    uuid: string;
+    id: string;
     name: string;
     address: string;
     city: string;

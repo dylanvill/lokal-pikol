@@ -1,5 +1,5 @@
 interface CourtPhoto {
-    uuid: string;
+    id: string;
     url: string;
 }
 
