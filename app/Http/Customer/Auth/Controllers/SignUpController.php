@@ -4,6 +4,11 @@ namespace App\Http\Customer\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Auth\Requests\SignUpRequest;
+use App\Source\Authentication\Actions\CreateUser\CreateUser;
+use App\Source\Authentication\Actions\CreateUser\Dtos\CreateUserData;
+use App\Source\Authentication\Enums\UserRoles;
+use App\Source\Customer\Actions\CreateCustomer\CreateCustomer;
+use App\Source\Customer\Actions\CreateCustomer\Dtos\CreateCustomerData;
 use Inertia\Inertia;
 
 class SignUpController extends Controller
@@ -13,8 +18,27 @@ class SignUpController extends Controller
         return Inertia::render('customer/signUp');
     }
 
-    public function store(SignUpRequest $request)
+    public function store(SignUpRequest $request, CreateUser $createUserService, CreateCustomer $createCustomerService)
     {
+
+        $user = $createUserService->create(
+            new CreateUserData(
+                email: $request->email,
+                password: $request->password,
+                role: UserRoles::CUSTOMER
+            )
+        );
+
+        $createCustomerService->create(
+            new CreateCustomerData(
+                userId: $user->id,
+                firstName: $request->firstName,
+                lastName: $request->lastName,
+                email: $request->email,
+                phone: $request->phone
+            )
+        );
+
         return Inertia::render('customer/signUp');
     }
 }
