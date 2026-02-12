@@ -9,6 +9,7 @@ use App\Source\Authentication\Actions\CreateUser\Dtos\CreateUserData;
 use App\Source\Authentication\Enums\UserRoles;
 use App\Source\Customer\Actions\CreateCustomer\CreateCustomer;
 use App\Source\Customer\Actions\CreateCustomer\Dtos\CreateCustomerData;
+use Illuminate\Auth\Events\Registered;
 use Inertia\Inertia;
 
 class SignUpController extends Controller
@@ -38,6 +39,8 @@ class SignUpController extends Controller
                 phone: $request->phone
             )
         );
+
+        event(new Registered($user));
 
         return Inertia::render('customer/signUp');
     }

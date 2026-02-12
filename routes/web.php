@@ -8,5 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', FacilitiesController::class)->name('home');
 Route::get('/sign-up', [SignUpController::class, 'show'])->name('sign-up');
 Route::post('/sign-up', [SignUpController::class, 'store'])->name('sign-up.store');
+Route::get('/sign-up/notice', [SignUpController::class, 'show'])->name('verification.notice');
+Route::get('/sign-up/verify', [SignUpController::class, 'show'])->name('verification.verify');
 Route::get('/facilities', fn() => redirect(route("home")))->name('login');
 Route::get('/facilities/{facility:uuid}', FacilityController::class)->name('facility');
