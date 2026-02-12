@@ -1,7 +1,8 @@
 import { Box, Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
-import { LuArrowRight, LuUser } from 'react-icons/lu';
+import { LuArrowRight } from 'react-icons/lu';
 import useCustomer from '../../../lib/hooks/useCustomer';
+import AccountMenu from './AccountMenu';
 function HomeHeader() {
     const { isLoggedIn } = useCustomer();
     const { url } = usePage();
@@ -21,12 +22,7 @@ function HomeHeader() {
                     </HStack>
                 </Link>
                 {isLoggedIn ? (
-                    <Link href="/sign-up">
-                        <Button variant="subtle">
-                            My Account
-                            <LuUser />
-                        </Button>
-                    </Link>
+                    <AccountMenu />
                 ) : (
                     showCreateAccount && (
                         <Link href="/sign-up">

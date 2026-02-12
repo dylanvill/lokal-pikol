@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', FacilitiesController::class)->name('home');
 
 Route::prefix("sign-up")->group(function () {
-    Route::get('/', [SignUpController::class, 'show'])->name('sign-up');
-    Route::post('/', [SignUpController::class, 'store'])->name('sign-up.store');
+    Route::get('/', [SignUpController::class, 'show'])->name('sign-up')->middleware('guest:customer');
+    Route::post('/', [SignUpController::class, 'store'])->name('sign-up.store')->middleware('guest:customer');
     Route::get('/notice', [VerificationNoticeController::class, 'show'])
         ->middleware('auth:customer')
         ->name('verification.notice');
