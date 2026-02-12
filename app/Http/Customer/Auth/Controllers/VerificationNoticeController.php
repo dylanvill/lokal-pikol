@@ -17,6 +17,6 @@ class VerificationNoticeController extends Controller
     {
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('message', 'Verification link sent!');
+        return Inertia::flash('success', true)->back();
     }
 }

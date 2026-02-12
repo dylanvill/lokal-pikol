@@ -15,7 +15,7 @@ function RootLayout({ children, title = 'Lokal Pikol' }: RootLayoutProps) {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <Box minH="100vh" bg="gray.50">
+            <Box minH="100vh" bg="gray.50" colorPalette="blue">
                 {children}
             </Box>
         </>
