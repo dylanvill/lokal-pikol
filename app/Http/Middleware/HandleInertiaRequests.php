@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Enums\GuardEnum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,16 +39,28 @@ class HandleInertiaRequests extends Middleware
     {
         $shared = [...parent::share($request), 'name' => config('app.name'), 'auth' => null];
 
-        if (!auth()->check()) return $shared;
+        $guard = $this->identifyAuthenticatedGuard($request);
 
+        if (empty($guard)) return $shared;
 
-        $data = $request->user()->getProfileAttribute();
+        $data = $request->user($guard->value)->getProfileAttribute();
 
-        $key = $request->user()->isFacility() ? 'facility' : 'customer';
+        $key = $request->user($guard->value)->isFacility() ? 'facility' : 'customer';
 
         $shared['auth'][$key] = $data;
 
 
         return $shared;
+    }
+
+    private function identifyAuthenticatedGuard(Request $request): GuardEnum|null
+    {
+        $customer = Auth::guard(GuardEnum::CUSTOMER->value)->check();
+        $facility = Auth::guard(GuardEnum::FACILITY->value)->check();
+
+        if ($customer) return GuardEnum::CUSTOMER;
+        if ($facility) return GuardEnum::FACILITY;
+
+        return null;
     }
 }
