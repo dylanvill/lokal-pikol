@@ -1,7 +1,7 @@
-import { Alert, Button, Container, Heading, HStack, Separator, VStack } from '@chakra-ui/react';
-import { router, type PageProps } from '@inertiajs/core';
-import { usePage } from '@inertiajs/react';
-import { LuArrowRight, LuGrid2X2 } from 'react-icons/lu';
+import { Alert, Container, Heading, HStack, Separator, VStack } from '@chakra-ui/react';
+import { type PageProps } from '@inertiajs/core';
+import { Link, usePage } from '@inertiajs/react';
+import { LuGrid2X2 } from 'react-icons/lu';
 import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
 import FacilityHeader from '../../components/customer/FacilityHeader';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
@@ -21,10 +21,6 @@ export default function CourtPage() {
     const facility = page.props.facility;
 
     const customer = useCustomer();
-
-    const handleSignUpClicked = () => {
-        router.visit('/sign-up');
-    };
 
     return (
         <DefaultPageLayout title={facility.name}>
@@ -47,10 +43,17 @@ export default function CourtPage() {
                         <Alert.Indicator />
                         <Alert.Content>
                             <Alert.Title>Account needed for booking</Alert.Title>
-                            <Alert.Description>Create an account to manage bookings all in one place!</Alert.Description>
-                            <Button alignSelf="flex-end" marginTop={4} onClick={handleSignUpClicked}>
-                                Sign Up <LuArrowRight />
-                            </Button>
+                            <Alert.Description>
+                                Create an account to manage bookings all in one place!{' '}
+                                <Link href="/login" style={{ color: 'blue' }}>
+                                    Login
+                                </Link>{' '}
+                                or{' '}
+                                <Link href="/sign-up" style={{ color: 'blue' }}>
+                                    create an account
+                                </Link>{' '}
+                                to get started.
+                            </Alert.Description>
                         </Alert.Content>
                     </Alert.Root>
                 )}

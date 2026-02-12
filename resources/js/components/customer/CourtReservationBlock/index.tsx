@@ -5,7 +5,6 @@ import type CourtSlot from '../../../models/customer/court/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import CourtSlotSection from './CourtSlotSection';
 import ImageCarousel from './ImageCarousel';
-import { useForm } from '@inertiajs/react';
 
 export interface CourtReservationBlockProps {
     courtId: string;
@@ -15,7 +14,6 @@ export interface CourtReservationBlockProps {
 }
 
 function CourtReservationBlock({ courtId, name, photos, slots }: CourtReservationBlockProps) {
-    const form = useForm();
 
     return (
         <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8}>

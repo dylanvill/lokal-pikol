@@ -1,8 +1,8 @@
-import { Box, Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
-import { LuArrowRight } from 'react-icons/lu';
 import useCustomer from '../../../lib/hooks/useCustomer';
 import AccountMenu from './AccountMenu';
+import GuestCta from './GuestCta';
 function HomeHeader() {
     const { isLoggedIn } = useCustomer();
     const { url } = usePage();
@@ -21,18 +21,7 @@ function HomeHeader() {
                         </Box>
                     </HStack>
                 </Link>
-                {isLoggedIn ? (
-                    <AccountMenu />
-                ) : (
-                    showCreateAccount && (
-                        <Link href="/sign-up">
-                            <Button variant="outline" backgroundColor="white" size="xs">
-                                Create Account
-                                <LuArrowRight />
-                            </Button>
-                        </Link>
-                    )
-                )}
+                {isLoggedIn ? <AccountMenu /> : showCreateAccount && <GuestCta />}
             </Flex>
         </VStack>
     );
