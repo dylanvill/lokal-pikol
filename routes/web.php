@@ -1,14 +1,27 @@
 <?php
 
+use App\Http\Customer\Auth\Controllers\EmailVerificationController;
 use App\Http\Customer\Auth\Controllers\SignUpController;
+use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', FacilitiesController::class)->name('home');
-Route::get('/sign-up', [SignUpController::class, 'show'])->name('sign-up');
-Route::post('/sign-up', [SignUpController::class, 'store'])->name('sign-up.store');
-Route::get('/sign-up/notice', [SignUpController::class, 'show'])->name('verification.notice');
-Route::get('/sign-up/verify', [SignUpController::class, 'show'])->name('verification.verify');
+
+Route::prefix("sign-up")->group(function () {
+    Route::get('/', [SignUpController::class, 'show'])->name('sign-up');
+    Route::post('/', [SignUpController::class, 'store'])->name('sign-up.store');
+    Route::get('/notice', [VerificationNoticeController::class, 'show'])
+        ->middleware('auth:customer')
+        ->name('verification.notice');
+    Route::post('/notice/send', [VerificationNoticeController::class, 'resend'])
+        ->middleware(['auth:customer', 'throttle:6,1'])
+        ->name('verification.send');
+    Route::get('/verify/{id}/{hash}', EmailVerificationController::class)
+        ->middleware(['auth:customer', 'signed'])
+        ->name('verification.verify');
+});
+
 Route::get('/facilities', fn() => redirect(route("home")))->name('login');
 Route::get('/facilities/{facility:uuid}', FacilityController::class)->name('facility');

@@ -1,7 +1,7 @@
 import { Box, Button, Container, Field, Heading, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
 import { Form } from '@inertiajs/react';
 import { LuArrowRight } from 'react-icons/lu';
-import DefaultPageLayout from '../../layouts/DefaultPageLayout';
+import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 
 export default function SignUpPage() {
     return (
