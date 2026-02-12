@@ -1,7 +1,13 @@
-import { Box, Flex, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
-import { FiUser } from 'react-icons/fi';
+import { Box, Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Link, usePage } from '@inertiajs/react';
+import { LuArrowRight, LuUser } from 'react-icons/lu';
+import useCustomer from '../../../lib/hooks/useCustomer';
 function HomeHeader() {
+    const { isLoggedIn } = useCustomer();
+    const { url } = usePage();
+
+    const showCreateAccount = !isLoggedIn && url !== '/sign-up';
+
     return (
         <VStack gap={4} align="stretch">
             <Flex justify="space-between" align="center">
@@ -14,9 +20,23 @@ function HomeHeader() {
                         </Box>
                     </HStack>
                 </Link>
-                <IconButton aria-label="My Account" variant="ghost" size="md" color="gray.600">
-                    <FiUser color="white" />
-                </IconButton>
+                {isLoggedIn ? (
+                    <Link href="/sign-up">
+                        <Button variant="subtle">
+                            My Account
+                            <LuUser />
+                        </Button>
+                    </Link>
+                ) : (
+                    showCreateAccount && (
+                        <Link href="/sign-up">
+                            <Button variant="outline" backgroundColor="white" size="xs">
+                                Create Account
+                                <LuArrowRight />
+                            </Button>
+                        </Link>
+                    )
+                )}
             </Flex>
         </VStack>
     );
