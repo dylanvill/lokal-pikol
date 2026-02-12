@@ -27,6 +27,7 @@ class FacilitiesController extends Controller
                 ]);
             }
         ])
+            ->whereHas('courts')
             ->get();
 
         return Inertia::render('customer/facilities', ['facilities' => FacilityListResource::collection($facilities)]);

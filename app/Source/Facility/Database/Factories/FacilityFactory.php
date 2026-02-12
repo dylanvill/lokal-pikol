@@ -23,7 +23,7 @@ class FacilityFactory extends Factory
     {
         $openingHour = $this->faker->numberBetween(6, 10);
         $closingHour = $this->faker->numberBetween(20, 23);
-        
+
         return [
             'name' => $this->faker->company(),
             'address' => $this->faker->address(),
@@ -44,8 +44,13 @@ class FacilityFactory extends Factory
     {
         return $this->afterCreating(function (Facility $facility) {
             $facility
-                ->addMediaFromUrl('https://dummyimage.com/1:1x600')
+                ->addMediaFromUrl('https://picsum.photos/600/600')
                 ->toMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
+
+
+            $facility
+                ->addMediaFromUrl('https://picsum.photos/1280/720')
+                ->toMediaCollection(MediaTypeEnum::FACILITY_COVER_PHOTO->value);
         });
     }
 }
