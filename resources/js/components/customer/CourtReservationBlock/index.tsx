@@ -1,6 +1,7 @@
-import { GridItem, Heading, HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { Field, GridItem, Heading, HStack, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import { Form } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { LuSun } from 'react-icons/lu';
-import typographyTokens from '../../../lib/tokens/typography';
 import type CourtSlot from '../../../models/customer/court/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import CourtSlotSection from './CourtSlotSection';
@@ -14,22 +15,27 @@ export interface CourtReservationBlockProps {
 }
 
 function CourtReservationBlock({ courtId, name, photos, slots }: CourtReservationBlockProps) {
-
+    const today = dayjs().format('YYYY-MM-DD');
     return (
-        <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8}>
-            <GridItem width="full" colSpan={{ base: 1, lg: 1 }}>
+        <SimpleGrid columns={{ base: 1, lg: 6 }} gap={8}>
+            <GridItem width="full" colSpan={{ base: 1, lg: 2 }}>
                 <ImageCarousel photos={photos} />
             </GridItem>
-            <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <GridItem colSpan={{ base: 1, lg: 4 }}>
                 <Heading fontWeight="bold">{name}</Heading>
                 <HStack marginBottom={4}>
                     <LuSun />
                     <Text>Outdoor Court</Text>
                 </HStack>
-                <Heading fontSize={typographyTokens.title.fontSize.lg} marginBottom={2} fontWeight={typographyTokens.title.fontWeight.bold}>
-                    Court Schedule:
-                </Heading>
-                <form action="">
+                <Form action="">
+                    <Field.Root marginBottom={8} maxW={{base: "full", md: "sm"}}>
+                        <Field.Label htmlFor="date" as="text">
+                            Date:
+                        </Field.Label>
+                        <Input type="date" name="date" defaultValue={today} min={today} />
+                        <Field.HelperText>Select a date to view available courts.</Field.HelperText>
+                    </Field.Root>
+                    <Text marginBottom={2}>Select time slots:</Text>
                     <SimpleGrid columns={{ base: 2, md: 4, lg: 3, xl: 4 }} gap={4}>
                         {slots.map((slot) => (
                             <CourtSlotSection
@@ -44,7 +50,7 @@ function CourtReservationBlock({ courtId, name, photos, slots }: CourtReservatio
                             />
                         ))}
                     </SimpleGrid>
-                </form>
+                </Form>
             </GridItem>
         </SimpleGrid>
     );

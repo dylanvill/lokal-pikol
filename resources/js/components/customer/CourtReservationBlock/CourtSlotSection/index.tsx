@@ -1,12 +1,9 @@
-import { Badge, CheckboxCard, CheckboxGroup, Field, Fieldset, HStack, Icon, Text } from '@chakra-ui/react';
+import { Badge, CheckboxCard, Field, Float } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
-import { type CourtSlotState } from './types';
-import useCourtSlotIcon from './useCourtSlotIcon';
-import useCourtSlotStyle from './useCourtSlotStyle';
-import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
-import { LuCheck, LuX } from 'react-icons/lu';
-import typographyTokens from '../../../../lib/tokens/typography';
+import { LuX } from 'react-icons/lu';
 import currencyFormatter from '../../../../helpers/currencyFormatter';
+import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
+import { type CourtSlotState } from './types';
 
 export interface CourtSlotProps {
     courtId: string;
@@ -50,7 +47,18 @@ function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, 
                 colorPalette="green"
                 width="full"
                 onClick={() => handleClicked(courtId, startTime, price)}
+                size="sm"
             >
+                <Float placement="top-start">
+                    <Badge colorPalette="red" backgroundColor="red.400" size="xs">
+                        <LuX color="white" />
+                    </Badge>
+                </Float>
+                {/* <Float placement="top-start">
+                    <Badge colorPalette="green" size="xs">
+                        <LuCheck />
+                    </Badge>
+                </Float> */}
                 <CheckboxCard.HiddenInput />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>
@@ -58,12 +66,6 @@ function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, 
                         <CheckboxCard.Description fontSize="sm">{formattedPrice}</CheckboxCard.Description>
                     </CheckboxCard.Content>
                 </CheckboxCard.Control>
-                <CheckboxCard.Addon paddingY={0.5} paddingX={1.5}>
-                    <HStack>
-                        <LuCheck />
-                        <Text fontSize={typographyTokens.small.fontSize.sm}>Unavailable</Text>
-                    </HStack>
-                </CheckboxCard.Addon>
             </CheckboxCard.Root>
         </Field.Root>
         // <Badge
