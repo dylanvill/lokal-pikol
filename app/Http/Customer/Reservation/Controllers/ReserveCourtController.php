@@ -27,7 +27,6 @@ class ReserveCourtController extends Controller
         ReserveCourtRequest $request,
         SlotsToRange $slotsToRange,
         CreateReservation $createReservation,
-        SetReservationFees $setReservationFees,
     ) {
         // dd($request->all());
 
@@ -52,11 +51,12 @@ class ReserveCourtController extends Controller
             status: ReservationStatusEnum::ON_HOLD->value,
         );
 
-        $createReservation->create($reservationData);
-        // $setReservationFees->setFee(
-        //     "test",
-        //     500
-        // );
+        $reservation = $createReservation->create($reservationData);
+        $setReservationFees = new SetReservationFees($reservation);
+        $setReservationFees->setFee(
+            "test",
+            500
+        )->save();
 
         return redirect()->route('home')->with('success', 'Court reserved successfully!');
     }

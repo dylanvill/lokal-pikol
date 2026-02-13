@@ -29,7 +29,7 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                     <Text>Outdoor Court</Text>
                 </HStack>
                 <Form action={`/facilities/${facilityId}/courts/${courtId}/reserve`} method="post">
-                    {({ submit, clearErrors, getData }) => {
+                    {({ submit, clearErrors, getData, processing }) => {
                         const keys = Object.keys(getData());
                         const canBook = keys.includes('slots') && keys.includes('date');
                         return (
@@ -66,6 +66,8 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                             }}
                                             colorScheme="blue"
                                             marginTop={4}
+                                            disabled={processing}
+                                            loading={processing}
                                         >
                                             Reserve Slots
                                             <LuArrowRight />
