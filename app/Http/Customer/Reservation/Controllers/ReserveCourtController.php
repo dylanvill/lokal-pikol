@@ -12,7 +12,7 @@ class ReserveCourtController extends Controller
 {
     public function show()
     {
-        return inertia('customer/reservation/reserve');
+        return inertia('customer/facilities/reserve');
     }
 
     public function store(ReserveCourtRequest $request) {}
