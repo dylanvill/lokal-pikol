@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Customer\Auth\Controllers\EmailVerificationController;
+use App\Http\Customer\Auth\Controllers\LoginController;
 use App\Http\Customer\Auth\Controllers\LogoutController;
 use App\Http\Customer\Auth\Controllers\SignUpController;
 use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
@@ -25,6 +26,9 @@ Route::prefix("sign-up")->group(function () {
 });
 
 Route::post('/logout', LogoutController::class);
+
+Route::get('/login', [LoginController::class, 'show'])->name('login.show')->middleware('guest:customer');
+Route::post('/login', [LoginController::class, 'login'])->name('login')->middleware('guest:customer');
 
 Route::get('/facilities', fn() => redirect(route("home")))->name('login');
 Route::get('/facilities/{facility:uuid}', FacilityController::class)->name('facility');

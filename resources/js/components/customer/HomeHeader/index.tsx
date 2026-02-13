@@ -7,7 +7,7 @@ function HomeHeader() {
     const { isLoggedIn } = useCustomer();
     const { url } = usePage();
 
-    const showCreateAccount = !isLoggedIn && url !== '/sign-up';
+    const showCreateAccount = !isLoggedIn && !['/login', '/sign-up'].includes(url);
 
     return (
         <VStack gap={4} align="stretch">
