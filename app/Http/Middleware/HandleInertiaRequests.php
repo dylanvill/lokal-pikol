@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Customer\Auth\Resources\CustomerAuthResource;
 use App\Http\Enums\GuardEnum;
+use App\Http\Facility\Auth\Resources\FacilityAuthResource;
+use App\Source\Customer\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -47,7 +50,12 @@ class HandleInertiaRequests extends Middleware
 
         $key = $request->user($guard->value)->isFacility() ? 'facility' : 'customer';
 
-        $shared['auth'][$key] = $data;
+        $resourceClass = match ($guard) {
+            GuardEnum::CUSTOMER => CustomerAuthResource::class,
+            GuardEnum::FACILITY => FacilityAuthResource::class,
+        };
+
+        $shared['auth'][$key] = new $resourceClass($data);
 
 
         return $shared;

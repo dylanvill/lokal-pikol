@@ -38,7 +38,7 @@ class SignUpController extends Controller
                 firstName: $request->firstName,
                 lastName: $request->lastName,
                 email: $request->email,
-                phone: $request->phone
+                phone: "+63{$request->phone}"
             )
         );
 
