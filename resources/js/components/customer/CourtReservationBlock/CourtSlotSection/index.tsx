@@ -41,7 +41,6 @@ function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, 
         <Field.Root width="full">
             <CheckboxCard.Root
                 key={`${courtId}-${startTime}-${endTime}`}
-                value={`${courtId}-${startTime}-${endTime}`}
                 name="slots[]"
                 variant="solid"
                 colorPalette="green"
@@ -59,7 +58,7 @@ function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, 
                         <LuCheck />
                     </Badge>
                 </Float> */}
-                <CheckboxCard.HiddenInput />
+                <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>
                         <CheckboxCard.Label fontSize="md">{`${timeDisplay.startTime} - ${timeDisplay.endTime}`}</CheckboxCard.Label>

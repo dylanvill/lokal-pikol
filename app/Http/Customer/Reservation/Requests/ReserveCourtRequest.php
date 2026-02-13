@@ -12,7 +12,7 @@ class ReserveCourtRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user(GuardEnum::CUSTOMER->value)->check();
+        return $this->user(GuardEnum::CUSTOMER->value) !== null;
     }
 
     /**
@@ -22,8 +22,6 @@ class ReserveCourtRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

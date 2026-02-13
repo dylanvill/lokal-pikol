@@ -17,6 +17,7 @@ export default function CourtPage() {
 
     const courts = page.props.courts || [];
     const facility = page.props.facility;
+    console.log('Facility Data:', facility);
 
     const customer = useCustomer();
 
@@ -53,7 +54,13 @@ export default function CourtPage() {
                 )}
                 <VStack alignItems="stretch" justifyContent="flex" width="full" gap={8}>
                     {courts.map((court) => (
-                        <CourtReservationBlock courtId={court.id} name={court.name} photos={court.photos} slots={court.slots} />
+                        <CourtReservationBlock
+                            facilityId={facility.id}
+                            courtId={court.id}
+                            name={court.name}
+                            photos={court.photos}
+                            slots={court.slots}
+                        />
                     ))}
                 </VStack>
             </Container>
