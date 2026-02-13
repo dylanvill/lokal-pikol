@@ -1,7 +1,6 @@
-import { Alert, Container, Heading, HStack, Separator, VStack } from '@chakra-ui/react';
+import { Alert, Container, Separator, VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { Link, usePage } from '@inertiajs/react';
-import { LuGrid2X2 } from 'react-icons/lu';
 import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
 import FacilityHeader from '../../components/customer/FacilityHeader';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
@@ -33,10 +32,6 @@ export default function CourtPage() {
                     profilePhotoUrl={facility.profilePhoto.url}
                 />
                 <Separator marginY={8} />
-                <HStack flex={1} marginBottom={4}>
-                    <LuGrid2X2 />
-                    <Heading size="lg">Courts</Heading>
-                </HStack>
                 {!customer.isLoggedIn && (
                     <Alert.Root status="warning" marginBottom={4}>
                         <Alert.Indicator />
