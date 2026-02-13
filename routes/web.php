@@ -7,6 +7,7 @@ use App\Http\Customer\Auth\Controllers\SignUpController;
 use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
+use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', FacilitiesController::class)->name('home');
@@ -30,5 +31,9 @@ Route::post('/logout', LogoutController::class);
 Route::get('/login', [LoginController::class, 'show'])->name('login.show')->middleware('guest:customer');
 Route::post('/login', [LoginController::class, 'login'])->name('login')->middleware('guest:customer');
 
-Route::get('/facilities', fn() => redirect(route("home")))->name('login');
-Route::get('/facilities/{facility:uuid}', FacilityController::class)->name('facility');
+Route::prefix("facilities")->group(function () {
+    Route::get('/', fn() => redirect(route("home")))->name('index');
+    Route::get('/{facility:uuid}', FacilityController::class)->name('facility');
+    Route::get('/{court:uuid}/reserve', [ReserveCourtController::class, 'show'])->name('reservation.show')->middleware('auth:customer');
+    Route::post('/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])->name('reservation.store')->middleware('auth:customer');
+});
