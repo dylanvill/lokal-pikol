@@ -13,6 +13,8 @@ class ReservationFee extends Model
     /** @use HasFactory<\App\Source\Reservation\Database\Factories\ReservationFeeFactory> */
     use HasFactory, HasUuid;
 
+    const SERVICE_FEE_AMOUNT = 5;
+
     protected $fillable = [
         'uuid',
         'item',
