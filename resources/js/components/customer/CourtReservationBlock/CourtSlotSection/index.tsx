@@ -1,33 +1,18 @@
 import { Badge, CheckboxCard, Field, Float } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { LuX } from 'react-icons/lu';
 import currencyFormatter from '../../../../helpers/currencyFormatter';
 import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
-import { type CourtSlotState } from './types';
 
 export interface CourtSlotProps {
     courtId: string;
     startTime: string;
     endTime: string;
     price: number;
-    label: string;
-    onSlotSelected: (courtId: string, startTime: string, price: number) => void;
-    onSlotDeselected: (courtId: string, startTime: string, price: number) => void;
+    isAvailable: boolean;
 }
 
-function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, onSlotDeselected }: CourtSlotProps) {
-    const [internalState, setInternalState] = useState<CourtSlotState>('available');
-
-    const handleClicked = (courtId: string, startTime: string, price: number) => {
-        if (internalState === 'available') {
-            setInternalState('selected');
-            onSlotSelected(courtId, startTime, price);
-        } else if (internalState === 'selected') {
-            setInternalState('available');
-            onSlotDeselected(courtId, startTime, price);
-        }
-    };
-
+function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable }: CourtSlotProps) {
     const timeDisplay = useMemo(() => {
         return {
             startTime: militaryTimeToAmPmTime(startTime),
@@ -45,19 +30,17 @@ function CourtSlotSection({ courtId, startTime, endTime, price, onSlotSelected, 
                 variant="solid"
                 colorPalette="green"
                 width="full"
-                onClick={() => handleClicked(courtId, startTime, price)}
                 size="sm"
+                disabled={!isAvailable}
+                {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
             >
-                <Float placement="top-start">
-                    <Badge colorPalette="red" backgroundColor="red.400" size="xs">
-                        <LuX color="white" />
-                    </Badge>
-                </Float>
-                {/* <Float placement="top-start">
-                    <Badge colorPalette="green" size="xs">
-                        <LuCheck />
-                    </Badge>
-                </Float> */}
+                {!isAvailable && (
+                    <Float placement="top-start">
+                        <Badge colorPalette="red" backgroundColor="red.400" size="xs">
+                            <LuX color="white" />
+                        </Badge>
+                    </Float>
+                )}
                 <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>

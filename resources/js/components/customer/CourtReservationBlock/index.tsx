@@ -50,12 +50,10 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                         <CourtSlotSection
                                             key={`${courtId}-${slot.startTime}-${slot.endTime}`}
                                             courtId={courtId}
-                                            label={`${slot.startTime} - ${slot.endTime}`}
                                             startTime={slot.startTime}
                                             endTime={slot.endTime}
                                             price={slot.price}
-                                            onSlotSelected={() => {}}
-                                            onSlotDeselected={() => {}}
+                                            isAvailable={slot.isAvailable}
                                         />
                                     ))}
                                 </SimpleGrid>
