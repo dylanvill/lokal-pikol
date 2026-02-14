@@ -34,6 +34,6 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 Route::prefix("facilities")->group(function () {
     Route::get('/', fn() => redirect(route("home")))->name('index');
     Route::get('/{facility:uuid}', FacilityController::class)->name('facility');
-    Route::get('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'show'])->name('reservation.show')->middleware('auth:customer');
+    Route::get('/{facility:uuid}/courts/{court:uuid}/reservation/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('facility.court.reservation.show')->middleware('auth:customer');
     Route::post('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])->name('reservation.store')->middleware('auth:customer');
 });

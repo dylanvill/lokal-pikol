@@ -4,6 +4,7 @@ namespace App\Http\Customer\Reservation\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Reservation\Requests\ReserveCourtRequest;
+use App\Http\Customer\Reservation\Resources\ReservationResource;
 use App\Http\Enums\GuardEnum;
 use App\Source\Court\Actions\CourtSlotConversion\Dtos\CourtSlot;
 use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
@@ -23,9 +24,12 @@ use Illuminate\Support\Collection;
 class ReserveCourtController extends Controller
 {
 
-    public function show(Facility $facility, Court $court)
+    public function show(Facility $facility, Court $court, Reservation $reservation)
     {
-        return inertia('customer/facilities/reserve');
+
+        return inertia('customer/facilities/reserve', [
+            'reservation' => new ReservationResource($reservation->load(['court', 'court.facility'])),
+        ]);
     }
 
     public function store(
@@ -49,7 +53,11 @@ class ReserveCourtController extends Controller
         $reservation = $createReservation->create($reservationData);
         $this->setReservationFees($reservation, $court);
 
-        return redirect()->route('home')->with('success', 'Court reserved successfully!');
+        return redirect()->route('facility.court.reservation.show', [
+            'facility' => $facility->uuid,
+            'court' => $court->uuid,
+            'reservation' => $reservation->uuid,
+        ]);
     }
 
     protected function parseSlotsToRange(array $slots): Range
