@@ -6,6 +6,7 @@ use App\Source\Court\Actions\CourtSlotConversion\Dtos\CourtSlot;
 use App\Source\Court\Models\CourtPricing;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
 
 class RangeToSlot
 {
@@ -13,10 +14,10 @@ class RangeToSlot
      * @param CourtPricing $courtPricing
      * @return CourtSlot[]
      */
-    public static function convert(CourtPricing $pricing): array
+    public static function convert(Range $range): array
     {
-        $start = Carbon::parse($pricing->start_time);
-        $end = Carbon::parse($pricing->end_time);
+        $start = Carbon::parse($range->startTime);
+        $end = Carbon::parse($range->endTime);
 
         $hourlySlots = [];
         while ($start < $end) {
@@ -26,7 +27,7 @@ class RangeToSlot
             $hourlySlots[] = new CourtSlot(
                 startTime: $slotStart,
                 endTime: $slotEnd,
-                price: $pricing->price
+                price: $range->price
             );
         }
 
@@ -34,10 +35,10 @@ class RangeToSlot
     }
 
     /**
-     * @param CourtPricing[] $courtPricings
+     * @param Range[] $courtPricings
      * @return CourtSlot[]
      */
-    public static function covertMany(Collection $courtPricings): array
+    public static function covertMany(array $courtPricings): array
     {
         $allSlots = [];
         foreach ($courtPricings as $pricing) {

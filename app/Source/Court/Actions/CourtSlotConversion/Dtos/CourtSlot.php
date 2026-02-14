@@ -9,7 +9,7 @@ readonly class CourtSlot implements Arrayable
     public function __construct(
         public string $startTime,
         public string $endTime,
-        public float|null $price = null,
+        public float|null $price = null
     ) {}
 
     public function toArray()
@@ -17,7 +17,7 @@ readonly class CourtSlot implements Arrayable
         return [
             'startTime' => $this->startTime,
             'endTime' => $this->endTime,
-            'price' => $this->price,
+            'price' => $this->price
         ];
     }
 }

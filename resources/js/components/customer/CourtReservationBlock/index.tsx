@@ -2,6 +2,7 @@ import { Button, Field, GridItem, Heading, HStack, Input, SimpleGrid, Text, VSta
 import { Form } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { LuArrowRight, LuSun } from 'react-icons/lu';
+import useCustomer from '../../../lib/hooks/useCustomer';
 import type CourtSlot from '../../../models/customer/court/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import CourtSlotSection from './CourtSlotSection';
@@ -16,6 +17,7 @@ export interface CourtReservationBlockProps {
 }
 
 function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: CourtReservationBlockProps) {
+    const { isLoggedIn } = useCustomer();
     const today = dayjs().format('YYYY-MM-DD');
     return (
         <SimpleGrid columns={{ base: 1, lg: 6 }} gap={8}>
@@ -56,7 +58,7 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                         />
                                     ))}
                                 </SimpleGrid>
-                                {canBook && (
+                                {canBook && isLoggedIn && (
                                     <VStack alignItems="flex-end" gap={1}>
                                         <Button
                                             type="submit"
@@ -72,7 +74,9 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                             Reserve Slots
                                             <LuArrowRight />
                                         </Button>
-                                        <Text fontSize="xs" color="gray.500">Proceed to book {name}</Text>
+                                        <Text fontSize="xs" color="gray.500">
+                                            Proceed to book {name}
+                                        </Text>
                                     </VStack>
                                 )}
                             </>

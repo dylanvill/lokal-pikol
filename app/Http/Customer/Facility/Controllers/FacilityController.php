@@ -30,6 +30,9 @@ class FacilityController extends Controller
             'courtPricings' => function ($query) {
                 $query->orderBy('start_time');
             },
+            'reservations' => function ($query) {
+                $query->where('reservation_date', now()->toDateString());
+            },
         ]);
 
         // You can add validation, database queries, etc. here

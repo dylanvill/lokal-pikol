@@ -28,9 +28,7 @@ class Reservation extends Model
     ];
 
     protected $casts = [
-        'reservation_date' => 'date',
-        'start_time' => 'timestamp',
-        'end_time' => 'timestamp',
+        'reservation_date' => 'date'
     ];
 
     public function customer(): BelongsTo
