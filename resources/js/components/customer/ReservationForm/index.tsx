@@ -1,10 +1,9 @@
-import { Box, Button, Card, Field, Heading, Text, FileUpload, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { Form } from '@inertiajs/react';
-import { HiUpload } from 'react-icons/hi';
 import PaymentBreakdown from './PaymentBreakdown';
+import PaymentUpload from './PaymentUpload';
 import ReservationDetails from './ReservationDetails';
 import ReservationNotice from './ReservationNotice';
-import PaymentUpload from './PaymentUpload';
 
 function ReservationForm() {
     return (
