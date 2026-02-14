@@ -26,7 +26,7 @@ class ReservationResource extends JsonResource
                 startTime: $this->start_time,
                 endTime: $this->end_time,
             )),
-            'date' => $this->date,
+            'reservationDate' => $this->reservation_date,
             'status' => $this->status,
         ];
     }

@@ -1,9 +1,14 @@
 import { Card, HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import currencyFormatter from '../../../helpers/currencyFormatter';
+import type Reservation from '../../../models/customer/reservation/Reservation';
 import CardHeading from './CardHeading';
 import PaymentItem from './PaymentItem';
 
-function PaymentBreakdown() {
+export interface PaymentBreakdownProps {
+    reservation: Reservation; // Replace with actual Reservation type when available
+}
+
+function PaymentBreakdown({ reservation }: PaymentBreakdownProps) {
     return (
         <Card.Root>
             <Card.Body>
@@ -17,7 +22,7 @@ function PaymentBreakdown() {
                             Total
                         </Text>
                         <Text fontWeight="bold" fontSize="lg">
-                        {currencyFormatter(815)}
+                            {currencyFormatter(815)}
                         </Text>
                     </HStack>
                 </VStack>

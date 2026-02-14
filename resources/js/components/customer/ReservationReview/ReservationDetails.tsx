@@ -1,9 +1,18 @@
-import { Box, Card, Grid, GridItem, Stack, VStack } from '@chakra-ui/react';
+import { Box, Card, GridItem, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import type Reservation from '../../../models/customer/reservation/Reservation';
 import ImageCarousel from '../CourtReservationBlock/ImageCarousel';
 import CardHeading from './CardHeading';
 import DetailItem from './DetailItem';
+import ReservationSlotCard from './ReservationSlotCard';
 
-function ReservationDetails() {
+export interface ReservationDetailsProps {
+    reservation: Reservation;
+}
+
+function ReservationDetails({ reservation }: ReservationDetailsProps) {
+    const dateDisplay = dayjs(reservation.reservationDate).format('MMMM D, YYYY');
+
     return (
         <Card.Root>
             <Card.Body>
@@ -11,40 +20,32 @@ function ReservationDetails() {
                 <Stack gap={6}>
                     {/* Facility Photos */}
                     <Box>
-                        <ImageCarousel
-                            photos={[
-                                { id: '1', url: 'https://via.placeholder.com/800x450/4299e1/white?text=Court+Photo+1' },
-                                { id: '2', url: 'https://via.placeholder.com/800x450/06b6d4/white?text=Court+Photo+2' },
-                                { id: '3', url: 'https://via.placeholder.com/800x450/059669/white?text=Court+Photo+3' },
-                            ]}
-                        />
+                        <ImageCarousel photos={reservation.court.photos} />
                     </Box>
 
                     {/* Facility and Court Information */}
-                    <VStack align="start" gap={3}>
-                        <DetailItem label="Facility" value="Central Sports Complex"></DetailItem>
-                        <DetailItem label="Address" value="123 Sports Avenue, Makati City"></DetailItem>
-                        <DetailItem label="Court" value="Basketball Court A - Covered"></DetailItem>
-                        <DetailItem label="Reservation Date" value="February 15, 2026"></DetailItem>
+                    <VStack align="start" gap={4}>
+                        <DetailItem label="Facility" value={reservation.facility.name}></DetailItem>
+                        <DetailItem label="City" value={reservation.facility.city}></DetailItem>
+                        <DetailItem label="Address" value={reservation.facility.address}></DetailItem>
+                        <DetailItem label="Court" value={reservation.court.name}></DetailItem>
+                        <DetailItem label="Reservation Date" value={dateDisplay}></DetailItem>
                         <DetailItem label="Selected Time Slots">
-                            <Grid templateColumns="repeat(4, 1fr)" gap={2}>
-                                {['8-9', '9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'].map((time) => (
-                                    <GridItem key={time}>
-                                        <Box
-                                            border="1px solid"
-                                            borderColor="gray.200"
-                                            borderRadius="md"
-                                            p={2}
-                                            textAlign="center"
-                                            bg="blue.50"
-                                            color="blue.700"
-                                            fontSize="sm"
-                                        >
-                                            {time}:00
-                                        </Box>
+                            <SimpleGrid
+                                columns={{
+                                    base: 2,
+                                    md: 3,
+                                    lg: 5,
+                                    xl: 6,
+                                }}
+                                gap={2}
+                            >
+                                {reservation.slots.map((slot) => (
+                                    <GridItem key={slot.startTime}>
+                                        <ReservationSlotCard courtSlots={reservation.court.slots} startTime={slot.startTime} endTime={slot.endTime} />
                                     </GridItem>
                                 ))}
-                            </Grid>
+                            </SimpleGrid>
                         </DetailItem>
                     </VStack>
                 </Stack>

@@ -8,7 +8,7 @@ interface Reservation {
     facility: Facility;
     court: Court;
     slots: CourtSlot[];
-    date: string;
+    reservationDate: string;
     status: ReservationStatus;
 }
 
