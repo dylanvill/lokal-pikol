@@ -5,6 +5,7 @@ import { LuArrowRight, LuSun } from 'react-icons/lu';
 import useCustomer from '../../../lib/hooks/useCustomer';
 import type CourtSlot from '../../../models/customer/court/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
+import { Tooltip } from '../../ui/Tooltip';
 import CourtSlotSection from './CourtSlotSection';
 import ImageCarousel from './ImageCarousel';
 
@@ -58,22 +59,24 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                         />
                                     ))}
                                 </SimpleGrid>
-                                {canBook && isLoggedIn && (
+                                {canBook && (
                                     <VStack alignItems="flex-end" gap={1}>
-                                        <Button
-                                            type="submit"
-                                            onClick={() => {
-                                                submit();
-                                                clearErrors();
-                                            }}
-                                            colorScheme="blue"
-                                            marginTop={4}
-                                            disabled={processing}
-                                            loading={processing}
-                                        >
-                                            Reserve Slots
-                                            <LuArrowRight />
-                                        </Button>
+                                        <Tooltip content="You must be logged in to reserve slots" disabled={isLoggedIn} openDelay={50}>
+                                            <Button
+                                                type="submit"
+                                                onClick={() => {
+                                                    submit();
+                                                    clearErrors();
+                                                }}
+                                                colorScheme="blue"
+                                                marginTop={4}
+                                                disabled={processing || !isLoggedIn}
+                                                loading={processing}
+                                            >
+                                                Reserve Slots
+                                                <LuArrowRight />
+                                            </Button>
+                                        </Tooltip>
                                         <Text fontSize="xs" color="gray.500">
                                             Proceed to book {name}
                                         </Text>
