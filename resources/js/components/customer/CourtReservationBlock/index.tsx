@@ -32,7 +32,7 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                     <Text>Outdoor Court</Text>
                 </HStack>
                 <Form action={`/facilities/${facilityId}/courts/${courtId}/reserve`} method="post">
-                    {({ submit, clearErrors, getData, processing }) => {
+                    {({ submit, clearErrors, getData, processing, errors }) => {
                         const keys = Object.keys(getData());
                         const canBook = keys.includes('slots') && keys.includes('date');
                         return (
@@ -45,6 +45,9 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                                     <Field.HelperText>Select a date to view available courts.</Field.HelperText>
                                 </Field.Root>
                                 <Text marginBottom={2}>Select time slots:</Text>
+                                <Field.Root marginBottom={4} invalid={!!errors.slots}>
+                                    <Field.ErrorText>{errors.slots}</Field.ErrorText>
+                                </Field.Root>
                                 <SimpleGrid columns={{ base: 2, md: 4, lg: 3, xl: 4 }} gap={4}>
                                     {slots.map((slot) => (
                                         <CourtSlotSection

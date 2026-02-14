@@ -28,8 +28,6 @@ class ReserveCourtController extends Controller
         SlotsToRange $slotsToRange,
         CreateReservation $createReservation,
     ) {
-        // dd($request->all());
-
         $convertData = array_map(function ($slot) {
             $data = explode('-', $slot);
             return new CourtSlot(

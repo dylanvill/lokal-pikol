@@ -1,8 +1,8 @@
 import { Badge, CheckboxCard, Field, Float } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { LuX } from 'react-icons/lu';
-import currencyFormatter from '../../../../helpers/currencyFormatter';
-import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
+import currencyFormatter from '../../../helpers/currencyFormatter';
+import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 
 export interface CourtSlotProps {
     courtId: string;
