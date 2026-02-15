@@ -15,7 +15,7 @@ function AccountMenu() {
                 <Menu.Positioner>
                     <Menu.Content>
                         <Menu.Item value="reservations" asChild>
-                            <Link href="/account/reservations">
+                            <Link href="/reservations">
                                 <LuCalendar />
                                 <Box flex="1">Reservations</Box>
                             </Link>
