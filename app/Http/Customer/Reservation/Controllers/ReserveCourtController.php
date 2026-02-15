@@ -4,6 +4,7 @@ namespace App\Http\Customer\Reservation\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Reservation\Requests\ReserveCourtRequest;
+use App\Http\Customer\Reservation\Requests\UploadReceiptRequest;
 use App\Http\Customer\Reservation\Resources\ReservationResource;
 use App\Http\Enums\GuardEnum;
 use App\Source\Court\Actions\CourtSlotConversion\Dtos\CourtSlot;
@@ -12,6 +13,7 @@ use App\Source\Court\Actions\CourtSlotConversion\RangeToSlot;
 use App\Source\Court\Actions\CourtSlotConversion\SlotsToRange;
 use App\Source\Court\Models\Court;
 use App\Source\Facility\Models\Facility;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Actions\CreateReservation\CreateReservation;
 use App\Source\Reservation\Actions\CreateReservation\Dtos\CreateReservationData;
 use App\Source\Reservation\Actions\SetReservationFees\SetReservationFees;
@@ -121,5 +123,13 @@ class ReserveCourtController extends Controller
 
 
         return $setReservationFees->save();
+    }
+
+    public function uploadReceipt(Facility $facility, Court $court, Reservation $reservation, UploadReceiptRequest $request)
+    {
+        $reservation->addMedia($request->file('receipt'))->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
+
+
+        return redirect()->route("reservations.index");
     }
 }

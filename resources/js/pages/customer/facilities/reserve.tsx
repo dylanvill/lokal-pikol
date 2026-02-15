@@ -23,7 +23,7 @@ function ReservePage() {
                     <ReservationNotice />
                     <ReservationDetails reservation={reservation} />
                     <PaymentBreakdown reservation={reservation} />
-                    <PaymentUpload />
+                    <PaymentUpload reservation={reservation} />
                 </VStack>
             </Container>
         </DefaultPageLayout>
