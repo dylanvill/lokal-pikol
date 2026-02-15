@@ -40,5 +40,4 @@ Route::prefix("facilities")->group(function () {
 Route::prefix("reservations")->name("reservation.")->group(function () {
     Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('show');
     Route::post('/reserve/{reservation:uuid}/upload-receipt', [ReserveCourtController::class, 'uploadReceipt'])->name('upload-receipt');
-    Route::get('/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('show');
 });
