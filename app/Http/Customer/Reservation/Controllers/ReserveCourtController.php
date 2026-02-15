@@ -51,6 +51,7 @@ class ReserveCourtController extends Controller
         );
 
         $reservation = $createReservation->create($reservationData);
+        $reservation->load('fees');
         $this->setReservationFees($reservation, $court);
 
         return redirect()->route('facility.court.reservation.show', [
@@ -107,7 +108,8 @@ class ReserveCourtController extends Controller
             });
             $setReservationFees->setFee(
                 "{$reservedSlot->startTime}-{$reservedSlot->endTime}",
-                $courtSlot->price
+                $courtSlot->price,
+                ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value
             );
 
             $setReservationFees->setFee(

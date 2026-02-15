@@ -1,6 +1,7 @@
 import type Court from '../court/Court';
 import type CourtSlot from '../court/CourtSlot';
 import type Facility from '../facility/Facility';
+import type ReservationFees from './ReservationFees';
 import type ReservationStatus from './ReservationStatus';
 
 interface Reservation {
@@ -10,6 +11,7 @@ interface Reservation {
     slots: CourtSlot[];
     reservationDate: string;
     status: ReservationStatus;
+    fees: ReservationFees;
 }
 
 export default Reservation;

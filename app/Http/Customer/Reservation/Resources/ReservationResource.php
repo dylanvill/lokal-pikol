@@ -28,6 +28,7 @@ class ReservationResource extends JsonResource
             )),
             'reservationDate' => $this->reservation_date,
             'status' => $this->status,
+            'fees' => new ReservationFeeResource($this->fees),
         ];
     }
 }
