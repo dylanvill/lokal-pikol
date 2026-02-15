@@ -11,7 +11,7 @@ export interface PaymentUploadProps {
 function PaymentUpload({ reservation }: PaymentUploadProps) {
     return (
         <Form
-            action={`/facilities/${reservation.facility.id}/courts/${reservation.court.id}/reservation/${reservation.id}/upload-receipt`}
+            action={`/reservations/reserve/${reservation.id}/upload-receipt`}
             method="post"
         >
             {() => (

@@ -34,12 +34,11 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 Route::prefix("facilities")->group(function () {
     Route::get('/', fn() => redirect(route("home")))->name('index');
     Route::get('/{facility:uuid}', FacilityController::class)->name('facility');
-    Route::get('/{facility:uuid}/courts/{court:uuid}/reservation/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('facility.court.reservation.show')->middleware('auth:customer');
-    Route::post('/{facility:uuid}/courts/{court:uuid}/reservation/{reservation:uuid}/upload-receipt', [ReserveCourtController::class, 'uploadReceipt'])->name('facility.court.reservation.upload-receipt')->middleware('auth:customer');
     Route::post('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])->name('reservation.store')->middleware('auth:customer');
 });
 
 Route::prefix("reservations")->name("reservation.")->group(function () {
-    Route::get('/', fn() => redirect(route("home")))->name('index');
-    Route::get('/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('show')->middleware('auth:customer');
+    Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('show');
+    Route::post('/reserve/{reservation:uuid}/upload-receipt', [ReserveCourtController::class, 'uploadReceipt'])->name('upload-receipt');
+    Route::get('/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('show');
 });
