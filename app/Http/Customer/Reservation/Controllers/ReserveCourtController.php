@@ -26,9 +26,8 @@ use Illuminate\Support\Collection;
 class ReserveCourtController extends Controller
 {
 
-    public function show(Facility $facility, Court $court, Reservation $reservation)
+    public function show(Reservation $reservation)
     {
-
         return inertia('customer/facilities/reserve', [
             'reservation' => new ReservationResource($reservation->load(['court', 'court.facility'])),
         ]);
@@ -125,7 +124,7 @@ class ReserveCourtController extends Controller
         return $setReservationFees->save();
     }
 
-    public function uploadReceipt(Facility $facility, Court $court, Reservation $reservation, UploadReceiptRequest $request)
+    public function uploadReceipt(Reservation $reservation, UploadReceiptRequest $request)
     {
         $reservation->addMedia($request->file('receipt'))->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
 
