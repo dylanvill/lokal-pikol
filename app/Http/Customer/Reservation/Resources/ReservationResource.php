@@ -20,7 +20,7 @@ class ReservationResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'facility' => new FacilityResource($this->court->facility),
+            'facility' => new FacilityResource($this->facility),
             'court' => new CourtResource($this->court),
             'slots' => RangeToSlot::convert(new Range(
                 startTime: $this->start_time,
@@ -29,6 +29,8 @@ class ReservationResource extends JsonResource
             'reservationDate' => $this->reservation_date,
             'status' => $this->status,
             'fees' => new ReservationFeeResource($this->fees),
+            'startTime' => $this->start_time,
+            'endTime' => $this->end_time,
         ];
     }
 }

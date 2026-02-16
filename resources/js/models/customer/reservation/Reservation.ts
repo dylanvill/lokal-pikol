@@ -12,6 +12,8 @@ interface Reservation {
     reservationDate: string;
     status: ReservationStatus;
     fees: ReservationFees;
+    startTime: string;
+    endTime: string;
 }
 
 export default Reservation;

@@ -1,3 +1,3 @@
-type ReservationStatus = 'on_hold' | 'pending' | 'confirmed' | 'cancelled';
+type ReservationStatus = 'on hold' | 'pending' | 'confirmed' | 'cancelled';
 
 export default ReservationStatus;

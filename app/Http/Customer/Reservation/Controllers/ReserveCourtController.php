@@ -29,7 +29,7 @@ class ReserveCourtController extends Controller
     public function show(Reservation $reservation)
     {
         return inertia('customer/facilities/reserve', [
-            'reservation' => new ReservationResource($reservation->load(['court', 'court.facility'])),
+            'reservation' => new ReservationResource($reservation->load(['court', 'facility'])),
         ]);
     }
 
