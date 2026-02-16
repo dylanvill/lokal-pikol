@@ -1,11 +1,11 @@
-import { Button, Card, GridItem, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import { Card, GridItem, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { LuCheck, LuX } from 'react-icons/lu';
 import type ReservationStatus from '../../../../models/customer/reservation/ReservationStatus';
 import type CourtSlot from '../../../../models/shared/CourtSlot';
 import CardHeading from '../../../customer/ReservationReview/CardHeading';
 import DetailItem from '../../../shared/DetailItem';
 import ReservationSlotCard from '../../../shared/ReservationSlotCard';
+import ReservationStatusBadge from '../../../shared/ReservationStatusBadge';
 
 export interface ReservationDetailsProps {
     date: string;
@@ -14,7 +14,7 @@ export interface ReservationDetailsProps {
     status: ReservationStatus;
 }
 
-function ReservationDetails({ date, reservedSlots, courtSlots }: ReservationDetailsProps) {
+function ReservationDetails({ date, reservedSlots, courtSlots, status }: ReservationDetailsProps) {
     const dateDisplay = dayjs(date).format('MMMM D, YYYY');
 
     return (
@@ -24,7 +24,9 @@ function ReservationDetails({ date, reservedSlots, courtSlots }: ReservationDeta
                 <Stack gap={6}>
                     <VStack align="start" gap={4}>
                         <DetailItem label="Reservation Date" value={dateDisplay} />
-                        <DetailItem label="Status" value={status} />
+                        <DetailItem label="Status">
+                            <ReservationStatusBadge status={status} />
+                        </DetailItem>
                         <DetailItem label="Selected Time Slots">
                             <SimpleGrid
                                 columns={{
@@ -43,15 +45,6 @@ function ReservationDetails({ date, reservedSlots, courtSlots }: ReservationDeta
                             </SimpleGrid>
                         </DetailItem>
                     </VStack>
-
-                    <HStack>
-                        <Button colorPalette="green">
-                            Confirm <LuCheck />
-                        </Button>
-                        <Button colorPalette="red">
-                            Cancel <LuX />
-                        </Button>
-                    </HStack>
                 </Stack>
             </Card.Body>
         </Card.Root>

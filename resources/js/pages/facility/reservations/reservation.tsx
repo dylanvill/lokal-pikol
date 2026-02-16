@@ -4,6 +4,7 @@ import { usePage } from '@inertiajs/react';
 import CourtDetails from '../../../components/facility/reservation/ReservationDetails/CourtDetails';
 import CustomerDetails from '../../../components/facility/reservation/ReservationDetails/CustomerDetails';
 import PaymentDetails from '../../../components/facility/reservation/ReservationDetails/PaymentDetails';
+import ReservationActions from '../../../components/facility/reservation/ReservationDetails/ReservationActions';
 import ReservationDetails from '../../../components/facility/reservation/ReservationDetails/ReservationDetails';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type Reservation from '../../../models/facility/reservation/Reservation';
@@ -30,6 +31,7 @@ function ReservationPage() {
                         courtSlots={reservation.court.slots}
                         status={reservation.status}
                     />
+                    <ReservationActions status={reservation.status} paymentReceipt={reservation.paymentReceipt} />
                 </VStack>
             </Container>
         </FacilityLayout>
