@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Enums\GuardEnum;
 use App\Http\Facility\Reservation\Resources\ReservationListResource;
 use App\Source\Facility\Models\Facility;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,7 +21,14 @@ class ReservationsController extends Controller
         $facility = $request->user(GuardEnum::FACILITY->value)->getProfileAttribute();
 
         $reservations = $facility->reservations()
-            ->with(['court', 'customer'])
+            ->with([
+                'court',
+                'customer',
+                'fees',
+                'media' => function ($query) {
+                    $query->where('collection_name', MediaTypeEnum::RESERVATION_RECEIPTS->value);
+                }
+            ])
             ->orderBy('created_at', 'desc')->paginate(50);
 
         return Inertia::render('facility/reservations', [

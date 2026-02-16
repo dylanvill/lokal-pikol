@@ -2,6 +2,7 @@
 
 namespace App\Http\Facility\Reservation\Resources;
 
+use App\Http\Shared\Resources\PhotoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,7 +23,7 @@ class ReservationListResource extends JsonResource
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
             'status' => $this->status,
-            'paymentReceipt' => null,
+            'paymentReceipt' => new PhotoResource($this->media->first()),
             'createdAt' => $this->created_at,
         ];
     }
