@@ -3,8 +3,8 @@ import dayjs from 'dayjs';
 import type Reservation from '../../../models/customer/reservation/Reservation';
 import DetailItem from '../../shared/DetailItem';
 import ImageCarousel from '../../shared/ImageCarousel';
+import ReservationSlotCard from '../../shared/ReservationSlotCard';
 import CardHeading from './CardHeading';
-import ReservationSlotCard from './ReservationSlotCard';
 
 export interface ReservationDetailsProps {
     reservation: Reservation;

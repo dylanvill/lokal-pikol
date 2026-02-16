@@ -1,14 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Facility\Auth\Controllers\LoginController;
 use App\Http\Facility\Auth\Controllers\LogoutController;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Facility\Controllers\AccountController;
 use App\Http\Facility\Controllers\DashboardController;
 use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
 use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
+use App\Http\Facility\Reservation\Controllers\ReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationsController;
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -23,6 +23,7 @@ Route::group(["middleware" => "auth:facility"], function () {
 
     Route::prefix("reservations")->name("reservations.")->group(function () {
         Route::get('/', ReservationsController::class)->name('list');
+        Route::get('/{reservation:uuid}', ReservationController::class)->name('show');
         Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
     });
 
