@@ -4,7 +4,7 @@ import { usePage } from '@inertiajs/react';
 import Footer from '../../../components/facility/reservation/ReservationsTable/Footer';
 import Header from '../../../components/facility/reservation/ReservationsTable/Header';
 import Row from '../../../components/facility/reservation/ReservationsTable/Row';
-import SuccessAlert from '../../../components/shared/SuccessAlert';
+import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type ReservationListItem from '../../../models/facility/reservation/ReservationListItem';
 import type PaginatedData from '../../../models/shared/Pagination';

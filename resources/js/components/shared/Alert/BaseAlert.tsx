@@ -1,13 +1,14 @@
-import { Alert } from '@chakra-ui/react';
+import { Alert, type AlertRootProps } from '@chakra-ui/react';
 
-export interface SuccessAlertProps {
+export interface BaseAlertProps {
+    status: AlertRootProps['status'];
     title: string;
     description: string;
 }
 
-function SuccessAlert({ title, description }: SuccessAlertProps) {
+function BaseAlert({ status, title, description }: BaseAlertProps) {
     return (
-        <Alert.Root status="success">
+        <Alert.Root status={status}>
             <Alert.Indicator />
             <Alert.Content>
                 <Alert.Title>{title}</Alert.Title>
@@ -17,4 +18,4 @@ function SuccessAlert({ title, description }: SuccessAlertProps) {
     );
 }
 
-export default SuccessAlert;
+export default BaseAlert;

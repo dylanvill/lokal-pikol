@@ -30,7 +30,8 @@ function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
                     {/* Receipt Screenshot */}
                     {paymentReceipt ? (
                         <Box>
-                            <Image src={paymentReceipt.url} alt="Payment Receipt" borderRadius="md" objectFit="cover" />
+                            <Text textAlign="center" marginBottom={4}>Transaction Receipt</Text>
+                            <Image maxWidth="sm" src={paymentReceipt.url} alt="Payment Receipt" borderRadius="md" objectFit="cover" />
                         </Box>
                     ) : (
                         <Empty
