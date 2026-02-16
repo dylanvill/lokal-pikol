@@ -55,7 +55,7 @@ class ReserveCourtController extends Controller
         $reservation->load('fees');
         $this->setReservationFees($reservation, $court);
 
-        return redirect()->route('reservation.pending.show', [
+        return redirect()->route('reservation.on-hold.show', [
             'facility' => $facility->uuid,
             'court' => $court->uuid,
             'reservation' => $reservation->uuid,

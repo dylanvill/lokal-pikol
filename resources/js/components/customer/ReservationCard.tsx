@@ -6,6 +6,60 @@ import courtTypeIconParser from '../../helpers/courtTypeIconParser';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 import type ReservationStatus from '../../models/customer/reservation/ReservationStatus';
 import DetailWithIcon from '../shared/DetailWithIcon';
+
+const BadgeComponent = (status: ReservationStatus) => {
+    switch (status) {
+        case 'on hold':
+            return (
+                <Badge colorPalette="orange" variant="solid" marginTop={1}>
+                    <LuInfo />
+                    On Hold
+                </Badge>
+            );
+        case 'confirmed':
+            return (
+                <Badge colorPalette="green" variant="solid" marginTop={1}>
+                    <LuCheck />
+                    Confirmed
+                </Badge>
+            );
+        case 'cancelled':
+            return (
+                <Badge colorPalette="red" variant="solid" marginTop={1}>
+                    <LuX />
+                    Cancelled
+                </Badge>
+            );
+        case 'pending':
+            return (
+                <Badge colorPalette="blue" variant="solid" marginTop={1}>
+                    <LuClock />
+                    Pending Approval
+                </Badge>
+            );
+        default:
+            return (
+                <Badge colorPalette="gray" variant="solid" marginTop={1}>
+                    {status}
+                </Badge>
+            );
+    }
+};
+
+const StatusNote = (status: ReservationStatus) => {
+    switch (status) {
+        case 'on hold':
+            return 'Your reservation is currently on hold. Please settle any outstanding payments.';
+        case 'pending':
+            return 'Your reservation is pending approval by the facility. We will notify you once it is confirmed.';
+        case 'confirmed':
+            return 'Your reservation is confirmed! We look forward to seeing you on the court.';
+        case 'cancelled':
+            return 'This reservation has been cancelled. If you have any questions, please contact support.';
+        default:
+            return '';
+    }
+};
 export interface ReservationCardProps {
     id: string;
     facilityName: string;
@@ -39,47 +93,10 @@ function ReservationCard({
     const endTimeDisplay = militaryTimeToAmPmTime(endTime);
     const displayDate = dayjs(date).format('MMMM D, YYYY');
 
-    const BadgeComponent = (status: ReservationStatus) => {
-        switch (status) {
-            case 'on hold':
-                return (
-                    <Badge colorPalette="orange" variant="solid" marginTop={1}>
-                        <LuInfo />
-                        On Hold
-                    </Badge>
-                );
-            case 'confirmed':
-                return (
-                    <Badge colorPalette="green" variant="solid" marginTop={1}>
-                        <LuCheck />
-                        Confirmed
-                    </Badge>
-                );
-            case 'cancelled':
-                return (
-                    <Badge colorPalette="red" variant="solid" marginTop={1}>
-                        <LuX />
-                        Cancelled
-                    </Badge>
-                );
-            case 'pending':
-                return (
-                    <Badge colorPalette="blue" variant="solid" marginTop={1}>
-                        <LuClock />
-                        Pending
-                    </Badge>
-                );
-            default:
-                return (
-                    <Badge colorPalette="gray" variant="solid" marginTop={1}>
-                        {status}
-                    </Badge>
-                );
-        }
-    };
+    const link = status === 'on hold' ? `/reservations/reserve/${id}` : `/reservations/${id}`;
 
     return (
-        <Link href={`reservations/${id}`}>
+        <Link href={link}>
             <Card.Root>
                 <Card.Body gap="2">
                     <AspectRatio ratio={16 / 9} width="100%" borderRadius={8} overflow="hidden">
@@ -115,6 +132,9 @@ function ReservationCard({
                                 </Text>
                             </VStack>
                         </HStack>
+                        <Text fontSize="sm" color="gray.500" mt={2} fontStyle="italic">
+                            {StatusNote(status)}
+                        </Text>
                     </Card.Description>
                 </Card.Body>
             </Card.Root>
