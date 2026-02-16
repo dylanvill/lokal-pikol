@@ -1,6 +1,7 @@
-import { Box, Button, Container, Field, Heading, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
-import { Form } from '@inertiajs/react';
-import { LuArrowRight } from 'react-icons/lu';
+import { Box, Button, Container, Field, Heading, HStack, Image, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
+import { Form, Link, router } from '@inertiajs/react';
+import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
+import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 
 export default function SignUpPage() {
@@ -12,6 +13,21 @@ export default function SignUpPage() {
             }}
         >
             <Container px={4} py={8} colorPalette="blue">
+                <Box marginBottom={8}>
+                    <Link
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            router.visit(window.history.back()!);
+                        }}
+                    >
+                        <HStack gap={1}>
+                            <LuArrowLeft size={16} />
+                            <Text fontSize="sm">Back</Text>
+                        </HStack>
+                    </Link>
+                </Box>
+                <Image src={Logo} alt="Lokal Pikol" mb={8} mx="auto" maxHeight={48} />
                 <Box marginBottom={8}>
                     <Heading>Join Lokal Pikol</Heading>
                     <Text>Create your account and start booking courts in your area.</Text>

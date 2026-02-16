@@ -1,6 +1,7 @@
-import { Box, Button, Container, Field, Heading, Input, Stack, Text, Link } from '@chakra-ui/react';
-import { Form } from '@inertiajs/react';
-import { LuArrowRight } from 'react-icons/lu';
+import { Box, Button, Container, Field, Heading, Input, Stack, Text, Image, HStack } from '@chakra-ui/react';
+import { Form, Link, router } from '@inertiajs/react';
+import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
+import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 
 export default function LoginPage() {
@@ -12,6 +13,21 @@ export default function LoginPage() {
             }}
         >
             <Container px={4} py={8} colorPalette="blue">
+                <Box marginBottom={8}>
+                    <Link
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            router.visit(window.history.back()!);
+                        }}
+                    >
+                        <HStack gap={1}>
+                            <LuArrowLeft size={16} />
+                            <Text fontSize="sm">Back</Text>
+                        </HStack>
+                    </Link>
+                </Box>
+                <Image src={Logo} alt="Lokal Pikol" mb={8} mx="auto" maxHeight={48} />
                 <Box marginBottom={8}>
                     <Heading>Login</Heading>
                     <Text>Sign in to your account to start managing your cort bookings.</Text>
@@ -32,8 +48,8 @@ export default function LoginPage() {
                             </Field.Root>
 
                             <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-                                <Link href="/forgot-password" color="blue.500" fontSize="sm">
-                                    Forgot password?
+                                <Link href="/forgot-password" color="blue.500">
+                                    <Text>Forgot password?</Text>
                                 </Link>
                             </Box>
 
@@ -44,7 +60,6 @@ export default function LoginPage() {
                                     submit();
                                 }}
                                 colorScheme="blue"
-                                size="lg"
                                 mt={4}
                                 alignSelf="flex-end"
                                 loading={processing}
