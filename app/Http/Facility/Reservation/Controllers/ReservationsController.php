@@ -31,7 +31,7 @@ class ReservationsController extends Controller
             ])
             ->orderBy('created_at', 'desc')->paginate(50);
 
-        return Inertia::render('facility/reservations', [
+        return Inertia::render('facility/reservations/reservations', [
             'reservations' => ReservationListResource::collection($reservations),
         ]);
     }
