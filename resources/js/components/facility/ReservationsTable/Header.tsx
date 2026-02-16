@@ -2,6 +2,7 @@ import { Table } from '@chakra-ui/react';
 
 const headerData = [
     { id: 'Court Name', label: 'Court Name' },
+    { id: 'Customer Name', label: 'Customer Name' },
     { id: 'Date', label: 'Date' },
     { id: 'Time', label: 'Time' },
     { id: 'Status', label: 'Status' },

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Source\Facility\Database\Factories\FacilityFactory;
+use App\Source\Reservation\Models\Reservation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -45,6 +46,11 @@ class Facility extends Model implements HasMedia
     public function courts(): HasMany
     {
         return $this->hasMany(Court::class);
+    }
+
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 
     /**

@@ -6,10 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Facility\Controllers\AccountController;
 use App\Http\Facility\Controllers\DashboardController;
-use App\Http\Facility\Controllers\ReservationsController;
 use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
-
+use App\Http\Facility\Reservation\Controllers\ReservationsController;
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
