@@ -6,7 +6,7 @@ function Footer() {
     return (
         <Table.Footer>
             <Table.Row>
-                <Table.Cell colSpan={8}>
+                <Table.Cell colSpan={10}>
                     <Flex align="center" justify="space-between" py={2}>
                         <Text fontSize="sm" color="gray.600">
                             Showing 1 of 10 reservations
