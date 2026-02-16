@@ -3,10 +3,10 @@ import { Link, router } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LuArrowRight, LuCheck, LuExternalLink } from 'react-icons/lu';
-import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
-import statusColorParser from '../../../helpers/statusColorParser';
-import type ReservationStatus from '../../../models/customer/reservation/ReservationStatus';
-import type Photo from '../../../models/shared/Photo';
+import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
+import statusColorParser from '../../../../helpers/statusColorParser';
+import type ReservationStatus from '../../../../models/customer/reservation/ReservationStatus';
+import type Photo from '../../../../models/shared/Photo';
 
 export interface RowProps {
     id: string;
