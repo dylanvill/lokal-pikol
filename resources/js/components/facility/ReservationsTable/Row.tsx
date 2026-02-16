@@ -79,7 +79,7 @@ function Row({ id, courtName, customerName, reservationDate, startTime, endTime,
                 </Text>
             </Table.Cell>
             <Table.Cell>
-                {status === 'on hold' && hasPaymentReceipt ? (
+                {status === 'pending' && hasPaymentReceipt ? (
                     <Button size="xs" colorPalette="green" onClick={() => onConfirmClicked(id)}>
                         <LuCheck />
                         Confirm
