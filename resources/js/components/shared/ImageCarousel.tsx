@@ -1,7 +1,7 @@
 import { Image, Carousel, IconButton, AspectRatio, Box, type IconButtonProps } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
-import type Photo from '../../../models/shared/Photo';
+import type Photo from '../../models/shared/Photo';
 
 const ActionButton = forwardRef<HTMLButtonElement, IconButtonProps>(function ActionButton(props, ref) {
     return <IconButton {...props} ref={ref} size="xs" variant="outline" rounded="full" position="absolute" zIndex="1" bg="bg" />;

@@ -2,7 +2,7 @@ import { Box, Card, GridItem, SimpleGrid, Stack, VStack } from '@chakra-ui/react
 import dayjs from 'dayjs';
 import type Reservation from '../../../models/customer/reservation/Reservation';
 import DetailItem from '../../shared/DetailItem';
-import ImageCarousel from '../CourtReservationBlock/ImageCarousel';
+import ImageCarousel from '../../shared/ImageCarousel';
 import CardHeading from './CardHeading';
 import ReservationSlotCard from './ReservationSlotCard';
 

@@ -7,7 +7,7 @@ import type CourtSlot from '../../../models/customer/court/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import { Tooltip } from '../../ui/Tooltip';
 import CourtSlotSection from './CourtSlotSection';
-import ImageCarousel from './ImageCarousel';
+import ImageCarousel from '../../shared/ImageCarousel';
 
 export interface CourtReservationBlockProps {
     facilityId: string;
