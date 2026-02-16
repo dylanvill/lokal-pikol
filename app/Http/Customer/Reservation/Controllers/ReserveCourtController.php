@@ -87,7 +87,7 @@ class ReserveCourtController extends Controller
                 $query->orderBy('start_time');
             }
         ]);
-        $courtSlots = RangeToSlot::covertMany($court->courtPricings->map(function ($pricing) {
+        $courtSlots = RangeToSlot::convertMany($court->courtPricings->map(function ($pricing) {
             return new Range(
                 startTime: $pricing->start_time,
                 endTime: $pricing->end_time,

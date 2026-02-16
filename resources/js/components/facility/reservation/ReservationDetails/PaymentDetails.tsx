@@ -1,23 +1,26 @@
-import { Card, HStack, Separator, Text, VStack, Image, AspectRatio } from '@chakra-ui/react';
+import { Card, HStack, Separator, Text, VStack, Image, Box } from '@chakra-ui/react';
+import { LuFileQuestion } from 'react-icons/lu';
+import currencyFormatter from '../../../../helpers/currencyFormatter';
+import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
+import type Photo from '../../../../models/shared/Photo';
+import type ReservationFees from '../../../../models/shared/ReservationFees';
 import CardHeading from '../../../customer/ReservationReview/CardHeading';
 import PaymentItem from '../../../customer/ReservationReview/PaymentItem';
+import Empty from '../../../shared/Empty';
 
-function PaymentDetails() {
-    // Static payment data for now
-    const hourlyFees = [
-        { startTime: '2:00 PM', endTime: '3:00 PM', price: 100000 },
-        { startTime: '3:00 PM', endTime: '4:00 PM', price: 100000 }
-    ];
-    
-    const serviceFee = 15000;
-    const totalFees = hourlyFees.reduce((total, fee) => total + fee.price, 0) + serviceFee;
-    
-    const currencyFormatter = (amount: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-        }).format(amount);
-    };
+export interface PaymentDetailsProps {
+    fees: ReservationFees;
+    paymentReceipt: Photo | null;
+}
+
+function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
+    const totalFees = fees.hourlyFees.reduce((total, fee) => total + fee.price, 0) + fees.serviceFee;
+
+    const hourlyFees = fees.hourlyFees.map((fee) => ({
+        ...fee,
+        startTime: militaryTimeToAmPmTime(fee.startTime),
+        endTime: militaryTimeToAmPmTime(fee.endTime),
+    }));
 
     return (
         <Card.Root>
@@ -25,25 +28,24 @@ function PaymentDetails() {
                 <CardHeading text="Payment Details" />
                 <VStack gap={4}>
                     {/* Receipt Screenshot */}
-                    <AspectRatio ratio={3 / 4} width="full" maxW="300px">
-                        <Image
-                            src="https://picsum.photos/300/400?random=receipt"
-                            alt="Payment Receipt"
-                            borderRadius="md"
-                            objectFit="cover"
+                    {paymentReceipt ? (
+                        <Box>
+                            <Image src={paymentReceipt.url} alt="Payment Receipt" borderRadius="md" objectFit="cover" />
+                        </Box>
+                    ) : (
+                        <Empty
+                            icon={<LuFileQuestion />}
+                            title="Receipt unavailable"
+                            description="The customer hasn't uploaded a payment receipt. A preview of the receipt will be displayed here once the user uploads it."
                         />
-                    </AspectRatio>
-                    
+                    )}
+
                     {/* Payment Breakdown */}
                     <VStack gap={2} width="full">
                         {hourlyFees.map((fee, index) => (
-                            <PaymentItem 
-                                key={index}
-                                label={`${fee.startTime} - ${fee.endTime}`} 
-                                amount={fee.price} 
-                            />
+                            <PaymentItem key={index} label={`${fee.startTime} - ${fee.endTime}`} amount={fee.price} />
                         ))}
-                        <PaymentItem label="Service Fee" amount={serviceFee} />
+                        <PaymentItem label="Service Fee" amount={fees.serviceFee} />
                         <Separator width="full" />
                         <HStack justify="space-between" width="full">
                             <Text fontWeight="bold" fontSize="lg">

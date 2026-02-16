@@ -2,7 +2,7 @@ import { Box, Separator, Text } from '@chakra-ui/react';
 import currencyFormatter from '../../helpers/currencyFormatter';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 import getSlotPrice from '../../lib/getSlotPrice';
-import type CourtSlot from '../../models/customer/court/CourtSlot';
+import type CourtSlot from '../../models/shared/CourtSlot';
 
 export interface ReservationSlotCardProps {
     startTime: string;

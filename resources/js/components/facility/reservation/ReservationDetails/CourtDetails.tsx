@@ -1,16 +1,16 @@
 import { Box, Card, Stack, VStack } from '@chakra-ui/react';
+import type Photo from '../../../../models/shared/Photo';
 import CardHeading from '../../../customer/ReservationReview/CardHeading';
 import DetailItem from '../../../shared/DetailItem';
 import ImageCarousel from '../../../shared/ImageCarousel';
 
-function CourtDetails() {
-    // Static photos data for now
-    const courtPhotos = [
-        { id: "1", url: 'https://picsum.photos/800/450?random=1' },
-        { id: "2", url: 'https://picsum.photos/800/450?random=2' },
-        { id: "3", url: 'https://picsum.photos/800/450?random=3' },
-    ];
+export interface CourtDetailsProps {
+    courtName: string;
+    covered: boolean;
+    photos: Photo[];
+}
 
+function CourtDetails({ courtName, covered, photos }: CourtDetailsProps) {
     return (
         <Card.Root>
             <Card.Body>
@@ -18,13 +18,13 @@ function CourtDetails() {
                 <Stack gap={6}>
                     {/* Court Photos */}
                     <Box>
-                        <ImageCarousel photos={courtPhotos} />
+                        <ImageCarousel photos={photos} />
                     </Box>
 
                     {/* Court Information */}
                     <VStack align="start" gap={4}>
-                        <DetailItem label="Court Name" value="Central Tennis Court A" />
-                        <DetailItem label="Court Type" value="Indoor" />
+                        <DetailItem label="Court Name" value={courtName} />
+                        <DetailItem label="Court Type" value={covered ? 'Covered' : 'Outdoor'} />
                     </VStack>
                 </Stack>
             </Card.Body>

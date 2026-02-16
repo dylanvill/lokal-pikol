@@ -38,7 +38,7 @@ class RangeToSlot
      * @param Range[] $courtPricings
      * @return CourtSlot[]
      */
-    public static function covertMany(array $courtPricings): array
+    public static function convertMany(array $courtPricings): array
     {
         $allSlots = [];
         foreach ($courtPricings as $pricing) {

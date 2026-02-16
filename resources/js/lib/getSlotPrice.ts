@@ -1,4 +1,4 @@
-import type CourtSlot from '../models/customer/court/CourtSlot';
+import type CourtSlot from '../models/shared/CourtSlot';
 
 const getSlotPrice = (courtSlots: CourtSlot[], startTime: string) => {
     const matchingSlot = courtSlots.find((courtSlot) => courtSlot.startTime === startTime);

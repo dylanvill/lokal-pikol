@@ -3,7 +3,7 @@ import { Form } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { LuArrowRight, LuSun } from 'react-icons/lu';
 import useCustomer from '../../../lib/hooks/useCustomer';
-import type CourtSlot from '../../../models/customer/court/CourtSlot';
+import type CourtSlot from '../../../models/shared/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import { Tooltip } from '../../ui/Tooltip';
 import CourtSlotSection from './CourtSlotSection';

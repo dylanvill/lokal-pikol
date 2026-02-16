@@ -26,7 +26,7 @@ class CourtResource extends JsonResource
      */
     protected function getRanges(): array
     {
-        return RangeToSlot::covertMany($this->courtPricings->map(function ($pricing) {
+        return RangeToSlot::convertMany($this->courtPricings->map(function ($pricing) {
             return new Range(
                 startTime: $pricing->start_time,
                 endTime: $pricing->end_time,
@@ -37,7 +37,7 @@ class CourtResource extends JsonResource
 
     protected function getReservationRanges()
     {
-        return RangeToSlot::covertMany($this->reservations->map(function ($reservations) {
+        return RangeToSlot::convertMany($this->reservations->map(function ($reservations) {
             return new Range(
                 startTime: $reservations->start_time,
                 endTime: $reservations->end_time,
