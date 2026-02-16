@@ -1,5 +1,5 @@
 import { Badge, Button, Table, Text, Link as ChakraLink } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LuArrowRight, LuCheck, LuExternalLink } from 'react-icons/lu';
@@ -39,6 +39,10 @@ function Row({ id, courtName, customerName, reservationDate, startTime, endTime,
         return dayjs(reservationDate).format('MMMM D, YYYY');
     }, [reservationDate]);
 
+    const onConfirmClicked = (id: string) => {
+        router.post(`/facility/reservations/${id}/confirm`);
+    };
+
     return (
         <Table.Row key={id}>
             <Table.Cell>
@@ -76,9 +80,9 @@ function Row({ id, courtName, customerName, reservationDate, startTime, endTime,
             </Table.Cell>
             <Table.Cell>
                 {status === 'on hold' && hasPaymentReceipt ? (
-                    <Button size="xs" colorPalette="green">
+                    <Button size="xs" colorPalette="green" onClick={() => onConfirmClicked(id)}>
                         <LuCheck />
-                        Approve
+                        Confirm
                     </Button>
                 ) : (
                     <Text fontSize="sm" color="gray.400">

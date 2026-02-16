@@ -8,6 +8,7 @@ use App\Http\Facility\Controllers\AccountController;
 use App\Http\Facility\Controllers\DashboardController;
 use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
+use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationsController;
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -18,8 +19,12 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::group(["middleware" => "auth:facility"], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    Route::get('/reservations', ReservationsController::class)->name('reservations');
     Route::get('/account', AccountController::class)->name('account');
+
+    Route::prefix("reservations")->name("reservations.")->group(function () {
+        Route::get('/', ReservationsController::class)->name('list');
+        Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
+    });
 
     Route::prefix("courts")->name("courts.")->group(function () {
         Route::get('/', CourtsController::class)->name('index');
