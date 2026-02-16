@@ -1,23 +1,28 @@
-import { Badge, Button, Table, Text } from '@chakra-ui/react';
+import { Badge, Button, Table, Text, Link as ChakraLink } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { LuArrowRight, LuCheck } from 'react-icons/lu';
+import { LuArrowRight, LuCheck, LuExternalLink } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 import statusColorParser from '../../../helpers/statusColorParser';
 import type ReservationStatus from '../../../models/customer/reservation/ReservationStatus';
+import type Photo from '../../../models/shared/Photo';
 
 export interface RowProps {
     id: string;
     courtName: string;
-    date: string;
+    customerName: string;
+    reservationDate: string;
     startTime: string;
     endTime: string;
     status: ReservationStatus;
-    paymentReceipt: string;
+    paymentReceipt: Photo | null;
     requestedAt: string;
 }
 
-function Row({ id, courtName, date, startTime, endTime, status, paymentReceipt, requestedAt }: RowProps) {
+function Row({ id, courtName, customerName, reservationDate, startTime, endTime, status, paymentReceipt, requestedAt }: RowProps) {
+    const hasPaymentReceipt = !!paymentReceipt?.url;
+
     const statusColor = statusColorParser(status);
 
     const timeDisplay = useMemo(() => {
@@ -30,13 +35,20 @@ function Row({ id, courtName, date, startTime, endTime, status, paymentReceipt, 
         return dayjs(requestedAt).format('MMMM D, YYYY h:mm A');
     }, [requestedAt]);
 
+    const reservationDateDisplay = useMemo(() => {
+        return dayjs(reservationDate).format('MMMM D, YYYY');
+    }, [reservationDate]);
+
     return (
         <Table.Row key={id}>
             <Table.Cell>
                 <Text fontWeight="medium">{courtName}</Text>
             </Table.Cell>
             <Table.Cell>
-                <Text>{date}</Text>
+                <Text fontWeight="medium">{customerName}</Text>
+            </Table.Cell>
+            <Table.Cell>
+                <Text>{reservationDateDisplay}</Text>
             </Table.Cell>
             <Table.Cell>
                 <Text>{timeDisplay}</Text>
@@ -47,7 +59,15 @@ function Row({ id, courtName, date, startTime, endTime, status, paymentReceipt, 
                 </Badge>
             </Table.Cell>
             <Table.Cell>
-                <Text>Receipt here</Text>
+                {paymentReceipt ? (
+                    <ChakraLink href={paymentReceipt?.url ?? ''} target="_blank">
+                        View Receipt <LuExternalLink />
+                    </ChakraLink>
+                ) : (
+                    <Text fontSize="sm" color="gray.400">
+                        N/A
+                    </Text>
+                )}
             </Table.Cell>
             <Table.Cell>
                 <Text fontSize="sm" color="gray.600">
@@ -55,23 +75,24 @@ function Row({ id, courtName, date, startTime, endTime, status, paymentReceipt, 
                 </Text>
             </Table.Cell>
             <Table.Cell>
-                {status === 'pending' && (
-                    <Button size="sm" colorPalette="green">
+                {status === 'on hold' && hasPaymentReceipt ? (
+                    <Button size="xs" colorPalette="green">
                         <LuCheck />
                         Approve
                     </Button>
-                )}
-                {status !== 'pending' && (
+                ) : (
                     <Text fontSize="sm" color="gray.400">
                         N/A
                     </Text>
                 )}
             </Table.Cell>
             <Table.Cell>
-                <Button size="sm" variant="ghost">
-                    Full Details
-                    <LuArrowRight className="w-4 h-4" />
-                </Button>
+                <Link href={`/facility/reservations/${id}`}>
+                    <Button size="sm" variant="ghost">
+                        Full Details
+                        <LuArrowRight className="w-4 h-4" />
+                    </Button>
+                </Link>
             </Table.Cell>
         </Table.Row>
     );
