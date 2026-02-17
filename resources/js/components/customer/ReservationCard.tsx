@@ -97,7 +97,7 @@ function ReservationCard({
 
     return (
         <Link href={link}>
-            <Card.Root>
+            <Card.Root height="full">
                 <Card.Body gap="2">
                     <AspectRatio ratio={16 / 9} width="100%" borderRadius={8} overflow="hidden">
                         <Image src={courtImageUrl} borderRadius={8} />

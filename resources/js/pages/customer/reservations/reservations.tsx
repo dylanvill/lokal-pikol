@@ -21,7 +21,7 @@ function ReservationsPage() {
             {reservations.length === 0 && (
                 <Empty icon={<LuCalendar />} title="No Reservations" description="You have no reservations at the moment." />
             )}
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={4}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={4} >
                 {reservations.map((reservation) => (
                     <ReservationCard
                         key={reservation.id}
