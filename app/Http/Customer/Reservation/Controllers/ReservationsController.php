@@ -16,7 +16,7 @@ class ReservationsController extends Controller
         /** @var Customer */
         $customer = $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute();
 
-        $customer->load(['reservations', 'reservations.court', 'reservations.facility', 'reservations.fees']);
+        $customer->load(['reservations' => fn($query) => $query->orderByDesc('created_at'), 'reservations.court', 'reservations.facility', 'reservations.fees']);
 
         return inertia('customer/reservations/reservations', [
             'reservations' => ReservationResource::collection($customer->reservations),
