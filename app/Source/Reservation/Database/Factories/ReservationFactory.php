@@ -5,6 +5,7 @@ namespace App\Source\Reservation\Database\Factories;
 use App\Source\Court\Models\Court;
 use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Enums\ReservationStatusEnum;
 use App\Source\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -35,5 +36,19 @@ class ReservationFactory extends Factory
             'start_time' => $startTime,
             'end_time' => $endTime,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Reservation $reservation) {
+            if ($reservation->status !== ReservationStatusEnum::ON_HOLD->value) {
+                $reservation
+                    ->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
+            }
+        });
     }
 }

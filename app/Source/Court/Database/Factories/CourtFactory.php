@@ -4,6 +4,7 @@ namespace App\Source\Court\Database\Factories;
 
 use App\Source\Facility\Models\Facility;
 use App\Source\Court\Models\Court;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,5 +26,20 @@ class CourtFactory extends Factory
             'covered' => $this->faker->boolean(60), // 60% chance of being covered
             'facility_id' => Facility::factory(),
         ];
+    }
+
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Court $court) {
+            collect(range(1, 4))->each(function () use ($court) {
+                $court
+                    ->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->toMediaCollection(MediaTypeEnum::COURT_PHOTOS->value);
+            });
+        });
     }
 }

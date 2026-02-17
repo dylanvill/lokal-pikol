@@ -6,6 +6,7 @@ use App\Models\Traits\HasUuid;
 use App\Source\Court\Models\Court;
 use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
+use App\Source\Reservation\Database\Factories\ReservationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -51,5 +52,10 @@ class Reservation extends Model implements HasMedia
     public function fees(): HasMany
     {
         return $this->hasMany(ReservationFee::class);
+    }
+
+    protected static function newFactory()
+    {
+        return ReservationFactory::new();
     }
 }

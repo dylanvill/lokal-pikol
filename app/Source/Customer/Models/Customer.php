@@ -4,6 +4,7 @@ namespace App\Source\Customer\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Authentication\Models\User;
+use App\Source\Customer\Database\Factories\CustomerFactory;
 use App\Source\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,5 +46,10 @@ class Customer extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    protected static function newFactory()
+    {
+        return CustomerFactory::new();
     }
 }
