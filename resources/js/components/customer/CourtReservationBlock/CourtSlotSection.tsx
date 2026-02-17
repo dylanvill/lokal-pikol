@@ -1,4 +1,5 @@
 import { Badge, CheckboxCard, Field, Float } from '@chakra-ui/react';
+import { type InertiaFormProps } from '@inertiajs/react';
 import { useMemo } from 'react';
 import { LuX } from 'react-icons/lu';
 import currencyFormatter from '../../../helpers/currencyFormatter';
@@ -10,9 +11,10 @@ export interface CourtSlotProps {
     endTime: string;
     price: number;
     isAvailable: boolean;
+    form: InertiaFormProps<{ date: string; slots: string[] }>;
 }
 
-function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable }: CourtSlotProps) {
+function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, form }: CourtSlotProps) {
     const timeDisplay = useMemo(() => {
         return {
             startTime: militaryTimeToAmPmTime(startTime),
@@ -21,6 +23,18 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable }: C
     }, [startTime, endTime]);
 
     const formattedPrice = currencyFormatter(price);
+
+    const handleSelectionChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const slotValue = `${startTime}-${endTime}`;
+        if (e.target.checked) {
+            form.setData('slots', [...form.data.slots, slotValue]);
+        } else {
+            form.setData(
+                'slots',
+                form.data.slots.filter((slot) => slot !== slotValue),
+            );
+        }
+    };
 
     return (
         <Field.Root width="full">
@@ -41,7 +55,7 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable }: C
                         </Badge>
                     </Float>
                 )}
-                <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
+                <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} onChange={handleSelectionChanged} />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>
                         <CheckboxCard.Label fontSize="md">{`${timeDisplay.startTime} - ${timeDisplay.endTime}`}</CheckboxCard.Label>
