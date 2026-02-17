@@ -17,6 +17,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
+        $credentials['role'] = GuardEnum::CUSTOMER->value;
 
         if (Auth::guard(GuardEnum::CUSTOMER->value)->attempt($credentials)) {
             $request->session()->regenerate();
