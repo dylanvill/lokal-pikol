@@ -4,6 +4,7 @@ namespace App\Http\Customer\Facility\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Court\Resources\CourtResource;
+use App\Http\Customer\Facility\Requests\FacilityRequest;
 use App\Http\Customer\Facility\Resources\FacilityResource;
 use App\Source\Facility\Models\Facility;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
@@ -12,9 +13,9 @@ use Inertia\Response;
 
 class FacilityController extends Controller
 {
-    public function __invoke(Facility $facility): Response
+    public function __invoke(Facility $facility, FacilityRequest $request): Response
     {
-
+        $lookupDate = $request->input('date', now()->toDateString());
         $facility = $facility->load([
             'media' => function ($query) {
                 $query->where('collection_name', MediaTypeEnum::FACILITY_PROFILE_PHOTO)->first();
@@ -30,8 +31,8 @@ class FacilityController extends Controller
             'courtPricings' => function ($query) {
                 $query->orderBy('start_time');
             },
-            'reservations' => function ($query) {
-                $query->where('reservation_date', now()->toDateString());
+            'reservations' => function ($query) use ($lookupDate) {
+                $query->where('reservation_date', $lookupDate);
             },
         ]);
 
@@ -39,6 +40,7 @@ class FacilityController extends Controller
         return Inertia::render('customer/facility', [
             'facility' => new FacilityResource($facility),
             'courts' => CourtResource::collection($courts),
+            'lookupDate' => $lookupDate,
         ]);
     }
 }

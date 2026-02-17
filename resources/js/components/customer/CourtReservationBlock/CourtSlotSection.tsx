@@ -11,7 +11,7 @@ export interface CourtSlotProps {
     endTime: string;
     price: number;
     isAvailable: boolean;
-    form: InertiaFormProps<{ date: string; slots: string[] }>;
+    form: InertiaFormProps<{ slots: string[] }>;
 }
 
 function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, form }: CourtSlotProps) {
@@ -67,17 +67,6 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                 </CheckboxCard.Control>
             </CheckboxCard.Root>
         </Field.Root>
-        // <Badge
-        //     {...style}
-        //     size="lg"
-        //     onClick={internalState === 'reserved' ? undefined : () => handleClicked(courtId, startTime, price)}
-        //     _hover={{ cursor: internalState === 'reserved' ? 'default' : 'pointer' }}
-        //     fontFamily="mono"
-        //     fontWeight="bold"
-        // >
-        //     <Icon />
-        //     {startTime} - {endTime}
-        // </Badge>
     );
 }
 

@@ -1,9 +1,10 @@
 import { Alert, type AlertRootProps } from '@chakra-ui/react';
+import React from 'react';
 
 export interface BaseAlertProps {
     status: AlertRootProps['status'];
     title: string;
-    description: string;
+    description: string | React.ReactNode;
 }
 
 function BaseAlert({ status, title, description }: BaseAlertProps) {

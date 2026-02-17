@@ -1,44 +1,47 @@
-import { Button, Field, GridItem, Heading, HStack, Input, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Button, Field, GridItem, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { LuArrowRight, LuSun } from 'react-icons/lu';
 import useCustomer from '../../../lib/hooks/useCustomer';
 import type CourtSlot from '../../../models/shared/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
 import ImageCarousel from '../../shared/ImageCarousel';
-
 import { Tooltip } from '../../ui/Tooltip';
 import CourtSlotSection from './CourtSlotSection';
+
 export interface CourtReservationBlockProps {
     facilityId: string;
     courtId: string;
     name: string;
     photos: Photo[];
     slots: CourtSlot[];
+    date: string;
 }
 
-function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: CourtReservationBlockProps) {
+function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date }: CourtReservationBlockProps) {
     const { isLoggedIn } = useCustomer();
-    const today = dayjs().format('YYYY-MM-DD');
 
-    const form = useForm<{ date: string; slots: string[] }>({
-        date: today,
+    const form = useForm<{ slots: string[] }>({
         slots: [],
     });
 
-    const dateDisplay = form.data.date ? dayjs(form.data.date).format('dddd, MMMM D, YYYY') : null;
+    const dateDisplay = date ? dayjs(date).format('dddd, MMMM D, YYYY') : null;
 
-    const canBook = form.data.slots.length > 0 && form.data.date;
+    const canBook = form.data.slots.length > 0 && date;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        form.transform((data) => ({
+            ...data,
+            date: date,
+        }));
         form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`);
     };
 
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        form.setData('date', e.target.value);
-        form.setData('slots', []); // Clear selected slots when date changes
-    }
+    useEffect(() => {
+        form.setData('slots', []);
+    }, [date]);
 
     return (
         <SimpleGrid columns={{ base: 1, lg: 6 }} gap={8}>
@@ -52,23 +55,12 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                     <Text>Outdoor Court</Text>
                 </HStack>
                 <form onSubmit={handleSubmit}>
-                    <Field.Root marginBottom={8} maxW={{ base: 'full', md: 'sm' }} invalid={!!form.errors.date}>
-                        <Field.Label htmlFor="date" as="text">
-                            Date:
-                        </Field.Label>
-                        <Input
-                            type="date"
-                            name="date"
-                            value={form.data.date}
-                            onChange={handleDateChange}
-                            min={today}
-                            required
-                        />
-                        <Field.HelperText>Select a date to view available courts.</Field.HelperText>
-                        <Field.ErrorText>{form.errors.date}</Field.ErrorText>
-                    </Field.Root>
                     <Text marginBottom={2}>
-                        Select time slots for <Text as="span" fontWeight="bold">{dateDisplay}</Text>:
+                        Select time slots for{' '}
+                        <Text as="span" fontWeight="bold">
+                            {dateDisplay}
+                        </Text>
+                        :
                     </Text>
                     <Field.Root marginBottom={4} invalid={!!form.errors.slots}>
                         <Field.ErrorText>{form.errors.slots}</Field.ErrorText>
