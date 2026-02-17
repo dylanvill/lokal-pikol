@@ -28,12 +28,12 @@ class FacilityFactory extends Factory
             'name' => $this->faker->company(),
             'address' => $this->faker->address(),
             'email' => $this->faker->unique()->companyEmail(),
-            'phone' => $this->faker->optional(0.8)->phoneNumber(),
+            'phone' => "+639{$this->faker->numberBetween(100000000, 999999999)}",
             'description' => $this->faker->optional(0.7)->paragraph(3),
             'opening_time' => sprintf('%02d:00:00', $openingHour),
             'closing_time' => sprintf('%02d:00:00', $closingHour),
             'google_maps_url' => $this->faker->optional(0.7)->randomElement(['https://maps.app.goo.gl/CWCR3TM8NUEMW1Bj6']),
-            'city' => $this->faker->randomElement(CityEnum::cases())->value,
+            'city' => $this->faker->randomElement(CityEnum::values()),
         ];
     }
 

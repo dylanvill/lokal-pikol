@@ -24,12 +24,12 @@ class ReservationFeeFactory extends Factory
         $feeTypes = [
             [
                 'item' => ReservationFeeItemsEnum::HOURLY_RATE->value,
-                'description' => 'Court rental hourly rate',
+                'description' => ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value,
                 'amount' => $this->faker->randomFloat(2, 50, 150)
             ],
             [
                 'item' => ReservationFeeItemsEnum::SERVICE_FEE->value,
-                'description' => 'Booking and processing service fee',
+                'description' => null,
                 'amount' => $this->faker->randomFloat(2, 8, 25)
             ],
         ];

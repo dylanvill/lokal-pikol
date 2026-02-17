@@ -26,11 +26,11 @@ class CourtPricingFactory extends Factory
         $endTime = sprintf('%02d:00:00', $startHour + 1);
 
         // Different pricing based on time of day
-        $basePrice = match(true) {
-            $startHour >= 6 && $startHour < 9 => $this->faker->randomFloat(2, 50, 80), // Morning
-            $startHour >= 9 && $startHour < 17 => $this->faker->randomFloat(2, 60, 100), // Day
-            $startHour >= 17 && $startHour < 21 => $this->faker->randomFloat(2, 80, 120), // Evening (peak)
-            default => $this->faker->randomFloat(2, 40, 70), // Night
+        $basePrice = match (true) {
+            $startHour >= 6 && $startHour < 9 => 150, // Morning
+            $startHour >= 9 && $startHour < 17 => 250, // Day
+            $startHour >= 17 && $startHour < 21 => 300, // Evening (peak)
+            default => 100, // Night
         };
 
         return [
@@ -39,29 +39,5 @@ class CourtPricingFactory extends Factory
             'price' => $basePrice,
             'court_id' => Court::factory(),
         ];
-    }
-
-    /**
-     * Create pricing for peak hours (higher rates)
-     */
-    public function peak(): static
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'price' => $this->faker->randomFloat(2, 100, 150),
-            ];
-        });
-    }
-
-    /**
-     * Create pricing for off-peak hours (lower rates)
-     */
-    public function offPeak(): static
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'price' => $this->faker->randomFloat(2, 40, 80),
-            ];
-        });
     }
 }

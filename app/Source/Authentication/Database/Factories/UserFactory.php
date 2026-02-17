@@ -2,6 +2,7 @@
 
 namespace App\Source\Authentication\Database\Factories;
 
+use App\Http\Enums\GuardEnum;
 use App\Source\Authentication\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +32,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => $this->faker->randomElement(['facility', 'customer']),
+            'role' => $this->faker->randomElement(GuardEnum::values()),
         ];
     }
 

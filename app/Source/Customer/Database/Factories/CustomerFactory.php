@@ -23,6 +23,7 @@ class CustomerFactory extends Factory
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
+            'phone' => "+639{$this->faker->numberBetween(100000000, 999999999)}",
         ];
     }
 }
