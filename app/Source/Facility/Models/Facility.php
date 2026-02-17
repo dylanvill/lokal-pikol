@@ -33,11 +33,6 @@ class Facility extends Model implements HasMedia
         'city',
     ];
 
-    protected $casts = [
-        'opening_time' => 'timestamp',
-        'closing_time' => 'timestamp',
-    ];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

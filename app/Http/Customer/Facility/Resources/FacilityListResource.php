@@ -14,11 +14,11 @@ class FacilityListResource extends JsonResource
         return [
             "id" => $this->uuid,
             "name" => $this->name,
-            "courtTypes" => $this->parseCourtTypes(),
+            "courtType" => $this->parseCourtType(),
             "coverPhoto" => $this->parseCoverPhoto(),
             "profilePhoto" => $this->parseProfilePhoto(),
-            "openingTime" => "07:00:00 AM",
-            "closingTime" => "10:00:00 PM",
+            "openingTime" => $this->opening_time,
+            "closingTime" => $this->closing_time,
             "availableSlots" => [],
             "city" => $this->city,
             "address" => $this->address,
@@ -26,7 +26,7 @@ class FacilityListResource extends JsonResource
         ];
     }
 
-    public function parseCourtTypes(): string
+    public function parseCourtType(): string
     {
         $typeDisplay = "";
 

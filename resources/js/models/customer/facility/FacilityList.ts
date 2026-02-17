@@ -3,7 +3,7 @@ import type Photo from '../../shared/Photo';
 interface FacilityList {
     id: string;
     name: string;
-    courtTypes: string;
+    courtType: "Covered" | "Outdoor" | "Covered & Outdoor";
     coverPhoto: Photo | null;
     profilePhoto: Photo | null;
     openingTime: string;

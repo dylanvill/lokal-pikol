@@ -4,6 +4,7 @@ namespace App\Http\Customer\Facility\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Court\Resources\CourtListResource;
+use App\Http\Customer\Facility\Requests\FacilitiesRequest;
 use App\Http\Customer\Facility\Resources\FacilityListResource;
 use App\Source\Facility\Models\Facility;
 use App\Source\Court\Models\Court;
@@ -15,11 +16,14 @@ use Inertia\Response;
 class FacilitiesController extends Controller
 {
 
-    public function __invoke(Request $request): Response
+    public function __invoke(FacilitiesRequest $request): Response
     {
+        $currentHour = now()->hour;
 
         $facilities = Facility::with([
             'courts',
+            'courts.courtPricings',
+            'courts.reservations',
             'media' => function ($query) {
                 $query->whereIn('collection_name', [
                     MediaTypeEnum::FACILITY_PROFILE_PHOTO->value,
@@ -28,8 +32,8 @@ class FacilitiesController extends Controller
             }
         ])
             ->whereHas('courts')
-            ->get();
+            ->paginate(15);
 
-        return Inertia::render('customer/facilities', ['facilities' => FacilityListResource::collection($facilities)]);
+        return Inertia::render('customer/facilities', ['facilities' => Inertia::scroll(fn() => FacilityListResource::collection($facilities))]);
     }
 }
