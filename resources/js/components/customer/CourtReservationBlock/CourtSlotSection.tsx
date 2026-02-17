@@ -1,4 +1,4 @@
-import { Badge, CheckboxCard, Field, Float } from '@chakra-ui/react';
+import { Badge, CheckboxCard, Field, Float, type CheckboxCardCheckedChangeDetails } from '@chakra-ui/react';
 import { type InertiaFormProps } from '@inertiajs/react';
 import { useMemo } from 'react';
 import { LuX } from 'react-icons/lu';
@@ -24,17 +24,18 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
 
     const formattedPrice = currencyFormatter(price);
 
-    const handleSelectionChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const slotValue = `${startTime}-${endTime}`;
-        if (e.target.checked) {
-            form.setData('slots', [...form.data.slots, slotValue]);
+    const handleSelectionChanged = (details: CheckboxCardCheckedChangeDetails) => {
+        if (details.checked) {
+            form.setData('slots', [...form.data.slots, `${startTime}-${endTime}`]);
         } else {
             form.setData(
                 'slots',
-                form.data.slots.filter((slot) => slot !== slotValue),
+                form.data.slots.filter((slot) => slot !== `${startTime}-${endTime}`),
             );
         }
     };
+
+    const isChecked = form.data.slots.includes(`${startTime}-${endTime}`);
 
     return (
         <Field.Root width="full">
@@ -45,6 +46,8 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                 colorPalette="green"
                 width="full"
                 size="sm"
+                checked={isChecked}
+                onCheckedChange={handleSelectionChanged}
                 disabled={!isAvailable}
                 {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
             >
@@ -55,7 +58,7 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                         </Badge>
                     </Float>
                 )}
-                <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} onChange={handleSelectionChanged} />
+                <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>
                         <CheckboxCard.Label fontSize="md">{`${timeDisplay.startTime} - ${timeDisplay.endTime}`}</CheckboxCard.Label>

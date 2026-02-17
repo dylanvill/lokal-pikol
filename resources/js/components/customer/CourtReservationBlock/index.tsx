@@ -26,12 +26,19 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
         slots: [],
     });
 
+    const dateDisplay = form.data.date ? dayjs(form.data.date).format('dddd, MMMM D, YYYY') : null;
+
     const canBook = form.data.slots.length > 0 && form.data.date;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`);
     };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        form.setData('date', e.target.value);
+        form.setData('slots', []); // Clear selected slots when date changes
+    }
 
     return (
         <SimpleGrid columns={{ base: 1, lg: 6 }} gap={8}>
@@ -53,14 +60,16 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots }: Cou
                             type="date"
                             name="date"
                             value={form.data.date}
-                            onChange={(e) => form.setData('date', e.target.value)}
+                            onChange={handleDateChange}
                             min={today}
                             required
                         />
                         <Field.HelperText>Select a date to view available courts.</Field.HelperText>
                         <Field.ErrorText>{form.errors.date}</Field.ErrorText>
                     </Field.Root>
-                    <Text marginBottom={2}>Select time slots:</Text>
+                    <Text marginBottom={2}>
+                        Select time slots for <Text as="span" fontWeight="bold">{dateDisplay}</Text>:
+                    </Text>
                     <Field.Root marginBottom={4} invalid={!!form.errors.slots}>
                         <Field.ErrorText>{form.errors.slots}</Field.ErrorText>
                     </Field.Root>
