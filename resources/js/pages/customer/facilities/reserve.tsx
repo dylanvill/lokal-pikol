@@ -1,4 +1,4 @@
-import { Container, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import PaymentBreakdown from '../../../components/customer/ReservationReview/PaymentBreakdown';
@@ -18,14 +18,12 @@ function ReservePage() {
 
     return (
         <DefaultPageLayout title="Facility Name">
-            <Container maxW="7xl" px={4} py={4}>
-                <VStack gap={6} align="stretch">
-                    <ReservationNotice />
-                    <ReservationDetails reservation={reservation} />
-                    <PaymentBreakdown reservation={reservation} />
-                    <PaymentUpload reservation={reservation} />
-                </VStack>
-            </Container>
+            <VStack gap={6} align="stretch">
+                <ReservationNotice />
+                <ReservationDetails reservation={reservation} />
+                <PaymentBreakdown reservation={reservation} />
+                <PaymentUpload reservation={reservation} />
+            </VStack>
         </DefaultPageLayout>
     );
 }
