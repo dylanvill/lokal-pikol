@@ -20,24 +20,54 @@ class CourtPricingFactory extends Factory
      */
     public function definition(): array
     {
-        // Generate time slots throughout the day
-        $startHour = $this->faker->numberBetween(6, 20);
-        $startTime = sprintf('%02d:00:00', $startHour);
-        $endTime = sprintf('%02d:00:00', $startHour + 1);
-
-        // Different pricing based on time of day
-        $basePrice = match (true) {
-            $startHour >= 6 && $startHour < 9 => 150, // Morning
-            $startHour >= 9 && $startHour < 17 => 250, // Day
-            $startHour >= 17 && $startHour < 21 => 300, // Evening (peak)
-            default => 100, // Night
-        };
-
+        // This is a placeholder definition - actual pricing slots are created using states
         return [
-            'start_time' => $startTime,
-            'end_time' => $endTime,
-            'price' => $basePrice,
+            'start_time' => '06:00:00',
+            'end_time' => '07:00:00',
+            'price' => 150,
             'court_id' => Court::factory(),
         ];
+    }
+
+    /**
+     * Create morning pricing slot (opening time to 11:00)
+     */
+    public function morningSlot(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'start_time' => '06:00:00', // Will be set properly when used with ->for($court)
+                'end_time' => '11:00:00',
+                'price' => 150, // Morning pricing
+            ];
+        });
+    }
+
+    /**
+     * Create day pricing slot (11:00 to 17:00)
+     */
+    public function daySlot(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'start_time' => '11:00:00',
+                'end_time' => '17:00:00',
+                'price' => 250, // Day pricing
+            ];
+        });
+    }
+
+    /**
+     * Create evening pricing slot (17:00 to closing time)
+     */
+    public function eveningSlot(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'start_time' => '17:00:00',
+                'end_time' => '22:00:00', // Will be set properly when used with ->for($court)
+                'price' => 300, // Evening pricing (peak)
+            ];
+        });
     }
 }

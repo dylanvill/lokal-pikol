@@ -37,7 +37,7 @@ class CourtFactory extends Factory
         return $this->afterCreating(function (Court $court) {
             collect(range(1, 4))->each(function () use ($court) {
                 $court
-                    ->addMediaFromUrl('https://picsum.photos/600/600')
+                    ->addMediaFromUrl('https://picsum.photos/400/400')
                     ->toMediaCollection(MediaTypeEnum::COURT_PHOTOS->value);
             });
         });

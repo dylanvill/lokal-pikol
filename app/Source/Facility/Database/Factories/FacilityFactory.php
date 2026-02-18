@@ -44,12 +44,12 @@ class FacilityFactory extends Factory
     {
         return $this->afterCreating(function (Facility $facility) {
             $facility
-                ->addMediaFromUrl('https://picsum.photos/600/600')
+                ->addMediaFromUrl('https://picsum.photos/300/300')
                 ->toMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
 
 
             $facility
-                ->addMediaFromUrl('https://picsum.photos/1280/720')
+                ->addMediaFromUrl('https://picsum.photos/854/480')
                 ->toMediaCollection(MediaTypeEnum::FACILITY_COVER_PHOTO->value);
         });
     }

@@ -6,6 +6,7 @@ use App\Source\Facility\Models\Facility;
 use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
 use App\Source\Court\Models\Court;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
+use Illuminate\Http\UploadedFile;
 
 class CreateCourt
 {
