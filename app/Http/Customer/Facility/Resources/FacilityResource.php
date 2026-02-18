@@ -19,6 +19,8 @@ class FacilityResource extends JsonResource
             "phone" => $this->phone,
             "googleMapsUrl" => $this->google_maps_url,
             "profilePhoto" => $this->media ? new PhotoResource($this->media[0]) : null,
+            "openingTime" => $this->opening_time,
+            "closingTime" => $this->closing_time,
         ];
     }
 }

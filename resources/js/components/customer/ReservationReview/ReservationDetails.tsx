@@ -1,17 +1,36 @@
 import { Box, Card, GridItem, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import type Reservation from '../../../models/customer/reservation/Reservation';
+import type CourtSlot from '../../../models/shared/CourtSlot';
+import type Photo from '../../../models/shared/Photo';
 import DetailItem from '../../shared/DetailItem';
 import ImageCarousel from '../../shared/ImageCarousel';
 import ReservationSlotCard from '../../shared/ReservationSlotCard';
 import CardHeading from './CardHeading';
 
 export interface ReservationDetailsProps {
-    reservation: Reservation;
+    courtPhotos: Photo[];
+    facilityName: string;
+    courtName: string;
+    city: string;
+    address: string;
+    reservationDate: string;
+    reservedSlots: CourtSlot[];
+    courtSlots: CourtSlot[];
+    covered: boolean;
 }
 
-function ReservationDetails({ reservation }: ReservationDetailsProps) {
-    const dateDisplay = dayjs(reservation.reservationDate).format('MMMM D, YYYY');
+function ReservationDetails({
+    courtPhotos,
+    facilityName,
+    courtName,
+    city,
+    address,
+    reservationDate,
+    reservedSlots,
+    courtSlots,
+    covered,
+}: ReservationDetailsProps) {
+    const dateDisplay = dayjs(reservationDate).format('MMMM D, YYYY');
 
     return (
         <Card.Root>
@@ -20,15 +39,15 @@ function ReservationDetails({ reservation }: ReservationDetailsProps) {
                 <Stack gap={6}>
                     {/* Facility Photos */}
                     <Box>
-                        <ImageCarousel photos={reservation.court.photos} />
+                        <ImageCarousel photos={courtPhotos} />
                     </Box>
 
                     {/* Facility and Court Information */}
                     <VStack align="start" gap={4}>
-                        <DetailItem label="Facility" value={reservation.facility.name}></DetailItem>
-                        <DetailItem label="City" value={reservation.facility.city}></DetailItem>
-                        <DetailItem label="Address" value={reservation.facility.address}></DetailItem>
-                        <DetailItem label="Court" value={reservation.court.name}></DetailItem>
+                        <DetailItem label="Facility" value={facilityName}></DetailItem>
+                        <DetailItem label="City" value={city}></DetailItem>
+                        <DetailItem label="Address" value={address}></DetailItem>
+                        <DetailItem label="Court" value={`${courtName} ${covered ? '(Covered)' : '(Outdoor)'}`}></DetailItem>
                         <DetailItem label="Reservation Date" value={dateDisplay}></DetailItem>
                         <DetailItem label="Selected Time Slots">
                             <SimpleGrid
@@ -40,9 +59,9 @@ function ReservationDetails({ reservation }: ReservationDetailsProps) {
                                 }}
                                 gap={2}
                             >
-                                {reservation.slots.map((slot) => (
+                                {reservedSlots.map((slot) => (
                                     <GridItem key={slot.startTime}>
-                                        <ReservationSlotCard courtSlots={reservation.court.slots} startTime={slot.startTime} endTime={slot.endTime} />
+                                        <ReservationSlotCard courtSlots={courtSlots} startTime={slot.startTime} endTime={slot.endTime} />
                                     </GridItem>
                                 ))}
                             </SimpleGrid>

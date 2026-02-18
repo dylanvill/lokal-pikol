@@ -8,6 +8,8 @@ interface Facility {
     email: string;
     phone: string;
     googleMapsUrl: string;
+    openingTime: string;
+    closingTime: string;
     profilePhoto: Photo;
 }
 

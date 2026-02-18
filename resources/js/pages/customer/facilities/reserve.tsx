@@ -20,7 +20,17 @@ function ReservePage() {
         <DefaultPageLayout title="Facility Name">
             <VStack gap={6} align="stretch">
                 <ReservationNotice />
-                <ReservationDetails reservation={reservation} />
+                <ReservationDetails
+                    courtPhotos={reservation.court.photos}
+                    facilityName={reservation.facility.name}
+                    courtName={reservation.court.name}
+                    city={reservation.facility.city}
+                    address={reservation.facility.address}
+                    reservationDate={reservation.reservationDate}
+                    reservedSlots={reservation.slots}
+                    courtSlots={reservation.court.slots}
+                    covered={reservation.court.covered}
+                />
                 <PaymentBreakdown reservation={reservation} />
                 <PaymentUpload reservation={reservation} />
             </VStack>

@@ -1,7 +1,7 @@
-import type Court from '../court/Court';
 import type CourtSlot from '../../shared/CourtSlot';
-import type Facility from '../facility/Facility';
 import type ReservationFees from '../../shared/ReservationFees';
+import type Court from '../court/Court';
+import type Facility from '../facility/Facility';
 import type ReservationStatus from './ReservationStatus';
 
 interface Reservation {
