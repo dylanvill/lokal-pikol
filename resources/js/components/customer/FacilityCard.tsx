@@ -20,7 +20,19 @@ interface FacilityCardProps {
     onClick: (id: string) => void;
 }
 
-export default function FacilityCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, courtType, openingTime, closingTime, onClick }: FacilityCardProps) {
+export default function FacilityCard({
+    id,
+    name,
+    coverPhoto,
+    profilePhoto,
+    address,
+    city,
+    numberOfCourts,
+    courtType,
+    openingTime,
+    closingTime,
+    onClick,
+}: FacilityCardProps) {
     const handleCardClick = () => {
         onClick(id);
     };

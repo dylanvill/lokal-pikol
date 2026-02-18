@@ -1,7 +1,8 @@
-import { Box, Button, Container, Field, Heading, Input, Stack, Text, Image, HStack } from '@chakra-ui/react';
-import { Form, Link, router } from '@inertiajs/react';
-import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
+import { Box, Button, Container, Field, Heading, Input, Stack, Text, Image } from '@chakra-ui/react';
+import { Form, Link } from '@inertiajs/react';
+import { LuArrowRight } from 'react-icons/lu';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
+import BackNavigation from '../../../components/shared/BackNavigation';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 import typographyTokens from '../../../lib/tokens/typography';
 
@@ -14,20 +15,7 @@ export default function LoginPage() {
             }}
         >
             <Container px={4} py={8} colorPalette="blue">
-                <Box marginBottom={8}>
-                    <Link
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            router.visit(window.history.back()!);
-                        }}
-                    >
-                        <HStack gap={1}>
-                            <LuArrowLeft size={16} />
-                            <Text fontSize="sm">Back</Text>
-                        </HStack>
-                    </Link>
-                </Box>
+                <BackNavigation />
                 <Image src={Logo} alt="Lokal Pikol" mb={8} mx="auto" maxHeight={48} />
                 <Box marginBottom={8}>
                     <Heading>Login</Heading>

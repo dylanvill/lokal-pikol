@@ -2,7 +2,8 @@ import { Button, Field, GridItem, Heading, HStack, SimpleGrid, Text, VStack } fr
 import { useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { LuArrowRight, LuSun } from 'react-icons/lu';
+import { LuArrowRight } from 'react-icons/lu';
+import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import useCustomer from '../../../lib/hooks/useCustomer';
 import type CourtSlot from '../../../models/shared/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
@@ -14,12 +15,13 @@ export interface CourtReservationBlockProps {
     facilityId: string;
     courtId: string;
     name: string;
+    covered: boolean;
     photos: Photo[];
     slots: CourtSlot[];
     date: string;
 }
 
-function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date }: CourtReservationBlockProps) {
+function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date, covered }: CourtReservationBlockProps) {
     const { isLoggedIn } = useCustomer();
 
     const form = useForm<{ slots: string[] }>({
@@ -39,6 +41,8 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date 
         form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`);
     };
 
+    const Icon = courtTypeIconParser(covered);
+
     useEffect(() => {
         form.setData('slots', []);
     }, [date]);
@@ -50,9 +54,9 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date 
             </GridItem>
             <GridItem colSpan={{ base: 1, lg: 4 }}>
                 <Heading fontWeight="bold">{name}</Heading>
-                <HStack marginBottom={4}>
-                    <LuSun />
-                    <Text>Outdoor Court</Text>
+                <HStack marginBottom={4} gap={1}>
+                    <Icon color={covered ? 'green' : 'orange'} />
+                    <Text>{covered ? 'Covered Court' : 'Outdoor Court'}</Text>
                 </HStack>
                 <form onSubmit={handleSubmit}>
                     <Text marginBottom={2}>
