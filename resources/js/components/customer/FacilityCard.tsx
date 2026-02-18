@@ -1,5 +1,4 @@
 import { Box, VStack, Badge, Image, Heading } from '@chakra-ui/react';
-import { router } from '@inertiajs/react';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
@@ -18,11 +17,12 @@ interface FacilityCardProps {
     city: string;
     numberOfCourts: number;
     courtType: FacilityList['courtType'];
+    onClick: (id: string) => void;
 }
 
-export default function FacilityCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, courtType, openingTime, closingTime }: FacilityCardProps) {
+export default function FacilityCard({ id, name, coverPhoto, profilePhoto, address, city, numberOfCourts, courtType, openingTime, closingTime, onClick }: FacilityCardProps) {
     const handleCardClick = () => {
-        router.visit(`/facilities/${id}`);
+        onClick(id);
     };
 
     const typeDisplay = useMemo((): [string, React.ReactNode] => {
@@ -46,6 +46,7 @@ export default function FacilityCard({ id, name, coverPhoto, profilePhoto, addre
             _hover={{ shadow: 'md', borderColor: 'gray.300' }}
             transition="all 0.2s"
             onClick={handleCardClick}
+            key={id}
         >
             <VStack justifyItems="flex-start" alignItems="flex-start">
                 <Image src={coverPhoto?.url} alt="Court Photo" aspectRatio={16 / 9} objectFit="cover" width="full" />

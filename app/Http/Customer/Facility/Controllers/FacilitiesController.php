@@ -19,10 +19,17 @@ class FacilitiesController extends Controller
     public function __invoke(FacilitiesRequest $request): Response
     {
 
-        $date = $request->date ??Carbon::now()->format('Y-m-d');
+        $date = $request->date ?? Carbon::now()->format('Y-m-d');
         $startTime = $request->startTime ?? Carbon::now()->addHour()->startOfHour()->format('H:i');
         $endTime = $request->endTime ?? Carbon::now()->addHours(3)->startOfHour()->format('H:i');
         $city = $request->city ?? null;
+
+        $queryData = [
+            'date' => $date,
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+            'city' => $city,
+        ];
 
         $facilities = Facility::with([
             'courts',
@@ -56,6 +63,9 @@ class FacilitiesController extends Controller
             })
             ->paginate(15);
 
-        return Inertia::render('customer/facilities', ['facilities' => Inertia::scroll(fn() => FacilityListResource::collection($facilities))]);
+        return Inertia::render('customer/facilities', [
+            'facilities' => Inertia::scroll(fn() => FacilityListResource::collection($facilities)),
+            'queryData' => $queryData
+        ]);
     }
 }
