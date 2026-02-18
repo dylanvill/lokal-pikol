@@ -1,7 +1,6 @@
-import { Badge, CheckboxCard, Field, Float, type CheckboxCardCheckedChangeDetails } from '@chakra-ui/react';
+import { Badge, Box, CheckboxCard, Field, VStack, type CheckboxCardCheckedChangeDetails } from '@chakra-ui/react';
 import { type InertiaFormProps } from '@inertiajs/react';
 import { useMemo } from 'react';
-import { LuX } from 'react-icons/lu';
 import currencyFormatter from '../../../helpers/currencyFormatter';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 
@@ -51,18 +50,18 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                 disabled={!isAvailable}
                 {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
             >
-                {!isAvailable && (
-                    <Float placement="top-start">
-                        <Badge colorPalette="red" backgroundColor="red.400" size="xs">
-                            <LuX color="white" />
-                        </Badge>
-                    </Float>
-                )}
                 <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
                 <CheckboxCard.Control>
                     <CheckboxCard.Content>
                         <CheckboxCard.Label fontSize="md">{`${timeDisplay.startTime} - ${timeDisplay.endTime}`}</CheckboxCard.Label>
-                        <CheckboxCard.Description fontSize="sm">{formattedPrice}</CheckboxCard.Description>
+                        <VStack alignItems="stretch" width="full">
+                            <CheckboxCard.Description fontSize="sm">{formattedPrice}</CheckboxCard.Description>
+                            <Box justifyContent="flex-end" display="flex">
+                                <Badge alignSelf="flex-end" colorPalette={isAvailable ? 'green' : 'orange'}>
+                                    {isAvailable ? 'Available' : 'Unavailable'}
+                                </Badge>
+                            </Box>
+                        </VStack>
                     </CheckboxCard.Content>
                 </CheckboxCard.Control>
             </CheckboxCard.Root>
