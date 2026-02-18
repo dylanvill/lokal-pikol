@@ -126,10 +126,10 @@ class ReserveCourtController extends Controller
 
     public function uploadReceipt(Reservation $reservation, UploadReceiptRequest $request)
     {
-        $reservation->addMedia($request->file('receipt'))->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
+        $reservation->addMediaFromRequest('receipt')->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
         $reservation->status = ReservationStatusEnum::PENDING->value;
         $reservation->save();
 
-        return redirect()->route("reservations.index");
+        return redirect()->route("reservation.index");
     }
 }

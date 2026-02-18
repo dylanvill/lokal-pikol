@@ -52,7 +52,7 @@ class ReservationFeeFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'item' => ReservationFeeItemsEnum::HOURLY_RATE->value,
-                'description' => 'Court rental hourly rate',
+                'description' => ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value,
                 'amount' => $this->faker->randomFloat(2, 60, 120),
             ];
         });

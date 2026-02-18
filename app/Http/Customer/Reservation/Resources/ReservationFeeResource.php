@@ -44,6 +44,7 @@ class ReservationFeeResource extends JsonResource
 
     public function parseHourlyFees(Collection $fees): array
     {
+
         return $fees->where("description", ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value)->map(function ($fee, $key) {
             return new CourtSlot(
                 startTime: explode('-', $fee->item)[0],
