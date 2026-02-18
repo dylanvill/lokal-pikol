@@ -1,8 +1,9 @@
 import { Box, HStack, Text, type TextProps } from '@chakra-ui/react';
+import React from 'react';
 
 interface DetailProps {
     icon: React.ReactNode;
-    label: string;
+    label: string | React.ReactNode;
     textProps?: TextProps;
     containerProps?: Omit<React.ComponentProps<typeof HStack>, 'children'>;
 }
