@@ -20,6 +20,10 @@ class FacilityAuthResource extends JsonResource
             "address" => $this->address,
             "email" => $this->email,
             "city" => $this->city,
+            "phone" => $this->phone,
+            "googleMapsUrl" => $this->google_maps_url,
+            "openingTime" => $this->opening_time,
+            "closingTime" => $this->closing_time,
         ];
     }
 }

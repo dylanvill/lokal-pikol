@@ -1,55 +1,25 @@
-import { Box, Heading, Text, Flex, Button, Badge } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
+import { Box, Heading, Text, Flex } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { LuCalendar } from 'react-icons/lu';
+import useFacility from '../../lib/hooks/useFacility';
 
-interface DashboardHeaderCardProps {
-    facilityName: string;
-    currentDate: string;
-    reservationRequestsCount: number;
-}
+function DashboardHeaderCard() {
+    const { facility } = useFacility();
 
-function DashboardHeaderCard({ facilityName, currentDate, reservationRequestsCount }: DashboardHeaderCardProps) {
+    const today = dayjs().format('dddd, MMMM D, YYYY');
+
     return (
         <Box>
             <Flex justify="space-between" align="start" mb={4}>
                 <Box>
                     <Heading size="lg" mb={2}>
-                        Welcome back, {facilityName}!
+                        Welcome back, {facility?.name}!
                     </Heading>
                     <Flex align="center" gap={2} color="gray.600">
                         <LuCalendar />
-                        <Text>
-                            {new Date(currentDate).toLocaleDateString('en-US', {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })}
-                        </Text>
+                        <Text>{today}</Text>
                     </Flex>
                 </Box>
-
-                {/* Compact Reservation Requests */}
-                <Button as={Link} variant="outline" colorScheme="orange" size="sm" position="relative">
-                    Reservations
-                    {reservationRequestsCount > 0 && (
-                        <Badge
-                            position="absolute"
-                            top="-8px"
-                            right="-8px"
-                            colorScheme="orange"
-                            borderRadius="full"
-                            fontSize="xs"
-                            minW="20px"
-                            h="20px"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            {reservationRequestsCount}
-                        </Badge>
-                    )}
-                </Button>
             </Flex>
         </Box>
     );
