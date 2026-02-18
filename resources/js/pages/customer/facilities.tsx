@@ -1,4 +1,4 @@
-import { VStack, SimpleGrid, Text, HStack } from '@chakra-ui/react';
+import { VStack, SimpleGrid, Text, HStack, Box } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import FacilityCard from '@/components/customer/FacilityCard';
 import HomePageLayout from '@/layouts/HomePageLayout';
+import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 import type FacilityList from '../../models/customer/facility/FacilityList';
 import type PaginatedData from '../../models/shared/Pagination';
@@ -24,6 +25,8 @@ export default function Home() {
     const page = usePage<HomePageProps>();
 
     const facilities = page.props.facilities || [];
+
+    const justVerified = page.flash?.verificationSuccess || false;
 
     const queryData = page.props.queryData;
 
@@ -63,6 +66,11 @@ export default function Home() {
     return (
         <HomePageLayout title="Home">
             <VStack gap={2} align="stretch">
+                {justVerified && (
+                    <Box marginBottom={4}>
+                        <SuccessAlert title="Email verified!" description="Your email has been successfully verified. You can now book courts." />
+                    </Box>
+                )}
                 <HStack>
                     <LuSearch color="green" />
                     {searchLabel}

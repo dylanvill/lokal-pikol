@@ -65,6 +65,11 @@ export default function SignUpPage() {
                                 <Field.Label>Password</Field.Label>
                                 <Input type="password" placeholder="Enter your password" name="password" required />
                                 <Field.ErrorText>{errors.password}</Field.ErrorText>
+                                {!errors.password && (
+                                    <Field.HelperText>
+                                        Password must be at least 8 characters and include a mix of letters, numbers, and symbols.
+                                    </Field.HelperText>
+                                )}
                             </Field.Root>
 
                             <Field.Root invalid={!!errors.password_confirmation}>
@@ -80,7 +85,6 @@ export default function SignUpPage() {
                                     submit();
                                 }}
                                 colorScheme="blue"
-                                size="lg"
                                 mt={4}
                                 alignSelf="flex-end"
                                 loading={processing}
