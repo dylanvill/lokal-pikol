@@ -37,6 +37,7 @@ export default function CourtPage() {
             {
                 preserveState: true,
                 preserveScroll: true,
+                replace: true,
             },
         );
     };
