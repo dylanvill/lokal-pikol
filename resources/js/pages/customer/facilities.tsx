@@ -79,6 +79,7 @@ export default function Home() {
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={6}>
                         {facilities.data.map((facility) => (
                             <FacilityCard
+                                key={facility.id}
                                 id={facility.id}
                                 name={facility.name}
                                 coverPhoto={facility.coverPhoto}
