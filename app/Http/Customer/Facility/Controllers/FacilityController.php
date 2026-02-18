@@ -32,7 +32,8 @@ class FacilityController extends Controller
                 $query->orderBy('start_time');
             },
             'reservations' => function ($query) use ($lookupDate) {
-                $query->where('reservation_date', $lookupDate);
+                $query->where('reservation_date', $lookupDate)
+                    ->whereNot('status', 'cancelled');
             },
         ]);
 
