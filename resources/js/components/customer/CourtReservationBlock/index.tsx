@@ -38,7 +38,14 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date,
             ...data,
             date: date,
         }));
-        form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`);
+        form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`, {
+            preserveScroll: true,
+            onError: (e) => {
+                if (e.slots === 'Selected time slots are no longer available. Please choose different hours.') {
+                    form.reset('slots');
+                }
+            },
+        });
     };
 
     const Icon = courtTypeIconParser(covered);
