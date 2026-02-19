@@ -1,5 +1,7 @@
-import { Box, Image, Card, VStack, Badge, Text, Heading, HStack } from '@chakra-ui/react';
+import { Box, Image, Card, VStack, Badge, Text, Heading, HStack, Button, Flex } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import { LuArrowRight } from 'react-icons/lu';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
 import typographyTokens from '../../lib/tokens/typography';
 import type CourtPricing from '../../models/facility/CourtPricing';
@@ -12,7 +14,7 @@ interface CourtCardProps {
     courtPricings: CourtPricing[];
 }
 
-function CourtCard({ name, photo, covered, courtPricings }: CourtCardProps) {
+function CourtCard({ id, name, photo, covered, courtPricings }: CourtCardProps) {
     const Icon = courtTypeIconParser(covered);
 
     const formattedCourtPricings = courtPricings.map((pricing) => {
@@ -20,8 +22,8 @@ function CourtCard({ name, photo, covered, courtPricings }: CourtCardProps) {
 
         return {
             ...pricing,
-            startTime: dayjs(`${dateToday} ${pricing.startTime}`, 'YYYY-MM-DD HH:mm:ss').format('h:mm A'),
-            endTime: dayjs(`${dateToday} ${pricing.endTime}`, 'YYYY-MM-DD HH:mm:ss').format('h:mm A'),
+            startTime: dayjs(`${dateToday} ${pricing.startTime}`, 'YYYY-MM-DD HH:mm:ss').format('hh:mm A'),
+            endTime: dayjs(`${dateToday} ${pricing.endTime}`, 'YYYY-MM-DD HH:mm:ss').format('hh:mm A'),
         };
     });
 
@@ -54,6 +56,16 @@ function CourtCard({ name, photo, covered, courtPricings }: CourtCardProps) {
                     </VStack>
                 </Box>
             </Card.Body>
+            <Card.Footer p={2}>
+                <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
+                    <Link href={`/facility/courts/${id}/calendar`}>
+                        <Button colorPalette="blue" variant="ghost" size="xs">
+                            View Schedule
+                            <LuArrowRight />
+                        </Button>
+                    </Link>
+                </Flex>
+            </Card.Footer>
         </Card.Root>
     );
 }
