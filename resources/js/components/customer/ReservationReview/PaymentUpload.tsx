@@ -11,7 +11,7 @@ export interface PaymentUploadProps {
 function PaymentUpload({ reservation }: PaymentUploadProps) {
     return (
         <Form action={`/reservations/reserve/${reservation.id}/upload-receipt`} method="post">
-            {() => (
+            {({processing}) => (
                 <>
                     <Card.Root>
                         <Card.Body>
@@ -39,7 +39,7 @@ function PaymentUpload({ reservation }: PaymentUploadProps) {
                                             <Field.RequiredIndicator />
                                         </Field.Label>
                                     </Center>
-                                    <FileUpload.Root>
+                                    <FileUpload.Root disabled={processing}>
                                         <FileUpload.HiddenInput name="receipt" required />
                                         <FileUpload.Trigger asChild>
                                             <Button variant="outline" size="sm">
@@ -55,7 +55,7 @@ function PaymentUpload({ reservation }: PaymentUploadProps) {
                     </Card.Root>
 
                     <Flex alignItems="center" justifyContent="flex-end">
-                        <Button type="submit" colorScheme="blue" width="auto" marginTop={4}>
+                        <Button type="submit" colorScheme="blue" width="auto" marginTop={4} loading={processing} disabled={processing} loadingText="Uploading Receipt...">
                             Complete Reservation
                             <LuArrowRight />
                         </Button>
