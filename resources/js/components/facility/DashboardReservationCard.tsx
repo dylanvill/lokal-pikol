@@ -1,4 +1,5 @@
 import { Button, Card, Link as ChakraLink, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LuExternalLink, LuUser, LuCalendar, LuClock, LuCheck, LuMail, LuPhone, LuGrid2X2 } from 'react-icons/lu';
@@ -33,7 +34,6 @@ function DashboardReservationCard({
     covered,
     paymentReceipt,
 }: DashboardReservationCardProps) {
-    console.log("🚀 ~ DashboardReservationCard ~ paymentReceipt:", paymentReceipt)
     const dateDisplay = useMemo(() => {
         return dayjs(reservationDate).format('MMMM D, YYYY');
     }, [reservationDate]);
@@ -46,6 +46,10 @@ function DashboardReservationCard({
 
     const Icon = courtTypeIconParser(covered);
     const courtTypeLabel = courtTypeLabelParser(covered);
+
+    const handleConfirmClicked = () => {
+        router.post(`/facility/reservations/${id}/confirm`);
+    };
 
     return (
         <Card.Root key={id}>
@@ -74,7 +78,9 @@ function DashboardReservationCard({
                         icon={<LuExternalLink color="black" />}
                         label={
                             <Text as="span">
-                                <ChakraLink href={paymentReceipt.url} target="_blank">View Payment Receipt</ChakraLink>
+                                <ChakraLink href={paymentReceipt.url} target="_blank">
+                                    View Payment Receipt
+                                </ChakraLink>
                             </Text>
                         }
                         textProps={{ color: 'black', fontStyle: 'italic' }}
@@ -82,7 +88,7 @@ function DashboardReservationCard({
                 </VStack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-                <Button variant="solid" colorPalette="green" size="xs">
+                <Button variant="solid" colorPalette="green" size="xs" onClick={handleConfirmClicked}>
                     <LuCheck /> Confirm
                 </Button>
             </Card.Footer>
