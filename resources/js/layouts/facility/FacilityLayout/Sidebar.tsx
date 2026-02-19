@@ -1,7 +1,7 @@
 import { Box, VStack } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import React from 'react';
-import { LuCalendar, LuGrid2X2, LuHouse, LuUser } from 'react-icons/lu';
+import { LuCalendar, LuCalendarDays, LuGrid2X2, LuHouse, LuUser } from 'react-icons/lu';
 import AppButton from '../../../components/app/AppButton';
 
 const sidebarItems = [
@@ -19,6 +19,11 @@ const sidebarItems = [
         label: 'Reservations',
         route: '/facility/reservations',
         icon: () => <LuCalendar />,
+    },
+    {
+        label: 'Booking Calendar',
+        route: '/facility/reservations/calendar',
+        icon: () => <LuCalendarDays />,
     },
     {
         label: 'Account',

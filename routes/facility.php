@@ -9,6 +9,7 @@ use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
 use App\Http\Facility\Reservation\Controllers\CancelReservationController;
 use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
+use App\Http\Facility\Reservation\Controllers\ReservationCalendarController;
 use App\Http\Facility\Reservation\Controllers\ReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationsController;
 
@@ -24,6 +25,7 @@ Route::group(["middleware" => "auth:facility"], function () {
 
     Route::prefix("reservations")->name("reservations.")->group(function () {
         Route::get('/', ReservationsController::class)->name('list');
+        Route::get('/calendar', ReservationCalendarController::class)->name('calendar');
         Route::get('/{reservation:uuid}', ReservationController::class)->name('show');
         Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
         Route::post('/{reservation:uuid}/cancel', CancelReservationController::class)->name('cancel');
