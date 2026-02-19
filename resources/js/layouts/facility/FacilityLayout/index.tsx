@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { NavigationBar } from './NavigationBar';
 import { Sidebar } from './Sidebar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 interface FacilityLayoutProps {
     children: React.ReactNode;
