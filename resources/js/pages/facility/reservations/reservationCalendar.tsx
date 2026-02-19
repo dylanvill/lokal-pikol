@@ -1,9 +1,10 @@
+import ReservationCalendar from '../../../components/facility/reservation/ReservationCalendar';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
-function ReservationCalendarPage() {
 
+function ReservationCalendarPage() {
     return (
         <FacilityLayout>
-            <div>Reservation calendar page</div>
+            <ReservationCalendar />
         </FacilityLayout>
     );
 }
