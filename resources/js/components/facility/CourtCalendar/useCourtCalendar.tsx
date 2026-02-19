@@ -1,19 +1,22 @@
+import { router } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { dayjsLocalizer, type View, Views } from 'react-big-calendar';
 import { type CalendarEvent } from './types';
 
 export const localizer = dayjsLocalizer(dayjs);
 
-const useCourtCalendar = () => {
-    const defaultDate = useMemo(() => dayjs().toDate(), []);
-    const [currentDate, setCurrentDate] = useState(new Date());
+const useCourtCalendar = (date: string) => {
+    const [currentDate, setCurrentDate] = useState(dayjs(date).toDate());
     const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
     // Handle navigation (prev/next/today)
-    const handleNavigate = useCallback((date: Date) => {
-        setCurrentDate(date);
-    }, []);
+    const handleNavigate = useCallback(
+        (date: Date) => {
+            setCurrentDate(date);
+        },
+        [date],
+    );
 
     // Handle view changes (month/week/day/agenda)
     const handleViewChange = useCallback((view: View) => {
@@ -22,8 +25,7 @@ const useCourtCalendar = () => {
 
     // Handle event selection
     const handleSelectEvent = useCallback((event: CalendarEvent) => {
-        console.log('Selected event:', event);
-        // TODO: Implement event details modal or navigation
+        router.visit(`/facility/reservations/${event.id}`);
     }, []);
 
     // Handle slot selection (for creating new reservations)
@@ -57,7 +59,6 @@ const useCourtCalendar = () => {
     };
 
     return {
-        defaultDate,
         currentDate,
         currentView,
         localizer,

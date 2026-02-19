@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -10,8 +10,9 @@ import type CourtCalendarModel from '../../../models/facility/CourtCalendar';
 import { type CalendarEvent } from './types';
 import useCourtCalendar from './useCourtCalendar';
 
-interface CourtCalendarPageProps extends PageProps {
+export interface CourtCalendarPageProps extends PageProps {
     court: CourtCalendarModel;
+    date: string;
 }
 
 function CourtCalendar() {
@@ -40,41 +41,34 @@ function CourtCalendar() {
         useCourtCalendar();
 
     return (
-        <>
-            <Heading size="lg" mb={6}>
-                Reservation Calendar
-            </Heading>
-
-            <Box bg="white" borderRadius="lg" shadow="sm" p={4} minH="75vh">
-                <Calendar
-                    localizer={localizer}
-                    events={reservations}
-                    startAccessor="start"
-                    endAccessor="end"
-                    style={{ height: '75vh' }}
-                    view={currentView}
-                    onView={handleViewChange}
-                    date={currentDate}
-                    onNavigate={handleNavigate}
-                    onSelectEvent={handleSelectEvent}
-                    onSelectSlot={handleSelectSlot}
-                    selectable
-                    eventPropGetter={eventStyleGetter}
-                    views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
-                    step={30} // 30-minute increments
-                    timeslots={2} // Show 30-minute slots
-                    defaultView={Views.MONTH}
-                    toolbar={true}
-                    popup={true}
-                    dayLayoutAlgorithm="no-overlap"
-                    formats={{
-                        timeGutterFormat: 'HH:mm',
-                        eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
-                            dayjs(start).format('HH:mm') + ' - ' + dayjs(end).format('HH:mm'),
-                    }}
-                />
-            </Box>
-        </>
+        <Box bg="white" borderRadius="lg" shadow="sm" p={4} minH="75vh">
+            <Calendar
+                localizer={localizer}
+                events={reservations}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: '75vh' }}
+                view={currentView}
+                onView={handleViewChange}
+                date={currentDate}
+                onNavigate={handleNavigate}
+                onSelectEvent={handleSelectEvent}
+                onSelectSlot={handleSelectSlot}
+                selectable
+                eventPropGetter={eventStyleGetter}
+                views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
+                step={30} // 30-minute increments
+                timeslots={2} // Show 30-minute slots
+                defaultView={Views.MONTH}
+                toolbar={true}
+                popup={true}
+                dayLayoutAlgorithm="no-overlap"
+                formats={{
+                    timeGutterFormat: 'HH:mm',
+                    eventTimeRangeFormat: ({ start, end }, culture, localizer) => dayjs(start).format('HH:mm') + ' - ' + dayjs(end).format('HH:mm'),
+                }}
+            />
+        </Box>
     );
 }
 
