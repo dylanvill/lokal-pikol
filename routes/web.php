@@ -44,4 +44,4 @@ Route::prefix("reservations")->name("reservation.")->group(function () {
     Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
     Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
     Route::post('/reserve/{reservation:uuid}/upload-receipt', [ReserveCourtController::class, 'uploadReceipt'])->name('upload-receipt');
-});
+})->middleware('auth:customer');;
