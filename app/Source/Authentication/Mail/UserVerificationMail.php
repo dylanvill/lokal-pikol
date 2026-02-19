@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Mail;
+namespace App\Source\Authentication\Mail;
 
-use App\Source\Authentication\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserVerification extends Mailable implements ShouldQueue
+class UserVerificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

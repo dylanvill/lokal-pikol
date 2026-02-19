@@ -47,5 +47,5 @@ Route::prefix("reservations")->name("reservation.")->group(function () {
 })->middleware('auth:customer');;
 
 Route::get('/mailable', function () {
-    return new App\Mail\UserVerification();
+    // return new App\Mail\UserVerification();
 });

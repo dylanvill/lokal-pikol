@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Mail\UserVerification;
+use App\Source\Authentication\Mail\UserVerificationMail;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -37,9 +37,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-            return (new UserVerification($url))
-                ->subject('Verify Email Address')
-                ->with(['url' => $url]);
+            $appName = config('app.name');
+            return (new UserVerificationMail($url))
+                ->subject("Verify Email Address | {$appName}");
         });
     }
 
