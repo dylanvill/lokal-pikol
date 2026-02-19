@@ -8,18 +8,18 @@ function SearchBar() {
     const nextHour = dayjs().add(1, 'hour').format('HH:00');
     const endHour = dayjs().add(3, 'hour').format('HH:00');
 
-    const form = useForm({
+    const { data, setData, get, processing } = useForm({
         city: '',
         date: currentDate,
         startTime: nextHour,
         endTime: endHour,
     });
 
-    const minEndTime = form.data.startTime ? dayjs(form.data.startTime, 'HH:mm').add(1, 'hour').format('HH:mm') : nextHour;
+    const minEndTime = data.startTime ? dayjs(data.startTime, 'HH:mm').add(1, 'hour').format('HH:mm') : nextHour;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.get('/', {
+        get('/', {
             preserveState: true,
             preserveScroll: true,
         });
@@ -32,7 +32,7 @@ function SearchBar() {
                     <Field.Root>
                         <Field.Label>City</Field.Label>
                         <NativeSelect.Root>
-                            <NativeSelect.Field value={form.data.city} onChange={(e) => form.setData('city', e.target.value)} name="city">
+                            <NativeSelect.Field value={data.city} onChange={(e) => setData('city', e.target.value)} name="city">
                                 <option value="">Anywhere</option>
                                 <option value="Dumaguete">Dumaguete</option>
                                 <option value="Sibulan">Sibulan</option>
@@ -44,15 +44,27 @@ function SearchBar() {
                     </Field.Root>
                     <Field.Root>
                         <Field.Label>Date</Field.Label>
-                        <Input type="date" name="date" value={form.data.date} min={currentDate} onChange={(e) => form.setData('date', e.target.value)} />
+                        <Input type="date" name="date" value={data.date} min={currentDate} onChange={(e) => setData('date', e.target.value)} />
                     </Field.Root>
                     <Field.Root>
                         <Field.Label>Start Time</Field.Label>
-                        <Input type="time" name="startTime" value={form.data.startTime} min={nextHour} onChange={(e) => form.setData('startTime', e.target.value)} />
+                        <Input
+                            type="time"
+                            name="startTime"
+                            value={data.startTime}
+                            min={data.date === currentDate ? nextHour : '00:00'}
+                            onChange={(e) => setData('startTime', e.target.value)}
+                        />
                     </Field.Root>
                     <Field.Root>
                         <Field.Label>End Time</Field.Label>
-                        <Input type="time" name="endTime" value={form.data.endTime} min={minEndTime} onChange={(e) => form.setData('endTime', e.target.value)} />
+                        <Input
+                            type="time"
+                            name="endTime"
+                            value={data.endTime}
+                            min={minEndTime}
+                            onChange={(e) => setData('endTime', e.target.value)}
+                        />
                     </Field.Root>
                     <Button
                         type="submit"
@@ -60,6 +72,8 @@ function SearchBar() {
                             base: '2/2',
                             lg: 'auto',
                         }}
+                        disabled={processing}
+                        loading={processing}
                     >
                         <LuSearch />
                         Search
