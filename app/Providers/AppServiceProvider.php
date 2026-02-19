@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Mail\UserVerification;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +35,12 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local')) {
             Mail::alwaysTo(env('MAIL_ALWAYS_TO'));
         }
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new UserVerification($url))
+                ->subject('Verify Email Address')
+                ->with(['url' => $url]);
+        });
     }
 
     protected function configureDefaults(): void

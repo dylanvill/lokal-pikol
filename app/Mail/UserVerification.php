@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Source\Authentication\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -9,14 +10,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserVerification extends Mailable
+class UserVerification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public string $url)
     {
         //
     }
@@ -38,6 +39,7 @@ class UserVerification extends Mailable
     {
         return new Content(
             markdown: 'customer.auth.user-verification',
+            with: ['url' => $this->url]
         );
     }
 
