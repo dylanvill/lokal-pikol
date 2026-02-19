@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Source\Facility\Database\Factories\FacilityFactory;
 use App\Source\Reservation\Models\Reservation;
+use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Facility extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\FacilityFactory> */
-    use HasFactory, HasUuid, InteractsWithMedia;
+    use HasFactory, HasUuid, InteractsWithMedia, Notifiable;
 
     protected $fillable = [
         'uuid',

@@ -10,6 +10,8 @@ use App\Http\Customer\Facility\Controllers\FacilitiesController;
 use App\Http\Customer\Reservation\Controllers\ReservationController;
 use App\Http\Customer\Reservation\Controllers\ReservationsController;
 use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
+use App\Source\Reservation\Mail\ReservationPendingMail;
+use App\Source\Reservation\Models\Reservation;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', FacilitiesController::class)->name('home');
@@ -47,5 +49,5 @@ Route::prefix("reservations")->name("reservation.")->group(function () {
 })->middleware('auth:customer');;
 
 Route::get('/mailable', function () {
-    // return new App\Mail\UserVerification();
+    return new ReservationPendingMail(Reservation::inRandomOrder()->first());
 });
