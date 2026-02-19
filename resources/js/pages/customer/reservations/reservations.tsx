@@ -3,7 +3,8 @@ import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, usePage } from '@inertiajs/react';
 import { LuCalendar } from 'react-icons/lu';
 import ReservationCard from '../../../components/customer/ReservationCard';
-import BackNavigation from '../../../components/shared/BackNavigation';
+import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
+import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import Empty from '../../../components/shared/Empty';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 import type Reservation from '../../../models/customer/reservation/Reservation';
@@ -14,18 +15,21 @@ interface ReservationPageProps extends PageProps {
 }
 
 function ReservationsPage() {
-    const { props } = usePage<ReservationPageProps>();
+    const { props, flash } = usePage<ReservationPageProps>();
 
     const reservations = props.reservations.data || [];
 
+    const success = flash.success as string | undefined;
+
     return (
         <DefaultPageLayout title="My Reservations">
-            <BackNavigation></BackNavigation>
+            <BackNavigationBase href="/" label='Home' />
             <Heading mb={6}>Reservations</Heading>
+            {success && <SuccessAlert title="Receipt uploaded" description={success} />}
             {reservations.length === 0 && (
                 <Empty icon={<LuCalendar />} title="No Reservations" description="You have no reservations at the moment." />
             )}
-            <InfiniteScroll data='reservations'>
+            <InfiniteScroll data="reservations">
                 <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={4}>
                     {reservations.map((reservation) => (
                         <ReservationCard

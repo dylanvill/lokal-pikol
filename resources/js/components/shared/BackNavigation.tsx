@@ -1,25 +1,8 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
-import { Link, router } from '@inertiajs/react';
-import React from 'react';
-import { LuArrowLeft } from 'react-icons/lu';
+import { router } from '@inertiajs/react';
+import BackNavigationBase from './BackNavigationBase';
 
 function BackNavigation() {
-    return (
-        <Box marginBottom={8}>
-            <Link
-                href="#"
-                onClick={(e) => {
-                    e.preventDefault();
-                    router.visit(window.history.back()!);
-                }}
-            >
-                <HStack gap={1}>
-                    <LuArrowLeft size={16} />
-                    <Text fontSize="sm">Back</Text>
-                </HStack>
-            </Link>
-        </Box>
-    );
+    return <BackNavigationBase onClick={() => router.visit(window.history.back()!)} />;
 }
 
 export default BackNavigation;

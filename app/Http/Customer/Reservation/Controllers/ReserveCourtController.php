@@ -22,6 +22,7 @@ use App\Source\Reservation\Enums\ReservationStatusEnum;
 use App\Source\Reservation\Models\Reservation;
 use App\Source\Reservation\Models\ReservationFee;
 use Illuminate\Support\Collection;
+use Inertia\Inertia;
 
 class ReserveCourtController extends Controller
 {
@@ -129,6 +130,8 @@ class ReserveCourtController extends Controller
         $reservation->addMediaFromRequest('receipt')->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
         $reservation->status = ReservationStatusEnum::PENDING->value;
         $reservation->save();
+
+        Inertia::flash('success', 'Receipt uploaded successfully. Your reservation is now pending for approval, you will receive an email notification once approved.');
 
         return redirect()->route("reservation.index");
     }
