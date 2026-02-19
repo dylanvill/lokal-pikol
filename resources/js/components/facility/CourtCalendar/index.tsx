@@ -1,62 +1,43 @@
 import { Box, Heading } from '@chakra-ui/react';
+import { type PageProps } from '@inertiajs/core';
+import { usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import useReservationCalendar from './useReservationCalendar';
+import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
+import type CourtCalendarModel from '../../../models/facility/CourtCalendar';
+import { type CalendarEvent } from './types';
+import useCourtCalendar from './useCourtCalendar';
 
-// Sample event interface
-interface CalendarEvent {
-    id: string;
-    title: string;
-    start: Date;
-    end: Date;
-    resource?: {
-        courtName: string;
-        customerName: string;
-        status: 'confirmed' | 'pending' | 'cancelled';
-    };
+interface CourtCalendarPageProps extends PageProps {
+    court: CourtCalendarModel;
 }
 
-// Sample events data
-const sampleEvents: CalendarEvent[] = [
-    {
-        id: '1',
-        title: 'Court A - John Doe',
-        start: new Date(2026, 1, 20, 9, 0), // February 20, 2026, 9:00 AM
-        end: new Date(2026, 1, 20, 11, 0), // February 20, 2026, 11:00 AM
-        resource: {
-            courtName: 'Court A',
-            customerName: 'John Doe',
-            status: 'confirmed',
-        },
-    },
-    {
-        id: '2',
-        title: 'Court B - Jane Smith',
-        start: new Date(2026, 1, 21, 14, 0), // February 21, 2026, 2:00 PM
-        end: new Date(2026, 1, 21, 16, 0), // February 21, 2026, 4:00 PM
-        resource: {
-            courtName: 'Court B',
-            customerName: 'Jane Smith',
-            status: 'pending',
-        },
-    },
-    {
-        id: '3',
-        title: 'Court A - Mike Johnson',
-        start: new Date(2026, 1, 22, 10, 0), // February 22, 2026, 10:00 AM
-        end: new Date(2026, 1, 22, 12, 0), // February 22, 2026, 12:00 PM
-        resource: {
-            courtName: 'Court A',
-            customerName: 'Mike Johnson',
-            status: 'confirmed',
-        },
-    },
-];
+function CourtCalendar() {
+    const { props } = usePage<CourtCalendarPageProps>();
 
-function ReservationCalendar() {
+    const court = props.court;
+
+    const reservations = useMemo((): CalendarEvent[] => {
+        return court.reservations.map((reservation) => {
+            const date = dayjs(reservation.reservationDate).format('YYYY-MM-DD');
+
+            const startTimeDisplay = militaryTimeToAmPmTime(reservation.startTime);
+            const endTimeDisplay = militaryTimeToAmPmTime(reservation.endTime);
+
+            return {
+                id: reservation.id,
+                title: `${reservation.customerName} (${startTimeDisplay} - ${endTimeDisplay})`,
+                start: dayjs(`${date} ${reservation.startTime}`).toDate(),
+                end: dayjs(`${date} ${reservation.endTime}`).toDate(),
+                resource: reservation,
+            };
+        });
+    }, [court.reservations]);
+
     const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, handleSelectSlot, eventStyleGetter } =
-        useReservationCalendar();
+        useCourtCalendar();
 
     return (
         <>
@@ -67,7 +48,7 @@ function ReservationCalendar() {
             <Box bg="white" borderRadius="lg" shadow="sm" p={4} minH="75vh">
                 <Calendar
                     localizer={localizer}
-                    events={sampleEvents}
+                    events={reservations}
                     startAccessor="start"
                     endAccessor="end"
                     style={{ height: '75vh' }}
@@ -97,4 +78,4 @@ function ReservationCalendar() {
     );
 }
 
-export default ReservationCalendar;
+export default CourtCalendar;

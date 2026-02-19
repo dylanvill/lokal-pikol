@@ -1,18 +1,17 @@
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
-import { Calendar, dayjsLocalizer, View, Views } from 'react-big-calendar';
-import { CalendarEvent } from './types';
+import { dayjsLocalizer, type View, Views } from 'react-big-calendar';
+import { type CalendarEvent } from './types';
 
 export const localizer = dayjsLocalizer(dayjs);
 
-const useReservationCalendar = () => {
+const useCourtCalendar = () => {
     const defaultDate = useMemo(() => dayjs().toDate(), []);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
     // Handle navigation (prev/next/today)
     const handleNavigate = useCallback((date: Date) => {
-        console.log('🚀 ~ ReservationCalendar ~ date: Date:', date);
         setCurrentDate(date);
     }, []);
 
@@ -70,4 +69,4 @@ const useReservationCalendar = () => {
     };
 };
 
-export default useReservationCalendar;
+export default useCourtCalendar;
