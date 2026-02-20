@@ -18,12 +18,15 @@ class DatabaseSeeder extends Seeder
     {
         // Create 10 facility users with their corresponding facilities
         $facilities = User::factory()
-            ->count(30)
+            ->count(5)
             ->state(['role' => 'facility'])
             ->create()
             ->map(function (User $user) {
                 // Create a facility for each facility user
                 return Facility::factory()
+                    ->state([
+                        'email' => $user->email,
+                    ])
                     ->for($user)
                     ->create();
             });
@@ -41,13 +44,13 @@ class DatabaseSeeder extends Seeder
                         ->morningSlot()
                         ->for($court)
                         ->create();
-                    
+
                     // Day slot: 11:00 to 17:00
                     CourtPricing::factory()
                         ->daySlot()
                         ->for($court)
                         ->create();
-                    
+
                     // Evening slot: 17:00 to closing time
                     CourtPricing::factory()
                         ->eveningSlot()
@@ -58,13 +61,16 @@ class DatabaseSeeder extends Seeder
 
         // Create customer users with their corresponding customers
         $customers = User::factory()
-            ->count(10)
+            ->count(2)
             ->state(['role' => 'customer'])
             ->create()
             ->map(function (User $user) {
                 // Create a customer for each customer user
                 return Customer::factory()
                     ->for($user)
+                    ->state([
+                        'email' => $user->email,
+                    ])
                     ->create();
             });
     }

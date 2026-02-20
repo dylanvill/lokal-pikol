@@ -4,7 +4,6 @@ namespace App\Http\Customer\Reservation\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Reservation\Requests\ReserveCourtRequest;
-use App\Http\Customer\Reservation\Requests\UploadReceiptRequest;
 use App\Http\Customer\Reservation\Resources\ReservationResource;
 use App\Http\Enums\GuardEnum;
 use App\Source\Court\Actions\CourtSlotConversion\Dtos\CourtSlot;
@@ -13,7 +12,6 @@ use App\Source\Court\Actions\CourtSlotConversion\RangeToSlot;
 use App\Source\Court\Actions\CourtSlotConversion\SlotsToRange;
 use App\Source\Court\Models\Court;
 use App\Source\Facility\Models\Facility;
-use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Actions\CreateReservation\CreateReservation;
 use App\Source\Reservation\Actions\CreateReservation\Dtos\CreateReservationData;
 use App\Source\Reservation\Actions\SetReservationFees\SetReservationFees;
@@ -21,9 +19,7 @@ use App\Source\Reservation\Enums\ReservationFeeItemsEnum;
 use App\Source\Reservation\Enums\ReservationStatusEnum;
 use App\Source\Reservation\Models\Reservation;
 use App\Source\Reservation\Models\ReservationFee;
-use App\Source\Reservation\Notifications\ReservationPendingNotification;
 use Illuminate\Support\Collection;
-use Inertia\Inertia;
 
 class ReserveCourtController extends Controller
 {
@@ -44,7 +40,7 @@ class ReserveCourtController extends Controller
         $range = $this->parseSlotsToRange($request->slots);
 
         $reservationData = new CreateReservationData(
-            customerId: $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute()->id,
+            reservable: $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute(),
             facilityId: $facility->id,
             courtId: $court->id,
             reservationDate: $request->input('date'),
@@ -124,18 +120,5 @@ class ReserveCourtController extends Controller
 
 
         return $setReservationFees->save();
-    }
-
-    public function uploadReceipt(Reservation $reservation, UploadReceiptRequest $request)
-    {
-        $reservation->addMediaFromRequest('receipt')->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
-        $reservation->status = ReservationStatusEnum::PENDING->value;
-        $reservation->save();
-
-        $reservation->facility->notify(new ReservationPendingNotification($reservation));
-
-        Inertia::flash('success', 'Receipt uploaded successfully. Your reservation is now pending for approval, you will receive an email notification once approved.');
-
-        return redirect()->route("reservation.index");
     }
 }

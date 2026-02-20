@@ -5,16 +5,17 @@ namespace App\Source\Customer\Models;
 use App\Models\Traits\HasUuid;
 use App\Source\Authentication\Models\User;
 use App\Source\Customer\Database\Factories\CustomerFactory;
-use App\Source\Shared\Traits\HasReservations;
+use App\Source\Shared\Contracts\HasReservations;
+use App\Source\Shared\Traits\InteractsWithReservations;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Customer extends Model
+class Customer extends Model implements HasReservations
 {
     /** @use HasFactory<\App\Source\Customer\Database\Factories\CustomerFactory> */
-    use HasFactory, HasUuid, HasReservations;
+    use HasFactory, HasUuid, InteractsWithReservations;
 
     protected $fillable = [
         'uuid',

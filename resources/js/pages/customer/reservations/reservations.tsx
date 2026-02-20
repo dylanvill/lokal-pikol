@@ -1,4 +1,4 @@
-import { Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, usePage } from '@inertiajs/react';
 import { LuCalendar } from 'react-icons/lu';
@@ -23,9 +23,13 @@ function ReservationsPage() {
 
     return (
         <DefaultPageLayout title="My Reservations">
-            <BackNavigationBase href="/" label='Home' />
+            <BackNavigationBase href="/" label="Home" />
             <Heading mb={6}>Reservations</Heading>
-            {success && <SuccessAlert title="Receipt uploaded" description={success} />}
+            {success && (
+                <Box marginBottom={4}>
+                    <SuccessAlert title="Receipt uploaded" description={success} />
+                </Box>
+            )}
             {reservations.length === 0 && (
                 <Empty icon={<LuCalendar />} title="No Reservations" description="You have no reservations at the moment." />
             )}

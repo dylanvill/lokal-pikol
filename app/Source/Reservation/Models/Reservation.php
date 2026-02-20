@@ -14,6 +14,20 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @property int $id
+ * @property string $uuid
+ * @property string $reservable_type
+ * @property int $reservable_id
+ * @property int $facility_id
+ * @property int $court_id
+ * @property \Illuminate\Support\Carbon $reservation_date
+ * @property string $start_time
+ * @property string $end_time
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at    
+ */
 class Reservation extends Model implements HasMedia
 {
     /** @use HasFactory<\App\Source\Reservation\Database\Factories\ReservationFactory> */

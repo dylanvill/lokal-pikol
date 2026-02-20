@@ -10,6 +10,7 @@ use App\Http\Customer\Facility\Controllers\FacilitiesController;
 use App\Http\Customer\Reservation\Controllers\ReservationController;
 use App\Http\Customer\Reservation\Controllers\ReservationsController;
 use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
+use App\Http\Customer\Reservation\Controllers\UploadReceiptController;
 use App\Source\Reservation\Mail\ReservationPendingMail;
 use App\Source\Reservation\Models\Reservation;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,7 @@ Route::prefix("reservations")->name("reservation.")->group(function () {
     Route::get('/', [ReservationsController::class, 'index'])->name('index');
     Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
     Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
-    Route::post('/reserve/{reservation:uuid}/upload-receipt', [ReserveCourtController::class, 'uploadReceipt'])->name('upload-receipt');
+    Route::post('/reserve/{reservation:uuid}/upload-receipt', UploadReceiptController::class)->name('upload-receipt');
 })->middleware('auth:customer');;
 
 Route::get('/mailable', function () {

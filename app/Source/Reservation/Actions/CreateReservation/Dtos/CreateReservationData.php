@@ -2,12 +2,13 @@
 
 namespace App\Source\Reservation\Actions\CreateReservation\Dtos;
 
+use App\Source\Shared\Contracts\HasReservations;
 use Illuminate\Contracts\Support\Arrayable;
 
 readonly class CreateReservationData implements Arrayable
 {
     public function __construct(
-        public string $customerId,
+        public HasReservations $reservable,
         public string $facilityId,
         public string $courtId,
         public string $reservationDate,
@@ -19,7 +20,8 @@ readonly class CreateReservationData implements Arrayable
     public function toArray()
     {
         return [
-            'customer_id' => $this->customerId,
+            'reservable_type' => $this->reservable->getMorphClass(),
+            'reservable_id' => $this->reservable->id,
             'facility_id' => $this->facilityId,
             'court_id' => $this->courtId,
             'reservation_date' => $this->reservationDate,
