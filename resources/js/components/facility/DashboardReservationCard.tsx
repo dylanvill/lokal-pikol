@@ -44,6 +44,8 @@ function DashboardReservationCard({
         return `${startTimeDisplay} - ${endTimeDisplay}`;
     }, [startTime, endTime]);
 
+    const hasNoPayment = !paymentReceipt?.url;
+
     const Icon = courtTypeIconParser(covered);
     const courtTypeLabel = courtTypeLabelParser(covered);
 
@@ -75,11 +77,16 @@ function DashboardReservationCard({
                     <DetailWithIcon icon={<LuCalendar color="black" />} label={dateDisplay} textProps={{ color: 'black' }} />
                     <DetailWithIcon icon={<LuClock color="black" />} label={timeDisplay} textProps={{ color: 'black' }} />
                     <DetailWithIcon
-                        icon={<LuExternalLink color="black" />}
+                        icon={<LuExternalLink color="black" opacity={hasNoPayment ? 0.5 : 1} />}
                         label={
                             <Text as="span">
-                                <ChakraLink href={paymentReceipt.url} target="_blank">
-                                    View Payment Receipt
+                                <ChakraLink
+                                    href={paymentReceipt?.url}
+                                    target="_blank"
+                                    opacity={hasNoPayment ? 0.5 : 1}
+                                    pointerEvents={hasNoPayment ? 'none' : 'auto'}
+                                >
+                                    {hasNoPayment ? 'No payment receipt uploaded' : 'View payment receipt'}
                                 </ChakraLink>
                             </Text>
                         }

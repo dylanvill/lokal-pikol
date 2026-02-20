@@ -17,6 +17,10 @@ export interface PaginationMeta {
     from: number;
     last_page: number;
     links: PaginationMetaLinks[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
 }
 
 interface PaginatedData<T> {

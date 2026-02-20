@@ -1,7 +1,8 @@
-import { Card, Box, Badge, Link as ChakraLink, Button } from '@chakra-ui/react';
+import { Card, Box, Badge, Link as ChakraLink, Button, Spinner, VStack, Text } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { Link, router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { LuArrowRight, LuCheck, LuExternalLink } from 'react-icons/lu';
 import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
@@ -17,8 +18,10 @@ interface ReservationsPageProps extends PageProps {
 
 function ReservationsPage() {
     const { props, flash } = usePage<ReservationsPageProps>();
+    const [fetchingData, setFetchingData] = useState(false);
 
     const reservations = props.reservations.data || [];
+    const meta = props.reservations.meta;
 
     const successFlash = flash?.success as string;
 
@@ -119,6 +122,18 @@ function ReservationsPage() {
         },
     ];
 
+    const handlePageChange = (page: number) => {
+        router.get(
+            `/facility/reservations`,
+            { page },
+            {
+                preserveState: true,
+                onStart: () => setFetchingData(true),
+                onFinish: () => setFetchingData(false),
+            },
+        );
+    };
+
     return (
         <FacilityLayout>
             <Card.Root>
@@ -135,12 +150,20 @@ function ReservationsPage() {
                     <DataTable
                         columns={columns}
                         data={reservations}
-                        // progressPending={loading}
-                        // pagination
-                        // paginationServer
-                        // paginationTotalRows={totalRows}
-                        // onChangeRowsPerPage={handlePerRowsChange}
-                        // onChangePage={handlePageChange}
+                        progressPending={fetchingData}
+                        progressComponent={
+                            <VStack colorPalette="blue">
+                                <Spinner size="xl" animationDuration="1s" borderWidth="3px" />
+                                <Text>Getting reservations</Text>
+                            </VStack>
+                        }
+                        pagination
+                        paginationServer
+                        paginationTotalRows={meta.total}
+                        expandableRows={false}
+                        paginationComponentOptions={{ noRowsPerPage: true }}
+                        paginationPerPage={meta.per_page}
+                        onChangePage={handlePageChange}
                     />
                 </Card.Body>
             </Card.Root>

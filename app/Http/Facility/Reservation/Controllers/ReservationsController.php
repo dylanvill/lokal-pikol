@@ -29,7 +29,7 @@ class ReservationsController extends Controller
                     $query->where('collection_name', MediaTypeEnum::RESERVATION_RECEIPTS->value);
                 }
             ])
-            ->orderBy('created_at', 'desc')->paginate(50);
+            ->orderBy('reservation_date', 'desc')->paginate(25);
 
         return Inertia::render('facility/reservations/reservations', [
             'reservations' => ReservationListResource::collection($reservations),
