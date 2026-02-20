@@ -4,6 +4,7 @@ namespace App\Source\Reservation\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Court\Models\Court;
+use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
 use App\Source\Reservation\Database\Factories\ReservationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,6 +53,11 @@ class Reservation extends Model implements HasMedia
     public function reservable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function reservableType(): Customer|Facility
+    {
+        return $this->reservable;
     }
 
     public function facility(): BelongsTo

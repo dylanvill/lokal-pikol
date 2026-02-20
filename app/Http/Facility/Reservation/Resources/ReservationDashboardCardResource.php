@@ -18,9 +18,9 @@ class ReservationDashboardCardResource extends JsonResource
         return [
             'id' => $this->uuid,
             'courtName' => $this->court->name,
-            'customerName' => $this->customer->full_name,
-            'customerPhone' => $this->customer->phone,
-            'customerEmail' => $this->customer->email,
+            'customerName' => $this->reservable->reservationNameDisplay(),
+            'customerPhone' => $this->reservable->reservationPhone(),
+            'customerEmail' => $this->reservable->reservationEmail(),
             'reservationDate' => $this->reservation_date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,

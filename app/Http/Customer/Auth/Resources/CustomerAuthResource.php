@@ -19,7 +19,7 @@ class CustomerAuthResource extends JsonResource
             "firstName" => $this->first_name,
             "lastName" => $this->last_name,
             "email" => $this->email,
-            "fullName" => $this->full_name,
+            "fullName" => $this->reservationNameDisplay(),
             "phone" => $this->phone,
             "emailVerified" => !empty($this->user->email_verified_at),
         ];

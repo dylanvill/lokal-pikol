@@ -20,7 +20,7 @@ class CustomerResource extends JsonResource
             "lastName" => $this->last_name,
             "email" => $this->email,
             "phone" => $this->phone,
-            "fullName" => $this->full_name,
+            "fullName" => $this->reservationNameDisplay(),
         ];
     }
 }

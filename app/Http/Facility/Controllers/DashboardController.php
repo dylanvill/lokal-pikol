@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         /** @var Facility $facility */
         $facility = $request->user(GuardEnum::FACILITY->value)->getProfileAttribute();
-        $reservations = $facility->reservations()->where("status", ReservationStatusEnum::PENDING->value)->orderBy('created_at')->get();
+        $reservations = $facility->customerReservations()->where("status", ReservationStatusEnum::PENDING->value)->orderBy('created_at')->get();
 
         return Inertia::render('facility/dashboard', ['reservations' => ReservationDashboardCardResource::collection($reservations)]);
     }

@@ -16,7 +16,9 @@ class CourtReservationCalendarResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'customerName' => $this->customer->full_name,
+            'customerName' => $this->reservable->reservationNameDisplay(),
+            'customerPhone' => $this->reservable->reservationPhone(),
+            'customerEmail' => $this->reservable->reservationEmail(),
             'reservationDate' => $this->reservation_date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,

@@ -22,7 +22,7 @@ class ConfirmReservationController extends Controller
         $startTime = date('g:i A', strtotime($reservation->start_time));
         $endTime = date('g:i A', strtotime($reservation->end_time));
         $courtName = $reservation->court->name;
-        $customerName = $reservation->customer->full_name;
+        $customerName = $reservation->customer->reservationNameDisplay();
 
         $message = "Reservation for court {$courtName} by {$customerName} on {$date} from {$startTime} to {$endTime} has been confirmed.";
 

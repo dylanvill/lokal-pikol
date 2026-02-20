@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Source\Facility\Database\Factories\FacilityFactory;
+use App\Source\Reservation\Models\Reservation;
 use App\Source\Shared\Contracts\HasReservations;
 use App\Source\Shared\Traits\InteractsWithReservations;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +36,21 @@ class Facility extends Model implements HasMedia, HasReservations
         'city',
     ];
 
+    public function reservationNameDisplay(): string
+    {
+        return $this->name;
+    }
+
+    public function reservationPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function reservationEmail(): string
+    {
+        return $this->email;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -43,6 +59,11 @@ class Facility extends Model implements HasMedia, HasReservations
     public function courts(): HasMany
     {
         return $this->hasMany(Court::class);
+    }
+
+    public function customerReservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 
     /**

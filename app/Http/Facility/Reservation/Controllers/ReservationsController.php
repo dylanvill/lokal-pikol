@@ -20,7 +20,7 @@ class ReservationsController extends Controller
         /** @var Facility */
         $facility = $request->user(GuardEnum::FACILITY->value)->getProfileAttribute();
 
-        $reservations = $facility->reservations()
+        $reservations = $facility->customerReservations()
             ->with([
                 'court',
                 'customer',

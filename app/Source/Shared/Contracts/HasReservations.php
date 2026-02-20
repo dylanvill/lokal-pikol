@@ -9,4 +9,10 @@ interface HasReservations
     public function reservations(): MorphMany;
 
     public function getMorphClass();
+
+    public function reservationNameDisplay(): string;
+
+    public function reservationPhone(): string;
+
+    public function reservationEmail(): string;
 }

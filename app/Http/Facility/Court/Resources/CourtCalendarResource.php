@@ -19,7 +19,7 @@ class CourtCalendarResource extends JsonResource
             'courtName' => $this->name,
             'openingTime' => $this->courtPricings->first()->start_time,
             'closingTime' => $this->courtPricings->last()->end_time,
-            'reservations' => CourtReservationCalendarResource::collection($this->reservations),
+            'reservations' => CourtReservationCalendarResource::collection($this->customerReservations),
         ];
     }
 }

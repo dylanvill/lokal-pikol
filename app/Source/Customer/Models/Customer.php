@@ -26,6 +26,21 @@ class Customer extends Model implements HasReservations
         'phone',
     ];
 
+    public function reservationNameDisplay(): string
+    {
+        return $this->full_name;
+    }
+
+    public function reservationPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function reservationEmail(): string
+    {
+        return $this->email;
+    }
+
     protected function full_name(): Attribute
     {
         return Attribute::make(

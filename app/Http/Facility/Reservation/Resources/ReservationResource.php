@@ -21,7 +21,7 @@ class ReservationResource extends JsonResource
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
             'status' => $this->status,
-            'customer' => new CustomerResource($this->customer),
+            'customer' => new CustomerResource($this->reservable),
             'court' => new CourtResource($this->court),
             'fees' => new ReservationFeeResource($this->fees),
             'paymentReceipt' => new PhotoResource($this->media->first()),
