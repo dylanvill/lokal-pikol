@@ -19,6 +19,8 @@ class ReservationListResource extends JsonResource
             'id' => $this->uuid,
             'courtName' => $this->court->name,
             'customerName' => $this->reservable->reservationNameDisplay(),
+            'customerPhone' => $this->reservable->reservationPhone(),
+            'customerEmail' => $this->reservable->reservationEmail(),
             'reservationDate' => $this->reservation_date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
