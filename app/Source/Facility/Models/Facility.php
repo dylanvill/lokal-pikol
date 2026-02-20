@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Source\Facility\Database\Factories\FacilityFactory;
-use App\Source\Reservation\Models\Reservation;
+use App\Source\Shared\Traits\HasReservations;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,7 +18,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Facility extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\FacilityFactory> */
-    use HasFactory, HasUuid, InteractsWithMedia, Notifiable;
+    use HasFactory, HasUuid, InteractsWithMedia, Notifiable, HasReservations;
 
     protected $fillable = [
         'uuid',
@@ -42,11 +42,6 @@ class Facility extends Model implements HasMedia
     public function courts(): HasMany
     {
         return $this->hasMany(Court::class);
-    }
-
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
     }
 
     /**

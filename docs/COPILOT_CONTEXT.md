@@ -105,9 +105,26 @@ Http/
 
 ## Business Rules
 
+### Court Pricing Model
+- **Time-Based Pricing:** Courts have pricing ranges based on time periods
+- **Consecutive Ranges Required:** Pricing ranges MUST be consecutive without gaps
+  - ✅ Valid: `07:00-11:00`, `11:00-15:00`, `15:00-22:00`
+  - ❌ Invalid: `07:00-11:00`, `12:00-15:00` (missing 11:00-12:00)
+- **Price Structure:** Each range has a fixed price (e.g., 100 pesos for 07:00-11:00)
+- **Full Coverage:** All operating hours must be covered by pricing ranges
+
+### Court Slot System
+- **Backend Storage:** Time ranges stored as `start_time` and `end_time` 
+- **Frontend Representation:** Converted to "court slots" for user interaction
+- **User Selection:** Customers select court slots via checkbox interface
+- **Conversion Logic:** `RangeToSlot`/`SlotsToRange` actions handle time conversions
+- **Data Flow:** Court Slots → Time Ranges → Reservation Records
+
 ### Reservation Workflow
-- Customer browses available courts
-- Customer initiates booking request
+- Customer browses available courts and their slot pricing
+- Customer selects court slots (checkbox UI)
+- Selected slots converted to time ranges for reservation creation
+- Customer initiates booking request  
 - Facility must approve reservation requests (approval-based system)
 - Email notifications sent during reservation lifecycle
 
@@ -190,8 +207,18 @@ Http/
 - **Key Actions:** 
   - `CreateCourt`, `CreateCourtPricing` for court management
   - `RangeToSlot`/`SlotsToRange` for time slot conversions
-- **Models:** `Court`, `CourtPricing` with complex pricing logic
-- **Business Logic:** Time slot management and pricing calculations
+- **Models:** 
+  - `Court`: Basic court entity with media support
+  - `CourtPricing`: Time-based pricing ranges with consecutive validation
+- **DTOs:** `CourtSlot` for frontend time slot representation
+- **Business Logic:** 
+  - Time slot management and pricing calculations
+  - Consecutive pricing range enforcement (no gaps allowed)
+  - Court slot ↔ time range conversions for UI/backend translation
+- **Pricing Constraints:**
+  - All pricing ranges must be consecutive
+  - Coverage required for all operating hours
+  - Fixed price per time range (e.g., 100 pesos for 07:00-11:00)
 
 ### Customer Module
 - **Location:** `/app/Source/Customer/`
@@ -226,9 +253,26 @@ Http/
 
 *To be documented as requirements emerge*
 
-## Security Requirements
+## Critical Validation Rules
 
-*To be documented as patterns are established*
+### Court Pricing Validation
+- **Consecutive Range Rule:** Court pricing ranges CANNOT have gaps
+  - Must validate that end_time of range N = start_time of range N+1  
+  - Example validation: `07:00-11:00` + `11:00-15:00` ✓, but `07:00-11:00` + `12:00-15:00` ✗
+- **Time Format:** Consistent time format across pricing ranges
+- **Price Requirements:** Each range must have a valid decimal price  
+- **Coverage Validation:** All court operating hours should be covered by pricing ranges
+
+### Reservation Validation  
+- **Slot Availability:** Selected court slots must be available for reservation date
+- **Time Alignment:** Reservation times must align with existing court pricing ranges
+- **No Overlaps:** Prevent double-booking of court slots
+- **Future Dates:** Reservations typically only allowed for future dates
+
+### Business Logic Constraints
+- **Approval Workflow:** Reservations require facility approval before confirmation
+- **Fee Calculation:** Total fees calculated based on selected court slots and pricing
+- **Status Transitions:** Reservations follow defined status workflow (pending → confirmed/cancelled)
 
 ## Common Patterns & Conventions
 
@@ -281,9 +325,22 @@ pages/
 - Reservation lifecycle notifications
 - User account management communications
 
-### Database Schema
+### Database Schema & Entity Relations
 - **Key Tables:** facilities, courts, customers, reservations, court_pricings, reservation_fees
-- **Media Integration:** Spatie Media Library integration evident
+- **Core Entities:**
+  - `Court` → `CourtPricing` (1:many) - Time-based pricing ranges
+  - `Court` → `Reservation` (1:many) - Booking records  
+  - `Reservation` → `ReservationFee` (1:many) - Fee breakdown
+  - **Polymorphic:** `Reservation` → `reservable` (Customer|Facility) - Who made the reservation
+  - `Facility` → `Court` (1:many) - Facility court ownership
+  - `Facility` → `Reservation` (1:many) - Which facility the reservation is at
+- **UUID Strategy:** All entities use UUID primary keys via `HasUuid` trait
+- **Media Integration:** Spatie Media Library for court photos and reservation receipts
+- **Polymorphic Reservations:** Both customers and facilities can make reservations using `HasReservations` trait
+- **Time Storage:** 
+  - Database: `start_time`, `end_time` fields
+  - Frontend: Converted to court slots for user interaction
+  - Constraint: Court pricing ranges must be consecutive (no time gaps)
 
 ## Future Considerations
 

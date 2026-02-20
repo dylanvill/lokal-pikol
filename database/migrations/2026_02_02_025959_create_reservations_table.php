@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->foreignId('customer_id')->constrained();
+            $table->morphs('reservable');
             $table->foreignId('facility_id')->constrained();
             $table->foreignId('court_id')->constrained();
             $table->date('reservation_date');

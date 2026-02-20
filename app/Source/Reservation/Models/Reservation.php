@@ -4,13 +4,13 @@ namespace App\Source\Reservation\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Court\Models\Court;
-use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
 use App\Source\Reservation\Database\Factories\ReservationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -21,7 +21,8 @@ class Reservation extends Model implements HasMedia
 
     protected $fillable = [
         'uuid',
-        'customer_id',
+        'reservable_type',
+        'reservable_id',
         'facility_id',
         'court_id',
         'reservation_date',
@@ -34,9 +35,9 @@ class Reservation extends Model implements HasMedia
         'reservation_date' => 'date'
     ];
 
-    public function customer(): BelongsTo
+    public function reservable(): MorphTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->morphTo();
     }
 
     public function facility(): BelongsTo

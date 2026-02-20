@@ -5,17 +5,16 @@ namespace App\Source\Customer\Models;
 use App\Models\Traits\HasUuid;
 use App\Source\Authentication\Models\User;
 use App\Source\Customer\Database\Factories\CustomerFactory;
-use App\Source\Reservation\Models\Reservation;
+use App\Source\Shared\Traits\HasReservations;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
     /** @use HasFactory<\App\Source\Customer\Database\Factories\CustomerFactory> */
-    use HasFactory, HasUuid;
+    use HasFactory, HasUuid, HasReservations;
 
     protected $fillable = [
         'uuid',
@@ -36,11 +35,6 @@ class Customer extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
     }
 
     public function getFullNameAttribute(): string
