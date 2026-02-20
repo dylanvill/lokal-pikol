@@ -2,6 +2,7 @@
 
 namespace App\Source\Reservation\Actions\UploadReceipt;
 
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Enums\ReservationStatusEnum;
 use App\Source\Reservation\Models\Reservation;
 use Illuminate\Http\UploadedFile;
@@ -14,7 +15,7 @@ class UploadReceipt
     public function upload(UploadedFile $file): Media
     {
         $media = $this->reservation->addMedia($file)
-            ->toMediaCollection('receipts');
+            ->toMediaCollection(MediaTypeEnum::RESERVATION_RECEIPTS->value);
 
         $this->reservation->status = ReservationStatusEnum::PENDING->value;
         $this->reservation->save();
