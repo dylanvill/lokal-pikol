@@ -12,7 +12,7 @@ class ReservationController extends Controller
 {
     public function __invoke(Reservation $reservation)
     {
-        $reservation->load(['court', 'customer', 'fees', 'media' => function ($query) {
+        $reservation->load(['court', 'reservable', 'fees', 'media' => function ($query) {
             $query->where('collection_name', MediaTypeEnum::RESERVATION_RECEIPTS->value);
         }]);
 

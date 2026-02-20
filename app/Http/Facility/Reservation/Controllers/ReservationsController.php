@@ -23,7 +23,7 @@ class ReservationsController extends Controller
         $reservations = $facility->customerReservations()
             ->with([
                 'court',
-                'customer',
+                'reservable',
                 'fees',
                 'media' => function ($query) {
                     $query->where('collection_name', MediaTypeEnum::RESERVATION_RECEIPTS->value);

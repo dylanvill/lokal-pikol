@@ -16,13 +16,13 @@ class CancelReservationController extends Controller
     public function __invoke(Reservation $reservation, Request $request, CancelReservation $cancelReservation)
     {
         $reservation = $cancelReservation->cancel($reservation);
-        $reservation->load('court', 'customer');
+        $reservation->load('court', 'reservable');
 
         $date = $reservation->reservation_date->format('F j, Y');
         $startTime = date('g:i A', strtotime($reservation->start_time));
         $endTime = date('g:i A', strtotime($reservation->end_time));
         $courtName = $reservation->court->name;
-        $customerName = $reservation->customer->reservationNameDisplay();
+        $customerName = $reservation->reservable->reservationNameDisplay();
 
         $message = "Reservation for court {$courtName} by {$customerName} on {$date} from {$startTime} to {$endTime} has been cancelled.";
 

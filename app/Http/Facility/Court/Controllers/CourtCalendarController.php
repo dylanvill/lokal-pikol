@@ -15,7 +15,7 @@ class CourtCalendarController extends Controller
     {
         $court->load(['reservations' => function ($query) {
             $query->whereIn('status', [ReservationStatusEnum::CONFIRMED->value, ReservationStatusEnum::PENDING->value]);
-        }, 'reservations.customer', 'courtPricings' => function ($query) {
+        }, 'reservations.reservable', 'courtPricings' => function ($query) {
             $query->orderBy('start_time');
         }]);
 
