@@ -1,16 +1,21 @@
 import { Box, Button, Field, FileUpload, useFileUpload } from '@chakra-ui/react';
-import { useFormContext } from '@inertiajs/react';
+import { useContext } from 'react';
 import { LuFileImage } from 'react-icons/lu';
+import CreateCourtFormContext from './context';
 import ImageListPreview from './ImageListPreview';
 import SectionContainer from './SectionContainer';
 
 function PhotosStepContent() {
-    const form = useFormContext();
-    const errors = form!.errors;
+    const form = useContext(CreateCourtFormContext);
+    const errors = form.errors;
 
+    const handleFileAccepted = (details: { files: File[] }) => {
+        form.setData('photos', details.files);
+    };
     const fileUpload = useFileUpload({
         maxFiles: 6,
         accept: ['image/jpeg', 'image/png'],
+        onFileAccept: handleFileAccepted,
     });
 
     return (

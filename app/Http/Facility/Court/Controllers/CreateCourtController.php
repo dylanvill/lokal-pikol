@@ -11,6 +11,7 @@ use App\Source\Court\Actions\CreateCourt\Dtos\CreateCourtData;
 use App\Source\Court\Actions\CreateCourtPricing\CreateCourtPricing;
 use App\Source\Court\Actions\CreateCourtPricing\Dtos\CreateCourtPricingData;
 use App\Source\Court\Models\Court;
+use App\Source\Facility\Models\Facility;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
 
@@ -28,22 +29,23 @@ class CreateCourtController extends Controller
 
     public function store(CreateCourtRequest $request)
     {
-        /** @var User */
-        $user = $request->user(GuardEnum::FACILITY->value);
-        $facility = $user->getProfileAttribute();
+        /** @var Facility */
+        $facility = $request->user(GuardEnum::FACILITY->value)->getProfileAttribute();
 
         $court = $this->createCourtService->create(
             new CreateCourtData(
                 name: $request->name,
                 covered: $request->type === "covered",
                 facilityId: $facility->id,
-                photos: $request->photos
+                photos: $request->file('photos'),
             )
         );
 
         $this->processPricing($court, $request);
 
-        return redirect()->route('facility.courts.index')->with('success', 'Court created successfully!');
+        Inertia::flash("success", "Court created successfully!");
+
+        return redirect()->route('facility.courts.index');
     }
 
     protected function processPricing(Court $court, CreateCourtRequest $request): Collection

@@ -5,7 +5,7 @@ namespace App\Source\Court\Actions\CreateCourtPricing;
 use App\Source\Court\Actions\CreateCourtPricing\Dtos\CreateCourtPricingData;
 use App\Source\Court\Models\Court;
 use App\Source\Court\Models\CourtPricing;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class CreateCourtPricing
 {
