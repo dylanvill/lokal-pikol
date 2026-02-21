@@ -41,7 +41,7 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date,
         form.post(`/facilities/${facilityId}/courts/${courtId}/reserve`, {
             preserveScroll: true,
             onError: (e) => {
-                if (e.slots === 'Selected time slots are no longer available. Please choose different hours.') {
+                if (e.slots === 'The selected time slots overlap with an existing reservation.') {
                     form.reset('slots');
                 }
             },

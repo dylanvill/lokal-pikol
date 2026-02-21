@@ -1,15 +1,15 @@
-import { Box } from '@chakra-ui/react';
-import AppTitle from '../../../components/app/AppTitle';
+import { Container } from '@chakra-ui/react';
 import CreateCourtForm from '../../../components/facility/CreateCourtForm';
+import FacilityPageHeader from '../../../components/facility/FacilityPageHeader';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 
 function CreateCourtPage() {
     return (
         <FacilityLayout>
-            <AppTitle>Create New Court</AppTitle>
-            <Box maxWidth="2xl">
+            <Container maxWidth="2xl">
+                <FacilityPageHeader title="Create New Court" description="Fill out the form below to add a new court to your facility." />
                 <CreateCourtForm />
-            </Box>
+            </Container>
         </FacilityLayout>
     );
 }
