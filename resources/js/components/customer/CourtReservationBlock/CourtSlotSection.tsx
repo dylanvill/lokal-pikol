@@ -1,5 +1,6 @@
 import { Badge, Box, CheckboxCard, Field, VStack, type CheckboxCardCheckedChangeDetails } from '@chakra-ui/react';
 import { type InertiaFormProps } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import currencyFormatter from '../../../helpers/currencyFormatter';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
@@ -11,9 +12,10 @@ export interface CourtSlotProps {
     price: number;
     isAvailable: boolean;
     form: InertiaFormProps<{ slots: string[] }>;
+    date: string;
 }
 
-function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, form }: CourtSlotProps) {
+function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, form, date }: CourtSlotProps) {
     const timeDisplay = useMemo(() => {
         return {
             startTime: militaryTimeToAmPmTime(startTime),
@@ -35,6 +37,12 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
     };
 
     const isChecked = form.data.slots.includes(`${startTime}-${endTime}`);
+    const isInThePast = useMemo(() => {
+        const time = dayjs(`${date} ${startTime}`);
+        return time.isBefore(dayjs());
+    }, [date, startTime]);
+
+    const isNotSelectable = !isAvailable || isInThePast;
 
     return (
         <Field.Root width="full">
@@ -47,7 +55,7 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                 size="sm"
                 checked={isChecked}
                 onCheckedChange={handleSelectionChanged}
-                disabled={!isAvailable}
+                disabled={isNotSelectable}
                 {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
             >
                 <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />

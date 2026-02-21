@@ -86,6 +86,7 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date,
                                 endTime={slot.endTime}
                                 price={slot.price}
                                 isAvailable={slot.isAvailable}
+                                date={date}
                             />
                         ))}
                     </SimpleGrid>
