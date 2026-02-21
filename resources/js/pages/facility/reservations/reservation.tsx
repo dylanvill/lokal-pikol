@@ -6,6 +6,7 @@ import CustomerDetails from '../../../components/facility/reservation/Reservatio
 import PaymentDetails from '../../../components/facility/reservation/ReservationDetails/PaymentDetails';
 import ReservationActions from '../../../components/facility/reservation/ReservationDetails/ReservationActions';
 import ReservationDetails from '../../../components/facility/reservation/ReservationDetails/ReservationDetails';
+import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
 import WarningAlert from '../../../components/shared/Alert/WarningAlert';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type Reservation from '../../../models/facility/reservation/Reservation';
@@ -19,14 +20,18 @@ function ReservationPage() {
 
     const reservation = props.reservation;
 
-    const flashMessage = flash?.success as string;
+    const cancelMessage = flash?.cancel as string;
+    const successMessage = flash?.success as string;
 
     return (
         <FacilityLayout>
             <Container>
                 <VStack alignItems="stretch" gap={4}>
-                    {flashMessage ? (
-                        <WarningAlert title="Reservation Cancelled" description={flashMessage} />
+                    {cancelMessage ? (
+                        <WarningAlert title="Reservation Cancelled" description={cancelMessage} />
+                    ) : null}
+                    {successMessage ? (
+                        <SuccessAlert title="Reservation Successful" description={successMessage} />
                     ) : null}
                     <CustomerDetails name={reservation.customer.fullName} phone={reservation.customer.phone} email={reservation.customer.email} />
                     <CourtDetails courtName={reservation.court.name} covered={reservation.court.covered} photos={reservation.court.photos} />

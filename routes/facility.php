@@ -10,7 +10,6 @@ use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
 use App\Http\Facility\Reservation\Controllers\CancelReservationController;
 use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
-use App\Http\Facility\Reservation\Controllers\ReservationCalendarController;
 use App\Http\Facility\Reservation\Controllers\ReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationsController;
 

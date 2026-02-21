@@ -26,6 +26,6 @@ class CancelReservationController extends Controller
 
         $message = "Reservation for court {$courtName} by {$customerName} on {$date} from {$startTime} to {$endTime} has been cancelled.";
 
-        return Inertia::flash('success', $message)->back();
+        return Inertia::flash('cancel', $message)->back();
     }
 }

@@ -3,11 +3,11 @@ import { router } from '@inertiajs/react';
 import React, { useState } from 'react';
 import { LuX } from 'react-icons/lu';
 
-export interface CancelCampaignActionProps {
+export interface CancelReservationActionProps {
     id: string;
 }
 
-function CancelCampaignAction({ id }: CancelCampaignActionProps) {
+function CancelReservationAction({ id }: CancelReservationActionProps) {
     const [cancelling, setCancelling] = useState(false);
 
     const handleCancelReservation = () => {
@@ -59,4 +59,4 @@ function CancelCampaignAction({ id }: CancelCampaignActionProps) {
     );
 }
 
-export default CancelCampaignAction;
+export default CancelReservationAction;
