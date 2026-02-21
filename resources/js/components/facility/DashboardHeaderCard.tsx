@@ -12,7 +12,7 @@ function DashboardHeaderCard() {
         <Box>
             <Flex justify="space-between" align="start" mb={4}>
                 <Box>
-                    <Heading size="lg" mb={2}>
+                    <Heading size="lg" mb={2} color="blue.700">
                         Welcome back, {facility?.name}!
                     </Heading>
                     <Flex align="center" gap={2} color="gray.600">
