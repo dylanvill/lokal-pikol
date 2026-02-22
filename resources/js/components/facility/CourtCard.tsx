@@ -1,7 +1,7 @@
-import { Box, Image, Card, VStack, Badge, Text, Heading, HStack, Button, Flex, Float } from '@chakra-ui/react';
+import { Box, Image, Card, VStack, Badge, Text, Heading, HStack, Button, Flex } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { LuArrowRight, LuPencil } from 'react-icons/lu';
+import { LuArrowRight } from 'react-icons/lu';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
 import typographyTokens from '../../lib/tokens/typography';
 import type CourtPricing from '../../models/facility/CourtPricing';
@@ -29,16 +29,9 @@ function CourtCard({ id, name, photo, covered, courtPricings }: CourtCardProps) 
 
     return (
         <Card.Root borderRadius="lg" overflow="hidden">
-            <Card.Body p={0} position="relative">
+            <Card.Body p={0}>
                 <Image src={photo} alt={name} aspectRatio={16 / 9} width="100%" objectFit="cover" />
-                <Float offsetX={10} offsetY={6}>
-                    <Link href={`/facility/courts/${id}/edit`}>
-                        <Button colorPalette="orange" size="xs" variant="subtle">
-                            <LuPencil />
-                            Edit
-                        </Button>
-                    </Link>
-                </Float>
+
                 <Box p={4} gap={0}>
                     <Heading marginBottom={0} fontSize={typographyTokens.title.fontSize.md}>
                         {name}

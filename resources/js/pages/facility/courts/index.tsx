@@ -5,7 +5,6 @@ import { LuX } from 'react-icons/lu';
 import CourtCard from '../../../components/facility/CourtCard';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type Court from '../../../models/facility/Court';
-import FacilityPageHeader from '../../../components/facility/FacilityPageHeader';
 
 interface CourtPageProps extends PageProps {
     courts: Court[];
@@ -25,7 +24,9 @@ function Courts() {
             <Box>
                 {/* Header Section */}
                 <Flex justifyContent="space-between" alignItems="center" mb={6}>
-                    <FacilityPageHeader title="Courts" description="Manage your facility's courts" />
+                    <Text fontSize="2xl" fontWeight="bold">
+                        Courts
+                    </Text>
                     {courts.length > 0 && (
                         <Button colorPalette="blue" onClick={handleRegisterNewCourt}>
                             Register New Court
