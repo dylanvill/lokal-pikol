@@ -44,7 +44,7 @@ class ReservationPendingMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         $facilityName = $this->reservation->facility->name;
-        $customer = $this->reservation->customer->full_name;
+        $customer = $this->reservation->reservable->reservationNameDisplay();
 
         return new Content(
             markdown: 'mail.reservation.reservation-pending',
