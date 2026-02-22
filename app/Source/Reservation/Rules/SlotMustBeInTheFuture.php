@@ -14,7 +14,7 @@ class SlotMustBeInTheFuture implements ValidationRule
 
     /**
      * 
-     * @param string $value
+     * @param string $value String format: "start_time-end_time" (e.g., "14:00-15:00")
      * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void

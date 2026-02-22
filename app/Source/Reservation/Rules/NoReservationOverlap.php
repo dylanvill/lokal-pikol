@@ -17,7 +17,7 @@ class NoReservationOverlap implements ValidationRule
 
     /**
      * 
-     * @param array $slots
+     * @param array $slots An array of strings, each in the format "start_time-end_time" (e.g., ["14:00-15:00", "15:00-16:00"])
      * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $slots, Closure $fail): void
