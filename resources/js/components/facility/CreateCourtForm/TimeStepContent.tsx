@@ -27,7 +27,22 @@ function TimeStepContent() {
     };
 
     const updateTimeSlot = (index: number, field: keyof Omit<TimeSlot, 'id'>, value: string) => {
-        setTimeSlots(timeSlots.map((slot, i) => (i === index ? { ...slot, [field]: value } : slot)));
+        let formattedValue = value;
+
+        if (field === 'rate') {
+            formattedValue = value;
+        } else {
+            // Clean the input to only allow numbers and colons
+            formattedValue = value.replace(/[^0-9:]/g, '');
+            
+            // Force minutes to :00 if a complete time is entered
+            if (formattedValue.includes(':') && formattedValue.length >= 5) {
+                const [hours] = formattedValue.split(':');
+                formattedValue = `${hours}:00`;
+            }
+        }
+
+        setTimeSlots(timeSlots.map((slot, i) => (i === index ? { ...slot, [field]: formattedValue } : slot)));
     };
 
     useEffect(() => {
