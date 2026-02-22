@@ -2,11 +2,13 @@
 
 namespace App\Http\Facility\Reservation\Requests;
 
+use App\Http\Enums\GuardEnum;
 use App\Source\Court\Models\Court;
 use App\Source\Reservation\Rules\NoReservationOverlap;
 use App\Source\Reservation\Rules\SlotMustBeInTheFuture;
 use App\Source\Shared\Rules\ConsecutiveHours;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CreateReservationRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class CreateReservationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::guard(GuardEnum::FACILITY->value)->check();
     }
 
     /**
@@ -29,7 +31,7 @@ class CreateReservationRequest extends FormRequest
             'date' => ['required', 'date', 'after_or_equal:today'],
             'courtId' => ['required', 'exists:courts,uuid'],
             "slots" => ['required', 'array', 'min:1', new ConsecutiveHours(), new NoReservationOverlap(
-                court: Court::find($this->input('courtId')),
+                court: Court::where('uuid', $this->input('courtId'))->first(),
                 date: $this->input('date')
             )],
             "slots.*" => ['required', 'string', 'regex:/^\d{2}:\d{2}-\d{2}:\d{2}$/', new SlotMustBeInTheFuture(

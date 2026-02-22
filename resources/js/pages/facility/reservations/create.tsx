@@ -1,14 +1,12 @@
-import { type PageProps } from '@inertiajs/core';
-import { useForm, usePage } from '@inertiajs/react';
+import { Card, Container, Field, Input, VStack } from '@chakra-ui/react';
+import { router, type PageProps } from '@inertiajs/core';
+import { usePage } from '@inertiajs/react';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 import FacilityPageHeader from '../../../components/facility/FacilityPageHeader';
+import ReservationBlock from '../../../components/facility/reservation/ReservationBlock';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type CourtReservationListItem from '../../../models/facility/reservation/CourtReservationListItem';
-import { Card, Container, Field, Heading, Input, SimpleGrid } from '@chakra-ui/react';
-import { useState } from 'react';
-import DetailWithIcon from '../../../components/shared/DetailWithIcon';
-import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
-import courtTypeLabelParser from '../../../helpers/courtTypeLabelParser';
-import CourtSlotSection from '../../../components/customer/CourtReservationBlock/CourtSlotSection';
 
 export interface CreateReservationPageProps extends PageProps {
     courts: CourtReservationListItem[];
@@ -20,6 +18,12 @@ function CreateReservationPage() {
     const courts = props.courts;
 
     const [date, setDate] = useState(props.lookupDate);
+    const minimumDate = dayjs().format('YYYY-MM-DD');
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDate(e.target.value);
+        router.get(`/facility/reservations/create`, { date: e.target.value }, { preserveState: true });
+    };
 
     return (
         <FacilityLayout>
@@ -29,35 +33,22 @@ function CreateReservationPage() {
                     <Card.Header>
                         <Field.Root>
                             <Field.Label>Select reservation date</Field.Label>
-                            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                            <Input type="date" value={date} onChange={handleDateChange} min={minimumDate} />
                         </Field.Root>
                     </Card.Header>
                     <Card.Body>
-                        {courts.map((court) => {
-                            const form = useForm({ slots: [] });
-                            const Icon = courtTypeIconParser(court.covered);
-                            const label = courtTypeLabelParser(court.covered);
-                            return (
-                                <>
-                                    <Heading>{court.name}</Heading>
-                                    <DetailWithIcon icon={<Icon />} label={label} />
-
-                                    <SimpleGrid columns={{ base: 2, md: 4, lg: 3, xl: 4 }} gap={4}>
-                                        {court.slots.map((slot) => (
-                                            <CourtSlotSection
-                                                courtId={court.id}
-                                                startTime={slot.startTime}
-                                                endTime={slot.endTime}
-                                                price={slot.price}
-                                                isAvailable={slot.isAvailable}
-                                                form={form}
-                                                date={date}
-                                            />
-                                        ))}
-                                    </SimpleGrid>
-                                </>
-                            );
-                        })}
+                        <VStack gap={12} alignItems="stretch">
+                            {courts.map((court) => (
+                                <ReservationBlock
+                                    key={court.id}
+                                    courtName={court.name}
+                                    courtId={court.id}
+                                    covered={court.covered}
+                                    date={date}
+                                    slots={court.slots}
+                                />
+                            ))}
+                        </VStack>
                     </Card.Body>
                 </Card.Root>
             </Container>
