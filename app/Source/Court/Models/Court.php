@@ -46,6 +46,15 @@ class Court extends Model implements HasMedia
         return $this->hasMany(CourtPricing::class);
     }
 
+    public function withPhotos(): Court
+    {
+        $this->load(['media' => function ($query) {
+            $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS->value);
+        }]);
+
+        return $this;
+    }
+
     protected static function newFactory()
     {
         return CourtFactory::new();

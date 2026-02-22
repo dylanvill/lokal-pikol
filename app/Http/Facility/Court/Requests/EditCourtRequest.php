@@ -4,20 +4,16 @@ namespace App\Http\Facility\Court\Requests;
 
 use App\Http\Facility\Court\Requests\Traits\ValidatesTime;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Validation\Validator;
 
 /**
  * @property string $name;
  * @property string $type;
- * @property UploadedFile[] $photos;
  * @property string[] $startTime;
  * @property string[] $endTime;
  * @property float[] $rate;
  */
-class CreateCourtRequest extends FormRequest
+class EditCourtRequest extends FormRequest
 {
-
     use ValidatesTime;
 
     public function authorize(): bool
