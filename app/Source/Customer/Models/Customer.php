@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 
 class Customer extends Model implements HasReservations
 {
     /** @use HasFactory<\App\Source\Customer\Database\Factories\CustomerFactory> */
-    use HasFactory, HasUuid, InteractsWithReservations;
+    use HasFactory, HasUuid, InteractsWithReservations, Notifiable;
 
     protected $fillable = [
         'uuid',

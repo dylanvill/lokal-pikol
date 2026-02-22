@@ -5,6 +5,7 @@ namespace App\Http\Facility\Reservation\Controllers;
 use App\Http\Controllers\Controller;
 use App\Source\Reservation\Actions\ConfirmReservation\ConfirmReservation;
 use App\Source\Reservation\Models\Reservation;
+use App\Source\Reservation\Notifications\ReservationConfirmedNotification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -25,6 +26,8 @@ class ConfirmReservationController extends Controller
         $customerName = $reservation->reservable->reservationNameDisplay();
 
         $message = "Reservation for court {$courtName} by {$customerName} on {$date} from {$startTime} to {$endTime} has been confirmed.";
+
+        $reservation->reservable->notify(new ReservationConfirmedNotification($reservation));
 
         return Inertia::flash('success', $message)->back();
     }
