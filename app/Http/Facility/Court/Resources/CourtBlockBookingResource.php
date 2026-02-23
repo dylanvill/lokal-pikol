@@ -13,7 +13,7 @@ class CourtBlockBookingResource extends JsonResource
             'id' => $this->uuid,
             'name' => $this->name,
             'covered' => $this->covered,
-            'blockBooking' => BlockBookingResource::collection($this->blockBookings),
+            'blockBookings' => BlockBookingResource::collection($this->blockBookings),
         ];
     }
 }
