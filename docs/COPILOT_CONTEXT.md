@@ -28,6 +28,7 @@
 ### Key Features
 - Court browsing and availability viewing
 - Reservation booking system with approval workflow
+- **Block booking system** for recurring court schedules (open plays, events)
 - Calendar management for facilities
 - Email notifications system
 - Account management for both user types
@@ -118,15 +119,30 @@ Http/
 - **Frontend Representation:** Converted to "court slots" for user interaction
 - **User Selection:** Customers select court slots via checkbox interface
 - **Conversion Logic:** `RangeToSlot`/`SlotsToRange` actions handle time conversions
+- **Availability Logic:** Court slots marked as available/unavailable based on:
+  - Existing reservations (single-date bookings)
+  - **Block bookings** (recurring weekly schedules)
 - **Data Flow:** Court Slots → Time Ranges → Reservation Records
 
 ### Reservation Workflow
 - Customer browses available courts and their slot pricing
+- **Availability Check:** Court slots filtered by existing reservations and block bookings
 - Customer selects court slots (checkbox UI)
 - Selected slots converted to time ranges for reservation creation
 - Customer initiates booking request  
 - Facility must approve reservation requests (approval-based system)
 - Email notifications sent during reservation lifecycle
+
+### Block Booking System
+- **Purpose:** Facilities can create recurring schedules for open plays, events, or maintenance
+- **Pattern:** Weekly recurring blocks (e.g., "Every Tuesday & Thursday, 6PM-10PM")
+- **Scope:** Affects court availability but are NOT traditional reservations
+- **Integration:** Block bookings influence court slot availability calculations
+- **Use Cases:** 
+  - Regular open play sessions
+  - Weekly training programs
+  - Maintenance windows
+  - Private facility events
 
 ### Access Control
 - Account required for customers to make bookings
@@ -207,18 +223,26 @@ Http/
 - **Key Actions:** 
   - `CreateCourt`, `CreateCourtPricing` for court management
   - `RangeToSlot`/`SlotsToRange` for time slot conversions
+  - Block booking management (planned)
 - **Models:** 
   - `Court`: Basic court entity with media support
   - `CourtPricing`: Time-based pricing ranges with consecutive validation
+  - `BlockBooking`: Recurring court availability blocks (NEW)
 - **DTOs:** `CourtSlot` for frontend time slot representation
 - **Business Logic:** 
   - Time slot management and pricing calculations
   - Consecutive pricing range enforcement (no gaps allowed)
   - Court slot ↔ time range conversions for UI/backend translation
+  - **Block booking availability**: Recurring schedule management for open plays/events
 - **Pricing Constraints:**
   - All pricing ranges must be consecutive
   - Coverage required for all operating hours
   - Fixed price per time range (e.g., 100 pesos for 07:00-11:00)
+- **Block Booking Constraints:**
+  - Single day per record (0=Sunday, 1=Monday, etc.)
+  - Time-based blocking (start_time, end_time) 
+  - Multiple records needed for multi-day blocks
+  - Affects court slot availability calculations
 
 ### Customer Module
 - **Location:** `/app/Source/Customer/`
@@ -326,10 +350,11 @@ pages/
 - User account management communications
 
 ### Database Schema & Entity Relations
-- **Key Tables:** facilities, courts, customers, reservations, court_pricings, reservation_fees
+- **Key Tables:** facilities, courts, customers, reservations, court_pricings, reservation_fees, **block_bookings**
 - **Core Entities:**
   - `Court` → `CourtPricing` (1:many) - Time-based pricing ranges
   - `Court` → `Reservation` (1:many) - Booking records  
+  - `Court` → `BlockBooking` (1:many) - **Recurring availability blocks (NEW)**
   - `Reservation` → `ReservationFee` (1:many) - Fee breakdown
   - **Polymorphic:** `Reservation` → `reservable` (Customer|Facility) - Who made the reservation
   - `Facility` → `Court` (1:many) - Facility court ownership
@@ -341,6 +366,11 @@ pages/
   - Database: `start_time`, `end_time` fields
   - Frontend: Converted to court slots for user interaction
   - Constraint: Court pricing ranges must be consecutive (no time gaps)
+- **Block Booking Schema:**
+  - `day` (tinyint) - Single day of week (0=Sunday, 1=Monday, etc.)
+  - `start_time`, `end_time` - Time range for blocked slots
+  - `court_id` - Associated court with cascade delete
+  - **Pattern Example:** Two records: day=2 + 18:00-22:00 & day=4 + 18:00-22:00 = Every Tue/Thu 6PM-10PM
 
 ## Future Considerations
 

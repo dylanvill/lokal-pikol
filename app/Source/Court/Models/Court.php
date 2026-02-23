@@ -45,6 +45,11 @@ class Court extends Model implements HasMedia
     {
         return $this->hasMany(CourtPricing::class);
     }
+    
+    public function blockBookings(): HasMany
+    {
+        return $this->hasMany(BlockBooking::class);
+    }
 
     protected static function newFactory()
     {
