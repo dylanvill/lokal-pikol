@@ -45,7 +45,7 @@ class Court extends Model implements HasMedia
     {
         return $this->hasMany(CourtPricing::class);
     }
-    
+
     public function blockBookings(): HasMany
     {
         return $this->hasMany(BlockBooking::class);
@@ -60,6 +60,20 @@ class Court extends Model implements HasMedia
     protected function photos(Builder $query): void
     {
         $query->with(['media' => function ($query) {
+            $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS->value);
+        }]);
+    }
+
+    public function withPhotos(): Builder
+    {
+        return $this->with(['media' => function ($query) {
+            $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS->value);
+        }]);
+    }
+
+    public function loadPhotos(): self
+    {
+        return $this->load(['media' => function ($query) {
             $query->where('collection_name', MediaTypeEnum::COURT_PHOTOS->value);
         }]);
     }

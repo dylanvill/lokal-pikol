@@ -11,6 +11,8 @@ use App\Http\Customer\Reservation\Controllers\ReservationController;
 use App\Http\Customer\Reservation\Controllers\ReservationsController;
 use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
 use App\Http\Customer\Reservation\Controllers\UploadReceiptController;
+use App\Source\Court\Actions\GetCourtAvailability\GetCourtAvailability;
+use App\Source\Court\Models\Court;
 use App\Source\Reservation\Mail\ReservationConfirmedEmail;
 use App\Source\Reservation\Mail\ReservationPendingMail;
 use App\Source\Reservation\Models\Reservation;
@@ -52,4 +54,8 @@ Route::prefix("reservations")->name("reservation.")->group(function () {
 
 Route::get('/mailable', function () {
     return new ReservationConfirmedEmail(Reservation::inRandomOrder()->first());
+});
+
+Route::get('/test', function () {
+    dd((new GetCourtAvailability()->get(Court::find(1), "2026-02-25")));
 });

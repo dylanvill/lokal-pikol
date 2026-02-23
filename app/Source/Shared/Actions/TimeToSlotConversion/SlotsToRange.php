@@ -2,8 +2,8 @@
 
 namespace App\Source\Shared\Actions\TimeToSlotConversion;
 
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\Range;
 use App\Source\Shared\Dtos\CourtSlot;
-use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
 
 class SlotsToRange
 {
