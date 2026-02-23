@@ -59,13 +59,12 @@ class GetCourtAvailability
      */
     protected function isAvailable(CourtSlot $slot, Collection $slotsHaystack): bool
     {
-        $isAvailable = $slotsHaystack->first(
-            fn($slotHaystack) => $slotHaystack->startTime === $slot->startTime
-                && $slotHaystack->endTime === $slot->endTime
+        $conflict = $slotsHaystack->first(
+            fn($slotHaystack) => Carbon::parse($slotHaystack->startTime)->format('H:i') === Carbon::parse($slot->startTime)->format('H:i')
+                && Carbon::parse($slotHaystack->endTime)->format('H:i') === Carbon::parse($slot->endTime)->format('H:i')
         );
-        $isAvailable = empty($isAvailable);
-
-        return $isAvailable;
+        
+        return empty($conflict);
     }
 
     /**

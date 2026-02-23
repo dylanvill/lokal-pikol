@@ -29,7 +29,7 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
                         <Icon color="blue.700" /> {label}
                     </Heading>
                 </VStack>
-                <Link href={`/facility/courts/block-booking/${id}/create`}>
+                <Link href={`/facility/courts/block-bookings/${id}/create`}>
                     <Button size="xs" colorPalette="blue" variant="subtle">
                         Add Block Booking to {name} <LuPlus />
                     </Button>
