@@ -62,10 +62,8 @@ function DashboardReservationCard({
                         <Text margin={0}>{customerName}</Text>
                     </HStack>
                 </Card.Title>
-                <Card.Description>
-                    <DetailWithIcon icon={<LuPhone color="black" />} label={customerPhone} textProps={{ color: 'black' }} />
-                    <DetailWithIcon icon={<LuMail color="black" />} label={customerEmail} textProps={{ color: 'black' }} />
-                </Card.Description>
+                <DetailWithIcon icon={<LuPhone color="black" />} label={customerPhone} textProps={{ color: 'black' }} />
+                <DetailWithIcon icon={<LuMail color="black" />} label={customerEmail} textProps={{ color: 'black' }} />
             </Card.Header>
             <Card.Body>
                 <Heading size="md" color="gray.800">
@@ -79,7 +77,7 @@ function DashboardReservationCard({
                     <DetailWithIcon
                         icon={<LuExternalLink color="black" opacity={hasNoPayment ? 0.5 : 1} />}
                         label={
-                            <Text as="span">
+                            <span>
                                 <ChakraLink
                                     href={paymentReceipt?.url}
                                     target="_blank"
@@ -88,7 +86,7 @@ function DashboardReservationCard({
                                 >
                                     {hasNoPayment ? 'No payment receipt uploaded' : 'View payment receipt'}
                                 </ChakraLink>
-                            </Text>
+                            </span>
                         }
                         textProps={{ color: 'black', fontStyle: 'italic' }}
                     />
