@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import { LuCalendarX } from 'react-icons/lu';
 import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../helpers/courtTypeLabelParser';

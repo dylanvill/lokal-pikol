@@ -1,4 +1,4 @@
-import { Card, VStack } from '@chakra-ui/react';
+import { Box, Card, VStack } from '@chakra-ui/react';
 import { LuCalendarSync, LuClock1 } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 import type BlockBooking from '../../../models/facility/BlockBooking';
@@ -43,7 +43,9 @@ function BlockBookingCard({ id, name, day, startTime, endTime }: BlockBookingCar
                 </VStack>
             </Card.Body>
             <Card.Footer>
-                <DeleteBlockBookingButton id={id} name={name} day={day} startTimeDisplay={startTimeDisplay} endTimeDisplay={endTimeDisplay} />
+                <Box justifyContent="flex-end" display="flex" width="100%">
+                    <DeleteBlockBookingButton id={id} name={name} day={day} startTimeDisplay={startTimeDisplay} endTimeDisplay={endTimeDisplay} />
+                </Box>
             </Card.Footer>
         </Card.Root>
     );

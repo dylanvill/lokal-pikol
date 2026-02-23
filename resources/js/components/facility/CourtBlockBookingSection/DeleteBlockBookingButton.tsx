@@ -1,6 +1,6 @@
-import { Button, CloseButton, Dialog, Portal, Text } from '@chakra-ui/react';
+import { Button, CloseButton, Dialog, IconButton, Portal, Text } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
-import { LuCalendar, LuCalendarSync, LuClock1, LuX } from 'react-icons/lu';
+import { LuCalendar, LuCalendarSync, LuClock1, LuTrash } from 'react-icons/lu';
 import DetailWithIcon from '../../shared/DetailWithIcon';
 
 export interface DeleteBlockBookingButtonProps {
@@ -15,9 +15,9 @@ const DeleteBlockBookingButton = ({ id, name, day, startTimeDisplay, endTimeDisp
     return (
         <Dialog.Root role="alertdialog">
             <Dialog.Trigger asChild>
-                <Button variant="ghost" size="xs" colorPalette="red">
-                    Remove <LuX />
-                </Button>
+                <IconButton variant="ghost" size="xs" colorPalette="red">
+                    <LuTrash />
+                </IconButton>
             </Dialog.Trigger>
             <Portal>
                 <Dialog.Backdrop />
