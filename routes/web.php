@@ -13,6 +13,7 @@ use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
 use App\Http\Customer\Reservation\Controllers\UploadReceiptController;
 use App\Source\Court\Actions\GetCourtAvailability\GetCourtAvailability;
 use App\Source\Court\Models\Court;
+use App\Source\Reservation\Actions\SetReservationFees\SetReservationFees;
 use App\Source\Reservation\Mail\ReservationConfirmedEmail;
 use App\Source\Reservation\Mail\ReservationPendingMail;
 use App\Source\Reservation\Models\Reservation;
@@ -57,5 +58,6 @@ Route::get('/mailable', function () {
 });
 
 Route::get('/test', function () {
-    dd((new GetCourtAvailability()->get(Court::find(1), "2026-02-25")));
+    $test = new SetReservationFees();
+    dd($test->set(Reservation::find(3)));
 });

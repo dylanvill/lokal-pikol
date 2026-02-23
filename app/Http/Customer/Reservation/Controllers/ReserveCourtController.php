@@ -6,20 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Customer\Reservation\Requests\ReserveCourtRequest;
 use App\Http\Customer\Reservation\Resources\ReservationResource;
 use App\Http\Enums\GuardEnum;
-use App\Source\Court\Actions\CourtSlotConversion\Dtos\CourtSlot;
-use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
-use App\Source\Court\Actions\CourtSlotConversion\RangeToSlot;
-use App\Source\Court\Actions\CourtSlotConversion\SlotsToRange;
 use App\Source\Court\Models\Court;
 use App\Source\Facility\Models\Facility;
 use App\Source\Reservation\Actions\CreateReservation\CreateReservation;
 use App\Source\Reservation\Actions\CreateReservation\Dtos\CreateReservationData;
 use App\Source\Reservation\Actions\SetReservationFees\SetReservationFees;
-use App\Source\Reservation\Enums\ReservationFeeItemsEnum;
 use App\Source\Reservation\Enums\ReservationStatusEnum;
 use App\Source\Reservation\Models\Reservation;
-use App\Source\Reservation\Models\ReservationFee;
-use Illuminate\Support\Collection;
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\CourtSlot;
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\Range;
+use App\Source\Shared\Actions\TimeToSlotConversion\SlotsToRange;
 
 class ReserveCourtController extends Controller
 {
@@ -36,8 +32,9 @@ class ReserveCourtController extends Controller
         Court $court,
         ReserveCourtRequest $request,
         CreateReservation $createReservation,
+        SetReservationFees $setReservationFees,
     ) {
-        $range = $this->parseSlotsToRange($request->slots);
+        $range = $this->parseSlotsToRange($request->input('slots'));
 
         $reservationData = new CreateReservationData(
             reservable: $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute(),
@@ -50,8 +47,7 @@ class ReserveCourtController extends Controller
         );
 
         $reservation = $createReservation->create($reservationData);
-        $reservation->load('fees');
-        $this->setReservationFees($reservation, $court);
+        $setReservationFees->set($reservation, $court);
 
         return redirect()->route('reservation.on-hold.show', [
             'facility' => $facility->uuid,
@@ -72,53 +68,5 @@ class ReserveCourtController extends Controller
         }, $slots);
 
         return $slotsToRange->convert($slots);
-    }
-
-    /**
-     * @return Collection<ReservationFee>
-     */
-    protected function setReservationFees(Reservation $reservation, Court $court): Collection
-    {
-
-        $court->load([
-            'courtPricings' => function ($query) {
-                $query->orderBy('start_time');
-            }
-        ]);
-        $courtSlots = RangeToSlot::convertMany($court->courtPricings->map(function ($pricing) {
-            return new Range(
-                startTime: $pricing->start_time,
-                endTime: $pricing->end_time,
-                price: $pricing->price
-            );
-        })->all());
-
-        $reservationSlots = RangeToSlot::convert(new Range(
-            startTime: $reservation->start_time,
-            endTime: $reservation->end_time,
-        ));
-
-        $setReservationFees = new SetReservationFees($reservation);
-
-        foreach ($reservationSlots as $reservedSlot) {
-            $courtSlot = array_find($courtSlots, function ($courtSlot) use ($reservedSlot) {
-                return $courtSlot->startTime === $reservedSlot->startTime
-                    && $courtSlot->endTime === $reservedSlot->endTime;
-            });
-            $setReservationFees->setFee(
-                "{$reservedSlot->startTime}-{$reservedSlot->endTime}",
-                $courtSlot->price,
-                ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value
-            );
-
-            $setReservationFees->setFee(
-                ReservationFeeItemsEnum::SERVICE_FEE->value,
-                ReservationFee::SERVICE_FEE_AMOUNT
-            );
-        }
-
-
-
-        return $setReservationFees->save();
     }
 }
