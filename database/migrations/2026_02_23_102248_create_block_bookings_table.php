@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('court_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
             $table->unsignedTinyInteger('day');
             $table->time('start_time');
             $table->time('end_time');
