@@ -25,9 +25,14 @@ class ReservationFeeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $serviceFee = $this->parseServiceFee($this->resource);
+        $hourlyFees = $this->parseHourlyFees($this->resource);
+        $total = $serviceFee + $hourlyFees;
+
         return [
-            'serviceFee' => $this->parseServiceFee($this->resource),
-            'hourlyFees' => $this->parseHourlyFees($this->resource),
+            'serviceFee' => $serviceFee,
+            'hourlyFees' => $hourlyFees,
+            'total' => $total,
         ];
     }
 
@@ -38,14 +43,10 @@ class ReservationFeeResource extends JsonResource
         }, 0);
     }
 
-    public function parseHourlyFees(Collection $fees): array
+    public function parseHourlyFees(Collection $fees): float
     {
-        return $fees->where("description", ReservationFeeItemsEnum::HOURLY_RATE_DESCRIPTION->value)->map(function ($fee, $key) {
-            return new CourtSlot(
-                startTime: explode('-', $fee->item)[0],
-                endTime: explode('-', $fee->item)[1],
-                price: $fee->amount
-            );
-        })->toArray();
+        return $fees->where("item", ReservationFeeItemsEnum::HOURLY_RATE->value)->pluck('amount')->reduce(function (float $carry, float $amount) {
+            return $amount + $carry;
+        }, 0);
     }
 }

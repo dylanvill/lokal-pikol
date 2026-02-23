@@ -1,7 +1,6 @@
 import { Card, HStack, Separator, Text, VStack, Image, Box } from '@chakra-ui/react';
 import { LuFileQuestion } from 'react-icons/lu';
 import currencyFormatter from '../../../../helpers/currencyFormatter';
-import militaryTimeToAmPmTime from '../../../../helpers/militaryTimeToAmPmTime';
 import type Photo from '../../../../models/shared/Photo';
 import type ReservationFees from '../../../../models/shared/ReservationFees';
 import CardHeading from '../../../customer/ReservationReview/CardHeading';
@@ -14,14 +13,6 @@ export interface PaymentDetailsProps {
 }
 
 function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
-    const totalFees = fees.hourlyFees.reduce((total, fee) => total + fee.price, 0) + fees.serviceFee;
-
-    const hourlyFees = fees.hourlyFees.map((fee) => ({
-        ...fee,
-        startTime: militaryTimeToAmPmTime(fee.startTime),
-        endTime: militaryTimeToAmPmTime(fee.endTime),
-    }));
-
     return (
         <Card.Root>
             <Card.Body>
@@ -30,7 +21,9 @@ function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
                     {/* Receipt Screenshot */}
                     {paymentReceipt ? (
                         <Box>
-                            <Text textAlign="center" marginBottom={4}>Transaction Receipt</Text>
+                            <Text textAlign="center" marginBottom={4}>
+                                Transaction Receipt
+                            </Text>
                             <Image maxWidth="sm" src={paymentReceipt.url} alt="Payment Receipt" borderRadius="md" objectFit="cover" />
                         </Box>
                     ) : (
@@ -43,9 +36,7 @@ function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
 
                     {/* Payment Breakdown */}
                     <VStack gap={2} width="full">
-                        {hourlyFees.map((fee, index) => (
-                            <PaymentItem key={index} label={`${fee.startTime} - ${fee.endTime}`} amount={fee.price} />
-                        ))}
+                        <PaymentItem label="Hourly Fee" amount={fees.hourlyFees} />
                         <PaymentItem label="Service Fee" amount={fees.serviceFee} />
                         <Separator width="full" />
                         <HStack justify="space-between" width="full">
@@ -53,7 +44,7 @@ function PaymentDetails({ fees, paymentReceipt }: PaymentDetailsProps) {
                                 Total
                             </Text>
                             <Text fontWeight="bold" fontSize="lg">
-                                {currencyFormatter(totalFees)}
+                                {currencyFormatter(fees.total)}
                             </Text>
                         </HStack>
                     </VStack>

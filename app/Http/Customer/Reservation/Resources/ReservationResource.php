@@ -4,6 +4,7 @@ namespace App\Http\Customer\Reservation\Resources;
 
 use App\Http\Customer\Court\Resources\CourtResource;
 use App\Http\Customer\Facility\Resources\FacilityResource;
+use App\Http\Shared\Resources\ReservationFeeResource;
 use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\Range;
 use App\Source\Shared\Actions\TimeToSlotConversion\RangeToSlot;
 use Illuminate\Http\Request;
