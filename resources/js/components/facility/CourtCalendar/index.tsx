@@ -27,9 +27,12 @@ function CourtCalendar() {
             const startTimeDisplay = militaryTimeToAmPmTime(reservation.startTime);
             const endTimeDisplay = militaryTimeToAmPmTime(reservation.endTime);
 
+            const title = reservation.label ? reservation.label : reservation.customerName;
+            const time = `${startTimeDisplay} - ${endTimeDisplay}`;
+
             return {
                 id: reservation.id,
-                title: `${reservation.customerName} (${startTimeDisplay} - ${endTimeDisplay})`,
+                title: `${title} (${time})`,
                 start: dayjs(`${date} ${reservation.startTime}`).toDate(),
                 end: dayjs(`${date} ${reservation.endTime}`).toDate(),
                 resource: reservation,
@@ -37,7 +40,7 @@ function CourtCalendar() {
         });
     }, [court.reservations]);
 
-    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, handleSelectSlot, eventStyleGetter } =
+    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, eventStyleGetter } =
         useCourtCalendar();
 
     return (
@@ -53,7 +56,6 @@ function CourtCalendar() {
                 date={currentDate}
                 onNavigate={handleNavigate}
                 onSelectEvent={handleSelectEvent}
-                onSelectSlot={handleSelectSlot}
                 selectable
                 eventPropGetter={eventStyleGetter}
                 views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
@@ -63,10 +65,6 @@ function CourtCalendar() {
                 toolbar={true}
                 popup={true}
                 dayLayoutAlgorithm="no-overlap"
-                formats={{
-                    timeGutterFormat: 'HH:mm',
-                    eventTimeRangeFormat: ({ start, end }, culture, localizer) => dayjs(start).format('HH:mm') + ' - ' + dayjs(end).format('HH:mm'),
-                }}
             />
         </Box>
     );

@@ -22,7 +22,8 @@ class CourtReservationCalendarResource extends JsonResource
             'reservationDate' => $this->reservation_date,
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
-            'status' => $this->status
+            'status' => $this->status,
+            'label' => $this->label,
         ];
     }
 }

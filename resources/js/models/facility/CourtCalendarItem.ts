@@ -7,6 +7,7 @@ interface CourtCalendarItem {
     startTime: string; // ISO time string (e.g., "09:00:00")
     endTime: string; // ISO time string (e.g., "11:00:00")
     status: ReservationStatus;
+    label: string | null;
 }
 
 export default CourtCalendarItem;

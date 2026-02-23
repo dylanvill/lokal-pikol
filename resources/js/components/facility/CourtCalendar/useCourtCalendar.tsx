@@ -6,8 +6,8 @@ import { type CalendarEvent } from './types';
 
 export const localizer = dayjsLocalizer(dayjs);
 
-const useCourtCalendar = (date: string) => {
-    const [currentDate, setCurrentDate] = useState(dayjs(date).toDate());
+const useCourtCalendar = () => {
+    const [currentDate, setCurrentDate] = useState(dayjs().toDate());
     const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
     // Handle navigation (prev/next/today)
@@ -15,7 +15,7 @@ const useCourtCalendar = (date: string) => {
         (date: Date) => {
             setCurrentDate(date);
         },
-        [date],
+        [],
     );
 
     // Handle view changes (month/week/day/agenda)
@@ -26,12 +26,6 @@ const useCourtCalendar = (date: string) => {
     // Handle event selection
     const handleSelectEvent = useCallback((event: CalendarEvent) => {
         router.visit(`/facility/reservations/${event.id}`);
-    }, []);
-
-    // Handle slot selection (for creating new reservations)
-    const handleSelectSlot = useCallback((slotInfo: any) => {
-        console.log('Selected slot:', slotInfo);
-        // TODO: Implement new reservation creation
     }, []);
 
     // Custom event styling
@@ -65,7 +59,6 @@ const useCourtCalendar = (date: string) => {
         handleNavigate,
         handleViewChange,
         handleSelectEvent,
-        handleSelectSlot,
         eventStyleGetter,
     };
 };
