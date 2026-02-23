@@ -8,7 +8,7 @@ use App\Http\Facility\Controllers\DashboardController;
 use App\Http\Facility\Court\Controllers\CourtCalendarController;
 use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
-use App\Http\Facility\Reservation\Controllers\BlockBookingsController;
+use App\Http\Facility\Court\Controllers\BlockBookingsController;
 use App\Http\Facility\Reservation\Controllers\CancelReservationController;
 use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
 use App\Http\Facility\Reservation\Controllers\CreateReservationController;
@@ -29,7 +29,6 @@ Route::group(["middleware" => "auth:facility"], function () {
         Route::get('/', ReservationsController::class)->name('list');
         Route::get('/create', [CreateReservationController::class, 'show'])->name('create');
         Route::post('/create', [CreateReservationController::class, 'store'])->name('store');
-        Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings');
         Route::get('/{reservation:uuid}', ReservationController::class)->name('show');
         Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
         Route::post('/{reservation:uuid}/cancel', CancelReservationController::class)->name('cancel');
@@ -37,8 +36,9 @@ Route::group(["middleware" => "auth:facility"], function () {
 
     Route::prefix("courts")->name("courts.")->group(function () {
         Route::get('/', CourtsController::class)->name('index');
-        Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');
+        Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings');
         Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
         Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
+        Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');
     });
 });

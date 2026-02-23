@@ -22,6 +22,11 @@ const sidebarItems = [
                 route: '/facility/courts',
                 icon: () => <LuGrid2X2 />,
             },
+            {
+                label: 'Block Bookings',
+                route: '/facility/courts/block-bookings',
+                icon: () => <LuCalendarOff />,
+            },
         ],
     },
     {
@@ -31,11 +36,6 @@ const sidebarItems = [
                 label: 'Reservations',
                 route: '/facility/reservations',
                 icon: () => <LuCalendar />,
-            },
-            {
-                label: 'Block Bookings',
-                route: '/facility/reservations/block-bookings',
-                icon: () => <LuCalendarOff />,
             },
             {
                 label: 'Create Reservation',
