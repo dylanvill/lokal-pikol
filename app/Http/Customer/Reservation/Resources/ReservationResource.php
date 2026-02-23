@@ -4,8 +4,8 @@ namespace App\Http\Customer\Reservation\Resources;
 
 use App\Http\Customer\Court\Resources\CourtResource;
 use App\Http\Customer\Facility\Resources\FacilityResource;
-use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
-use App\Source\Court\Actions\CourtSlotConversion\RangeToSlot;
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\Range;
+use App\Source\Shared\Actions\TimeToSlotConversion\RangeToSlot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

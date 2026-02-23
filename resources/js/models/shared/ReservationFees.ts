@@ -2,7 +2,8 @@ import type CourtSlot from './CourtSlot';
 
 interface ReservationFees {
     serviceFee: number;
-    hourlyFees: CourtSlot[];
+    hourlyFees: number;
+    total: number;
 }
 
 export default ReservationFees;
