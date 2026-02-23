@@ -1,5 +1,6 @@
-import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
-import { LuCalendarX } from 'react-icons/lu';
+import { Box, Button, Heading, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
+import { LuCalendarX, LuPlus } from 'react-icons/lu';
 import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../helpers/courtTypeLabelParser';
 import type BlockBooking from '../../../models/facility/BlockBooking';
@@ -19,12 +20,21 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
 
     return (
         <Box>
-            <VStack alignItems="stretch" gap={2} marginBottom={4}>
-                <Heading size="md">{name}</Heading>
-                <Heading size="sm" display="inline-flex" alignItems="center" gap={1}>
-                    <Icon /> {label}
-                </Heading>
-            </VStack>
+            <HStack alignItems="center" justifyContent="space-between">
+                <VStack alignItems="stretch" gap={2} marginBottom={4}>
+                    <Heading size="lg" color="blue.700">
+                        {name}
+                    </Heading>
+                    <Heading size="sm" display="inline-flex" alignItems="center" color="blue.700" gap={1}>
+                        <Icon color="blue.700" /> {label}
+                    </Heading>
+                </VStack>
+                <Link href={`/facility/courts/block-booking/${id}/create`}>
+                    <Button size="xs" colorPalette="blue" variant="subtle">
+                        Add Block Booking to {name} <LuPlus />
+                    </Button>
+                </Link>
+            </HStack>
 
             {blockBookings.length > 0 ? (
                 <SimpleGrid
