@@ -1,6 +1,7 @@
-import { Button, Field, Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Button, ButtonGroup, Field, Flex, Heading, Input, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
 import courtTypeIconParser from '../../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../../helpers/courtTypeLabelParser';
@@ -18,8 +19,9 @@ export interface ReservationBlockProps {
 }
 
 function ReservationBlock({ courtId, courtName, covered, date, slots }: ReservationBlockProps) {
-    const form = useForm<{ slots: string[] }>({
+    const form = useForm<{ slots: string[]; reservationLabel: string }>({
         slots: [],
+        reservationLabel: ''
     });
 
     const { flash } = usePage();
@@ -41,7 +43,12 @@ function ReservationBlock({ courtId, courtName, covered, date, slots }: Reservat
         });
     };
 
-    const disableSubmit = form.data.slots.length === 0 || form.processing;
+    useEffect(() => {
+        form.reset('slots');
+    }, [date])
+    
+
+    const disableSubmit = form.data.slots.length === 0 || form.processing || !form.data.reservationLabel;
     const dateDisplay = dayjs(date).format('dddd, MMMM D, YYYY');
 
     return (
@@ -75,10 +82,13 @@ function ReservationBlock({ courtId, courtName, covered, date, slots }: Reservat
                 </SimpleGrid>
             </VStack>
             <Flex marginTop={4} justifyContent="flex-end">
-                <Button type="submit" colorPalette="blue" disabled={disableSubmit}>
-                    Reserve
-                    <LuArrowRight />
-                </Button>
+                <ButtonGroup attached>
+                    <Input type="text" name="reservationLabel" placeholder='Juan dela Cruz' value={form.data.reservationLabel} onChange={(e) => form.setData('reservationLabel', e.target.value)} />
+                    <Button type="submit" colorPalette="blue" disabled={disableSubmit}>
+                        Reserve
+                        <LuArrowRight />
+                    </Button>
+                </ButtonGroup>
             </Flex>
         </form>
     );

@@ -15,6 +15,7 @@ readonly class CreateReservationData implements Arrayable
         public string $startTime,
         public string $endTime,
         public string $status,
+        public string|null $label = null,
     ) {}
 
     public function toArray()
@@ -28,6 +29,7 @@ readonly class CreateReservationData implements Arrayable
             'start_time' => $this->startTime,
             'end_time' => $this->endTime,
             'status' => $this->status,
+            'label' => $this->label,
         ];
     }
 }

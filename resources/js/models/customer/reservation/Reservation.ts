@@ -14,6 +14,7 @@ interface Reservation {
     fees: ReservationFees;
     startTime: string;
     endTime: string;
+    label: string | null;
 }
 
 export default Reservation;

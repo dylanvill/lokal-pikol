@@ -29,6 +29,7 @@ class CreateReservationRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date', 'after_or_equal:today'],
+            'reservationLabel' => ['required', 'string', 'max:255'],
             'courtId' => ['required', 'exists:courts,uuid'],
             "slots" => ['required', 'array', 'min:1', new ConsecutiveHours(), new NoReservationOverlap(
                 court: Court::where('uuid', $this->input('courtId'))->first(),

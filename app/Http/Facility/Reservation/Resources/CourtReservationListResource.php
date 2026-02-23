@@ -3,8 +3,9 @@
 namespace App\Http\Facility\Reservation\Resources;
 
 use App\Http\Customer\Court\Resources\CourtSlotResource;
-use App\Source\Court\Actions\CourtSlotConversion\Dtos\Range;
-use App\Source\Court\Actions\CourtSlotConversion\RangeToSlot;
+use App\Source\Court\Actions\GetCourtAvailability\GetCourtAvailability;
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\Range;
+use App\Source\Shared\Actions\TimeToSlotConversion\RangeToSlot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,50 +22,7 @@ class CourtReservationListResource extends JsonResource
             'id' => $this->uuid,
             'name' => $this->name,
             'covered' => $this->covered,
-            'slots' => $this->parseSlots(),
+            'slots' => (new GetCourtAvailability())->get($this->resource, $request->input('date', now()->toDateString())),
         ];
-    }
-
-
-
-    /**
-     * @return Range[]
-     */
-    protected function getRanges(): array
-    {
-        return RangeToSlot::convertMany($this->courtPricings->map(function ($pricing) {
-            return new Range(
-                startTime: $pricing->start_time,
-                endTime: $pricing->end_time,
-                price: $pricing->price
-            );
-        })->all());
-    }
-
-    protected function getReservationRanges()
-    {
-        return RangeToSlot::convertMany($this->reservations->map(function ($reservations) {
-            return new Range(
-                startTime: $reservations->start_time,
-                endTime: $reservations->end_time,
-                price: null
-            );
-        })->all());
-    }
-
-    protected function parseSlots()
-    {
-        $reservations = collect($this->getReservationRanges())->map(fn($slot) => "{$slot->startTime}-{$slot->endTime}")->toArray();
-        $slots = collect($this->getRanges())->map(function ($slot) use ($reservations) {
-            $isAvailable = !in_array("{$slot->startTime}-{$slot->endTime}", $reservations);
-            return [
-                "startTime" => $slot->startTime,
-                "endTime" => $slot->endTime,
-                "price" => $slot->price,
-                "isAvailable" => $isAvailable
-            ];
-        })->toArray();
-
-        return CourtSlotResource::collection($slots);
     }
 }

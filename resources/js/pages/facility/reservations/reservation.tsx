@@ -33,7 +33,7 @@ function ReservationPage() {
                     {successMessage ? (
                         <SuccessAlert title="Reservation Successful" description={successMessage} />
                     ) : null}
-                    <CustomerDetails name={reservation.customer.fullName} phone={reservation.customer.phone} email={reservation.customer.email} />
+                    <CustomerDetails name={reservation.customer.fullName} phone={reservation.customer.phone} email={reservation.customer.email} label={reservation.label} />
                     <CourtDetails courtName={reservation.court.name} covered={reservation.court.covered} photos={reservation.court.photos} />
                     <PaymentDetails fees={reservation.fees} paymentReceipt={reservation.paymentReceipt} />
                     <ReservationDetails
