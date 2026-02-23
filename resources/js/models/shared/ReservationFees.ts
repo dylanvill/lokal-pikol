@@ -1,4 +1,3 @@
-import type CourtSlot from './CourtSlot';
 
 interface ReservationFees {
     serviceFee: number;

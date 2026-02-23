@@ -1,6 +1,5 @@
 import { Card, HStack, Separator, Text, VStack } from '@chakra-ui/react';
 import currencyFormatter from '../../../helpers/currencyFormatter';
-import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 import type Reservation from '../../../models/customer/reservation/Reservation';
 import CardHeading from './CardHeading';
 import PaymentItem from './PaymentItem';
