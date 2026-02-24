@@ -7,10 +7,12 @@ import FacilityPageHeader from '../../../components/facility/FacilityPageHeader'
 import ReservationBlock from '../../../components/facility/reservation/ReservationBlock';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type CourtReservationListItem from '../../../models/facility/reservation/CourtReservationListItem';
+import type CustomerSearchItem from '../../../models/facility/reservation/CustomerSearchItem';
 
 export interface CreateReservationPageProps extends PageProps {
     courts: CourtReservationListItem[];
     lookupDate: string;
+    customers: CustomerSearchItem[];
 }
 
 function CreateReservationPage() {
@@ -46,6 +48,7 @@ function CreateReservationPage() {
                                     covered={court.covered}
                                     date={date}
                                     slots={court.slots}
+                                    customers={props.customers}
                                 />
                             ))}
                         </VStack>

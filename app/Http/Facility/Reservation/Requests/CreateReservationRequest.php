@@ -29,7 +29,7 @@ class CreateReservationRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date', 'after_or_equal:today'],
-            'reservationLabel' => ['required', 'string', 'max:255'],
+            'customer' => ['required', 'exists:customers,uuid'],
             'courtId' => ['required', 'exists:courts,uuid'],
             "slots" => ['required', 'array', 'min:1', new ConsecutiveHours(), new NoReservationOverlap(
                 court: Court::where('uuid', $this->input('courtId'))->first(),
@@ -38,6 +38,13 @@ class CreateReservationRequest extends FormRequest
             "slots.*" => ['required', 'string', 'regex:/^\d{2}:\d{2}-\d{2}:\d{2}$/', new SlotMustBeInTheFuture(
                 date: $this->input('date')
             )],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer.exists' => 'The selected customer does not exist in our database. Please make sure they are registered.'
         ];
     }
 }

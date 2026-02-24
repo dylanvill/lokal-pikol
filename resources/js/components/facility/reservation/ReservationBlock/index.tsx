@@ -1,14 +1,16 @@
-import { Button, ButtonGroup, Field, Flex, Heading, Input, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Button, ButtonGroup, Field, Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
 import courtTypeIconParser from '../../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../../helpers/courtTypeLabelParser';
+import type CustomerSearchItem from '../../../../models/facility/reservation/CustomerSearchItem';
 import type CourtSlot from '../../../../models/shared/CourtSlot';
 import CourtSlotSection from '../../../customer/CourtReservationBlock/CourtSlotSection';
 import SuccessAlert from '../../../shared/Alert/SuccessAlert';
 import DetailWithIcon from '../../../shared/DetailWithIcon';
+import CustomerDropdownSearch from './CustomerDropdownSearch';
 
 export interface ReservationBlockProps {
     courtId: string;
@@ -16,12 +18,13 @@ export interface ReservationBlockProps {
     covered: boolean;
     date: string;
     slots: CourtSlot[];
+    customers: CustomerSearchItem[];
 }
 
-function ReservationBlock({ courtId, courtName, covered, date, slots }: ReservationBlockProps) {
-    const form = useForm<{ slots: string[]; reservationLabel: string }>({
+function ReservationBlock({ courtId, courtName, covered, date, slots, customers }: ReservationBlockProps) {
+    const form = useForm<{ slots: string[]; customer: string }>({
         slots: [],
-        reservationLabel: ''
+        customer: '',
     });
 
     const { flash } = usePage();
@@ -39,16 +42,15 @@ function ReservationBlock({ courtId, courtName, covered, date, slots }: Reservat
         }));
         form.post(`/facility/reservations/create`, {
             preserveScroll: true,
-            onSuccess: () => form.reset('slots'),
+            onSuccess: () => form.reset('slots', 'customer'),
         });
     };
 
     useEffect(() => {
         form.reset('slots');
-    }, [date])
-    
+    }, [date]);
 
-    const disableSubmit = form.data.slots.length === 0 || form.processing || !form.data.reservationLabel;
+    const disableSubmit = form.data.slots.length === 0 || form.processing || !form.data.customer;
     const dateDisplay = dayjs(date).format('dddd, MMMM D, YYYY');
 
     return (
@@ -56,14 +58,15 @@ function ReservationBlock({ courtId, courtName, covered, date, slots }: Reservat
             <VStack gap={4} alignItems="stretch">
                 <VStack gap={2} alignItems="start">
                     <Heading size="md">{courtName}</Heading>
-                    <DetailWithIcon icon={<Icon />} label={label} />
+                    <DetailWithIcon icon={<Icon color="black" />} textProps={{ color: 'black' }} label={label} />
                 </VStack>
 
+                <CustomerDropdownSearch form={form} customers={customers} />
+
+                {hasSuccess ? <SuccessAlert title="Reservation created successfully!" description={flash?.[`${courtId}-success`] as string} /> : null}
                 <Field.Root marginBottom={4} invalid={!!form.errors.slots}>
                     <Field.ErrorText>{form.errors.slots}</Field.ErrorText>
                 </Field.Root>
-                {hasSuccess ? <SuccessAlert title="Reservation created successfully!" description={flash?.[`${courtId}-success`] as string} /> : null}
-
                 <Text>
                     Select slots for <strong>{dateDisplay}</strong>
                 </Text>
@@ -83,7 +86,6 @@ function ReservationBlock({ courtId, courtName, covered, date, slots }: Reservat
             </VStack>
             <Flex marginTop={4} justifyContent="flex-end">
                 <ButtonGroup attached>
-                    <Input type="text" name="reservationLabel" placeholder='Juan dela Cruz' value={form.data.reservationLabel} onChange={(e) => form.setData('reservationLabel', e.target.value)} />
                     <Button type="submit" colorPalette="blue" disabled={disableSubmit}>
                         Reserve
                         <LuArrowRight />

@@ -5,8 +5,11 @@ namespace App\Http\Facility\Reservation\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Enums\GuardEnum;
 use App\Http\Facility\Reservation\Requests\CreateReservationRequest;
+use App\Http\Facility\Reservation\Requests\ShowCreateReservationRequest;
 use App\Http\Facility\Reservation\Resources\CourtReservationListResource;
+use App\Http\Facility\Reservation\Resources\CustomerResource;
 use App\Source\Court\Models\Court;
+use App\Source\Customer\Models\Customer;
 use App\Source\Reservation\Actions\CreateReservation\CreateReservation;
 use App\Source\Reservation\Actions\CreateReservation\Dtos\CreateReservationData;
 use App\Source\Reservation\Enums\ReservationStatusEnum;
@@ -21,9 +24,10 @@ class CreateReservationController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function show(Request $request)
+    public function show(ShowCreateReservationRequest $request)
     {
         $lookupDate = $request->input('date', now()->toDateString());
+        $searchString = $request->input('search', '');
 
         $facility = $request->user(GuardEnum::FACILITY->value)->facility;
 
@@ -34,9 +38,21 @@ class CreateReservationController extends Controller
                     ->whereNotIn('status', [ReservationStatusEnum::CANCELLED->value, ReservationStatusEnum::ON_HOLD->value]);
             }
         ]);
+
+        $customers = [];
+
+        if (!empty($searchString)) {
+            $lower = strtolower($searchString);
+            $customers = Customer::whereRaw('LOWER(CONCAT(first_name, " ", last_name)) like ?', ["%{$lower}%"])
+                ->orWhere('email', $searchString)
+                ->get();
+        }
+
+
         return Inertia::render('facility/reservations/create', [
             'courts' => CourtReservationListResource::collection($courts),
             'lookupDate' => $lookupDate,
+            'customers' => CustomerResource::collection($customers),
         ]);
     }
 
@@ -44,11 +60,12 @@ class CreateReservationController extends Controller
     {
         $range = $this->parseSlotsToRange($request->slots);
 
-        $facility = $request->user(GuardEnum::FACILITY->value)->facility;
+        $facility = $request->user(GuardEnum::FACILITY->value)->getProfileAttribute();
+        $customer = Customer::where('uuid', $request->customer)->first();
         $court = Court::where('uuid', $request->input('courtId'))->first();
 
         $reservationData = new CreateReservationData(
-            reservable: $facility,
+            reservable: $customer,
             facilityId: $facility->id,
             courtId: $court->id,
             reservationDate: $request->date,
