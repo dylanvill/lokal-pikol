@@ -22,7 +22,8 @@ const useCourtCalendar = () => {
 
     // Handle event selection
     const handleSelectEvent = useCallback((event: CalendarEvent) => {
-        router.visit(`/facility/reservations/${event.id}`);
+        const url = event.resource.type === 'blockbooking' ? `/facility/courts/block-bookings` : `/facility/reservations/${event.id}`;
+        router.visit(url);
     }, []);
 
     // Custom event styling
