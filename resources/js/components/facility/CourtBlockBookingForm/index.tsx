@@ -29,7 +29,7 @@ function CourtBlockBookingForm() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         clearErrors();
-        post(`/facility/courts/block-bookings/${court.id}/create`, {
+        post(`/facility/courts/${court.id}/block-bookings/create`, {
             onSuccess: () => {
                 reset();
             },
@@ -43,7 +43,7 @@ function CourtBlockBookingForm() {
             reset('slots');
             clearErrors('slots');
             router.get(
-                `/facility/courts/block-bookings/${court.id}/create`,
+                `/facility/courts/${court.id}/block-bookings/create`,
                 {
                     dayOfTheWeek: data.dayOfTheWeek,
                 },

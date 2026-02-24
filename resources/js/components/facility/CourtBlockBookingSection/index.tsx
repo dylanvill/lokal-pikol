@@ -1,9 +1,10 @@
 import { Box, Button, Heading, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { LuCalendarX, LuPlus } from 'react-icons/lu';
 import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../helpers/courtTypeLabelParser';
 import type BlockBooking from '../../../models/facility/BlockBooking';
+import WarningAlert from '../../shared/Alert/WarningAlert';
 import Empty from '../../shared/Empty';
 import BlockBookingCard from './BlockBookingCard';
 
@@ -18,6 +19,11 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
     const Icon = courtTypeIconParser(covered);
     const label = courtTypeLabelParser(covered);
 
+    const { flash } = usePage();
+
+    const key = `deleted-${id}`;
+    const deleted = flash?.[key] as string | null;
+
     return (
         <Box>
             <HStack alignItems="center" justifyContent="space-between">
@@ -29,12 +35,17 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
                         <Icon color="blue.700" /> {label}
                     </Heading>
                 </VStack>
-                <Link href={`/facility/courts/block-bookings/${id}/create`}>
+                <Link href={`/facility/courts/${id}/block-bookings/create`}>
                     <Button size="xs" colorPalette="blue" variant="subtle">
                         Add Block Booking to {name} <LuPlus />
                     </Button>
                 </Link>
             </HStack>
+            {deleted ? (
+                <Box marginBottom={4}>
+                    <WarningAlert title="Block Booking Deleted" description={deleted} />
+                </Box>
+            ) : null}
 
             {blockBookings.length > 0 ? (
                 <SimpleGrid

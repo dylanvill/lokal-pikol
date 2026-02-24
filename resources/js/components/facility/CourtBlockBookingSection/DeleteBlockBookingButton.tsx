@@ -57,11 +57,10 @@ const DeleteBlockBookingButton = ({ id, name, day, startTimeDisplay, endTimeDisp
                         </Dialog.Body>
                         <Dialog.Footer>
                             <Dialog.ActionTrigger asChild>
-                                <Button variant="outline">Cancel</Button>
+                                <Link href={`/facility/courts/block-bookings/${id}`} method="delete">
+                                    <Button colorPalette="red">Remove</Button>
+                                </Link>
                             </Dialog.ActionTrigger>
-                            <Link href={`/facility/courts/block-bookings/${id}`} method="delete">
-                                <Button colorPalette="red">Remove</Button>
-                            </Link>
                         </Dialog.Footer>
                         <Dialog.CloseTrigger asChild>
                             <CloseButton size="sm" />

@@ -10,6 +10,7 @@ use App\Http\Facility\Court\Controllers\CourtsController;
 use App\Http\Facility\Court\Controllers\CreateCourtController;
 use App\Http\Facility\Court\Controllers\BlockBookingsController;
 use App\Http\Facility\Court\Controllers\CreateBlockBookingController;
+use App\Http\Facility\Court\Controllers\DeleteBlockBookingController;
 use App\Http\Facility\Reservation\Controllers\CancelReservationController;
 use App\Http\Facility\Reservation\Controllers\ConfirmReservationController;
 use App\Http\Facility\Reservation\Controllers\CreateReservationController;
@@ -38,8 +39,9 @@ Route::group(["middleware" => "auth:facility"], function () {
     Route::prefix("courts")->name("courts.")->group(function () {
         Route::get('/', CourtsController::class)->name('index');
         Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings.index');
-        Route::get('/block-bookings/{court:uuid}/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.show');
-        Route::post('/block-bookings/{court:uuid}/create', [CreateBlockBookingController::class, 'store'])->name('block-bookings.store');
+        Route::get('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.show');
+        Route::post('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'store'])->name('block-bookings.store');
+        Route::delete('/block-bookings/{blockBooking:uuid}', DeleteBlockBookingController::class)->name('block-bookings.delete');
         Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
         Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
         Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');
