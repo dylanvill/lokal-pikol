@@ -84,7 +84,7 @@ class GetCourtBlockBookingSchedules
 
             foreach ($slots as $slot) {
                 $blockingSlots[] = new BlockBookingSlot(
-                    name: $blockBooking->dayName . ' - ' . $blockBooking->name ?? 'Block Booking',
+                    name: $blockBooking->name,
                     startTime: $slot->startTime,
                     endTime: $slot->endTime,
                     price: $slot->price,

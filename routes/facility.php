@@ -37,8 +37,9 @@ Route::group(["middleware" => "auth:facility"], function () {
 
     Route::prefix("courts")->name("courts.")->group(function () {
         Route::get('/', CourtsController::class)->name('index');
-        Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings');
-        Route::get('/block-bookings/{court:uuid}/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.create');
+        Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings.index');
+        Route::get('/block-bookings/{court:uuid}/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.show');
+        Route::post('/block-bookings/{court:uuid}/create', [CreateBlockBookingController::class, 'store'])->name('block-bookings.store');
         Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
         Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
         Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');

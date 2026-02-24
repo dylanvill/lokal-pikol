@@ -15,7 +15,7 @@ class CreateBlockBookingResource extends JsonResource
             'id' => $this->uuid,
             'name' => $this->name,
             'covered' => $this->covered,
-            'blockBookings' => (new GetCourtBlockBookingSchedules())->get($this->resource, $request->input('dayOfTheWeek', BlockBookingDaysEnum::MONDAY)),
+            'blockBookings' => (new GetCourtBlockBookingSchedules())->get($this->resource, BlockBookingDaysEnum::from($request->input('dayOfTheWeek'))),
         ];
     }
 }
