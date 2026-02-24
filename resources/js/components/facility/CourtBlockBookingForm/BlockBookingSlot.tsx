@@ -9,20 +9,19 @@ interface BlockBookingSlotProps {
     endTime: string;
     disabled?: boolean;
     name: string | null;
+    isAvailable: boolean;
 }
 
-function BlockBookingSlot({ slots, setSlots, startTime, endTime, disabled, name }: BlockBookingSlotProps) {
+function BlockBookingSlot({ slots, setSlots, startTime, endTime, disabled, name, isAvailable }: BlockBookingSlotProps) {
     const value = `${startTime}-${endTime}`;
     const isChecked = slots.includes(value);
 
     const handleCheckedChange = (details: CheckboxCardCheckedChangeDetails) => {
         if (details.checked) {
-            const normalizedSlots = [...slots, value];
-            console.log('🚀 ~ handleCheckedChange ~ normalizedSlots:', normalizedSlots);
+            const normalizedSlots = [...slots, value]; 
             setSlots('slots', normalizedSlots);
         } else {
             const normalizedSlots = slots.filter((slot) => slot !== value);
-            console.log('🚀 ~ unchecked ~ normalizedSlots:', normalizedSlots);
             setSlots('slots', normalizedSlots);
         }
     };
@@ -39,7 +38,7 @@ function BlockBookingSlot({ slots, setSlots, startTime, endTime, disabled, name 
                 checked={isChecked}
                 onCheckedChange={handleCheckedChange}
                 width="full"
-                {...(disabled && { pointerEvents: 'none', backgroundColor: 'red.200' })}
+                {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
             >
                 <CheckboxCard.HiddenInput value={value} />
                 <CheckboxCard.Control>
@@ -48,7 +47,7 @@ function BlockBookingSlot({ slots, setSlots, startTime, endTime, disabled, name 
                     </CheckboxCard.Content>
                 </CheckboxCard.Control>
                 <CheckboxCard.Addon>
-                    {!disabled ? <Badge colorPalette="green">Available</Badge> : <Badge colorPalette="orange">{name}</Badge>}
+                    {isAvailable ? <Badge colorPalette="green">Available</Badge> : <Badge colorPalette="orange">{name}</Badge>}
                 </CheckboxCard.Addon>
             </CheckboxCard.Root>
         </Field.Root>

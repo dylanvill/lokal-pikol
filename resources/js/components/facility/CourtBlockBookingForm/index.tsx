@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../../helpers/courtTypeLabelParser';
 import type CreateBlockBooking from '../../../models/facility/CreateBlockBooking';
+import SuccessAlert from '../../shared/Alert/SuccessAlert';
 import BlockBookingSlot from './BlockBookingSlot';
 
 interface CourtBlockBookingFormProps extends PageProps {
@@ -12,7 +13,7 @@ interface CourtBlockBookingFormProps extends PageProps {
 }
 
 function CourtBlockBookingForm() {
-    const { props } = usePage<CourtBlockBookingFormProps>();
+    const { props, flash } = usePage<CourtBlockBookingFormProps>();
     const { data, setData, post, errors, clearErrors, reset, processing } = useForm({
         name: '',
         dayOfTheWeek: '',
@@ -34,6 +35,8 @@ function CourtBlockBookingForm() {
             },
         });
     };
+
+    const successMessage = flash?.success as string | undefined;
 
     useEffect(() => {
         if (data.dayOfTheWeek) {
@@ -62,6 +65,11 @@ function CourtBlockBookingForm() {
                     <Icon />
                     <Text>{courtTypeLabel}</Text>
                 </HStack>
+                {successMessage && (
+                    <Box marginTop={4}>
+                        <SuccessAlert title="Block booking created successfully!" description={successMessage} />
+                    </Box>
+                )}
             </Card.Header>
             <Card.Body>
                 <form onSubmit={handleSubmit}>
@@ -117,6 +125,7 @@ function CourtBlockBookingForm() {
                                             startTime={slot.startTime}
                                             endTime={slot.endTime}
                                             disabled={!slot.isAvailable || processing}
+                                            isAvailable={slot.isAvailable!}
                                             name={slot.name}
                                         />
                                     ))}

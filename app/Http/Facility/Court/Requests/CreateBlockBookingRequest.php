@@ -4,6 +4,7 @@ namespace App\Http\Facility\Court\Requests;
 
 use App\Http\Enums\GuardEnum;
 use App\Source\Court\Enums\BlockBookingDaysEnum;
+use App\Source\Court\Rules\NoExistingBlockBooking;
 use App\Source\Shared\Rules\ConsecutiveHours;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,7 +24,7 @@ class CreateBlockBookingRequest extends FormRequest
         return [
             "name" => ["required", "string", "max:50"],
             "dayOfTheWeek" => ["required", Rule::enum(BlockBookingDaysEnum::class)],
-            "slots" => ["required", "array", "min:1", new ConsecutiveHours()],
+            "slots" => ["required", "array", "min:1", new ConsecutiveHours(), new NoExistingBlockBooking($this->route('court'), BlockBookingDaysEnum::from($this->input('dayOfTheWeek')))],
             "slots.*" => ["required", "string"],
         ];
     }
