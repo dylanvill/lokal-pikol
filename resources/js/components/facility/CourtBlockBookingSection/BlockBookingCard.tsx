@@ -22,7 +22,7 @@ function BlockBookingCard({ id, name, day, startTime, endTime }: BlockBookingCar
             <Card.Header>
                 <Card.Title>{name}</Card.Title>
             </Card.Header>
-            <Card.Body>
+            <Card.Body justifyContent="flex-end">
                 <VStack align="stretch" gap={2}>
                     <DetailWithIcon
                         icon={<LuCalendarSync />}

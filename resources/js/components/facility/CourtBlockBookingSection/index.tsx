@@ -31,8 +31,8 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
                     <Heading size="lg" color="blue.700">
                         {name}
                     </Heading>
-                    <Heading size="sm" display="inline-flex" alignItems="center" color="blue.700" gap={1}>
-                        <Icon color="blue.700" /> {label}
+                    <Heading size="sm" display="inline-flex" alignItems="center" color="black" gap={1}>
+                        <Icon /> {label}
                     </Heading>
                 </VStack>
                 <Link href={`/facility/courts/${id}/block-bookings/create`}>

@@ -1,3 +1,4 @@
+import { VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import CourtBlockBookingSection from '../../../components/facility/CourtBlockBookingSection';
@@ -16,17 +17,19 @@ function BlockBookingsPage() {
         <FacilityLayout>
             <FacilityPageHeader
                 title="Block Bookings"
-                description="Create recurring schedules for open play sessions, events, and maintenance windows."
+                description="Block court slots for recurring facility events like open play sessions. Blocked slots won't be available for regular player reservations."
             />
-            {props.courts.map((court) => (
-                <CourtBlockBookingSection
-                    key={court.id}
-                    id={court.id}
-                    name={court.name}
-                    covered={court.covered}
-                    blockBookings={court.blockBookings}
-                />
-            ))}
+            <VStack gap={12} alignItems="stretch">
+                {props.courts.map((court) => (
+                    <CourtBlockBookingSection
+                        key={court.id}
+                        id={court.id}
+                        name={court.name}
+                        covered={court.covered}
+                        blockBookings={court.blockBookings}
+                    />
+                ))}
+            </VStack>
         </FacilityLayout>
     );
 }

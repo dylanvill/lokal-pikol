@@ -1,6 +1,6 @@
 import { Box, Link, Text, VStack } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
-import { LuCalendar, LuCalendarOff, LuCalendarPlus, LuGrid2X2, LuHouse, LuUser } from 'react-icons/lu';
+import { LuCalendar, LuCalendarOff, LuCalendarPlus, LuGrid2X2, LuHouse, LuLogOut, LuUser } from 'react-icons/lu';
 import AppButton from '../../../components/app/AppButton';
 
 const sidebarItems = [
@@ -51,6 +51,11 @@ const sidebarItems = [
                 label: 'Account',
                 route: '/facility/account',
                 icon: () => <LuUser />,
+            },
+            {
+                label: 'Logout',
+                route: '/facility/logout',
+                icon: () => <LuLogOut />,
             },
         ],
     },
