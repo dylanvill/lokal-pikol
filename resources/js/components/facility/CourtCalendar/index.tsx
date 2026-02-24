@@ -5,43 +5,34 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
-import type CourtCalendarModel from '../../../models/facility/CourtCalendar';
+import type Court from '../../../models/facility/Court';
+import type CourtCalendarItem from '../../../models/facility/CourtCalendarItem';
 import { type CalendarEvent } from './types';
 import useCourtCalendar from './useCourtCalendar';
 
 export interface CourtCalendarPageProps extends PageProps {
-    court: CourtCalendarModel;
-    date: string;
+    court: Court;
+    items: CourtCalendarItem[];
 }
 
 function CourtCalendar() {
     const { props } = usePage<CourtCalendarPageProps>();
-
-    const court = props.court;
+    const items = props.items;
 
     const reservations = useMemo((): CalendarEvent[] => {
-        return court.reservations.map((reservation) => {
+        return items.map((reservation) => {
             const date = dayjs(reservation.reservationDate).format('YYYY-MM-DD');
-
-            const startTimeDisplay = militaryTimeToAmPmTime(reservation.startTime);
-            const endTimeDisplay = militaryTimeToAmPmTime(reservation.endTime);
-
-            const title = reservation.label ? reservation.label : reservation.customerName;
-            const time = `${startTimeDisplay} - ${endTimeDisplay}`;
-
             return {
                 id: reservation.id,
-                title: `${title} (${time})`,
+                title: reservation.label,
                 start: dayjs(`${date} ${reservation.startTime}`).toDate(),
                 end: dayjs(`${date} ${reservation.endTime}`).toDate(),
                 resource: reservation,
             };
         });
-    }, [court.reservations]);
+    }, [items]);
 
-    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, eventStyleGetter } =
-        useCourtCalendar();
+    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, eventStyleGetter } = useCourtCalendar();
 
     return (
         <Box bg="white" borderRadius="lg" shadow="sm" p={4} minH="75vh">
@@ -58,7 +49,7 @@ function CourtCalendar() {
                 onSelectEvent={handleSelectEvent}
                 selectable
                 eventPropGetter={eventStyleGetter}
-                views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
+                views={[Views.MONTH, Views.WEEK, Views.DAY]}
                 step={30} // 30-minute increments
                 timeslots={2} // Show 30-minute slots
                 defaultView={Views.MONTH}

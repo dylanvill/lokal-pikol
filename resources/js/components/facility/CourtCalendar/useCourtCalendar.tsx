@@ -11,12 +11,9 @@ const useCourtCalendar = () => {
     const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
     // Handle navigation (prev/next/today)
-    const handleNavigate = useCallback(
-        (date: Date) => {
-            setCurrentDate(date);
-        },
-        [],
-    );
+    const handleNavigate = useCallback((date: Date) => {
+        setCurrentDate(date);
+    }, []);
 
     // Handle view changes (month/week/day/agenda)
     const handleViewChange = useCallback((view: View) => {
@@ -32,19 +29,19 @@ const useCourtCalendar = () => {
     const eventStyleGetter = (event: CalendarEvent) => {
         let backgroundColor = '#3174ad';
 
-        if (event.resource?.status === 'confirmed') {
-            backgroundColor = '#10b981'; // green
-        } else if (event.resource?.status === 'pending') {
-            backgroundColor = '#f59e0b'; // yellow
-        } else if (event.resource?.status === 'cancelled') {
-            backgroundColor = '#ef4444'; // red
+        if (event.resource.type === 'blockbooking') {
+            backgroundColor = '#4b6fad'; // blue
+        } else if (event.resource.type === 'reservation' && event.resource.metadata.status === 'pending') {
+            backgroundColor = '#e6982c'; // yellow
+        } else if (event.resource.type === 'reservation' && event.resource.metadata.status === 'confirmed') {
+            backgroundColor = '#35a133'; // green
         }
 
         return {
             style: {
                 backgroundColor,
                 borderRadius: '5px',
-                opacity: 0.8,
+                opacity: 1,
                 color: 'white',
                 border: '0px',
                 display: 'block',

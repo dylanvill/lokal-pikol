@@ -4,9 +4,9 @@ namespace App\Http\Facility\Court\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
-class CourtCalendarResource extends JsonResource
+class CourtCalendarItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +17,12 @@ class CourtCalendarResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'courtName' => $this->name,
-            'openingTime' => $this->courtPricings->first()->start_time,
-            'closingTime' => $this->courtPricings->last()->end_time,
-            'reservations' => CourtReservationCalendarResource::collection($this->reservations),
+            'type' => Str::lower($this->model),
+            'label' => $this->label,
+            'reservationDate' => $this->reservationDate,
+            'startTime' => $this->startTime,
+            'endTime' => $this->endTime,
+            'metadata' => $this->metadata->toArray(),
         ];
     }
 }
