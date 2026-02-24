@@ -3,18 +3,18 @@
 namespace App\Source\Court\Actions\GetCourtCalendar\Dtos;
 
 use App\Source\Court\Actions\GetCourtCalendar\Contracts\CalendarItemMetadata;
-use App\Source\Reservation\Enums\ReservationStatusEnum;
+use App\Source\Court\Enums\BlockBookingDaysEnum;
 
-readonly class ReservationCalendarItemMetadata implements CalendarItemMetadata
+readonly class BlockBookingCalendarItemMetadata implements CalendarItemMetadata
 {
     public function __construct(
-        public ReservationStatusEnum $status
+        public BlockBookingDaysEnum $dayOfTheWeek
     ) {}
 
     public function toArray(): array
     {
         return [
-            'status' => $this->status->value,
+            'dayOfTheWeek' => $this->dayOfTheWeek->value,
         ];
     }
 }
