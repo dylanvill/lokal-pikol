@@ -45,6 +45,7 @@ function CourtBlockBookingSection({ id, name, covered, blockBookings }: CourtBlo
                         xl: 5,
                         '2xl': 6,
                     }}
+                    gap={2}
                 >
                     {blockBookings.map((blockBooking) => (
                         <BlockBookingCard
