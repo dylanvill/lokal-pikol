@@ -1,8 +1,9 @@
-import { Box, Text, Button, SimpleGrid, Flex, EmptyState } from '@chakra-ui/react';
+import { Box, Button, SimpleGrid, EmptyState } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { router, usePage } from '@inertiajs/react';
 import { LuX } from 'react-icons/lu';
 import CourtCard from '../../../components/facility/CourtCard';
+import FacilityPageHeader from '../../../components/facility/FacilityPageHeader';
 import FacilityLayout from '../../../layouts/facility/FacilityLayout';
 import type Court from '../../../models/facility/Court';
 
@@ -22,17 +23,7 @@ function Courts() {
     return (
         <FacilityLayout>
             <Box>
-                {/* Header Section */}
-                <Flex justifyContent="space-between" alignItems="center" mb={6}>
-                    <Text fontSize="2xl" fontWeight="bold">
-                        Courts
-                    </Text>
-                    {courts.length > 0 && (
-                        <Button colorPalette="blue" onClick={handleRegisterNewCourt}>
-                            Register New Court
-                        </Button>
-                    )}
-                </Flex>
+                <FacilityPageHeader title="Courts" description="Manage the courts available at your facility" />
                 {courts.length === 0 ? (
                     <EmptyState.Root>
                         <EmptyState.Content gap={0}>
@@ -47,7 +38,7 @@ function Courts() {
                         </EmptyState.Content>
                     </EmptyState.Root>
                 ) : (
-                    <SimpleGrid columns={{ base: 1, md: 2, lg: 4, '2xl': 6 }} gap={6}>
+                    <SimpleGrid columns={{ base: 1, md:2, lg: 2, 'xl': 4 }} gap={6}>
                         {courts.map((court) => (
                             <CourtCard
                                 key={court.id}
