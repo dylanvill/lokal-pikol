@@ -31,9 +31,9 @@ function FacilityHeader({ name, address, city, email, phone, profilePhotoUrl }: 
             <Badge colorPalette="blue" fontSize="sm" marginBottom={4}>
                 {city}
             </Badge>
-            <DetailWithIcon icon={<LuMapPin color="gray" />} label={address} textProps={{ textAlign: 'center' }} />
-            <DetailWithIcon icon={<LuMail color="gray" />} label={email} textProps={{ textAlign: 'center' }} />
-            <DetailWithIcon icon={<LuPhone color="gray" />} label={phone} textProps={{ textAlign: 'center' }} />
+            <DetailWithIcon icon={<LuMapPin color="black" />} label={address} textProps={{ textAlign: 'center', color: 'black' }} />
+            <DetailWithIcon icon={<LuMail color="black" />} label={email} textProps={{ textAlign: 'center', color: 'black' }} />
+            <DetailWithIcon icon={<LuPhone color="black" />} label={phone} textProps={{ textAlign: 'center', color: 'black' }} />
         </VStack>
     );
 }
