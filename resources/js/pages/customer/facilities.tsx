@@ -1,10 +1,12 @@
 import { VStack, SimpleGrid, Box } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, usePage } from '@inertiajs/react';
+import { LuSearchX } from 'react-icons/lu';
 import FacilityCard from '@/components/customer/FacilityCard';
 import HomePageLayout from '@/layouts/HomePageLayout';
 import SearchFilterDisplay from '../../components/customer/SearchFilterDisplay';
 import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
+import Empty from '../../components/shared/Empty';
 import type FacilityList from '../../models/customer/facility/FacilityList';
 import type PaginatedData from '../../models/shared/Pagination';
 
@@ -44,26 +46,34 @@ export default function Home() {
                         facilitiesCount={page.props.facilities.meta.total}
                     />
                 </Box>
-                <InfiniteScroll data="facilities" loading={() => 'Loading more facilities...'}>
-                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={6}>
-                        {facilities.data.map((facility) => (
-                            <FacilityCard
-                                key={facility.id}
-                                id={facility.id}
-                                name={facility.name}
-                                coverPhoto={facility.coverPhoto}
-                                profilePhoto={facility.profilePhoto}
-                                address={facility.address}
-                                numberOfCourts={facility.numberOfCourts}
-                                courtType={facility.courtType}
-                                closingTime={facility.closingTime}
-                                openingTime={facility.openingTime}
-                                availableTimes={facility.availableSlots}
-                                city={facility.city}
-                            />
-                        ))}
-                    </SimpleGrid>
-                </InfiniteScroll>
+                {facilities.data.length === 0 ? (
+                    <Empty
+                        icon={<LuSearchX />}
+                        title="No facilities found"
+                        description="Try adjusting your search criteria to find available facilities."
+                    />
+                ) : (
+                    <InfiniteScroll data="facilities" loading={() => 'Loading more facilities...'}>
+                        <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={6}>
+                            {facilities.data.map((facility) => (
+                                <FacilityCard
+                                    key={facility.id}
+                                    id={facility.id}
+                                    name={facility.name}
+                                    coverPhoto={facility.coverPhoto}
+                                    profilePhoto={facility.profilePhoto}
+                                    address={facility.address}
+                                    numberOfCourts={facility.numberOfCourts}
+                                    courtType={facility.courtType}
+                                    closingTime={facility.closingTime}
+                                    openingTime={facility.openingTime}
+                                    availableTimes={facility.availableSlots}
+                                    city={facility.city}
+                                />
+                            ))}
+                        </SimpleGrid>
+                    </InfiniteScroll>
+                )}
             </VStack>
         </HomePageLayout>
     );

@@ -1,7 +1,7 @@
 import { Flex, Tag, Text, VStack } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import React from 'react';
-import { LuCalendar, LuClock4, LuMapPin } from 'react-icons/lu';
+import { LuCalendar, LuClock4, LuMapPin, LuX } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 
 export interface SearchFilterDisplayProps {
@@ -41,6 +41,14 @@ function SearchFilterDisplay({ city, date, startTime, endTime, facilitiesCount }
                         {startTimeDisplay} - {endTimeDisplay}
                     </Tag.Label>
                 </Tag.Root>
+                <Link href="/">
+                    <Tag.Root variant="solid" backgroundColor="white">
+                        <Tag.Label color="black">Clear filters</Tag.Label>
+                        <Tag.EndElement>
+                            <LuX color="black" />
+                        </Tag.EndElement>
+                    </Tag.Root>
+                </Link>
             </Flex>
         </VStack>
     );
