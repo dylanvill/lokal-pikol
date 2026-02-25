@@ -1,5 +1,5 @@
 import { Box, VStack, Badge, Image, Heading, Text, Flex, Card } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
@@ -35,6 +35,7 @@ export default function FacilityCard({
     closingTime,
     availableTimes,
 }: FacilityCardProps) {
+    const { props } = usePage<{ queryData: { date: string } }>();
     const typeDisplay = useMemo((): [string, React.ReactNode] => {
         if (courtType === 'Covered') return ['Covered', <LuHouse color="black" />];
         if (courtType === 'Outdoor') return ['Outdoor', <LuSun color="black" />];
@@ -56,8 +57,10 @@ export default function FacilityCard({
         [availableTimes],
     );
 
+    const date = props.queryData?.date || null;
+
     return (
-        <Link href={`/facilities/${id}`}>
+        <Link href={`/facilities/${id}`} data={{ date }}>
             <Card.Root padding={0} height="full">
                 <Card.Body padding={0}>
                     <VStack justifyItems="flex-start" alignItems="flex-start">
@@ -110,7 +113,11 @@ export default function FacilityCard({
                                             +{remainingSlotCount} more
                                         </Badge>
                                     )}
-                                    { !hasAvailableTimes && <Text fontSize="xs" color="gray.500">No available times today</Text> }
+                                    {!hasAvailableTimes && (
+                                        <Text fontSize="xs" color="gray.500">
+                                            No available times today
+                                        </Text>
+                                    )}
                                 </Flex>
                             </VStack>
                         </VStack>

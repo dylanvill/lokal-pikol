@@ -58,7 +58,7 @@ class FacilityListResource extends JsonResource
         return collect($combinedSlots)->unique()->map(function ($slot) {
             $times = explode(' - ', $slot);
             return new CourtSlot(startTime: $times[0], endTime: $times[1], isAvailable: true);
-        })->toArray();
+        })->sortBy(fn($slot) => $slot->startTime)->toArray();
     }
 
     public function parseCourtType(): string
