@@ -21,7 +21,14 @@ function CustomerDropdownSearch({ customers, form }: UserDropdownSearchProps) {
         router.get(
             '/facility/reservations/create',
             { search: value },
-            { preserveState: true, replace: true, preserveUrl: true, onStart: () => setLoading(true), onFinish: () => setLoading(false) },
+            {
+                preserveState: true,
+                replace: true,
+                preserveUrl: true,
+                preserveScroll: true,
+                onStart: () => setLoading(true),
+                onFinish: () => setLoading(false),
+            },
         );
     };
 
