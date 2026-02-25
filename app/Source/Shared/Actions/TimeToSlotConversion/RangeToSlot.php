@@ -23,9 +23,11 @@ class RangeToSlot
             $slotStart = $start->format('H:i');
             $slotEnd = $start->addHour()->format('H:i');
 
+            $normalizedSlotEnd = $slotStart === "23:00" && $slotEnd === '00:00' ? '24:00' : $slotEnd;
+
             $hourlySlots[] = new CourtSlot(
                 startTime: $slotStart,
-                endTime: $slotEnd,
+                endTime: $normalizedSlotEnd,
                 price: $range->price,
                 isAvailable: null
             );

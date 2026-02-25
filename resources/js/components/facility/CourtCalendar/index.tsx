@@ -22,11 +22,13 @@ function CourtCalendar() {
     const reservations = useMemo((): CalendarEvent[] => {
         return items.map((reservation) => {
             const date = dayjs(reservation.reservationDate).format('YYYY-MM-DD');
+            const normalizedEndTime = reservation.endTime === '24:00:00' ? '23:59' : reservation.endTime;
+
             return {
                 id: reservation.id,
                 title: reservation.label,
                 start: dayjs(`${date} ${reservation.startTime}`).toDate(),
-                end: dayjs(`${date} ${reservation.endTime}`).toDate(),
+                end: dayjs(`${date} ${normalizedEndTime}`).toDate(),
                 resource: reservation,
             };
         });
