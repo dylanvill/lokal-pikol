@@ -24,7 +24,7 @@ function CreateReservationPage() {
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDate(e.target.value);
-        router.get(`/facility/reservations/create`, { date: e.target.value }, { preserveState: true });
+        router.get(`/facility/reservations/create`, { date: e.target.value }, { preserveState: true, preserveScroll: true });
     };
 
     return (

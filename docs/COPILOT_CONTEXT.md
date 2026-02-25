@@ -1,6 +1,6 @@
 # Lokal Pikol - Copilot Context
 
-**Last Updated:** February 20, 2026
+**Last Updated:** February 25, 2026
 
 ## Domain Overview
 
@@ -123,6 +123,18 @@ Http/
   - Existing reservations (single-date bookings)
   - **Block bookings** (recurring weekly schedules)
 - **Data Flow:** Court Slots → Time Ranges → Reservation Records
+
+#### Midnight Handling (00:00 vs 24:00)
+- **Contextual Midnight:** System differentiates between midnight as start vs end
+  - `00:00` = Start of day (midnight as beginning)
+  - `24:00` = End of day (midnight as ending)
+- **Maximum Time Range:** Valid times are 00:00 to 24:00 (no extended hours beyond)
+- **Reservation Storage:**
+  - Bookings ending at midnight: saved as `[start_time] - 24:00`
+  - Bookings starting at midnight: saved as `00:00 - [end_time]`
+- **Overnight Bookings:** Customers must book separate sessions for overnight periods
+  - Example: 11PM-2AM requires two bookings: `23:00-24:00` + `00:00-02:00`
+- **Slot Conversion:** `RangeToSlot` normalizes midnight slots (23:00-00:00 → 23:00-24:00)
 
 ### Reservation Workflow
 - Customer browses available courts and their slot pricing
@@ -283,9 +295,11 @@ Http/
 - **Consecutive Range Rule:** Court pricing ranges CANNOT have gaps
   - Must validate that end_time of range N = start_time of range N+1  
   - Example validation: `07:00-11:00` + `11:00-15:00` ✓, but `07:00-11:00` + `12:00-15:00` ✗
+  - **Midnight Support:** Ranges can end at `24:00` (validated as end-of-day midnight)
 - **Time Format:** Consistent time format across pricing ranges
 - **Price Requirements:** Each range must have a valid decimal price  
 - **Coverage Validation:** All court operating hours should be covered by pricing ranges
+- **Maximum Range:** Valid pricing ranges from 00:00 to 24:00 (no extended hours)
 
 ### Reservation Validation  
 - **Slot Availability:** Selected court slots must be available for reservation date
@@ -363,9 +377,14 @@ pages/
 - **Media Integration:** Spatie Media Library for court photos and reservation receipts
 - **Polymorphic Reservations:** Both customers and facilities can make reservations using `HasReservations` trait
 - **Time Storage:** 
-  - Database: `start_time`, `end_time` fields
+  - Database: `start_time`, `end_time` fields (standard format: 00:00:00 style)
   - Frontend: Converted to court slots for user interaction
   - Constraint: Court pricing ranges must be consecutive (no time gaps)
+  - **Midnight Contextual Storage:**
+    - End times at midnight: stored as `24:00` during processing, `00:00` in database
+    - Start times at midnight: stored as `00:00` 
+    - Maximum valid range: 00:00 to 24:00 (no extended hours beyond)
+    - Overnight reservations: Split into separate bookings per day
 - **Block Booking Schema:**
   - `day` (tinyint) - Single day of week (0=Sunday, 1=Monday, etc.)
   - `start_time`, `end_time` - Time range for blocked slots

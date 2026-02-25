@@ -42,6 +42,7 @@ function ReservationBlock({ courtId, courtName, covered, date, slots, customers 
         }));
         form.post(`/facility/reservations/create`, {
             preserveScroll: true,
+            preserveState: true,
             onSuccess: () => form.reset('slots', 'customer'),
         });
     };
