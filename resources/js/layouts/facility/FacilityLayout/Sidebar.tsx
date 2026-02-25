@@ -1,5 +1,5 @@
-import { Box, Link, Text, VStack } from '@chakra-ui/react';
-import { router } from '@inertiajs/react';
+import { Box, Text, VStack } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
 import { LuCalendar, LuCalendarOff, LuCalendarPlus, LuGrid2X2, LuHouse, LuLogOut, LuUser } from 'react-icons/lu';
 import AppButton from '../../../components/app/AppButton';
 
@@ -54,7 +54,7 @@ const sidebarItems = [
             },
             {
                 label: 'Logout',
-                route: '/facility/logout',
+                route: '/facility/auth/logout',
                 icon: () => <LuLogOut />,
             },
         ],
@@ -62,10 +62,6 @@ const sidebarItems = [
 ];
 
 export const Sidebar = () => {
-    const handleItemClick = (route: string) => {
-        router.visit(route);
-    };
-
     return (
         <Box bg="gray.100" position="fixed" p={0} left={0} top="60px" bottom={0} width="200px" overflowY="auto">
             <VStack gap={4} align="stretch" marginTop={4}>
@@ -75,15 +71,8 @@ export const Sidebar = () => {
                             {category.category}
                         </Text>
                         {category.children.map((item) => (
-                            <Link key={item.label}>
-                                <AppButton
-                                    key={item.route}
-                                    backgroundColor="transparent"
-                                    justifyContent="flex-start"
-                                    borderRadius={0}
-                                    onClick={() => handleItemClick(item.route)}
-                                    color="black"
-                                >
+                            <Link key={item.label} href={item.route} method={item.route === '/facility/auth/logout' ? 'post' : 'get'}>
+                                <AppButton key={item.route} backgroundColor="transparent" justifyContent="flex-start" borderRadius={0} color="black">
                                     {item.icon()} {item.label}
                                 </AppButton>
                             </Link>
