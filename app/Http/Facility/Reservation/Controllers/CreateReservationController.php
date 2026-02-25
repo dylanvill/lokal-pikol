@@ -72,7 +72,6 @@ class CreateReservationController extends Controller
             startTime: $range->startTime,
             endTime: $range->endTime,
             status: ReservationStatusEnum::CONFIRMED->value,
-            label: $request->input('reservationLabel'),
         );
 
         $reservation = $createReservation->create($reservationData);

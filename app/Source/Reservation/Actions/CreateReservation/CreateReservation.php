@@ -18,7 +18,6 @@ class CreateReservation
         $reservation->start_time = $data->startTime;
         $reservation->end_time = $data->endTime;
         $reservation->status = $data->status;
-        $reservation->label = $data->label;
         $reservation->save();
 
         return $reservation->refresh();

@@ -26,7 +26,6 @@ class ReservationResource extends JsonResource
             'fees' => new ReservationFeeResource($this->fees),
             'paymentReceipt' => new PhotoResource($this->media->first()),
             'createdAt' => $this->created_at,
-            'label' => $this->label,
             'slots' => RangeToSlot::convert(new Range(
                 startTime: $this->start_time,
                 endTime: $this->end_time,

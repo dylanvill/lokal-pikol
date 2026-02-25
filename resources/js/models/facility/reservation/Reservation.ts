@@ -17,7 +17,6 @@ interface Reservation {
     paymentReceipt: Photo;
     createdAt: string;
     slots: CourtSlot[];
-    label: string | null;
 }
 
 export default Reservation;
