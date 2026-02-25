@@ -1,5 +1,6 @@
-import { Box, Button, Separator } from '@chakra-ui/react';
+import { Box, Button, Flex, Separator } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
+import { LuPlus } from 'react-icons/lu';
 import CreateCourtFormContext from './context';
 import DetailsStepContent from './DetailsStepContent';
 import PhotosStepContent from './PhotosStepContent';
@@ -17,7 +18,15 @@ function CreateCourtForm() {
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post('/facility/courts/create');
+        form.transform((data) => {
+            return {
+                ...data,
+                endTime: data.endTime.map((time) => time === "00:00" ? "24:00" : time),
+            };
+        });
+        form.post('/facility/courts/create', {
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -30,9 +39,11 @@ function CreateCourtForm() {
                         <PhotosStepContent />
                         <Separator />
                         <TimeStepContent />
-                        <Button type="submit" colorScheme="blue" mt={4} disabled={form.processing} loading={form.processing}>
-                            Create Court
-                        </Button>
+                        <Flex justifyContent="flex-end">
+                            <Button type="submit" colorPalette="blue" size="sm" mt={4} disabled={form.processing} loading={form.processing}>
+                                Create Court <LuPlus />
+                            </Button>
+                        </Flex>
                     </Box>
                 </form>
             </CreateCourtFormContext.Provider>

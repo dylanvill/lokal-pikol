@@ -36,8 +36,8 @@ class CreateCourtRequest extends FormRequest
             "startTime" => ["required", "array"],
             "endTime" => ["required", "array"],
             "rate" => ["required", "array"],
-            "startTime.*" => ["required", "date_format:H:i"],
-            "endTime.*" => ["required", "date_format:H:i"],
+            "startTime.*" => ["required", "regex:/^\d{2}:\d{2}$/"],
+            "endTime.*" => ["required", "regex:/^\d{2}:\d{2}$/"],
             "rate.*" => ["required", "numeric", "min:1"],
         ];
     }
@@ -46,9 +46,9 @@ class CreateCourtRequest extends FormRequest
     {
         return [
             "startTime.*.required" => "Start time is required for each time slot.",
-            "startTime.*.date_format" => "Start time must be in the format HH:mm.",
+            "startTime.*.regex" => "Start time must be in the format HH:mm.",
             "endTime.*.required" => "End time is required for each time slot.",
-            "endTime.*.date_format" => "End time must be in the format HH:mm.",
+            "endTime.*.regex" => "End time must be in the format HH:mm.",
             "rate.*.required" => "Rate is required for each time slot.",
             "rate.*.numeric" => "Rate must be a number.",
             "rate.*.min" => "Rate must be at least 1.",
@@ -107,8 +107,12 @@ class CreateCourtRequest extends FormRequest
         $slots = $this->getRanges();
 
         foreach ($slots as $index => $slot) {
-            $start = strtotime($slot['startTime']);
-            $end = strtotime($slot['endTime']);
+            $startTime = $slot['startTime'];
+            $endTime = $slot['endTime'];
+            
+            // Handle 24:00 as end time (convert to next day for comparison)
+            $start = strtotime($startTime);
+            $end = $endTime === '24:00' ? strtotime('00:00') + 86400 : strtotime($endTime);
 
             if ($start >= $end) {
                 $errors["startTime.$index"] = "Start time must be before end time.";
@@ -129,9 +133,9 @@ class CreateCourtRequest extends FormRequest
         for ($i = 0; $i < count($slots); $i++) {
             for ($j = $i + 1; $j < count($slots); $j++) {
                 $slot1Start = strtotime($slots[$i]['startTime']);
-                $slot1End = strtotime($slots[$i]['endTime']);
+                $slot1End = $slots[$i]['endTime'] === '24:00' ? strtotime('00:00') + 86400 : strtotime($slots[$i]['endTime']);
                 $slot2Start = strtotime($slots[$j]['startTime']);
-                $slot2End = strtotime($slots[$j]['endTime']);
+                $slot2End = $slots[$j]['endTime'] === '24:00' ? strtotime('00:00') + 86400 : strtotime($slots[$j]['endTime']);
 
                 // Two time slots overlap if slot1 starts before slot2 ends AND slot2 starts before slot1 ends
                 // Adjacent slots (where one ends exactly when the other starts) are allowed
@@ -172,10 +176,10 @@ class CreateCourtRequest extends FormRequest
             }
         }
 
-        // Check end times - must be on the hour (xx:00)
+        // Check end times - must be on the hour (xx:00) or 24:00 for midnight
         foreach ($endTimes as $index => $endTime) {
-            if ($endTime && !preg_match('/^\d{2}:00$/', $endTime)) {
-                $errors["endTime.$index"] = "End time must be on the hour (e.g., 07:00, 08:00).";
+            if ($endTime && !preg_match('/^(\d{2}:00|24:00)$/', $endTime)) {
+                $errors["endTime.$index"] = "End time must be on the hour (e.g., 07:00, 08:00) or 24:00 for midnight.";
             }
         }
 
@@ -198,12 +202,17 @@ class CreateCourtRequest extends FormRequest
             }
         }
 
-        // Check end times - hours must be 00-23
+        // Check end times - hours must be 00-24 (24 allowed for midnight end time)
         foreach ($endTimes as $index => $endTime) {
             if ($endTime) {
+                // Special handling for 24:00
+                if ($endTime === '24:00') {
+                    continue; // 24:00 is valid for end time
+                }
+                
                 $hour = substr($endTime, 0, 2);
                 if (!ctype_digit($hour) || (int)$hour < 0 || (int)$hour > 23) {
-                    $errors["endTime.$index"] = "End time hour must be between 12AM-11PM.";
+                    $errors["endTime.$index"] = "End time hour must be between 12AM-11PM or 24:00 for midnight.";
                 }
             }
         }
