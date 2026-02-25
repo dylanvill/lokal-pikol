@@ -1,13 +1,10 @@
-import { VStack, SimpleGrid, Text, HStack, Box } from '@chakra-ui/react';
+import { VStack, SimpleGrid, Box } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, usePage } from '@inertiajs/react';
-import dayjs from 'dayjs';
-import { useMemo } from 'react';
-import { LuSearch } from 'react-icons/lu';
 import FacilityCard from '@/components/customer/FacilityCard';
 import HomePageLayout from '@/layouts/HomePageLayout';
+import SearchFilterDisplay from '../../components/customer/SearchFilterDisplay';
 import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
-import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 import type FacilityList from '../../models/customer/facility/FacilityList';
 import type PaginatedData from '../../models/shared/Pagination';
 
@@ -30,31 +27,6 @@ export default function Home() {
 
     const queryData = page.props.queryData;
 
-    const searchLabel = useMemo(() => {
-        const cityPart = queryData.city ? `in ${queryData.city}` : 'in all cities';
-
-        const formattedStartTime = militaryTimeToAmPmTime(queryData.startTime);
-        const formattedEndTime = militaryTimeToAmPmTime(queryData.endTime);
-        const formattedDate = dayjs(queryData.date).format('dddd, MMMM D, YYYY');
-
-        return (
-            <Text color="green">
-                Showing courts {cityPart} on{' '}
-                <Text as="span" fontWeight="bold" fontStyle="italic">
-                    {formattedDate}
-                </Text>{' '}
-                from{' '}
-                <Text as="span" fontWeight="bold" fontStyle="italic">
-                    {formattedStartTime}
-                </Text>{' '}
-                to{' '}
-                <Text as="span" fontWeight="bold" fontStyle="italic">
-                    {formattedEndTime}
-                </Text>
-            </Text>
-        );
-    }, [queryData]);
-
     return (
         <HomePageLayout title="Home">
             <VStack gap={2} align="stretch">
@@ -63,10 +35,15 @@ export default function Home() {
                         <SuccessAlert title="Email verified!" description="Your email has been successfully verified. You can now book courts." />
                     </Box>
                 )}
-                <HStack>
-                    <LuSearch color="green" />
-                    {searchLabel}
-                </HStack>
+                <Box marginBottom={4}>
+                    <SearchFilterDisplay
+                        city={queryData.city || 'All Cities'}
+                        date={queryData.date}
+                        startTime={queryData.startTime}
+                        endTime={queryData.endTime}
+                        facilitiesCount={page.props.facilities.meta.total}
+                    />
+                </Box>
                 <InfiniteScroll data="facilities" loading={() => 'Loading more facilities...'}>
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} gap={6}>
                         {facilities.data.map((facility) => (
