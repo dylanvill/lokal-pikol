@@ -18,7 +18,7 @@ function SearchFilterDisplay({ city, date, startTime, endTime, facilitiesCount }
     const endTimeDisplay = militaryTimeToAmPmTime(endTime);
 
     return (
-        <VStack alignItems="stretch">
+        <VStack alignItems="stretch" gap={1}>
             <Text fontSize="sm">{facilitiesCount} facilities available:</Text>
             <Flex gap={2}>
                 <Tag.Root size="lg" colorPalette="orange">
