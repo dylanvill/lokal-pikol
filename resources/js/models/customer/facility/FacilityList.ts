@@ -1,3 +1,4 @@
+import type CourtSlot from '../../shared/CourtSlot';
 import type Photo from '../../shared/Photo';
 
 interface FacilityList {
@@ -8,7 +9,7 @@ interface FacilityList {
     profilePhoto: Photo | null;
     openingTime: string;
     closingTime: string;
-    availableSlots: string[];
+    availableSlots: CourtSlot[];
     city: string;
     address: string;
     numberOfCourts: number;

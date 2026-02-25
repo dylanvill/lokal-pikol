@@ -1,6 +1,6 @@
 import { VStack, SimpleGrid, Text, HStack, Box } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
-import { InfiniteScroll, router, usePage } from '@inertiajs/react';
+import { InfiniteScroll, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LuSearch } from 'react-icons/lu';
@@ -55,14 +55,6 @@ export default function Home() {
         );
     }, [queryData]);
 
-    const handleClicked = (id: string) => {
-        router.visit(`/facilities/${id}`, {
-            data: {
-                date: queryData.date,
-            },
-        });
-    };
-
     return (
         <HomePageLayout title="Home">
             <VStack gap={2} align="stretch">
@@ -89,9 +81,8 @@ export default function Home() {
                                 courtType={facility.courtType}
                                 closingTime={facility.closingTime}
                                 openingTime={facility.openingTime}
-                                // availableTimes={['3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM']}
+                                availableTimes={facility.availableSlots}
                                 city={facility.city}
-                                onClick={handleClicked}
                             />
                         ))}
                     </SimpleGrid>

@@ -3,9 +3,14 @@
 namespace App\Http\Customer\Facility\Resources;
 
 use App\Http\Shared\Resources\PhotoResource;
+use App\Source\Court\Actions\GetCourtAvailability\GetCourtAvailability;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
+use App\Source\Shared\Actions\TimeToSlotConversion\Dtos\CourtSlot;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
+
+use function Symfony\Component\Clock\now;
 
 class FacilityListResource extends JsonResource
 {
@@ -19,11 +24,41 @@ class FacilityListResource extends JsonResource
             "profilePhoto" => $this->parseProfilePhoto(),
             "openingTime" => $this->opening_time,
             "closingTime" => $this->closing_time,
-            "availableSlots" => [],
+            "availableSlots" => $this->parseCourtSlots($request),
             "city" => $this->city,
             "address" => $this->address,
             "numberOfCourts" => $this->courts->count(),
         ];
+    }
+
+    public function parseCourtSlots(Request $request): array
+    {
+        $service = new GetCourtAvailability();
+
+        $combinedSlots = [];
+        $today = Carbon::now();
+        $inputDate = Carbon::createFromFormat('Y-m-d', $request->input('date', Carbon::now()->format('Y-m-d')));
+
+        foreach ($this->courts as $court) {
+            $slotsArray = $service->get($court, $inputDate->format('Y-m-d'));
+            $slots = collect($slotsArray)
+                ->when($today->isSameDay($inputDate), function ($collection) use ($today) {
+                    $currentTime = $today->format('H:i');
+                    return $collection->filter(function ($slot) use ($currentTime) {
+                        return $slot->startTime > $currentTime;
+                    });
+                })
+                ->filter(fn($slot) => $slot->isAvailable)
+                ->map(fn($slot) => "{$slot->startTime} - {$slot->endTime}")
+                ->toArray();
+
+            $combinedSlots = [...$combinedSlots, ...$slots];
+        }
+
+        return collect($combinedSlots)->unique()->map(function ($slot) {
+            $times = explode(' - ', $slot);
+            return new CourtSlot(startTime: $times[0], endTime: $times[1], isAvailable: true);
+        })->toArray();
     }
 
     public function parseCourtType(): string

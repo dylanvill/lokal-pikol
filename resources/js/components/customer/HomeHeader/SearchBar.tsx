@@ -15,7 +15,7 @@ function SearchBar() {
         endTime: endHour,
     });
 
-    const minEndTime = data.startTime ? dayjs(data.startTime, 'HH:mm').add(1, 'hour').format('HH:mm') : nextHour;
+    const minEndTime = data.startTime ? dayjs(`${currentDate}T${data.startTime}`).add(1, 'hour').format('HH:mm') : nextHour;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
