@@ -6,14 +6,35 @@ import { type CalendarEvent } from './types';
 
 export const localizer = dayjsLocalizer(dayjs);
 
-const useCourtCalendar = () => {
-    const [currentDate, setCurrentDate] = useState(dayjs().toDate());
+const useCourtCalendar = (courtId: string, date: string) => {
+    const [currentDate, setCurrentDate] = useState(dayjs(date).toDate());
     const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
     // Handle navigation (prev/next/today)
-    const handleNavigate = useCallback((date: Date) => {
-        setCurrentDate(date);
-    }, []);
+    const handleNavigate = useCallback(
+        (date: Date) => {
+            const currentMonth = dayjs(currentDate).month();
+            const newMonth = dayjs(date).month();
+            const isSameMonth = currentMonth === newMonth;
+
+            if (!isSameMonth) {
+                router.get(
+                    `/facility/courts/${courtId}/calendar`,
+                    {
+                        date: dayjs(date).format('YYYY-MM-DD'),
+                    },
+                    {
+                        preserveState: true,
+                        replace: true,
+                        preserveScroll: true
+                    },
+                );
+            }
+
+            setCurrentDate(date);
+        },
+        [currentDate],
+    );
 
     // Handle view changes (month/week/day/agenda)
     const handleViewChange = useCallback((view: View) => {

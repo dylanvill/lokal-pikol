@@ -22,11 +22,14 @@ class CourtCalendarController extends Controller
             'courtPricings',
         ]);
 
-        $calendarItems = $getCourtCalendar->get($court, $request->input('date', now()->toDateString()));
+        $date = $request->input('date', now()->format('Y-m-d'));
+
+        $calendarItems = $getCourtCalendar->get($court, $date);
 
         return Inertia::render('facility/courts/courtCalendar', [
             'court' => new CourtResource($court),
             'items' => CourtCalendarItemResource::collection($calendarItems),
+            'date' => $date,
         ]);
     }
 }

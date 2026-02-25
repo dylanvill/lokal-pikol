@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Card } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -13,6 +13,7 @@ import useCourtCalendar from './useCourtCalendar';
 export interface CourtCalendarPageProps extends PageProps {
     court: Court;
     items: CourtCalendarItem[];
+    date: string;
 }
 
 function CourtCalendar() {
@@ -34,32 +35,37 @@ function CourtCalendar() {
         });
     }, [items]);
 
-    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, eventStyleGetter } = useCourtCalendar();
+    const { currentView, currentDate, localizer, handleNavigate, handleViewChange, handleSelectEvent, eventStyleGetter } = useCourtCalendar(
+        props.court.id,
+        props.date,
+    );
 
     return (
-        <Box bg="white" borderRadius="lg" shadow="sm" p={4} minH="75vh">
-            <Calendar
-                localizer={localizer}
-                events={reservations}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: '75vh' }}
-                view={currentView}
-                onView={handleViewChange}
-                date={currentDate}
-                onNavigate={handleNavigate}
-                onSelectEvent={handleSelectEvent}
-                selectable
-                eventPropGetter={eventStyleGetter}
-                views={[Views.MONTH, Views.WEEK, Views.DAY]}
-                step={30} // 30-minute increments
-                timeslots={2} // Show 30-minute slots
-                defaultView={Views.MONTH}
-                toolbar={true}
-                popup={true}
-                dayLayoutAlgorithm="no-overlap"
-            />
-        </Box>
+        <Card.Root minH="75vh" width="100%">
+            <Card.Body>
+                <Calendar
+                    localizer={localizer}
+                    events={reservations}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: '75vh' }}
+                    view={currentView}
+                    onView={handleViewChange}
+                    date={currentDate}
+                    onNavigate={handleNavigate}
+                    onSelectEvent={handleSelectEvent}
+                    selectable
+                    eventPropGetter={eventStyleGetter}
+                    views={[Views.MONTH, Views.WEEK, Views.DAY]}
+                    step={60} // 60-minute increments
+                    timeslots={1} // Show 60-minute slots
+                    defaultView={Views.MONTH}
+                    toolbar={true}
+                    popup={true}
+                    dayLayoutAlgorithm="no-overlap"
+                />
+            </Card.Body>
+        </Card.Root>
     );
 }
 
