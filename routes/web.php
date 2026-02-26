@@ -50,7 +50,7 @@ Route::prefix("facilities")->group(function () {
 
 Route::prefix("reservations")->name("reservation.")->group(function () {
     Route::get('/', [ReservationsController::class, 'index'])->name('index');
-    Route::get('/{reservation:uuid}/on-hold', OnHoldNoticeController::class)->name('on-hold.show');
+    Route::get('/{reservation:uuid}/on-hold', OnHoldNoticeController::class)->name('on-hold-notice.show');
     Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
     Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
     Route::post('/reserve/{reservation:uuid}/upload-receipt', UploadReceiptController::class)->name('upload-receipt');

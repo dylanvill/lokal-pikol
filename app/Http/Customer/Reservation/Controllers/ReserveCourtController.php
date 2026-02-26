@@ -38,7 +38,7 @@ class ReserveCourtController extends Controller
         $existingReservation = $this->onHoldReservation($request, $court);
 
         if ($existingReservation !== null) {
-            return redirect()->route('reservation.on-hold.show', [
+            return redirect()->route('reservation.on-hold-notice.show', [
                 'reservation' => $existingReservation->uuid,
             ]);
         }
