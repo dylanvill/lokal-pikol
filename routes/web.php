@@ -7,6 +7,7 @@ use App\Http\Customer\Auth\Controllers\SignUpController;
 use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
+use App\Http\Customer\Reservation\Controllers\OnHoldNoticeController;
 use App\Http\Customer\Reservation\Controllers\ReservationController;
 use App\Http\Customer\Reservation\Controllers\ReservationsController;
 use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
@@ -49,6 +50,7 @@ Route::prefix("facilities")->group(function () {
 
 Route::prefix("reservations")->name("reservation.")->group(function () {
     Route::get('/', [ReservationsController::class, 'index'])->name('index');
+    Route::get('/{reservation:uuid}/on-hold', OnHoldNoticeController::class)->name('on-hold.show');
     Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
     Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
     Route::post('/reserve/{reservation:uuid}/upload-receipt', UploadReceiptController::class)->name('upload-receipt');
