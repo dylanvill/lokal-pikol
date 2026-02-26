@@ -137,11 +137,14 @@ Http/
 - **Slot Conversion:** `RangeToSlot` normalizes midnight slots (23:00-00:00 → 23:00-24:00)
 
 ### Reservation Workflow
+
 - Customer browses available courts and their slot pricing
-- **Availability Check:** Court slots filtered by existing reservations and block bookings
+- **Slot Hold (On Hold Status):** When a customer initiates a reservation, the selected slots are placed "on hold" for 10 minutes (previously 15 minutes). During this period, these slots are blocked from being booked by other users.
+- **Availability Check:** Court slots are filtered by existing reservations and block bookings. Slots with a reservation status of `on hold`, `pending`, or `confirmed` (see `ReservationStatusEnum`) are considered unavailable and cannot be booked by other users.
 - Customer selects court slots (checkbox UI)
 - Selected slots converted to time ranges for reservation creation
-- Customer initiates booking request  
+- Customer initiates booking request, which places the reservation in the `on hold` status.
+- **Reservation Expiry:** If the reservation is not confirmed (e.g., payment or further action) within 10 minutes, a scheduler (e.g., Laravel task) will automatically delete the reservation as if it never existed, freeing up the slots.
 - Facility must approve reservation requests (approval-based system)
 - Email notifications sent during reservation lifecycle
 
@@ -302,7 +305,7 @@ Http/
 - **Maximum Range:** Valid pricing ranges from 00:00 to 24:00 (no extended hours)
 
 ### Reservation Validation  
-- **Slot Availability:** Selected court slots must be available for reservation date
+- **Slot Availability:** Selected court slots must be available for the reservation date. Slots are considered unavailable if there is an existing reservation with a status of `on hold`, `pending`, or `confirmed` (see `ReservationStatusEnum`).
 - **Time Alignment:** Reservation times must align with existing court pricing ranges
 - **No Overlaps:** Prevent double-booking of court slots
 - **Future Dates:** Reservations typically only allowed for future dates
@@ -348,7 +351,11 @@ pages/
 ```
 
 ### Enum Usage Patterns
-- **Status Management:** `ReservationStatusEnum` for workflow states
+- **Status Management:** `ReservationStatusEnum` for workflow states. The enum includes:
+  - `ON_HOLD`: Temporary hold (10 minutes) when a customer initiates a reservation. Blocks the slot for others. If not confirmed in time, the reservation is deleted by a cron worker or scheduler (not marked as cancelled).
+  - `PENDING`: Awaiting facility approval. Blocks the slot for others.
+  - `CONFIRMED`: Approved reservation. Blocks the slot for others.
+  - `CANCELLED`: Explicit user or facility action to cancel a reservation. Slot becomes available. Not used for expired holds.
 - **Business Values:** `ReservationFeeItemsEnum` for fee categorization  
 - **System Configuration:** `CityEnum`, `MediaTypeEnum`, `UserRoles`
 
