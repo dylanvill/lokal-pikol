@@ -1,7 +1,7 @@
-import { Badge, Box, Button, Flex, Float, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { Badge, Box, Button, Flex, Float, Heading, Image, Text, VStack, Link as ChakraLink } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
-import { LuArrowLeft, LuMail, LuMapPin, LuPhone } from 'react-icons/lu';
-import DetailWithIcon from '../../shared/DetailWithIcon';
+import { LuArrowLeft, LuArrowRight, LuMail, LuMapPin, LuPhone } from 'react-icons/lu';
+import DetailWithIcon from '../shared/DetailWithIcon';
 
 export interface FacilityHeaderProps {
     name: string;
@@ -12,9 +12,20 @@ export interface FacilityHeaderProps {
     description: string;
     profilePhotoUrl: string;
     coverPhotoUrl: string;
+    googleMapsUrl?: string;
 }
 
-function FacilityHeader({ name, address, city, email, phone, description, profilePhotoUrl, coverPhotoUrl }: FacilityHeaderProps) {
+function FacilityProfileHeader({
+    name,
+    address,
+    city,
+    email,
+    phone,
+    description,
+    profilePhotoUrl,
+    coverPhotoUrl,
+    googleMapsUrl,
+}: FacilityHeaderProps) {
     return (
         <Box gap={0}>
             <VStack alignItems="stretch" width="full" marginBottom={4}>
@@ -78,9 +89,18 @@ function FacilityHeader({ name, address, city, email, phone, description, profil
                             </Badge>
                         </Flex>
                         <VStack alignItems="stretch" gap={2}>
-                            <DetailWithIcon icon={<LuMapPin color="black" />} label={address} textProps={{ color: 'black' }} />
                             <DetailWithIcon icon={<LuMail color="black" />} label={email} textProps={{ color: 'black' }} />
                             <DetailWithIcon icon={<LuPhone color="black" />} label={phone} textProps={{ color: 'black' }} />
+                            <Box>
+                                <DetailWithIcon icon={<LuMapPin color="black" />} label={address} textProps={{ color: 'black' }} />
+                                {googleMapsUrl && (
+                                    <ChakraLink href={googleMapsUrl}>
+                                        <Button variant="plain" paddingLeft={0} size="xs">
+                                            View on Google Maps <LuArrowRight />
+                                        </Button>
+                                    </ChakraLink>
+                                )}
+                            </Box>
                         </VStack>
                     </Flex>
                     <Box
@@ -101,4 +121,4 @@ function FacilityHeader({ name, address, city, email, phone, description, profil
     );
 }
 
-export default FacilityHeader;
+export default FacilityProfileHeader;

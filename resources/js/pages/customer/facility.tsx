@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
-import FacilityHeader from '../../components/customer/FacilityHeader';
+import FacilityProfileHeader from '../../components/customer/FacilityProfileHeader';
 import WarningAlert from '../../components/shared/Alert/WarningAlert';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
 import useCustomer from '../../lib/hooks/useCustomer';
@@ -42,8 +42,8 @@ export default function CourtPage() {
     };
 
     return (
-        <DefaultPageLayout title={facility.name} contentContainerProps={{padding: 4}}>
-            <FacilityHeader
+        <DefaultPageLayout title={facility.name} contentContainerProps={{ padding: 4 }}>
+            <FacilityProfileHeader
                 name={facility.name}
                 address={facility.address}
                 city={facility.city}
@@ -52,6 +52,7 @@ export default function CourtPage() {
                 profilePhotoUrl={facility.profilePhoto.url}
                 coverPhotoUrl={facility.coverPhoto.url}
                 description={facility.description}
+                googleMapsUrl={facility.googleMapsUrl}
             />
             <Separator marginY={8} />
             {!customer.isLoggedIn && (
