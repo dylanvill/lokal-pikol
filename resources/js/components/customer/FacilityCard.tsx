@@ -85,16 +85,16 @@ export default function FacilityCard({
                         <Badge marginBottom={4}>{city}</Badge>
                         <VStack alignItems="stretch" justifyContent="space-between" gap={0}>
                             <VStack gap={1} alignItems="stretch">
-                                <DetailWithIcon icon={<LuMapPin color="black" />} textProps={{ color: 'black' }} label={address} />
+                                <DetailWithIcon icon={<LuMapPin color="black" />} textProps={{ color: 'black', fontSize: 'sm' }} label={address} />
                                 <DetailWithIcon
                                     icon={<LuClock color="black" />}
-                                    textProps={{ color: 'black' }}
+                                    textProps={{ color: 'black', fontSize: 'sm' }}
                                     label={`${openingTimeDisplay} - ${closingTimeDisplay}`}
                                 />
-                                <DetailWithIcon icon={typeDisplay[1]} textProps={{ color: 'black' }} label={typeDisplay[0]} />
+                                <DetailWithIcon icon={typeDisplay[1]} textProps={{ color: 'black', fontSize: 'sm' }} label={typeDisplay[0]} />
                                 <DetailWithIcon
                                     icon={<LuGrid2X2 color="black" />}
-                                    textProps={{ color: 'black' }}
+                                    textProps={{ color: 'black', fontSize: 'sm' }}
                                     label={`${numberOfCourts} courts`}
                                 />
                             </VStack>

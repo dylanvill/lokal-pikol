@@ -14,7 +14,7 @@ function DetailWithIcon({ icon, label, textProps = {}, containerProps = {} }: De
             <Box height={4} width={4} marginTop={0.5}>
                 {icon}
             </Box>
-            <Text color="gray" {...textProps}>
+            <Text color="black" {...textProps}>
                 {label}
             </Text>
         </HStack>

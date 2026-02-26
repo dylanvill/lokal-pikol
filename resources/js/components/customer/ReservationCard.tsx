@@ -49,9 +49,9 @@ const BadgeComponent = (status: ReservationStatus) => {
 const StatusNote = (status: ReservationStatus) => {
     switch (status) {
         case 'on hold':
-            return 'Your reservation is currently on hold. Please settle any outstanding payments.';
+            return 'Your reservation is currently on hold. Please upload payment receipt.';
         case 'pending':
-            return 'Your reservation is pending approval by the facility. We will notify you once it is confirmed.';
+            return "Your reservation is pending approval by the facility. We will notify you once it is confirmed. Don't worry, your slot is already reserved!";
         case 'confirmed':
             return 'Your reservation is confirmed! We look forward to seeing you on the court.';
         case 'cancelled':
@@ -98,20 +98,21 @@ function ReservationCard({
     return (
         <Link href={link}>
             <Card.Root height="full">
-                <Card.Body gap="2">
-                    <AspectRatio ratio={16 / 9} width="100%" borderRadius={8} overflow="hidden">
-                        <Image src={courtImageUrl} borderRadius={8} />
+                <Card.Header padding={0}>
+                    <AspectRatio ratio={16 / 9} width="100%" borderTopRadius={4} overflow="hidden">
+                        <Image src={courtImageUrl} borderTopRadius={4} />
                     </AspectRatio>
-                    <Flex justify="space-between" align="flex-start" mt="2">
+                    <Flex justify="space-between" align="flex-start" mt="2" paddingX={6}>
                         <Card.Title marginRight={4}>{courtName}</Card.Title>
                         {BadgeComponent(status)}
                     </Flex>
-
+                </Card.Header>
+                <Card.Body gap="2">
                     <Card.Description>
                         <VStack align="flex-start" gap={1} mt={2}>
-                            <DetailWithIcon icon={<LuHouse />} label={facilityName} />
-                            <DetailWithIcon icon={<LuMapPin />} label={`${city}, ${address}`} />
-                            <DetailWithIcon icon={<CourtIcon />} label={covered ? 'Covered' : 'Outdoor'} />
+                            <DetailWithIcon icon={<LuHouse color="black" />} label={`${facilityName} - ${city}`} />
+                            <DetailWithIcon icon={<LuMapPin color="black" />} label={`${address}`} />
+                            <DetailWithIcon icon={<CourtIcon color="black" />} label={covered ? 'Covered' : 'Outdoor'} />
                         </VStack>
 
                         <HStack gap={6} mt={4} pt={3} borderTop="1px solid" borderColor="gray.200">
