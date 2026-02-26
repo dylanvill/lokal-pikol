@@ -41,8 +41,6 @@ export default function Home() {
                     <SearchFilterDisplay
                         city={queryData.city || 'All Cities'}
                         date={queryData.date}
-                        startTime={queryData.startTime}
-                        endTime={queryData.endTime}
                         facilitiesCount={page.props.facilities.meta.total}
                     />
                 </Box>

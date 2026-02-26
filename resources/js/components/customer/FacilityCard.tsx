@@ -1,5 +1,6 @@
 import { Box, VStack, Badge, Image, Heading, Text, Flex, Card } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
@@ -42,14 +43,20 @@ export default function FacilityCard({
         return ['Covered & Outdoor', <LuCheckCheck color="gray" />];
     }, [courtType]);
 
+    const currentDate = dayjs();
+    const selectedDate = dayjs(props.queryData?.date);
+    const isSelectedDateToday = selectedDate.isSame(currentDate, 'day');
+
+    const dateLabel = isSelectedDateToday ? 'Available times today' : `Available times on ${selectedDate.format('MMMM D')}`;
+
     const openingTimeDisplay = militaryTimeToAmPmTime(openingTime);
     const closingTimeDisplay = militaryTimeToAmPmTime(closingTime);
 
     const hasAvailableTimes = availableTimes.length > 0;
-    const remainingSlotCount = availableTimes.length > 5 ? availableTimes.length - 5 : 0;
-    const firstFiveSlots = useMemo(
+    const remainingSlotCount = availableTimes.length > 7 ? availableTimes.length - 7 : 0;
+    const firstSevenSlots = useMemo(
         () =>
-            availableTimes.slice(0, 5).map((slot) => ({
+            availableTimes.slice(0, 7).map((slot) => ({
                 ...slot,
                 startTime: militaryTimeToAmPmTime(slot.startTime),
                 endTime: militaryTimeToAmPmTime(slot.endTime),
@@ -100,10 +107,10 @@ export default function FacilityCard({
                             </VStack>
                             <VStack alignItems="stretch" gap={2} marginTop={4}>
                                 <Text fontSize="xs" color="gray.900">
-                                    Available times today:
+                                    {dateLabel}:
                                 </Text>
                                 <Flex wrap="wrap" gap={1}>
-                                    {firstFiveSlots.map((slot, index) => (
+                                    {firstSevenSlots.map((slot, index) => (
                                         <Badge key={index} colorPalette="blue" variant="outline" fontSize="xs">
                                             {`${slot.startTime} - ${slot.endTime}`}
                                         </Badge>

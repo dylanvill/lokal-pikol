@@ -1,21 +1,15 @@
 import { Flex, Tag, Text, VStack } from '@chakra-ui/react';
-import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { LuCalendar, LuClock4, LuMapPin, LuX } from 'react-icons/lu';
-import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
+import { LuCalendar, LuMapPin } from 'react-icons/lu';
 
 export interface SearchFilterDisplayProps {
     city: string;
     date: string;
-    startTime: string;
-    endTime: string;
     facilitiesCount: number;
 }
 
-function SearchFilterDisplay({ city, date, startTime, endTime, facilitiesCount }: SearchFilterDisplayProps) {
+function SearchFilterDisplay({ city, date, facilitiesCount }: SearchFilterDisplayProps) {
     const dateDisplay = dayjs(date).format('dddd, MMMM D, YYYY');
-    const startTimeDisplay = militaryTimeToAmPmTime(startTime);
-    const endTimeDisplay = militaryTimeToAmPmTime(endTime);
 
     return (
         <VStack alignItems="stretch" gap={1}>
@@ -33,22 +27,6 @@ function SearchFilterDisplay({ city, date, startTime, endTime, facilitiesCount }
                     </Tag.StartElement>
                     <Tag.Label color="black">{dateDisplay}</Tag.Label>
                 </Tag.Root>
-                <Tag.Root size="lg" colorPalette="orange">
-                    <Tag.StartElement>
-                        <LuClock4 color="black" />
-                    </Tag.StartElement>
-                    <Tag.Label color="black">
-                        {startTimeDisplay} - {endTimeDisplay}
-                    </Tag.Label>
-                </Tag.Root>
-                <Link href="/">
-                    <Tag.Root variant="solid" backgroundColor="white">
-                        <Tag.Label color="black">Clear filters</Tag.Label>
-                        <Tag.EndElement>
-                            <LuX color="black" />
-                        </Tag.EndElement>
-                    </Tag.Root>
-                </Link>
             </Flex>
         </VStack>
     );
