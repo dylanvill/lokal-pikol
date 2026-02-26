@@ -26,13 +26,14 @@ function OnHoldReservationNoticePage({ reservation }: OnHoldReservationNoticePag
         const dates = [];
         const additionalDates = Array.from({ length: 4 });
 
+        dates.push(dayjs(reservation.reservationDate));
         for (let index = 1; index < additionalDates.length; index++) {
             const nextDate = reservationDate.add(index, 'day');
             dates.push(nextDate);
         }
 
         return dates;
-    }, [reservationDate]);
+    }, [reservationDate, reservation.reservationDate]);
 
     return (
         <DefaultPageLayout
@@ -41,14 +42,14 @@ function OnHoldReservationNoticePage({ reservation }: OnHoldReservationNoticePag
                 maxWidth: 'xl',
             }}
         >
-            <BackNavigationBase href='/' label='Home' />
+            <BackNavigationBase href="/" label="Home" />
             <VStack alignItems="stretch" gap={8}>
                 <Center flexDirection="column" gap={2}>
                     <Heading color="orange.500">
                         <LuCircleAlert size={48} />
                     </Heading>
                     <Heading size="lg" textAlign="center" color="orange.500" display="inline-flex" alignItems="flex-start" gap={2}>
-                        You already have a reservation on hold at {reservation.facility.name}
+                        You already have a pending reservation at {reservation.facility.name} for {dateDisplay === 'Today' ? 'today' : dateDisplay}.
                     </Heading>
                 </Center>
                 <VStack alignItems="stretch" gap={1}>
@@ -67,29 +68,14 @@ function OnHoldReservationNoticePage({ reservation }: OnHoldReservationNoticePag
                 </VStack>
 
                 <VStack alignItems="stretch" gap={4}>
-                    <Text>In the meantime, you can book and explore this facility's availability on other dates.</Text>
+                    <Text>You can still book this facility's other courts and explore the availability on other dates.</Text>
                     <SimpleGrid columns={2} gap={4}>
-                        <Card.Root padding={1} opacity={0.5}>
-                            <Card.Body padding={2}>
-                                <Heading size="sm" color="blue.700">
-                                    {dateDisplay}
-                                </Heading>
-                            </Card.Body>
-                            <Card.Footer padding={0} alignItems="center" justifyContent="flex-end">
-                                <Link>
-                                    <Button variant="ghost" size="xs" disabled>
-                                        View slots
-                                        <LuArrowRight />
-                                    </Button>
-                                </Link>
-                            </Card.Footer>
-                        </Card.Root>
                         {nearbyDates.map((date) => (
-                            <Card.Root padding={1}>
+                            <Card.Root padding={1} alignItems="stretch" justifyContent="space-between">
                                 <Card.Header padding={2}>
                                     <Card.Title>
                                         <Heading size="sm" color="blue.700">
-                                            {date.format('dddd, MMMM D, YYYY')}
+                                            {date.isSame(currentDate, 'day') ? 'Today' : date.format('dddd, MMMM D, YYYY')}
                                         </Heading>
                                     </Card.Title>
                                 </Card.Header>

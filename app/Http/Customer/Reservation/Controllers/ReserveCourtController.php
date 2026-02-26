@@ -72,7 +72,7 @@ class ReserveCourtController extends Controller
 
         return $customer->reservations()->where('court_id', $court->id)
             ->where('reservation_date', $request->input('date'))
-            ->where('status', ReservationStatusEnum::ON_HOLD->value)
+            ->whereIn('status', [ReservationStatusEnum::ON_HOLD->value, ReservationStatusEnum::PENDING->value])
             ->first();
     }
 
