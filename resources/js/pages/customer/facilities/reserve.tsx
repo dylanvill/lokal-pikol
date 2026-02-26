@@ -1,6 +1,7 @@
 import { VStack } from '@chakra-ui/react';
-import { type PageProps } from '@inertiajs/core';
+import { router, type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
+import { useCallback } from 'react';
 import PaymentBreakdown from '../../../components/customer/ReservationReview/PaymentBreakdown';
 import PaymentUpload from '../../../components/customer/ReservationReview/PaymentUpload';
 import ReservationDetails from '../../../components/customer/ReservationReview/ReservationDetails';
@@ -16,10 +17,14 @@ function ReservePage() {
     const page = usePage<ReservePageProps>();
     const { reservation } = page.props;
 
+    const onTimerExpired = useCallback(() => {
+        router.get(`/facilities/${reservation.facility.id}`);
+    }, [reservation.facility.id]);
+
     return (
         <DefaultPageLayout title="Facility Name">
             <VStack gap={6} align="stretch">
-                <ReservationNotice />
+                <ReservationNotice onTimerExpired={onTimerExpired} createdAt={reservation.createdAt} />
                 <ReservationDetails
                     courtPhotos={reservation.court.photos}
                     facilityName={reservation.facility.name}

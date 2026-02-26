@@ -14,6 +14,7 @@ interface Reservation {
     fees: ReservationFees;
     startTime: string;
     endTime: string;
+    createdAt: string;
 }
 
 export default Reservation;

@@ -32,6 +32,7 @@ class ReservationResource extends JsonResource
             'fees' => new ReservationFeeResource($this->fees),
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
+            'createdAt' => $this->created_at,
         ];
     }
 }
