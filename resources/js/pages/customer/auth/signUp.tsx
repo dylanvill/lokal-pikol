@@ -1,4 +1,4 @@
-import { Box, Button, Container, Field, Heading, HStack, Image, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Field, Heading, HStack, Image, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
 import { Form, Link, router } from '@inertiajs/react';
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
@@ -9,94 +9,93 @@ export default function SignUpPage() {
         <DefaultPageLayout
             title="Create an account"
             contentContainerProps={{
-                maxWidth: 'md',
+                maxWidth: 'lg',
             }}
         >
-            <Container px={4} py={8} colorPalette="blue">
-                <Box marginBottom={8}>
-                    <Link
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            router.visit(window.history.back()!);
-                        }}
-                    >
-                        <HStack gap={1}>
-                            <LuArrowLeft size={16} />
-                            <Text fontSize="sm">Back</Text>
-                        </HStack>
-                    </Link>
-                </Box>
-                <Image src={Logo} alt="Lokal Pikol" mb={8} mx="auto" maxHeight={48} />
-                <Box marginBottom={8}>
-                    <Heading>Join Lokal Pikol</Heading>
-                    <Text>Create your account and start booking courts in your area.</Text>
-                </Box>
-                <Form action="/sign-up" method="post" resetOnSuccess>
-                    {({ errors, processing, clearErrors, submit }) => (
-                        <Stack gap={4}>
-                            <Field.Root invalid={!!errors.firstName}>
-                                <Field.Label>First Name</Field.Label>
-                                <Input placeholder="Juan" name="firstName" required />
-                                <Field.ErrorText>{errors.firstName}</Field.ErrorText>
-                            </Field.Root>
+            <Box marginBottom={8}>
+                <Link
+                    href="#"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        router.visit(window.history.back()!);
+                    }}
+                >
+                    <HStack gap={1}>
+                        <LuArrowLeft size={16} />
+                        <Text fontSize="sm">Back</Text>
+                    </HStack>
+                </Link>
+            </Box>
+            <Image src={Logo} alt="Lokal Pikol" mb={8} mx="auto" maxHeight={48} />
+            <Box marginBottom={8}>
+                <Heading>Join Lokal Pikol</Heading>
+                <Text>Create your account and start booking courts in your area.</Text>
+            </Box>
+            <Form action="/sign-up" method="post" resetOnSuccess>
+                {({ errors, processing, clearErrors, submit }) => (
+                    <Stack gap={4}>
+                        <Field.Root invalid={!!errors.firstName}>
+                            <Field.Label>First Name</Field.Label>
+                            <Input placeholder="Juan" name="firstName" required />
+                            <Field.ErrorText>{errors.firstName}</Field.ErrorText>
+                        </Field.Root>
 
-                            <Field.Root invalid={!!errors.lastName}>
-                                <Field.Label>Last Name</Field.Label>
-                                <Input placeholder="dela Cruz" name="lastName" required />
-                                <Field.ErrorText>{errors.lastName}</Field.ErrorText>
-                            </Field.Root>
+                        <Field.Root invalid={!!errors.lastName}>
+                            <Field.Label>Last Name</Field.Label>
+                            <Input placeholder="dela Cruz" name="lastName" required />
+                            <Field.ErrorText>{errors.lastName}</Field.ErrorText>
+                        </Field.Root>
 
-                            <Field.Root invalid={!!errors.phone}>
-                                <Field.Label>Phone Number</Field.Label>
-                                <InputGroup startElement="+63">
-                                    <Input type="tel" placeholder="912 345 6789" name="phone" required />
-                                </InputGroup>
-                                <Field.ErrorText>{errors.phone}</Field.ErrorText>
-                            </Field.Root>
+                        <Field.Root invalid={!!errors.phone}>
+                            <Field.Label>Phone Number</Field.Label>
+                            <InputGroup startElement="+63">
+                                <Input type="tel" placeholder="912 345 6789" name="phone" required />
+                            </InputGroup>
+                            <Field.ErrorText>{errors.phone}</Field.ErrorText>
+                        </Field.Root>
 
-                            <Field.Root invalid={!!errors.email}>
-                                <Field.Label>Email</Field.Label>
-                                <Input type="email" placeholder="juan@example.com" name="email" required />
-                                <Field.ErrorText>{errors.email}</Field.ErrorText>
-                            </Field.Root>
+                        <Field.Root invalid={!!errors.email}>
+                            <Field.Label>Email</Field.Label>
+                            <Input type="email" placeholder="juan@example.com" name="email" required />
+                            <Field.ErrorText>{errors.email}</Field.ErrorText>
+                        </Field.Root>
 
-                            <Field.Root invalid={!!errors.password}>
-                                <Field.Label>Password</Field.Label>
-                                <Input type="password" placeholder="Enter your password" name="password" required />
-                                <Field.ErrorText>{errors.password}</Field.ErrorText>
-                                {!errors.password && (
-                                    <Field.HelperText>
-                                        Password must be at least 8 characters and include a mix of letters, numbers, and symbols.
-                                    </Field.HelperText>
-                                )}
-                            </Field.Root>
+                        <Field.Root invalid={!!errors.password}>
+                            <Field.Label>Password</Field.Label>
+                            <Input type="password" placeholder="Enter your password" name="password" required />
+                            <Field.ErrorText>{errors.password}</Field.ErrorText>
+                            {!errors.password && (
+                                <Field.HelperText>
+                                    Password must be at least 8 characters and include a mix of letters, numbers, and symbols.
+                                </Field.HelperText>
+                            )}
+                        </Field.Root>
 
-                            <Field.Root invalid={!!errors.password_confirmation}>
-                                <Field.Label>Confirm Password</Field.Label>
-                                <Input type="password" placeholder="Confirm your password" name="password_confirmation" required />
-                                <Field.ErrorText>{errors.password_confirmation}</Field.ErrorText>
-                            </Field.Root>
+                        <Field.Root invalid={!!errors.password_confirmation}>
+                            <Field.Label>Confirm Password</Field.Label>
+                            <Input type="password" placeholder="Confirm your password" name="password_confirmation" required />
+                            <Field.ErrorText>{errors.password_confirmation}</Field.ErrorText>
+                        </Field.Root>
 
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    clearErrors();
-                                    submit();
-                                }}
-                                colorScheme="blue"
-                                mt={4}
-                                alignSelf="flex-end"
-                                loading={processing}
-                                disabled={processing}
-                            >
-                                Create Account
-                                <LuArrowRight />
-                            </Button>
-                        </Stack>
-                    )}
-                </Form>
-            </Container>
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                clearErrors();
+                                submit();
+                            }}
+                            colorScheme="blue"
+                            mt={4}
+                            alignSelf="flex-end"
+                            loading={processing}
+                            disabled={processing}
+                            size="md"
+                        >
+                            Create Account
+                            <LuArrowRight />
+                        </Button>
+                    </Stack>
+                )}
+            </Form>
         </DefaultPageLayout>
     );
 }

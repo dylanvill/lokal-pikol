@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Container, Heading, Icon, Text } from '@chakra-ui/react';
+import { Alert, Box, Button, Heading, Icon, Text } from '@chakra-ui/react';
 import { router } from '@inertiajs/core';
 import { useForm, usePage } from '@inertiajs/react';
 import { LuArrowLeft, LuMail, LuRefreshCcw } from 'react-icons/lu';
@@ -24,7 +24,6 @@ function SignUpVerificationPage() {
                 maxW: 'xl',
             }}
         >
-            <Container px={4} py={8}>
                 {flash && flash.success === true ? (
                     <Box>
                         <Alert.Root status="success" title="Verification email has been resent successfully">
@@ -65,7 +64,6 @@ function SignUpVerificationPage() {
                         </Box>
                     </Box>
                 )}
-            </Container>
         </DefaultPageLayout>
     );
 }
