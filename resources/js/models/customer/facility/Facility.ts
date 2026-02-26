@@ -4,6 +4,7 @@ interface Facility {
     id: string;
     name: string;
     address: string;
+    description: string;
     city: string;
     email: string;
     phone: string;
@@ -11,6 +12,7 @@ interface Facility {
     openingTime: string;
     closingTime: string;
     profilePhoto: Photo;
+    coverPhoto: Photo;
 }
 
 export default Facility;

@@ -6,7 +6,6 @@ import { useState } from 'react';
 import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
 import FacilityHeader from '../../components/customer/FacilityHeader';
 import WarningAlert from '../../components/shared/Alert/WarningAlert';
-import BackNavigation from '../../components/shared/BackNavigation';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
 import useCustomer from '../../lib/hooks/useCustomer';
 import type Court from '../../models/customer/court/Court';
@@ -43,8 +42,7 @@ export default function CourtPage() {
     };
 
     return (
-        <DefaultPageLayout title={facility.name}>
-            <BackNavigation />
+        <DefaultPageLayout title={facility.name} contentContainerProps={{padding: 4}}>
             <FacilityHeader
                 name={facility.name}
                 address={facility.address}
@@ -52,6 +50,8 @@ export default function CourtPage() {
                 email={facility.email}
                 phone={facility.phone}
                 profilePhotoUrl={facility.profilePhoto.url}
+                coverPhotoUrl={facility.coverPhoto.url}
+                description={facility.description}
             />
             <Separator marginY={8} />
             {!customer.isLoggedIn && (
