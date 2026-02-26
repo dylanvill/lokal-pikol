@@ -25,6 +25,7 @@ class ReservationResource extends JsonResource
             'court' => new CourtResource($this->court),
             'fees' => new ReservationFeeResource($this->fees),
             'paymentReceipt' => new PhotoResource($this->media->first()),
+            'customTitle' => $this->custom_title,
             'createdAt' => $this->created_at,
             'slots' => RangeToSlot::convert(new Range(
                 startTime: $this->start_time,

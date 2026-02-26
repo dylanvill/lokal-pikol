@@ -43,7 +43,7 @@ class GetCourtCalendar
                 id: $reservation->id,
                 uuid: $reservation->uuid,
                 model: class_basename($reservation),
-                label: $reservation->reservable->reservationNameDisplay(),
+                label: !empty($reservation->custom_title) ? $reservation->custom_title : $reservation->reservable->reservationNameDisplay(),
                 reservationDate: $reservation->reservation_date->toDateString(),
                 startTime: $reservation->start_time,
                 endTime: $reservation->end_time,

@@ -43,7 +43,8 @@ class Reservation extends Model implements HasMedia
         'reservation_date',
         'start_time',
         'end_time',
-        'status'
+        'status',
+        'custom_title',
     ];
 
     protected $casts = [

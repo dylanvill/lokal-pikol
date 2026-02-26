@@ -7,8 +7,6 @@ use App\Source\Court\Models\Court;
 use App\Source\Court\Models\CourtPricing;
 use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
-use App\Source\Reservation\Models\Reservation;
-use App\Source\Reservation\Models\ReservationFee;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

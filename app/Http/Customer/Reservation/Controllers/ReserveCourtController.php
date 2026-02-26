@@ -53,6 +53,7 @@ class ReserveCourtController extends Controller
             startTime: $range->startTime,
             endTime: $range->endTime,
             status: ReservationStatusEnum::ON_HOLD->value,
+            customTitle: null,
         );
 
         $reservation = $createReservation->create($reservationData);
