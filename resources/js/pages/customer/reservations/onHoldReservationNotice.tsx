@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LuArrowRight, LuCalendar, LuCircleAlert, LuClock4, LuGrid2X2, LuMapPin } from 'react-icons/lu';
+import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import DetailWithIcon from '../../../components/shared/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
@@ -40,6 +41,7 @@ function OnHoldReservationNoticePage({ reservation }: OnHoldReservationNoticePag
                 maxWidth: 'xl',
             }}
         >
+            <BackNavigationBase href='/' label='Home' />
             <VStack alignItems="stretch" gap={8}>
                 <Center flexDirection="column" gap={2}>
                     <Heading color="orange.500">

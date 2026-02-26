@@ -7,6 +7,7 @@ use App\Http\Customer\Reservation\Requests\ReserveCourtRequest;
 use App\Http\Customer\Reservation\Resources\ReservationResource;
 use App\Http\Enums\GuardEnum;
 use App\Source\Court\Models\Court;
+use App\Source\Customer\Models\Customer;
 use App\Source\Facility\Models\Facility;
 use App\Source\Reservation\Actions\CreateReservation\CreateReservation;
 use App\Source\Reservation\Actions\CreateReservation\Dtos\CreateReservationData;
@@ -34,6 +35,14 @@ class ReserveCourtController extends Controller
         CreateReservation $createReservation,
         SetReservationFees $setReservationFees,
     ) {
+        $existingReservation = $this->onHoldReservation($request, $court);
+
+        if ($existingReservation !== null) {
+            return redirect()->route('reservation.on-hold.show', [
+                'reservation' => $existingReservation->uuid,
+            ]);
+        }
+
         $range = $this->parseSlotsToRange($request->input('slots'));
 
         $reservationData = new CreateReservationData(
@@ -54,6 +63,17 @@ class ReserveCourtController extends Controller
             'court' => $court->uuid,
             'reservation' => $reservation->uuid,
         ]);
+    }
+
+    protected function onHoldReservation(ReserveCourtRequest $request, Court $court): Reservation|null
+    {
+        /** @var Customer $customer */
+        $customer = $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute();
+
+        return $customer->reservations()->where('court_id', $court->id)
+            ->where('reservation_date', $request->input('date'))
+            ->where('status', ReservationStatusEnum::ON_HOLD->value)
+            ->first();
     }
 
     protected function parseSlotsToRange(array $slots): Range
