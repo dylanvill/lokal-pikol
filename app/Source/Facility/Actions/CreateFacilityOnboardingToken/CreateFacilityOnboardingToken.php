@@ -19,7 +19,7 @@ class CreateFacilityOnboardingToken
         $token->name = $data->name;
         $token->email = $data->email;
         $token->token = Hash::make($plainToken);
-        $token->expires_at = Carbon::now()->addDays(1)->toDateString();
+        $token->expires_at = Carbon::now()->addHours(24)->toDateTimeString();
         $token->save();
 
         return new CreateFacilityOnboardingTokenResult(

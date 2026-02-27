@@ -9,6 +9,9 @@ Please click the button below to complete your onboarding process and set up you
 Register Facility
 </x-mail::button>
 
+Please take note that this link will expire in 24 hours to keep things secure.
+If you need a new link, please contact our support team.
+
 We look forward to having you on board!
 
 Thanks,<br>

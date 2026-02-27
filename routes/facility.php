@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Facility\Auth\Controllers\LoginController;
 use App\Http\Facility\Auth\Controllers\LogoutController;
+use App\Http\Facility\Auth\Controllers\OnboardingController;
 use App\Http\Facility\Controllers\AccountController;
 use App\Http\Facility\Controllers\DashboardController;
 use App\Http\Facility\Court\Controllers\CourtCalendarController;
@@ -22,6 +23,10 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:facility');
 });
+
+Route::get('/onboarding', [OnboardingController::class, 'show'])
+    ->name('onboarding')
+    ->middleware('signed');
 
 Route::group(["middleware" => "auth:facility"], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');

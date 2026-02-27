@@ -41,14 +41,15 @@ class SendOnboardingInvite extends Command implements PromptsForMissingInput
             name: $this->argument('name'),
         ));
 
-        $signedUrl = URL::temporarySignedRoute(
-            'home',
-            $result->expiresAt,
+        $signedUrl = URL::signedRoute(
+            'facility.onboarding',
             [
-                'uuid' => $result->uuid,
-                'token' => $result->plainToken,
+                'id' => $result->uuid,
+                'lpt' => $result->plainToken,
             ]
         );
+
+        $this->info($signedUrl);
 
         Notification::route('mail', $result->email)
             ->notify(new OnboardingInviteNotification(
