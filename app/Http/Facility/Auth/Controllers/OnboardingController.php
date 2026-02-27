@@ -4,6 +4,7 @@ namespace App\Http\Facility\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Facility\Auth\Requests\OnboardingRequest;
+use App\Source\Facility\Enums\CityEnum;
 use App\Source\Facility\Models\OnboardingToken;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,8 @@ class OnboardingController extends Controller
         if (Carbon::now()->isAfter($onboarding->expires_at)) abort(403);
         if ($onboarding->used) abort(403);
 
-        return Inertia::render('facility/auth/onboarding');
+        return Inertia::render('facility/auth/onboarding', [
+            "cities" => CityEnum::values(),
+        ]);
     }
 }
