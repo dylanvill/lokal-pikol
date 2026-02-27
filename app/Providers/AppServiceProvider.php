@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Source\Authentication\Mail\UserVerificationMail;
+use App\Source\Reservation\Models\Reservation;
+use App\Source\Reservation\Policies\ReservationPolicy;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
@@ -31,26 +34,37 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Remove the "data" wrapper from JSON resources for a cleaner API response
         JsonResource::withoutWrapping();
+
+        // Always send emails to a specific address in local environment to prevent accidental emails to real users
         if ($this->app->environment('local')) {
             Mail::alwaysTo(env('MAIL_ALWAYS_TO'));
         }
 
+        /**
+         * Custom email verification email
+         */
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             $appName = config('app.name');
             return (new UserVerificationMail($url))
                 ->subject("Verify Email Address | {$appName}");
         });
+
+        Gate::policy(Reservation::class, ReservationPolicy::class);
     }
 
     protected function configureDefaults(): void
     {
+        // included in Laravel initial setup
         Date::use(CarbonImmutable::class);
 
         DB::prohibitDestructiveCommands(
             app()->isProduction(),
         );
 
+        // Password defaults
         Password::defaults(
             fn(): ?Password => app()->isProduction()
                 ? Password::min(12)

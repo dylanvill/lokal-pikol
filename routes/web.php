@@ -37,7 +37,7 @@ Route::prefix("sign-up")->group(function () {
         ->name('verification.verify');
 });
 
-Route::post('/logout', LogoutController::class);
+Route::post('/logout', LogoutController::class)->middleware('auth:customer')->name('logout');
 
 Route::get('/login', [LoginController::class, 'show'])->name('login.show')->middleware('guest:customer');
 Route::post('/login', [LoginController::class, 'login'])->name('login')->middleware('guest:customer');
@@ -45,16 +45,24 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 Route::prefix("facilities")->group(function () {
     Route::get('/', fn() => redirect(route("home")))->name('index');
     Route::get('/{facility:uuid}', FacilityController::class)->name('facility');
-    Route::post('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])->name('reservation.store')->middleware('auth:customer');
+    Route::post('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])
+        ->name('reservation.store')
+        ->middleware(['auth:customer', 'verified']);
 });
 
-Route::prefix("reservations")->name("reservation.")->group(function () {
-    Route::get('/', [ReservationsController::class, 'index'])->name('index');
-    Route::get('/{reservation:uuid}/on-hold', OnHoldNoticeController::class)->name('on-hold-notice.show');
-    Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
-    Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
-    Route::post('/reserve/{reservation:uuid}/upload-receipt', UploadReceiptController::class)->name('upload-receipt');
-})->middleware('auth:customer');
+Route::prefix("reservations")
+    ->name("reservation.")
+    ->middleware(['auth:customer', 'verified'])
+    ->group(function () {
+        Route::get('/', [ReservationsController::class, 'index'])->name('index');
+
+        Route::middleware('can:customerCanView,reservation')->group(function () {
+            Route::get('/{reservation:uuid}/on-hold', OnHoldNoticeController::class)->name('on-hold-notice.show');
+            Route::get('/{reservation:uuid}', [ReservationController::class, 'show'])->name('show');
+            Route::get('/reserve/{reservation:uuid}', [ReserveCourtController::class, 'show'])->name('on-hold.show');
+            Route::post('/reserve/{reservation:uuid}/upload-receipt', UploadReceiptController::class)->name('upload-receipt');
+        });
+    });
 
 Route::get('/mailable', function () {
     return new ReservationConfirmedEmail(Reservation::inRandomOrder()->first());
