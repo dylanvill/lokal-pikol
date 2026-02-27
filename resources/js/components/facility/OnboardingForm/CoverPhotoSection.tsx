@@ -49,7 +49,7 @@ function CoverPhotoSection({ form }: { form: ReturnType<typeof useForm> }) {
     return (
         <Box zIndex={1}>
             <FileUpload.RootProvider value={fileUpload} zIndex={1}>
-                <FileUpload.HiddenInput />
+                <FileUpload.HiddenInput required />
                 <FileUploadList />
                 <Flex justifyContent="flex-end" width="100%" zIndex={1}>
                     <FileUpload.Trigger asChild zIndex={1}>

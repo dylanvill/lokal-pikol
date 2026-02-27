@@ -29,6 +29,8 @@ function OnboardingForm() {
         email: props.email,
         password: '',
         password_confirmation: '',
+        coverPhoto: null,
+        profilePhoto: null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -85,6 +87,7 @@ function OnboardingForm() {
                             placeholder="Near Ace, Claytown, Felomino Cimafranca, Daro"
                             value={form.data.address}
                             onChange={(e) => form.setData('address', e.currentTarget.value)}
+                            required
                         />
                         <Field.ErrorText>{form.errors.address}</Field.ErrorText>
                     </Field.Root>
@@ -94,6 +97,8 @@ function OnboardingForm() {
                             placeholder="https://maps.google.com/?q=location"
                             value={form.data.googleMapsUrl}
                             onChange={(e) => form.setData('googleMapsUrl', e.currentTarget.value)}
+                            required
+                            type="url"
                         />
                         <Field.ErrorText>{form.errors.googleMapsUrl}</Field.ErrorText>
                     </Field.Root>
@@ -105,6 +110,7 @@ function OnboardingForm() {
                                 value={form.data.phone}
                                 onChange={(e) => form.setData('phone', e.currentTarget.value)}
                                 type="tel"
+                                required
                             />
                         </InputGroup>
                         <Field.ErrorText>{form.errors.phone}</Field.ErrorText>
@@ -116,6 +122,7 @@ function OnboardingForm() {
                             value={form.data.openingTime}
                             onChange={(e) => form.setData('openingTime', e.currentTarget.value)}
                             type="time"
+                            required
                         />
                         <Field.ErrorText>{form.errors.openingTime}</Field.ErrorText>
                     </Field.Root>
@@ -126,6 +133,7 @@ function OnboardingForm() {
                             value={form.data.closingTime}
                             onChange={(e) => form.setData('closingTime', e.currentTarget.value)}
                             type="time"
+                            required
                         />
                         <Field.ErrorText>{form.errors.closingTime}</Field.ErrorText>
                     </Field.Root>
@@ -148,6 +156,7 @@ function OnboardingForm() {
                             value={form.data.email}
                             onChange={(e) => form.setData('email', e.currentTarget.value)}
                             type="email"
+                            required
                         />
                         <Field.HelperText>
                             The email that you put in here will be the same contact email customers will use to reach you.
@@ -161,8 +170,14 @@ function OnboardingForm() {
                             value={form.data.password}
                             onChange={(e) => form.setData('password', e.currentTarget.value)}
                             type="password"
+                            required
                         />
                         <Field.ErrorText>{form.errors.password}</Field.ErrorText>
+                        {!form.errors.password && (
+                            <Field.HelperText>
+                                Password must be at least 8 characters and include a mix of letters, numbers, and symbols.
+                            </Field.HelperText>
+                        )}
                     </Field.Root>
                     <Field.Root invalid={!!form.errors.password_confirmation}>
                         <Field.Label>Confirm Password</Field.Label>
@@ -171,6 +186,7 @@ function OnboardingForm() {
                             value={form.data.password_confirmation}
                             onChange={(e) => form.setData('password_confirmation', e.currentTarget.value)}
                             type="password"
+                            required
                         />
                         <Field.ErrorText>{form.errors.password_confirmation}</Field.ErrorText>
                     </Field.Root>

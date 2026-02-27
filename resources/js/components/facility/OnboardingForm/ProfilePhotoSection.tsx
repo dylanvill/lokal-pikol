@@ -44,13 +44,13 @@ function ProfilePhotoSection({ form }: { form: ReturnType<typeof useForm> }) {
     const fileUpload = useFileUpload({
         accept: ['image/jpeg', 'image/png'],
         onFileAccept: (details) => {
-            form.setData('coverPhoto', details.files[0]);
+            form.setData('profilePhoto', details.files[0]);
         },
     });
     return (
         <Box zIndex={2}>
             <FileUpload.RootProvider value={fileUpload} zIndex={2}>
-                <FileUpload.HiddenInput />
+                <FileUpload.HiddenInput required />
                 <Box width={32} height={32} zIndex={2}>
                     <FileUploadList />
                 </Box>
