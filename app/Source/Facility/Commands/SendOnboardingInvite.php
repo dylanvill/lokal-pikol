@@ -2,11 +2,17 @@
 
 namespace App\Source\Facility\Commands;
 
+use App\Source\Facility\Actions\CreateFacilityOnboardingToken\CreateFacilityOnboardingToken;
+use App\Source\Facility\Actions\CreateFacilityOnboardingToken\Dtos\CreateFacilityOnboardingTokenData;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 
 class SendOnboardingInvite extends Command implements PromptsForMissingInput
 {
+    public function __construct(protected CreateFacilityOnboardingToken $createToken) {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -26,6 +32,13 @@ class SendOnboardingInvite extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
+        $result = $this->createToken->create(new CreateFacilityOnboardingTokenData(
+            email: $this->argument('email'),
+            name: $this->argument('name'),
+        ));
+
+        dd($result);
+
         $this->info("Sending onboarding invite to {$this->argument('email')} with name {$this->argument('name')}");
     }
 
