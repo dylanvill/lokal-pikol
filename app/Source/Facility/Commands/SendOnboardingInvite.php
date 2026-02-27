@@ -4,12 +4,16 @@ namespace App\Source\Facility\Commands;
 
 use App\Source\Facility\Actions\CreateFacilityOnboardingToken\CreateFacilityOnboardingToken;
 use App\Source\Facility\Actions\CreateFacilityOnboardingToken\Dtos\CreateFacilityOnboardingTokenData;
+use App\Source\Facility\Notifications\OnboardingInviteNotification;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 
 class SendOnboardingInvite extends Command implements PromptsForMissingInput
 {
-    public function __construct(protected CreateFacilityOnboardingToken $createToken) {
+    public function __construct(protected CreateFacilityOnboardingToken $createToken)
+    {
         parent::__construct();
     }
 
@@ -37,7 +41,20 @@ class SendOnboardingInvite extends Command implements PromptsForMissingInput
             name: $this->argument('name'),
         ));
 
-        dd($result);
+        $signedUrl = URL::temporarySignedRoute(
+            'home',
+            $result->expiresAt,
+            [
+                'uuid' => $result->uuid,
+                'token' => $result->plainToken,
+            ]
+        );
+
+        Notification::route('mail', $result->email)
+            ->notify(new OnboardingInviteNotification(
+                name: $result->name,
+                url: $signedUrl,
+            ));
 
         $this->info("Sending onboarding invite to {$this->argument('email')} with name {$this->argument('name')}");
     }

@@ -66,7 +66,7 @@ Route::prefix("reservations")
     });
 
 Route::get('/mailable', function () {
-    return new OnboardingInviteEmail();
+    // return new OnboardingInviteEmail();
 });
 
 Route::get('/test', function () {

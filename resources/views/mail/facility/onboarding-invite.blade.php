@@ -5,7 +5,7 @@ Hi Dylan, we are so excited to have you onboard.
 
 Please click the button below to complete your onboarding process and set up your facility.
 
-<x-mail::button :url="''">
+<x-mail::button :url="$url">
 Register Facility
 </x-mail::button>
 
@@ -16,6 +16,6 @@ Thanks,<br>
 
 @slot('subcopy')
 If you're having trouble clicking the "Register Facility" button, copy and paste the URL below into your web browser:
-https://google.com
+{{$url}}
 @endslot
 </x-mail::message>
