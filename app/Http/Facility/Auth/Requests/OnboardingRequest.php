@@ -5,8 +5,7 @@ namespace App\Http\Facility\Auth\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $id Onboarding ID
- * @property string $lpt Plain text token
+ * @property string $d Hashed payload containing uuid, plain token, and email e.g. uuid:plainToken:email
  */
 class OnboardingRequest extends FormRequest
 {
@@ -23,8 +22,7 @@ class OnboardingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'string', 'uuid'],
-            'lpt' => ['required', 'string'],
+            'd' => ['required', 'string'],
         ];
     }
 }

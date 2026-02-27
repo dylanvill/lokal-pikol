@@ -8,6 +8,8 @@ import SectionHeader from './SectionHeader';
 
 interface OnboardingFormProps extends PageProps {
     cities: string[];
+    email: string;
+    name: string;
 }
 
 function OnboardingForm() {
@@ -17,7 +19,7 @@ function OnboardingForm() {
     const cities = props.cities || [];
 
     const form = useForm({
-        name: '',
+        name: props.name,
         city: '',
         address: '',
         googleMapsUrl: '',
@@ -25,7 +27,7 @@ function OnboardingForm() {
         openingTime: '07:00',
         closingTime: '22:00',
         description: '',
-        email: '',
+        email: props.email,
         password: '',
         password_confirmation: '',
     });

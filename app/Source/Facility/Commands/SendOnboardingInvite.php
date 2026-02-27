@@ -7,6 +7,7 @@ use App\Source\Facility\Actions\CreateFacilityOnboardingToken\Dtos\CreateFacilit
 use App\Source\Facility\Notifications\OnboardingInviteNotification;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -41,11 +42,20 @@ class SendOnboardingInvite extends Command implements PromptsForMissingInput
             name: $this->argument('name'),
         ));
 
+        $array = [
+            'uuid' => $result->uuid,
+            'plainToken' => $result->plainToken,
+            'email' => $result->email,
+            'name' => $result->name,
+        ];
+
+        $data = urlencode(json_encode($array));
+        $encrypted = Crypt::encryptString($data);
+
         $signedUrl = URL::signedRoute(
             'facility.onboarding',
             [
-                'id' => $result->uuid,
-                'lpt' => $result->plainToken,
+                'd' => $encrypted
             ]
         );
 
