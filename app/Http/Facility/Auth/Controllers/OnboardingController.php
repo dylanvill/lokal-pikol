@@ -34,6 +34,7 @@ class OnboardingController extends Controller
             "cities" => CityEnum::values(),
             "email" => $parsed['email'],
             "name" => $parsed['name'],
+            "onboardingId" => $parsed['uuid'],
         ]);
     }
 }

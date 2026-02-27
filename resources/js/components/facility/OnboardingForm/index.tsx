@@ -10,6 +10,7 @@ interface OnboardingFormProps extends PageProps {
     cities: string[];
     email: string;
     name: string;
+    onboardingId: string;
 }
 
 function OnboardingForm() {
@@ -35,6 +36,15 @@ function OnboardingForm() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        form.transform((data) => {
+            return {
+                ...data,
+                onboardingId: props.onboardingId,
+                closingTime: data.closingTime === "00:00" ? "24:00" : data.closingTime,
+            };
+        });
+
+        form.post('/facility/auth/register');
         console.log(form.data);
     };
 
@@ -97,7 +107,6 @@ function OnboardingForm() {
                             placeholder="https://maps.google.com/?q=location"
                             value={form.data.googleMapsUrl}
                             onChange={(e) => form.setData('googleMapsUrl', e.currentTarget.value)}
-                            required
                             type="url"
                         />
                         <Field.ErrorText>{form.errors.googleMapsUrl}</Field.ErrorText>
@@ -191,7 +200,9 @@ function OnboardingForm() {
                         <Field.ErrorText>{form.errors.password_confirmation}</Field.ErrorText>
                     </Field.Root>
                     <Flex width="full" justifyContent="flex-end">
-                        <Button type="submit">Finish Setup</Button>
+                        <Button type="submit" disabled={form.processing}>
+                            Finish Setup
+                        </Button>
                     </Flex>
                 </VStack>
             </Box>

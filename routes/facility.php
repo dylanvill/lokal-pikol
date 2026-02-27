@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Facility\Auth\Controllers\FacilityRegistrationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Facility\Auth\Controllers\LoginController;
 use App\Http\Facility\Auth\Controllers\LogoutController;
@@ -22,6 +23,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
     Route::post('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:facility');
+    Route::post('/register', FacilityRegistrationController::class)->name('register');
 });
 
 Route::get('/onboarding', [OnboardingController::class, 'show'])
