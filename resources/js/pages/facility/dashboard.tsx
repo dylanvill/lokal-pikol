@@ -19,9 +19,15 @@ function DashboardPage() {
 
     const reservations = props.reservations || [];
     const success = flash?.success as string;
+    const registrationSuccess = flash?.['registration-success'] as string;
 
     return (
         <FacilityLayout>
+            {registrationSuccess && (
+                <Box marginBottom={4}>
+                    <SuccessAlert title="Registration Successful" description={registrationSuccess} />
+                </Box>
+            )}
             <DashboardHeaderCard />
             <Card.Root>
                 <Card.Body>
