@@ -27,7 +27,7 @@ class ReservationConfirmedEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Confirmed Email',
+            subject: "Your reservation at {$this->reservation->facility->name} on {$this->reservation->reservation_date->format('l, F j, Y')} has been confirmed!",
         );
     }
 

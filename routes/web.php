@@ -15,6 +15,7 @@ use App\Http\Customer\Reservation\Controllers\UploadReceiptController;
 use App\Source\Court\Actions\GetCourtAvailability\GetCourtAvailability;
 use App\Source\Court\Actions\GetCourtCalendar\GetCourtCalendar;
 use App\Source\Court\Models\Court;
+use App\Source\Facility\Mail\OnboardingInviteEmail;
 use App\Source\Reservation\Actions\SetReservationFees\SetReservationFees;
 use App\Source\Reservation\Mail\ReservationConfirmedEmail;
 use App\Source\Reservation\Mail\ReservationPendingMail;
@@ -65,7 +66,7 @@ Route::prefix("reservations")
     });
 
 Route::get('/mailable', function () {
-    return new ReservationConfirmedEmail(Reservation::inRandomOrder()->first());
+    return new OnboardingInviteEmail();
 });
 
 Route::get('/test', function () {
