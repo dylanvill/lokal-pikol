@@ -1,4 +1,5 @@
-import { Box, Button, FileUpload, Flex, Float, IconButton, useFileUploadContext } from '@chakra-ui/react';
+import { Box, Button, FileUpload, Flex, Float, useFileUpload, useFileUploadContext } from '@chakra-ui/react';
+import { type useForm } from '@inertiajs/react';
 import { LuImage, LuImageUp, LuTrash2 } from 'react-icons/lu';
 
 const FileUploadList = () => {
@@ -28,10 +29,10 @@ const FileUploadList = () => {
             <FileUpload.Item file={file} key={file.name} padding={0} borderRadius={8} aspectRatio={1 / 1} zIndex={2}>
                 <FileUpload.ItemPreviewImage borderRadius={8} aspectRatio={1 / 1} objectFit="cover" zIndex={2} />
                 <Float placement="top-end" zIndex={2}>
-                    <FileUpload.ItemDeleteTrigger zIndex={2}>
-                        <IconButton colorPalette="red" size="xs" zIndex={2}>
-                            <LuTrash2 />
-                        </IconButton>
+                    <FileUpload.ItemDeleteTrigger zIndex={2} as="button" backgroundColor="red.500" borderRadius={2}>
+                        <Box padding={12} borderRadius={8}>
+                            <LuTrash2 color="white" />
+                        </Box>
                     </FileUpload.ItemDeleteTrigger>
                 </Float>
             </FileUpload.Item>
@@ -39,10 +40,16 @@ const FileUploadList = () => {
     );
 };
 
-function ProfilePhotoSection() {
+function ProfilePhotoSection({ form }: { form: ReturnType<typeof useForm> }) {
+    const fileUpload = useFileUpload({
+        accept: ['image/jpeg', 'image/png'],
+        onFileAccept: (details) => {
+            form.setData('coverPhoto', details.files[0]);
+        },
+    });
     return (
         <Box zIndex={2}>
-            <FileUpload.Root accept="image/*" zIndex={2}>
+            <FileUpload.RootProvider value={fileUpload} zIndex={2}>
                 <FileUpload.HiddenInput />
                 <Box width={32} height={32} zIndex={2}>
                     <FileUploadList />
@@ -54,7 +61,7 @@ function ProfilePhotoSection() {
                         </Button>
                     </FileUpload.Trigger>
                 </Flex>
-            </FileUpload.Root>
+            </FileUpload.RootProvider>
         </Box>
     );
 }

@@ -14,7 +14,6 @@ interface OnboardingFormProps extends PageProps {
 
 function OnboardingForm() {
     const { props } = usePage<OnboardingFormProps>();
-    console.log('🚀 ~ OnboardingForm ~ props:', props);
 
     const cities = props.cities || [];
 
@@ -32,20 +31,26 @@ function OnboardingForm() {
         password_confirmation: '',
     });
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(form.data);
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <Box>
                 <Box zIndex={1}>
-                    <CoverPhotoSection />
+                    <CoverPhotoSection form={form} />
                 </Box>
                 <Box zIndex={2} marginTop={-28} marginLeft={8}>
-                    <ProfilePhotoSection />
+                    <ProfilePhotoSection form={form} />
                 </Box>
                 <Editable.Root
                     value={form.data.name}
                     onValueChange={(e) => form.setData('name', e.value)}
                     textAlign="start"
                     defaultValue="Click to edit"
+                    marginTop={4}
                     marginBottom={12}
                     required
                 >
@@ -170,7 +175,7 @@ function OnboardingForm() {
                         <Field.ErrorText>{form.errors.password_confirmation}</Field.ErrorText>
                     </Field.Root>
                     <Flex width="full" justifyContent="flex-end">
-                        <Button type="submit">Register Facility</Button>
+                        <Button type="submit">Finish Setup</Button>
                     </Flex>
                 </VStack>
             </Box>
