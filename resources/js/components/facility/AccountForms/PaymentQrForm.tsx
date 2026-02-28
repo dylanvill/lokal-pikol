@@ -1,6 +1,7 @@
-import { Button, Card, Center, Field, Flex, VStack } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { Box, Button, Card, Center, Field, Flex, VStack } from '@chakra-ui/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { LuQrCode } from 'react-icons/lu';
+import SuccessAlert from '../../shared/Alert/SuccessAlert';
 import SectionHeader from '../OnboardingForm/SectionHeader';
 import PaymentQrCodeSection from './PaymentQrCodeSection';
 
@@ -9,18 +10,20 @@ interface PaymentQrFormProps {
 }
 
 function PaymentQrForm({ currentPaymentQrCodeUrl }: PaymentQrFormProps) {
+    const { flash } = usePage();
+
     const form = useForm({
         paymentQrCode: null as File | null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post('/facility/payment-qr', {
-            onSuccess: () => {
-                // Reset form or show success message
-            },
+        form.post('/facility/account/update-payment-qr', {
+            preserveScroll: true,
         });
     };
+
+    const successMessage = flash?.['update-payment-qr-success'] as string | undefined;
 
     return (
         <Card.Root>
@@ -32,6 +35,11 @@ function PaymentQrForm({ currentPaymentQrCodeUrl }: PaymentQrFormProps) {
                 />
             </Card.Header>
             <Card.Body>
+                {successMessage && (
+                    <Box marginBottom={4}>
+                        <SuccessAlert title="Payment QR Code Updated" description={successMessage} />
+                    </Box>
+                )}
                 <form onSubmit={handleSubmit}>
                     <VStack gap={6}>
                         <Field.Root invalid={!!form.errors.paymentQrCode}>
@@ -40,7 +48,9 @@ function PaymentQrForm({ currentPaymentQrCodeUrl }: PaymentQrFormProps) {
                             </Center>
                             <PaymentQrCodeSection form={form} currentImageUrl={currentPaymentQrCodeUrl} />
                             <Center width="100%">
-                                <Field.HelperText textAlign="center">Upload a clear image of your payment QR code (PNG, JPG, or JPEG format).</Field.HelperText>
+                                <Field.HelperText textAlign="center">
+                                    Upload a clear image of your payment QR code (PNG, JPG, or JPEG format).
+                                </Field.HelperText>
                                 <Field.ErrorText textAlign="center">{form.errors.paymentQrCode}</Field.ErrorText>
                             </Center>
                         </Field.Root>

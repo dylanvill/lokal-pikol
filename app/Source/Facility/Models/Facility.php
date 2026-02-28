@@ -10,9 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Source\Facility\Database\Factories\FacilityFactory;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Reservation\Models\Reservation;
 use App\Source\Shared\Contracts\HasReservations;
 use App\Source\Shared\Traits\InteractsWithReservations;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -77,5 +79,36 @@ class Facility extends Model implements HasMedia, HasReservations
     protected static function newFactory()
     {
         return FacilityFactory::new();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value)->singleFile();
+        $this->addMediaCollection(MediaTypeEnum::FACILITY_COVER_PHOTO->value)->singleFile();
+        $this->addMediaCollection(MediaTypeEnum::FACILITY_PAYMENT_QR_CODE->value)->singleFile();
+    }
+
+    public function updateProfilePhoto(UploadedFile $photo): void
+    {
+        if ($photo) {
+            $this->addMedia($photo)
+                ->toMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
+        }
+    }
+
+    public function updateCoverPhoto(UploadedFile $photo): void
+    {
+        if ($photo) {
+            $this->addMedia($photo)
+                ->toMediaCollection(MediaTypeEnum::FACILITY_COVER_PHOTO->value);
+        }
+    }
+
+    public function updatePaymentQrCode(UploadedFile $photo): void
+    {
+        if ($photo) {
+            $this->addMedia($photo)
+                ->toMediaCollection(MediaTypeEnum::FACILITY_PAYMENT_QR_CODE->value);
+        }
     }
 }

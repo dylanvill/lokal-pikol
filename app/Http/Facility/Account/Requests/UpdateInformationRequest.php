@@ -7,6 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
+/**
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string|null $description
+ * @property string|null $openingTime
+ * @property string|null $closingTime
+ * @property string|null $googleMapsUrl
+ */
 class UpdateInformationRequest extends FormRequest
 {
     /**
@@ -14,7 +22,7 @@ class UpdateInformationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::guard(GuardEnum::FACILITY)->check();
+        return Auth::guard(GuardEnum::FACILITY->value)->check();
     }
 
     /**

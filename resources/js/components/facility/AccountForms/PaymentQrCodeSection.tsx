@@ -6,7 +6,7 @@ const FileUploadList = ({ currentImageUrl }: { currentImageUrl?: string }) => {
     const fileUpload = useFileUploadContext();
     const files = fileUpload.acceptedFiles;
 
-    if (currentImageUrl) {
+    if (currentImageUrl && files.length === 0) {
         return <Image src={currentImageUrl} alt="Current Payment QR Code" borderRadius={8} maxWidth="sm" alignSelf="center" />;
     }
 

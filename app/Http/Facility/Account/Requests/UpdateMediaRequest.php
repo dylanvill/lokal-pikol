@@ -7,6 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
+/**
+ * @property \Illuminate\Http\UploadedFile|null $coverPhoto
+ * @property \Illuminate\Http\UploadedFile|null $profilePhoto
+ */
 class UpdateMediaRequest extends FormRequest
 {
     /**
@@ -14,7 +18,7 @@ class UpdateMediaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::guard(GuardEnum::FACILITY)->check();
+        return Auth::guard(GuardEnum::FACILITY->value)->check();
     }
 
     /**

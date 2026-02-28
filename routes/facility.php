@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Facility\Account\Controllers\GetAccountController;
+use App\Http\Facility\Account\Controllers\UpdateInformationController;
+use App\Http\Facility\Account\Controllers\UpdateMediaController;
+use App\Http\Facility\Account\Controllers\UpdatePaymentQrController;
 use App\Http\Facility\Auth\Controllers\FacilityRegistrationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Facility\Auth\Controllers\LoginController;
@@ -32,7 +35,13 @@ Route::get('/onboarding', [OnboardingController::class, 'show'])
 
 Route::group(["middleware" => "auth:facility"], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    Route::get('/account', GetAccountController::class)->name('account');
+
+    Route::prefix("account")->name("account.")->group(function () {
+        Route::get('/', GetAccountController::class)->name('index');
+        Route::post('/update-information', [UpdateInformationController::class, 'update'])->name('update-information');
+        Route::post('/update-media', [UpdateMediaController::class, 'update'])->name('update-media');
+        Route::post('/update-payment-qr', [UpdatePaymentQrController::class, '__invoke'])->name('update-payment-qr');
+    });
 
     Route::prefix("reservations")->name("reservations.")->group(function () {
         Route::get('/', ReservationsController::class)->name('list');

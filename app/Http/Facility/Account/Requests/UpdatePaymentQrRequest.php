@@ -6,6 +6,9 @@ use App\Http\Enums\GuardEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property Illuminate\Http\UploadedFile|null $paymentQrCode
+ */
 class UpdatePaymentQrRequest extends FormRequest
 {
     /**
@@ -13,7 +16,7 @@ class UpdatePaymentQrRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::guard(GuardEnum::FACILITY)->check();
+        return Auth::guard(GuardEnum::FACILITY->value)->check();
     }
 
     /**
@@ -24,7 +27,7 @@ class UpdatePaymentQrRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "paymentQrCode" => ["nullable", "file", "mimes:jpg,jpeg,png"],
+            "paymentQrCode" => ["required", "file", "mimes:jpg,jpeg,png"],
         ];
     }
 }
