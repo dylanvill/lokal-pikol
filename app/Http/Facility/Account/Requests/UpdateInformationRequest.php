@@ -36,8 +36,8 @@ class UpdateInformationRequest extends FormRequest
             "address" => ["nullable", "string", "max:255"],
             "phone" => ["nullable", "string", "digits:10"],
             "description" => ["nullable", "string"],
-            "openingTime" => ["nullable", "regex:/^\d{2}:\d{2}$/"],
-            "closingTime" => ["nullable", "regex:/^\d{2}:\d{2}$/"],
+            "openingTime" => ["nullable", "regex:/^\d{2}:\d{2}:\d{2}$/"],
+            "closingTime" => ["nullable", "regex:/^\d{2}:\d{2}:\d{2}$/"],
             "googleMapsUrl" => ["nullable", "url"],
         ];
     }

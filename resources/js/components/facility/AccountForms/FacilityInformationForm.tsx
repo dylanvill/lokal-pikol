@@ -1,6 +1,7 @@
-import { Button, Card, Field, Flex, Input, InputGroup, Textarea, VStack } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { Box, Button, Card, Field, Flex, Input, InputGroup, Textarea, VStack } from '@chakra-ui/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { LuFile } from 'react-icons/lu';
+import SuccessAlert from '../../shared/Alert/SuccessAlert';
 import SectionHeader from '../OnboardingForm/SectionHeader';
 
 interface FacilityInformationFormProps {
@@ -26,6 +27,8 @@ function FacilityInformationForm({
     closingTime,
     googleMapsUrl,
 }: FacilityInformationFormProps) {
+    const { flash } = usePage();
+
     const form = useForm({
         address: address,
         phone: phone,
@@ -38,18 +41,32 @@ function FacilityInformationForm({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         form.transform((data) => {
+            let openingTime = data.openingTime;
+            let closingTime = data.closingTime;
+
+            const startTimeSplit = openingTime.split(':');
+            if (startTimeSplit.length === 2) {
+                openingTime = `${openingTime}:00`;
+            }
+
+            const closingTimeSplit = closingTime.split(':');
+            if (closingTimeSplit.length === 2) {
+                closingTime = `${closingTime}:00`;
+            }
+
             return {
                 ...data,
-                closingTime: data.closingTime === '00:00' ? '24:00' : data.closingTime,
+                openingTime: openingTime,
+                closingTime: closingTime === '00:00:00' ? '24:00:00' : closingTime,
             };
         });
 
-        form.put('/facility/information', {
-            onSuccess: () => {
-                // Show success message
-            },
+        form.post('/facility/account/update-information', {
+            preserveScroll: true,
         });
     };
+
+    const successMessage = flash?.['update-information-success'] as string | undefined;
 
     return (
         <Card.Root>
@@ -61,6 +78,11 @@ function FacilityInformationForm({
                 />
             </Card.Header>
             <Card.Body>
+                {successMessage && (
+                    <Box marginBottom={4}>
+                        <SuccessAlert title="Information Updated" description={successMessage} />
+                    </Box>
+                )}
                 <form onSubmit={handleSubmit}>
                     <VStack gap={4}>
                         {/* Read-only fields */}
