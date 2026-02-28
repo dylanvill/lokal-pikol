@@ -38,9 +38,9 @@ Route::group(["middleware" => "auth:facility"], function () {
 
     Route::prefix("account")->name("account.")->group(function () {
         Route::get('/', GetAccountController::class)->name('index');
-        Route::post('/update-information', [UpdateInformationController::class, 'update'])->name('update-information');
-        Route::post('/update-media', [UpdateMediaController::class, 'update'])->name('update-media');
-        Route::post('/update-payment-qr', [UpdatePaymentQrController::class, '__invoke'])->name('update-payment-qr');
+        Route::post('/update-information', UpdateInformationController::class)->name('update-information');
+        Route::post('/update-media', UpdateMediaController::class)->name('update-media');
+        Route::post('/update-payment-qr', UpdatePaymentQrController::class)->name('update-payment-qr');
     });
 
     Route::prefix("reservations")->name("reservations.")->group(function () {

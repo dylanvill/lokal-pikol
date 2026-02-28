@@ -1,6 +1,7 @@
 import { Box, Button, Card, Flex } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { LuImage } from 'react-icons/lu';
+import SuccessAlert from '../../shared/Alert/SuccessAlert';
 import SectionHeader from '../OnboardingForm/SectionHeader';
 import EditCoverPhotoSection from './EditCoverPhotoSection';
 import EditProfilePhotoSection from './EditProfilePhotoSection';
@@ -10,10 +11,9 @@ interface MediaFormProps {
     currentProfilePhotoUrl?: string;
 }
 
-function MediaForm({
-    currentCoverPhotoUrl = 'https://via.placeholder.com/800x450?text=Cover+Photo',
-    currentProfilePhotoUrl = 'https://via.placeholder.com/200x200?text=Profile+Photo',
-}: MediaFormProps) {
+function MediaForm({ currentCoverPhotoUrl, currentProfilePhotoUrl }: MediaFormProps) {
+    const { flash } = usePage();
+
     const form = useForm({
         coverPhoto: null as File | null,
         profilePhoto: null as File | null,
@@ -21,12 +21,12 @@ function MediaForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post('/facility/media', {
-            onSuccess: () => {
-                // Reset form or show success message
-            },
+        form.post('/facility/account/update-media', {
+            preserveScroll: true,
         });
     };
+
+    const successMessage = flash?.['update-media-success'] as string | undefined;
 
     return (
         <Card.Root>
@@ -38,6 +38,11 @@ function MediaForm({
                 />
             </Card.Header>
             <Card.Body>
+                {successMessage && (
+                    <Box marginBottom={4}>
+                        <SuccessAlert title="Media Updated" description={successMessage} />
+                    </Box>
+                )}
                 <form onSubmit={handleSubmit}>
                     <Box zIndex={1}>
                         <EditCoverPhotoSection currentImageUrl={currentCoverPhotoUrl} form={form} />
@@ -46,7 +51,12 @@ function MediaForm({
                         <EditProfilePhotoSection currentImageUrl={currentProfilePhotoUrl} form={form} />
                     </Box>
                     <Flex width="full" justifyContent="flex-end">
-                        <Button type="submit" disabled={form.processing || (!form.data.coverPhoto && !form.data.profilePhoto)} size="md" colorPalette="blue">
+                        <Button
+                            type="submit"
+                            disabled={form.processing || (!form.data.coverPhoto && !form.data.profilePhoto)}
+                            size="md"
+                            colorPalette="blue"
+                        >
                             Save Changes
                         </Button>
                     </Flex>

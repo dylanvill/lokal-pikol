@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Enums\GuardEnum;
 use App\Http\Facility\Account\Requests\UpdatePaymentQrRequest;
 use App\Source\Facility\Models\Facility;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UpdatePaymentQrController extends Controller
