@@ -44,6 +44,7 @@ class FacilitiesController extends Controller
                 ]);
             }
         ])
+            ->where('published', true)
             ->whereHas('courts')
             ->where(function ($query) use ($date, $startTime, $endTime) {
                 $query->whereDoesntHave('reservations', function ($reservationQuery) use ($date, $startTime, $endTime) {
