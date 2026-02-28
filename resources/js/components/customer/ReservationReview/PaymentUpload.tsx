@@ -1,4 +1,4 @@
-import { Button, Card, Center, Field, FileUpload, Flex, QrCode, VStack } from '@chakra-ui/react';
+import { Button, Card, Center, Field, FileUpload, Flex, Image, VStack } from '@chakra-ui/react';
 import { Form } from '@inertiajs/react';
 import { LuArrowRight, LuUpload } from 'react-icons/lu';
 import type Reservation from '../../../models/customer/reservation/Reservation';
@@ -11,25 +11,20 @@ export interface PaymentUploadProps {
 function PaymentUpload({ reservation }: PaymentUploadProps) {
     return (
         <Form action={`/reservations/reserve/${reservation.id}/upload-receipt`} method="post">
-            {({processing}) => (
+            {({ processing }) => (
                 <>
                     <Card.Root>
                         <Card.Body>
                             <CardHeading text="Upload Payment" />
                             <VStack gap={4}>
                                 <VStack gap={2} alignItems="center">
-                                    <QrCode.Root value="https://www.google.com" >
-                                        <QrCode.Frame>
-                                            <QrCode.Pattern />
-                                        </QrCode.Frame>
-                                    </QrCode.Root>
-                                    {/* <Image
-                                        src="https://images.pexels.com/photos/34408249/pexels-photo-34408249.jpeg"
-                                        alt="QR Code"
+                                    <Image
+                                        src={reservation.facility.paymentQrCode.url}
+                                        alt="Payment QR Code"
                                         width="full"
                                         maxWidth="md"
                                         borderRadius={8}
-                                    /> */}
+                                    />
                                 </VStack>
 
                                 <Field.Root>
@@ -55,7 +50,15 @@ function PaymentUpload({ reservation }: PaymentUploadProps) {
                     </Card.Root>
 
                     <Flex alignItems="center" justifyContent="flex-end">
-                        <Button type="submit" colorScheme="blue" width="auto" marginTop={4} loading={processing} disabled={processing} loadingText="Uploading Receipt...">
+                        <Button
+                            type="submit"
+                            colorScheme="blue"
+                            width="auto"
+                            marginTop={4}
+                            loading={processing}
+                            disabled={processing}
+                            loadingText="Uploading Receipt..."
+                        >
                             Complete Reservation
                             <LuArrowRight />
                         </Button>

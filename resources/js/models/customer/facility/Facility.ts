@@ -13,6 +13,7 @@ interface Facility {
     closingTime: string;
     profilePhoto: Photo;
     coverPhoto: Photo;
+    paymentQrCode: Photo;
 }
 
 export default Facility;

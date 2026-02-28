@@ -13,6 +13,7 @@ class FacilityResource extends JsonResource
     {
         $coverPhoto = $this->media->firstWhere('collection_name', MediaTypeEnum::FACILITY_COVER_PHOTO->value);
         $profilePhoto = $this->media->firstWhere('collection_name', MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
+        $qrCode = $this->media->firstWhere('collection_name', MediaTypeEnum::FACILITY_PAYMENT_QR_CODE->value);
 
         return [
             "id" => $this->uuid,
@@ -27,6 +28,7 @@ class FacilityResource extends JsonResource
             "coverPhoto" => $coverPhoto ? new PhotoResource($coverPhoto) : null,
             "openingTime" => $this->opening_time,
             "closingTime" => $this->closing_time,
+            "paymentQrCode" => $qrCode ? new PhotoResource($qrCode) : null,
         ];
     }
 }
