@@ -21,6 +21,7 @@ use Illuminate\Validation\Rules\Password;
  * @property string $password_confirmation
  * @property \Illuminate\Http\UploadedFile $coverPhoto
  * @property \Illuminate\Http\UploadedFile $profilePhoto
+ * @property \Illuminate\Http\UploadedFile $paymentQrCode
  * @property string $onboardingId
  */
 class FacilityRegistrationRequest extends FormRequest
@@ -48,8 +49,9 @@ class FacilityRegistrationRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:facilities,email', 'unique:users,email'],
             'password' => ['required', 'string', 'confirmed', Password::min(8)->mixedCase()->letters()->numbers()->symbols()],
-            'coverPhoto' => ['required', 'image', 'max:2048'],
-            'profilePhoto' => ['required', 'image', 'max:2048'],
+            'coverPhoto' => ['required', 'image'],
+            'profilePhoto' => ['required', 'image'],
+            'paymentQrCode' => ['required', 'image'],
             'onboardingId' => ['required', 'string', 'exists:onboarding_tokens,uuid'],
         ];
     }

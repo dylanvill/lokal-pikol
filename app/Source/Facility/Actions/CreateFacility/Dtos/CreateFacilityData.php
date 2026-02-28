@@ -19,5 +19,6 @@ class CreateFacilityData
         public ?string $description,
         public UploadedFile $coverPhoto,
         public UploadedFile $profilePhoto,
+        public UploadedFile $paymentQrCode,
     ) {}
 }

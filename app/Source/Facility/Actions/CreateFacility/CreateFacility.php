@@ -24,6 +24,7 @@ class CreateFacility
 
         $facility->addMedia($data->coverPhoto)->toMediaCollection(MediaTypeEnum::FACILITY_COVER_PHOTO->value);
         $facility->addMedia($data->profilePhoto)->toMediaCollection(MediaTypeEnum::FACILITY_PROFILE_PHOTO->value);
+        $facility->addMedia($data->paymentQrCode)->toMediaCollection(MediaTypeEnum::FACILITY_PAYMENT_QR_CODE->value);
 
         return $facility;
     }

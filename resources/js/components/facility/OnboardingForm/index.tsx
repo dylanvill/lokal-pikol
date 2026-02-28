@@ -3,6 +3,7 @@ import { type PageProps } from '@inertiajs/core';
 import { useForm, usePage } from '@inertiajs/react';
 import { LuFile, LuPencil, LuUser } from 'react-icons/lu';
 import CoverPhotoSection from './CoverPhotoSection';
+import PaymentQrCodeSection from './PaymentQrCodeSection';
 import ProfilePhotoSection from './ProfilePhotoSection';
 import SectionHeader from './SectionHeader';
 
@@ -32,6 +33,7 @@ function OnboardingForm() {
         password_confirmation: '',
         coverPhoto: null,
         profilePhoto: null,
+        paymentQrCode: null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -40,12 +42,11 @@ function OnboardingForm() {
             return {
                 ...data,
                 onboardingId: props.onboardingId,
-                closingTime: data.closingTime === "00:00" ? "24:00" : data.closingTime,
+                closingTime: data.closingTime === '00:00' ? '24:00' : data.closingTime,
             };
         });
 
         form.post('/facility/auth/register');
-        console.log(form.data);
     };
 
     return (
@@ -67,8 +68,8 @@ function OnboardingForm() {
                     required
                 >
                     <LuPencil />
-                    <Editable.Preview fontSize="lg" width="full" fontWeight="medium" />
-                    <Editable.Input fontSize="lg" width="full" fontWeight="medium" />
+                    <Editable.Preview fontSize="3xl" width="full" fontWeight="medium" lineHeight={1.25} />
+                    <Editable.Input fontSize="3xl" width="full" fontWeight="medium" />
                 </Editable.Root>
 
                 <SectionHeader icon={<LuFile size={20} />} title="Facility Information" description="Provide details about your facility." />
@@ -156,7 +157,20 @@ function OnboardingForm() {
                         <Field.ErrorText>{form.errors.description}</Field.ErrorText>
                     </Field.Root>
                 </VStack>
-                <SectionHeader icon={<LuUser size={20} />} title="Login Information" description="Provide details about your login credentials." />
+
+                <Box marginBottom={8}>
+                    <SectionHeader
+                        icon={<LuFile size={20} />}
+                        title="Payment QR Code"
+                        description="This QR code will be used by users to make payments. Please upload a QR code that is linked to your facility's payment account."
+                    />
+                <PaymentQrCodeSection form={form} />
+                </Box>
+                <SectionHeader
+                    icon={<LuUser size={20} />}
+                    title="Login Information"
+                    description="The information that you put in here will be used to log in to your facility account to manage courts and reservations."
+                />
                 <VStack gap={4} marginBottom={8}>
                     <Field.Root invalid={!!form.errors.email}>
                         <Field.Label>Email</Field.Label>

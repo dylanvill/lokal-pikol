@@ -43,6 +43,7 @@ class FacilityRegistrationController extends Controller
             description: $request->description,
             coverPhoto: $request->file('coverPhoto'),
             profilePhoto: $request->file('profilePhoto'),
+            paymentQrCode: $request->file('paymentQrCode'),
         ));
 
         Auth::guard(GuardEnum::FACILITY->value)->login($user, true);
