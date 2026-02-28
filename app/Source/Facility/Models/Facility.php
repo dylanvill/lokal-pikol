@@ -34,6 +34,11 @@ class Facility extends Model implements HasMedia, HasReservations
         'closing_time',
         'google_maps_url',
         'city',
+        'published',
+    ];
+
+    protected $casts = [
+        'published' => 'boolean'
     ];
 
     public function reservationNameDisplay(): string

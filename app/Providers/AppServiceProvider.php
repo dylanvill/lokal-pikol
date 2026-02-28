@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Source\Authentication\Mail\UserVerificationMail;
+use App\Source\Facility\Models\Facility;
+use App\Source\Facility\Policies\FacilityPolicy;
 use App\Source\Reservation\Models\Reservation;
 use App\Source\Reservation\Policies\ReservationPolicy;
 use Carbon\CarbonImmutable;
@@ -53,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(Reservation::class, ReservationPolicy::class);
+        Gate::policy(Facility::class, FacilityPolicy::class);
     }
 
     protected function configureDefaults(): void

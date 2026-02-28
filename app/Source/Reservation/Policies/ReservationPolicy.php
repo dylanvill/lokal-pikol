@@ -4,7 +4,6 @@ namespace App\Source\Reservation\Policies;
 
 use App\Source\Reservation\Models\Reservation;
 use App\Source\Authentication\Models\User;
-use App\Source\Customer\Models\Customer;
 use Illuminate\Auth\Access\Response;
 
 class ReservationPolicy

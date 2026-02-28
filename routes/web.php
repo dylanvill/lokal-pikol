@@ -45,10 +45,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 
 Route::prefix("facilities")->group(function () {
     Route::get('/', fn() => redirect(route("home")))->name('index');
-    Route::get('/{facility:uuid}', FacilityController::class)->name('facility');
+    Route::get('/{facility:uuid}', FacilityController::class)
+        ->name('facility')
+        ->middleware('can:canViewUnpublishedFacility,facility');
     Route::post('/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])
         ->name('reservation.store')
-        ->middleware(['auth:customer', 'verified']);
+        ->middleware(['auth:customer', 'verified', 'can:canViewUnpublishedFacility,facility']);
 });
 
 Route::prefix("reservations")
