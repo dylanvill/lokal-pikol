@@ -1,14 +1,14 @@
-import { Button, Card, Field, Flex, VStack } from '@chakra-ui/react';
+import { Button, Card, Center, Field, Flex, VStack } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import { LuQrCode } from 'react-icons/lu';
 import SectionHeader from '../OnboardingForm/SectionHeader';
 import PaymentQrCodeSection from './PaymentQrCodeSection';
 
 interface PaymentQrFormProps {
-    currentQrCodeUrl?: string;
+    currentPaymentQrCodeUrl?: string;
 }
 
-function PaymentQrForm({ currentQrCodeUrl = 'https://picsum.photos/200/300' }: PaymentQrFormProps) {
+function PaymentQrForm({ currentPaymentQrCodeUrl }: PaymentQrFormProps) {
     const form = useForm({
         paymentQrCode: null as File | null,
     });
@@ -35,10 +35,14 @@ function PaymentQrForm({ currentQrCodeUrl = 'https://picsum.photos/200/300' }: P
                 <form onSubmit={handleSubmit}>
                     <VStack gap={6}>
                         <Field.Root invalid={!!form.errors.paymentQrCode}>
-                            <Field.Label>Payment QR Code</Field.Label>
-                            <PaymentQrCodeSection form={form} currentImageUrl={currentQrCodeUrl} />
-                            <Field.HelperText>Upload a clear image of your payment QR code (PNG, JPG, or JPEG format).</Field.HelperText>
-                            <Field.ErrorText>{form.errors.paymentQrCode}</Field.ErrorText>
+                            <Center width="100%">
+                                <Field.Label textAlign="center">Payment QR Code</Field.Label>
+                            </Center>
+                            <PaymentQrCodeSection form={form} currentImageUrl={currentPaymentQrCodeUrl} />
+                            <Center width="100%">
+                                <Field.HelperText textAlign="center">Upload a clear image of your payment QR code (PNG, JPG, or JPEG format).</Field.HelperText>
+                                <Field.ErrorText textAlign="center">{form.errors.paymentQrCode}</Field.ErrorText>
+                            </Center>
                         </Field.Root>
 
                         <Flex width="full" justifyContent="flex-end">

@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Facility\Account\Controllers\GetAccountController;
 use App\Http\Facility\Auth\Controllers\FacilityRegistrationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Facility\Auth\Controllers\LoginController;
 use App\Http\Facility\Auth\Controllers\LogoutController;
 use App\Http\Facility\Auth\Controllers\OnboardingController;
-use App\Http\Facility\Controllers\AccountController;
 use App\Http\Facility\Controllers\DashboardController;
 use App\Http\Facility\Court\Controllers\CourtCalendarController;
 use App\Http\Facility\Court\Controllers\CourtsController;
@@ -32,7 +32,7 @@ Route::get('/onboarding', [OnboardingController::class, 'show'])
 
 Route::group(["middleware" => "auth:facility"], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    Route::get('/account', AccountController::class)->name('account');
+    Route::get('/account', GetAccountController::class)->name('account');
 
     Route::prefix("reservations")->name("reservations.")->group(function () {
         Route::get('/', ReservationsController::class)->name('list');

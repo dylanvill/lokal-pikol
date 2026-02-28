@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Facility\Profile\Requests;
+namespace App\Http\Facility\Account\Requests;
 
 use App\Http\Enums\GuardEnum;
 use Illuminate\Foundation\Http\FormRequest;

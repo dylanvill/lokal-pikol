@@ -44,11 +44,11 @@ function CourtCard({ id, name, photo, covered, courtPricings }: CourtCardProps) 
                             Court Hours:
                         </Text>
                         {formattedCourtPricings.map((pricing) => (
-                            <HStack gap={0}>
-                                <Badge key={pricing.id} size="sm" fontFamily="mono" borderRightRadius={0} colorPalette="blue">
+                            <HStack gap={0} key={pricing.id}>
+                                <Badge size="sm" fontFamily="mono" borderRightRadius={0} colorPalette="blue">
                                     {pricing.startTime} - {pricing.endTime}
                                 </Badge>
-                                <Badge key={pricing.id} size="sm" fontFamily="mono" borderLeftRadius={0} colorPalette="orange">
+                                <Badge size="sm" fontFamily="mono" borderLeftRadius={0} colorPalette="orange">
                                     ₱{pricing.rate}
                                 </Badge>
                             </HStack>

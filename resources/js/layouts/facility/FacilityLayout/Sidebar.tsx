@@ -1,7 +1,6 @@
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import { LuCalendar, LuCalendarOff, LuCalendarPlus, LuGrid2X2, LuHouse, LuLogOut, LuUser } from 'react-icons/lu';
-import AppButton from '../../../components/app/AppButton';
 
 const sidebarItems = [
     {
@@ -66,18 +65,19 @@ export const Sidebar = () => {
         <Box bg="gray.100" position="fixed" p={0} left={0} top="60px" bottom={0} width="200px" overflowY="auto">
             <VStack gap={4} align="stretch" marginTop={4}>
                 {sidebarItems.map((category) => (
-                    <Box key={category.category}>
+                    <VStack key={category.category} alignItems="stretch">
                         <Text fontSize="xs" textTransform="uppercase" fontWeight="bold" color="gray.500" marginLeft={2}>
                             {category.category}
                         </Text>
                         {category.children.map((item) => (
                             <Link key={item.label} href={item.route} method={item.route === '/facility/auth/logout' ? 'post' : 'get'}>
-                                <AppButton key={item.route} backgroundColor="transparent" justifyContent="flex-start" borderRadius={0} color="black">
-                                    {item.icon()} {item.label}
-                                </AppButton>
+                                <HStack px={2}>
+                                    {item.icon()}
+                                    <Text fontSize="md">{item.label}</Text>
+                                </HStack>
                             </Link>
                         ))}
-                    </Box>
+                    </VStack>
                 ))}
             </VStack>
         </Box>

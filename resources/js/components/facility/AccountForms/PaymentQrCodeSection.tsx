@@ -1,11 +1,15 @@
-import { Box, Button, FileUpload, Flex, Float, useFileUpload, useFileUploadContext } from '@chakra-ui/react';
+import { Box, Button, FileUpload, Flex, Float, Image, useFileUpload, useFileUploadContext } from '@chakra-ui/react';
 import { type useForm } from '@inertiajs/react';
 import { LuImage, LuImageUp, LuTrash2 } from 'react-icons/lu';
 
 const FileUploadList = ({ currentImageUrl }: { currentImageUrl?: string }) => {
     const fileUpload = useFileUploadContext();
     const files = fileUpload.acceptedFiles;
-    
+
+    if (currentImageUrl) {
+        return <Image src={currentImageUrl} alt="Current Payment QR Code" borderRadius={8} maxWidth="sm" alignSelf="center" />;
+    }
+
     if (files.length === 0) {
         return (
             <Box
@@ -18,9 +22,6 @@ const FileUploadList = ({ currentImageUrl }: { currentImageUrl?: string }) => {
                 justifyContent="center"
                 maxWidth="sm"
                 alignSelf="center"
-                backgroundImage={currentImageUrl ? `url(${currentImageUrl})` : 'none'}
-                backgroundSize="cover"
-                backgroundPosition="center"
             >
                 {!currentImageUrl && <LuImage size={96} color="gray" />}
             </Box>
@@ -53,19 +54,17 @@ function PaymentQrCodeSection({ form, currentImageUrl }: { form: ReturnType<type
     });
 
     return (
-        <Box>
-            <FileUpload.RootProvider value={fileUpload}>
-                <FileUpload.HiddenInput />
-                <FileUploadList currentImageUrl={currentImageUrl} />
-                <Flex justifyContent="center" width="100%">
-                    <FileUpload.Trigger asChild>
-                        <Button variant="ghost" size="xs">
-                            <LuImageUp /> Select Payment QR Code
-                        </Button>
-                    </FileUpload.Trigger>
-                </Flex>
-            </FileUpload.RootProvider>
-        </Box>
+        <FileUpload.RootProvider value={fileUpload}>
+            <FileUpload.HiddenInput />
+            <FileUploadList currentImageUrl={currentImageUrl} />
+            <Flex justifyContent="center" width="100%">
+                <FileUpload.Trigger asChild>
+                    <Button variant="ghost" size="xs">
+                        <LuImageUp /> Select Payment QR Code
+                    </Button>
+                </FileUpload.Trigger>
+            </Flex>
+        </FileUpload.RootProvider>
     );
 }
 
