@@ -4,35 +4,35 @@ import { LuFile } from 'react-icons/lu';
 import SectionHeader from '../OnboardingForm/SectionHeader';
 
 interface FacilityInformationFormProps {
-    facilityName?: string;
-    facilityCity?: string;
-    facilityAddress?: string;
-    facilityEmail?: string;
-    facilityPhone?: string;
-    facilityDescription?: string;
-    facilityOpeningTime?: string;
-    facilityClosingTime?: string;
-    facilityGoogleMapsUrl?: string;
+    name?: string;
+    city?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    description?: string;
+    openingTime?: string;
+    closingTime?: string;
+    googleMapsUrl?: string;
 }
 
 function FacilityInformationForm({
-    facilityName = 'Sample Facility Name',
-    facilityCity = 'Sample City',
-    facilityAddress = 'Sample Address',
-    facilityEmail = 'facility@example.com',
-    facilityPhone = '916 123 4567',
-    facilityDescription = 'Sample facility description',
-    facilityOpeningTime = '07:00',
-    facilityClosingTime = '22:00',
-    facilityGoogleMapsUrl = 'https://maps.google.com/?q=sample'
+    name = 'Sample Facility Name',
+    city = 'Sample City',
+    address = 'Sample Address',
+    email = 'facility@example.com',
+    phone = '916 123 4567',
+    description = 'Sample facility description',
+    openingTime = '07:00',
+    closingTime = '22:00',
+    googleMapsUrl = 'https://maps.google.com/?q=sample'
 }: FacilityInformationFormProps) {
     const form = useForm({
-        address: facilityAddress,
-        phone: facilityPhone,
-        description: facilityDescription,
-        openingTime: facilityOpeningTime,
-        closingTime: facilityClosingTime,
-        googleMapsUrl: facilityGoogleMapsUrl,
+        address: address,
+        phone: phone,
+        description: description,
+        openingTime: openingTime,
+        closingTime: closingTime,
+        googleMapsUrl: googleMapsUrl,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -67,7 +67,7 @@ function FacilityInformationForm({
                         <Field.Root>
                             <Field.Label>Facility Name</Field.Label>
                             <Input
-                                value={facilityName}
+                                value={name}
                                 readOnly
                                 bg="gray.50"
                                 cursor="not-allowed"
@@ -80,7 +80,7 @@ function FacilityInformationForm({
                         <Field.Root>
                             <Field.Label>City</Field.Label>
                             <Input
-                                value={facilityCity}
+                                value={city}
                                 readOnly
                                 bg="gray.50"
                                 cursor="not-allowed"
@@ -93,7 +93,7 @@ function FacilityInformationForm({
                         <Field.Root>
                             <Field.Label>Email Address</Field.Label>
                             <Input
-                                value={facilityEmail}
+                                value={email}
                                 readOnly
                                 bg="gray.50"
                                 cursor="not-allowed"
