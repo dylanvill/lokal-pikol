@@ -7,6 +7,7 @@ import ReservationDetails from '../../../components/customer/ReservationReview/R
 import DangerAlert from '../../../components/shared/Alert/DangerAlert';
 import InfoAlert from '../../../components/shared/Alert/InfoAlert';
 import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
+import BackNavigation from '../../../components/shared/BackNavigation';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 import type Reservation from '../../../models/customer/reservation/Reservation';
@@ -36,6 +37,7 @@ function ReservationPage() {
 
     return (
         <DefaultPageLayout title="Reservation">
+            <BackNavigation />
             <Stack gap={6}>
                 {AlertRender}
                 <ReservationDetails
