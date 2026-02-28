@@ -13,6 +13,7 @@ class CreateFacility
         $facility = new Facility();
         $facility->user_id = $data->userId;
         $facility->name = $data->name;
+        $facility->email = $data->email;
         $facility->city = $data->city->value;
         $facility->address = $data->address;
         $facility->google_maps_url = $data->googleMapsUrl;

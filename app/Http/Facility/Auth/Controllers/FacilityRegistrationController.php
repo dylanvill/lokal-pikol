@@ -34,6 +34,7 @@ class FacilityRegistrationController extends Controller
         $facility = $createFacility->create(new CreateFacilityData(
             userId: $user->id,
             name: $request->name,
+            email: $request->email,
             city: CityEnum::from($request->city),
             address: $request->address,
             googleMapsUrl: $request->googleMapsUrl,

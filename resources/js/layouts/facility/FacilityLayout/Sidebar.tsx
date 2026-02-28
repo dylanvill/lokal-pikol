@@ -71,7 +71,7 @@ export const Sidebar = () => {
                         </Text>
                         {category.children.map((item) => (
                             <Link key={item.label} href={item.route} method={item.route === '/facility/auth/logout' ? 'post' : 'get'}>
-                                <HStack px={2}>
+                                <HStack px={2} cursor="pointer">
                                     {item.icon()}
                                     <Text fontSize="md">{item.label}</Text>
                                 </HStack>

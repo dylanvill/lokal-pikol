@@ -10,6 +10,7 @@ class CreateFacilityData
     public function __construct(
         public int $userId,
         public string $name,
+        public string $email,
         public CityEnum $city,
         public string $address,
         public ?string $googleMapsUrl,
