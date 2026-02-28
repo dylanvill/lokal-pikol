@@ -6,6 +6,7 @@ export interface SectionHeader {
     description: string;
 }
 
+/** TODO: Move in shared */
 function SectionHeader({ icon, title, description }: SectionHeader) {
     return (
         <HStack alignItems="flex-start" marginBottom={4}>

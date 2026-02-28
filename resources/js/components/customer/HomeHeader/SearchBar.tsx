@@ -20,7 +20,7 @@ function SearchBar() {
     };
 
     return (
-        <Container bg="white" borderRadius={16} borderColor="gray.200" p={{ base: 4, md: 4 }} shadow="sm" colorPalette="blue">
+        <Container bg="white" borderRadius={16} borderColor="gray.200" p={{ base: 4, md: 4 }} shadow="sm" colorPalette="blue" width="100%">
             <form onSubmit={handleSubmit}>
                 <Flex gap={4} alignItems="flex-end" flexDirection={{ base: 'column', md: 'row' }}>
                     <Field.Root>

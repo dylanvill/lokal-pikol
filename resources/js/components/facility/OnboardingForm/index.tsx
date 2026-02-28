@@ -1,7 +1,7 @@
 import { Box, Button, Editable, Field, Flex, Input, InputGroup, NativeSelect, Textarea, VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { useForm, usePage } from '@inertiajs/react';
-import { LuFile, LuPencil, LuUser } from 'react-icons/lu';
+import { LuFile, LuPencil, LuQrCode, LuUser } from 'react-icons/lu';
 import CoverPhotoSection from './CoverPhotoSection';
 import PaymentQrCodeSection from './PaymentQrCodeSection';
 import ProfilePhotoSection from './ProfilePhotoSection';
@@ -160,7 +160,7 @@ function OnboardingForm() {
 
                 <Box marginBottom={8}>
                     <SectionHeader
-                        icon={<LuFile size={20} />}
+                        icon={<LuQrCode size={20} />}
                         title="Payment QR Code"
                         description="This QR code will be used by users to make payments. Please upload a QR code that is linked to your facility's payment account."
                     />
