@@ -11,7 +11,9 @@ class CreateUser
     {
         $user = new User();
         $user->email = $data->email;
-        $user->password = bcrypt($data->password);
+        if (!empty($data->password)) {
+            $user->password = bcrypt($data->password);
+        }
         $user->role = $data->role->value;
         $user->save();
 

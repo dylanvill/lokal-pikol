@@ -8,10 +8,10 @@ use App\Source\Authentication\Enums\UserRoles;
 readonly class CreateGoogleOAuthUserData
 {
     public function __construct(
+        public int $userId,
         public string $email,
         public OAuthProviderEnum $provider,
         public string $authenticationId,
-        public UserRoles $role,
         public array $providerConfig = [],
     ) {}
 }
