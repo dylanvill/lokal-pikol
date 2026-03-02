@@ -9,6 +9,7 @@ use App\Http\Customer\Auth\Controllers\SignUpController;
 use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
+use App\Http\Customer\Legal\Controllers\LegalController;
 use App\Http\Customer\Reservation\Controllers\OnHoldNoticeController;
 use App\Http\Customer\Reservation\Controllers\ReservationController;
 use App\Http\Customer\Reservation\Controllers\ReservationsController;
@@ -47,6 +48,9 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 
 Route::get('/auth/google', GoogleOAuthRedirectController::class)->name('auth.google.redirect');
 Route::get('/auth/google/callback', GoogleOAuthCallbackController::class)->name('auth.google.callback');
+
+Route::get('/privacy-policy', [LegalController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('/terms-and-conditions', [LegalController::class, 'termsAndConditions'])->name('terms-and-conditions');
 
 Route::prefix("facilities")->group(function () {
     Route::get('/', fn() => redirect(route("home")))->name('index');
