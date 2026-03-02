@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { Head } from '@inertiajs/react';
 import React from 'react';
+import Footer from '../components/customer/Footer';
 
 interface RootLayoutProps {
     children: React.ReactNode;
@@ -18,6 +19,7 @@ function RootLayout({ children, title = 'Lokal Pikol' }: RootLayoutProps) {
             <Box minH="100vh" bg="gray.50" colorPalette="blue">
                 {children}
             </Box>
+            <Footer />
         </>
     );
 }
