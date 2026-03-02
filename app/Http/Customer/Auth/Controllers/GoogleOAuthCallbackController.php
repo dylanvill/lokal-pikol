@@ -3,6 +3,7 @@
 namespace App\Http\Customer\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Enums\GuardEnum;
 use App\Source\Authentication\Actions\CreateGoogleOAuthUser\CreateGoogleOAuthUser;
 use App\Source\Authentication\Actions\CreateGoogleOAuthUser\Dtos\CreateGoogleOAuthUserData;
 use App\Source\Authentication\Enums\OAuthProviderEnum;
@@ -11,6 +12,7 @@ use App\Source\Authentication\Models\AuthenticationProvider;
 use App\Source\Customer\Actions\CreateCustomer\CreateCustomer;
 use App\Source\Customer\Actions\CreateCustomer\Dtos\CreateCustomerData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Socialite;
 
 class GoogleOAuthCallbackController extends Controller
@@ -48,6 +50,9 @@ class GoogleOAuthCallbackController extends Controller
             $user = $auth->user;
         }
 
-        dd('User authenticated via Google OAuth', $user);
+        Auth::guard(GuardEnum::CUSTOMER->value)->login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('home');
     }
 }
