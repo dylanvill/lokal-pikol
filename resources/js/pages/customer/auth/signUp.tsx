@@ -1,5 +1,6 @@
-import { Box, Button, Field, Heading, HStack, Image, Input, InputGroup, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Field, Heading, HStack, Image, Input, InputGroup, Stack, Text, Link as ChakraLink, Separator, Flex } from '@chakra-ui/react';
 import { Form, Link, router } from '@inertiajs/react';
+import { GrGoogle } from 'react-icons/gr';
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
@@ -31,6 +32,21 @@ export default function SignUpPage() {
                 <Heading>Join Lokal Pikol</Heading>
                 <Text>Create your account and start booking courts in your area.</Text>
             </Box>
+            <ChakraLink width="full" href="/auth/google">
+                <Button type="button" width="full" variant="subtle">
+                    <GrGoogle /> Sign up with Google
+                </Button>
+            </ChakraLink>
+
+            <Flex width="100%" alignItems="center" justifyContent="center" my={4}>
+                <Separator width="100%" flex={1} />
+                <Text fontSize="sm" color="gray.400" mx={4}>or</Text>
+                <Separator width="100%" flex={1} />
+            </Flex>
+
+            <Text color="gray.600" mb={4} mt={6}>
+                Register manually
+            </Text>
             <Form action="/sign-up" method="post" resetOnSuccess>
                 {({ errors, processing, clearErrors, submit }) => (
                     <Stack gap={4}>

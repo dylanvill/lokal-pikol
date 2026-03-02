@@ -1,5 +1,6 @@
-import { Box, Button, Field, Heading, Input, Stack, Text, Image } from '@chakra-ui/react';
+import { Box, Button, Field, Heading, Input, Stack, Text, Image, VStack, Link as ChakraLink } from '@chakra-ui/react';
 import { Form, Link } from '@inertiajs/react';
+import { GrGoogle } from 'react-icons/gr';
 import { LuArrowRight } from 'react-icons/lu';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
 import BackNavigation from '../../../components/shared/BackNavigation';
@@ -47,23 +48,27 @@ export default function LoginPage() {
                                 </Field.HelperText>
                             </Field.Root>
                         </Box>
-
-                        <Button
-                            type="submit"
-                            onClick={() => {
-                                clearErrors();
-                                submit();
-                            }}
-                            colorScheme="blue"
-                            mt={4}
-                            alignSelf="flex-end"
-                            loading={processing}
-                            disabled={processing}
-                            size="md"
-                        >
-                            Sign In
-                            <LuArrowRight />
-                        </Button>
+                        <VStack alignItems="stretch" mt={4} gap={4}>
+                            <Button
+                                type="submit"
+                                onClick={() => {
+                                    clearErrors();
+                                    submit();
+                                }}
+                                colorScheme="blue"
+                                loading={processing}
+                                disabled={processing}
+                                width="full"
+                            >
+                                Sign In
+                                <LuArrowRight />
+                            </Button>
+                            <ChakraLink width="full" href="/auth/google">
+                                <Button type="button" width="full" variant="subtle">
+                                    <GrGoogle /> Sign in with Google
+                                </Button>
+                            </ChakraLink>
+                        </VStack>
                     </Stack>
                 )}
             </Form>

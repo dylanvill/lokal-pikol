@@ -45,7 +45,7 @@ Route::post('/logout', LogoutController::class)->middleware('auth:customer')->na
 Route::get('/login', [LoginController::class, 'show'])->name('login.show')->middleware('guest:customer');
 Route::post('/login', [LoginController::class, 'login'])->name('login')->middleware('guest:customer');
 
-Route::get('/auth/google/redirect', GoogleOAuthRedirectController::class)->name('auth.google.redirect');
+Route::get('/auth/google', GoogleOAuthRedirectController::class)->name('auth.google.redirect');
 Route::get('/auth/google/callback', GoogleOAuthCallbackController::class)->name('auth.google.callback');
 
 Route::prefix("facilities")->group(function () {
