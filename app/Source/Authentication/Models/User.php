@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
-    
+
     protected $fillable = [
         'email',
         'password',
@@ -69,5 +69,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function newFactory()
     {
         return UserFactory::new();
+    }
+
+    public function authenticationProviders()
+    {
+        return $this->hasMany(AuthenticationProvider::class);
     }
 }

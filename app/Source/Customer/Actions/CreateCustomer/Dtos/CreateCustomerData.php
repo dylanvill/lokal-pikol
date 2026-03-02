@@ -8,7 +8,7 @@ readonly class CreateCustomerData
         public string $userId,
         public string $firstName,
         public string $lastName,
-        public string $phone,
+        public string|null $phone,
         public string $email
     ) {}
 }
