@@ -28,6 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+
+        $middleware->preventRequestsDuringMaintenance(except: [
+            'privacy-policy',
+            'terms-and-conditions',
+        ]);
     })
     ->withCommands([
         SendOnboardingInvite::class
