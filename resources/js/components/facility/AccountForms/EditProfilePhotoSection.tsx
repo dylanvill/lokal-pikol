@@ -62,7 +62,7 @@ function EditProfilePhotoSection({ form, currentImageUrl }: { form: ReturnType<t
     return (
         <Box zIndex={2}>
             <FileUpload.RootProvider value={fileUpload} zIndex={2}>
-                <FileUpload.HiddenInput required />
+                <FileUpload.HiddenInput />
                 <Box width={32} height={32} zIndex={2}>
                     <FileUploadList currentImageUrl={currentImageUrl} />
                 </Box>

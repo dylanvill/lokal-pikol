@@ -61,7 +61,7 @@ function EditCoverPhotoSection({ form, currentImageUrl }: { form: ReturnType<typ
     return (
         <Box zIndex={1}>
             <FileUpload.RootProvider value={fileUpload} zIndex={1}>
-                <FileUpload.HiddenInput required />
+                <FileUpload.HiddenInput />
                 <FileUploadList currentImageUrl={currentImageUrl} />
                 <Flex justifyContent="flex-end" width="100%" zIndex={1}>
                     <FileUpload.Trigger asChild zIndex={1}>
