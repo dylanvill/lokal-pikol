@@ -37,7 +37,8 @@ class OnboardingInviteNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): OnboardingInviteEmail
     {
-        return (new OnboardingInviteEmail($this->name, $this->url));
+        return (new OnboardingInviteEmail($this->name, $this->url))
+            ->to($notifiable->email);
     }
 
     /**
