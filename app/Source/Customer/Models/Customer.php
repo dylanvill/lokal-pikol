@@ -32,7 +32,7 @@ class Customer extends Model implements HasReservations
         return $this->full_name;
     }
 
-    public function reservationPhone(): string
+    public function reservationPhone(): string|null
     {
         return $this->phone;
     }

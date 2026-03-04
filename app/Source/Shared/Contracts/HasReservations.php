@@ -12,7 +12,7 @@ interface HasReservations
 
     public function reservationNameDisplay(): string;
 
-    public function reservationPhone(): string;
+    public function reservationPhone(): string|null;
 
     public function reservationEmail(): string;
 }

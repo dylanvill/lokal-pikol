@@ -48,7 +48,7 @@ class Facility extends Model implements HasMedia, HasReservations
         return $this->name;
     }
 
-    public function reservationPhone(): string
+    public function reservationPhone(): string|null
     {
         return $this->phone;
     }
