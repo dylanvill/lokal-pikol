@@ -19,6 +19,7 @@ class OnboardingInviteEmail extends Mailable
     public function __construct(
         protected string $name,
         protected string $url,
+        protected ?string $email = null,
     ) {
         //
     }
@@ -29,6 +30,7 @@ class OnboardingInviteEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->email,
             subject: "Welcome onboard! Complete your facility profile",
         );
     }

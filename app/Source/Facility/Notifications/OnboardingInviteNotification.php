@@ -5,10 +5,11 @@ namespace App\Source\Facility\Notifications;
 use App\Source\Facility\Mail\OnboardingInviteEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OnboardingInviteNotification extends Notification implements ShouldQueue
+class OnboardingInviteNotification extends Notification
 {
     use Queueable;
 
@@ -35,10 +36,12 @@ class OnboardingInviteNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): OnboardingInviteEmail
+    public function toMail(object $notifiable): Mailable
     {
-        return (new OnboardingInviteEmail($this->name, $this->url))
-            ->to($notifiable->email);
+        // Extract email from the anonymous notifiable routing
+        $email = $notifiable->routeNotificationFor('mail');
+        
+        return new OnboardingInviteEmail($this->name, $this->url, $email);
     }
 
     /**

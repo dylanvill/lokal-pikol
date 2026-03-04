@@ -45,11 +45,6 @@ class AppServiceProvider extends ServiceProvider
         // Remove the "data" wrapper from JSON resources for a cleaner API response
         JsonResource::withoutWrapping();
 
-        // Always send emails to a specific address in local environment to prevent accidental emails to real users
-        if ($this->app->environment('local')) {
-            Mail::alwaysTo(env('MAIL_ALWAYS_TO'));
-        }
-
         /**
          * Custom email verification email
          */
