@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Customer\Account\Controllers\UpdatePhoneNumberController;
 use App\Http\Customer\Auth\Controllers\EmailVerificationController;
 use App\Http\Customer\Auth\Controllers\GoogleOAuthCallbackController;
 use App\Http\Customer\Auth\Controllers\GoogleOAuthRedirectController;
@@ -48,6 +49,9 @@ Route::post('/login', [LoginController::class, 'login'])->name('login')->middlew
 
 Route::get('/auth/google', GoogleOAuthRedirectController::class)->name('auth.google.redirect');
 Route::get('/auth/google/callback', GoogleOAuthCallbackController::class)->name('auth.google.callback');
+
+Route::get('/account/update-phone-number', [UpdatePhoneNumberController::class, 'show'])->name('account.update-phone-number.show')->middleware('auth:customer');
+Route::post('/account/update-phone-number', [UpdatePhoneNumberController::class, 'update'])->name('account.update-phone-number.update')->middleware('auth:customer');
 
 Route::get('/privacy-policy', [LegalController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms-and-conditions', [LegalController::class, 'termsAndConditions'])->name('terms-and-conditions');
