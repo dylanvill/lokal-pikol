@@ -1,7 +1,7 @@
 import { Button, Card, Link as ChakraLink, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { LuExternalLink, LuUser, LuCalendar, LuClock, LuCheck, LuMail, LuPhone, LuGrid2X2 } from 'react-icons/lu';
 import courtTypeIconParser from '../../helpers/courtTypeIconParser';
 import courtTypeLabelParser from '../../helpers/courtTypeLabelParser';
@@ -38,6 +38,8 @@ function DashboardReservationCard({
         return dayjs(reservationDate).format('MMMM D, YYYY');
     }, [reservationDate]);
 
+    const [loading, setLoading] = useState(false);
+
     const timeDisplay = useMemo(() => {
         const startTimeDisplay = militaryTimeToAmPmTime(startTime);
         const endTimeDisplay = militaryTimeToAmPmTime(endTime);
@@ -50,7 +52,10 @@ function DashboardReservationCard({
     const courtTypeLabel = courtTypeLabelParser(covered);
 
     const handleConfirmClicked = () => {
-        router.post(`/facility/reservations/${id}/confirm`);
+        router.post(`/facility/reservations/${id}/confirm`, undefined, {
+            onStart: () => setLoading(true),
+            onFinish: () => setLoading(false),
+        });
     };
 
     return (
@@ -62,7 +67,7 @@ function DashboardReservationCard({
                         <Text margin={0}>{customerName}</Text>
                     </HStack>
                 </Card.Title>
-                <DetailWithIcon icon={<LuPhone color="black" />} label={customerPhone} textProps={{ color: 'black' }} />
+                <DetailWithIcon icon={<LuPhone color="black" />} label={customerPhone || "N/A"} textProps={{ color: 'black' }} />
                 <DetailWithIcon icon={<LuMail color="black" />} label={customerEmail} textProps={{ color: 'black' }} />
             </Card.Header>
             <Card.Body>
@@ -93,7 +98,7 @@ function DashboardReservationCard({
                 </VStack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
-                <Button variant="solid" colorPalette="green" size="xs" onClick={handleConfirmClicked}>
+                <Button variant="solid" colorPalette="green" size="xs" onClick={handleConfirmClicked} loading={loading} disabled={loading} loadingText="Confirming...">
                     <LuCheck /> Confirm
                 </Button>
             </Card.Footer>
