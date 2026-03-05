@@ -42,7 +42,7 @@ function ReservationPage() {
                         courtSlots={reservation.court.slots}
                         status={reservation.status}
                     />
-                    <ReservationActions id={reservation.id} status={reservation.status} paymentReceipt={reservation.paymentReceipt} />
+                    <ReservationActions id={reservation.id} status={reservation.status}/>
                 </VStack>
             </Container>
         </FacilityLayout>
