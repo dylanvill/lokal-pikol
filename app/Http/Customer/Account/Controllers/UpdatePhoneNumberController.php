@@ -20,8 +20,9 @@ class UpdatePhoneNumberController extends Controller
         /** @var Customer $customer */
         $customer = $request->user()->getProfileAttribute();
 
-        $customer->update([
-            'phone_number' => $request->phoneNumber,
-        ]);
+        $customer->phone = "+63" . $request->phoneNumber;
+        $customer->save();
+
+        return Inertia::flash('success', true)->back();
     }
 }
