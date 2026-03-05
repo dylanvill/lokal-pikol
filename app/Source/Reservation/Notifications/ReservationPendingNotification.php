@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ReservationPendingNotification extends Notification implements ShouldQueue
+class ReservationPendingNotification extends Notification
 {
     use Queueable;
 

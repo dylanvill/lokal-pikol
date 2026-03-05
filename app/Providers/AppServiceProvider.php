@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             $appName = config('app.name');
             return (new UserVerificationMail($url))
-                ->subject("Verify Email Address | {$appName}");
+                ->to($notifiable->email);
         });
 
         Gate::policy(Reservation::class, ReservationPolicy::class);

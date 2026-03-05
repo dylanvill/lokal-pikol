@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserVerificationMail extends Mailable implements ShouldQueue
+class UserVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -27,7 +27,7 @@ class UserVerificationMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'User Verification',
+            subject: 'Complete Your Registration | Welcome to Lokal Pikol!',
         );
     }
 
