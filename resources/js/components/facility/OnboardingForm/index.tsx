@@ -66,6 +66,7 @@ function OnboardingForm() {
                     marginTop={4}
                     marginBottom={12}
                     required
+                    disabled={form.processing}
                 >
                     <LuPencil />
                     <Editable.Preview fontSize="3xl" width="full" fontWeight="medium" lineHeight={1.25} />
@@ -76,7 +77,7 @@ function OnboardingForm() {
                 <VStack gap={4} marginBottom={8}>
                     <Field.Root invalid={!!form.errors.city}>
                         <Field.Label>City</Field.Label>
-                        <NativeSelect.Root size="sm" invalid={!!form.errors.city}>
+                        <NativeSelect.Root size="sm" disabled={form.processing} invalid={!!form.errors.city}>
                             <NativeSelect.Field
                                 placeholder="Select option"
                                 value={form.data.city}
@@ -99,6 +100,7 @@ function OnboardingForm() {
                             value={form.data.address}
                             onChange={(e) => form.setData('address', e.currentTarget.value)}
                             required
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.address}</Field.ErrorText>
                     </Field.Root>
@@ -109,6 +111,7 @@ function OnboardingForm() {
                             value={form.data.googleMapsUrl}
                             onChange={(e) => form.setData('googleMapsUrl', e.currentTarget.value)}
                             type="url"
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.googleMapsUrl}</Field.ErrorText>
                     </Field.Root>
@@ -121,6 +124,7 @@ function OnboardingForm() {
                                 onChange={(e) => form.setData('phone', e.currentTarget.value)}
                                 type="tel"
                                 required
+                                disabled={form.processing}
                             />
                         </InputGroup>
                         <Field.ErrorText>{form.errors.phone}</Field.ErrorText>
@@ -133,6 +137,7 @@ function OnboardingForm() {
                             onChange={(e) => form.setData('openingTime', e.currentTarget.value)}
                             type="time"
                             required
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.openingTime}</Field.ErrorText>
                     </Field.Root>
@@ -144,6 +149,7 @@ function OnboardingForm() {
                             onChange={(e) => form.setData('closingTime', e.currentTarget.value)}
                             type="time"
                             required
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.closingTime}</Field.ErrorText>
                     </Field.Root>
@@ -153,6 +159,7 @@ function OnboardingForm() {
                             placeholder="Enter description"
                             value={form.data.description}
                             onChange={(e) => form.setData('description', e.currentTarget.value)}
+                            disabled={form.processing}
                         ></Textarea>
                         <Field.ErrorText>{form.errors.description}</Field.ErrorText>
                     </Field.Root>
@@ -164,7 +171,7 @@ function OnboardingForm() {
                         title="Payment QR Code"
                         description="This QR code will be used by users to make payments. Please upload a QR code that is linked to your facility's payment account."
                     />
-                <PaymentQrCodeSection form={form} />
+                    <PaymentQrCodeSection form={form} />
                 </Box>
                 <SectionHeader
                     icon={<LuUser size={20} />}
@@ -180,6 +187,7 @@ function OnboardingForm() {
                             onChange={(e) => form.setData('email', e.currentTarget.value)}
                             type="email"
                             required
+                            disabled={form.processing}
                         />
                         <Field.HelperText>
                             The email that you put in here will be the same contact email customers will use to reach you.
@@ -194,6 +202,7 @@ function OnboardingForm() {
                             onChange={(e) => form.setData('password', e.currentTarget.value)}
                             type="password"
                             required
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.password}</Field.ErrorText>
                         {!form.errors.password && (
@@ -210,11 +219,12 @@ function OnboardingForm() {
                             onChange={(e) => form.setData('password_confirmation', e.currentTarget.value)}
                             type="password"
                             required
+                            disabled={form.processing}
                         />
                         <Field.ErrorText>{form.errors.password_confirmation}</Field.ErrorText>
                     </Field.Root>
                     <Flex width="full" justifyContent="flex-end">
-                        <Button type="submit" disabled={form.processing}>
+                        <Button type="submit" disabled={form.processing} loading={form.processing} colorScheme="blue">
                             Finish Setup
                         </Button>
                     </Flex>
