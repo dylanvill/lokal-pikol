@@ -1,5 +1,5 @@
-import { Button, Field, GridItem, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { Box, Button, Field, GridItem, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Link, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
@@ -7,6 +7,7 @@ import courtTypeIconParser from '../../../helpers/courtTypeIconParser';
 import useCustomer from '../../../lib/hooks/useCustomer';
 import type CourtSlot from '../../../models/shared/CourtSlot';
 import type Photo from '../../../models/shared/Photo';
+import WarningAlert from '../../shared/Alert/WarningAlert';
 import ImageCarousel from '../../shared/ImageCarousel';
 import { Tooltip } from '../../ui/Tooltip';
 import CourtSlotSection from './CourtSlotSection';
@@ -90,6 +91,26 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date,
                             />
                         ))}
                     </SimpleGrid>
+                    {canBook && !isLoggedIn ? (
+                        <Box marginTop={4}>
+                            <WarningAlert
+                                title="Account needed for booking"
+                                description={
+                                    <>
+                                        Create an account to manage bookings all in one place!{' '}
+                                        <Link href="/login" style={{ color: 'blue' }}>
+                                            Login
+                                        </Link>{' '}
+                                        or{' '}
+                                        <Link href="/sign-up" style={{ color: 'blue' }}>
+                                            create an account
+                                        </Link>{' '}
+                                        to get started.
+                                    </>
+                                }
+                            />
+                        </Box>
+                    ) : null}
                     {canBook && (
                         <VStack alignItems="flex-end" gap={1}>
                             <Tooltip content="You must be logged in to reserve slots" disabled={isLoggedIn} openDelay={50}>
@@ -104,9 +125,6 @@ function CourtReservationBlock({ facilityId, courtId, name, photos, slots, date,
                                     <LuArrowRight />
                                 </Button>
                             </Tooltip>
-                            <Text fontSize="xs" color="gray.500">
-                                Proceed to book {name}
-                            </Text>
                         </VStack>
                     )}
                 </form>

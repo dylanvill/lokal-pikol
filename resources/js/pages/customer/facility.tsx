@@ -1,11 +1,11 @@
-import { Box, Field, Input, Separator, VStack } from '@chakra-ui/react';
+import { Box, Field, Input, Separator, Text, VStack } from '@chakra-ui/react';
 import { router, type PageProps } from '@inertiajs/core';
 import { Link, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { LuCircleAlert } from 'react-icons/lu';
 import CourtReservationBlock from '../../components/customer/CourtReservationBlock';
 import FacilityProfileHeader from '../../components/customer/FacilityProfileHeader';
-import WarningAlert from '../../components/shared/Alert/WarningAlert';
 import DefaultPageLayout from '../../layouts/DefaultPageLayout';
 import useCustomer from '../../lib/hooks/useCustomer';
 import type Court from '../../models/customer/court/Court';
@@ -57,22 +57,18 @@ export default function CourtPage() {
             <Separator marginY={8} />
             {!customer.isLoggedIn && (
                 <Box marginBottom={4}>
-                    <WarningAlert
-                        title="Account needed for booking"
-                        description={
-                            <>
-                                Create an account to manage bookings all in one place!{' '}
-                                <Link href="/login" style={{ color: 'blue' }}>
-                                    Login
-                                </Link>{' '}
-                                or{' '}
-                                <Link href="/sign-up" style={{ color: 'blue' }}>
-                                    create an account
-                                </Link>{' '}
-                                to get started.
-                            </>
-                        }
-                    />
+                    <Text color="orange.500" fontStyle="italic" display="flex" alignItems="center" gap={2}>
+                        <LuCircleAlert size={16} />
+                        Create an account to manage bookings all in one place!{' '}
+                        <Link href="/login" style={{ color: 'blue' }}>
+                            Login
+                        </Link>{' '}
+                        or{' '}
+                        <Link href="/sign-up" style={{ color: 'blue' }}>
+                            create an account
+                        </Link>{' '}
+                        to get started.
+                    </Text>
                 </Box>
             )}
             <VStack alignItems="stretch" justifyContent="flex" width="full" gap={8}>
