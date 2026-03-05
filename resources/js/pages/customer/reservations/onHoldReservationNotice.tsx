@@ -68,7 +68,7 @@ function OnHoldReservationNoticePage({ reservation }: OnHoldReservationNoticePag
                 </VStack>
 
                 <VStack alignItems="stretch" gap={4}>
-                    <Text>You can still book this facility's other courts and explore the availability on other dates.</Text>
+                    <Text>You can still book <strong>this facility's other courts</strong> and explore the availability on <strong>other dates</strong>.</Text>
                     <SimpleGrid columns={2} gap={4}>
                         {nearbyDates.map((date) => (
                             <Card.Root padding={1} alignItems="stretch" justifyContent="space-between">

@@ -75,7 +75,7 @@ Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
             });
 
         /* ------------------------------- Facilities ------------------------------- */
-        Route::post('facility/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])
+        Route::post('/facilities/{facility:uuid}/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'store'])
             ->name('reservation.store')
             ->middleware(['auth:customer', 'verified', 'can:canViewUnpublishedFacility,facility']);
     });

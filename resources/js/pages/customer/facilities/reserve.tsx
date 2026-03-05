@@ -6,6 +6,7 @@ import PaymentBreakdown from '../../../components/customer/ReservationReview/Pay
 import PaymentUpload from '../../../components/customer/ReservationReview/PaymentUpload';
 import ReservationDetails from '../../../components/customer/ReservationReview/ReservationDetails';
 import ReservationNotice from '../../../components/customer/ReservationReview/ReservationNotice';
+import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 import type Reservation from '../../../models/customer/reservation/Reservation';
 
@@ -23,6 +24,7 @@ function ReservePage() {
 
     return (
         <DefaultPageLayout title="Facility Name">
+            <BackNavigationBase href="/reservations" label="Back to reservations" />
             <VStack gap={6} align="stretch">
                 <ReservationNotice onTimerExpired={onTimerExpired} createdAt={reservation.createdAt} />
                 <ReservationDetails
