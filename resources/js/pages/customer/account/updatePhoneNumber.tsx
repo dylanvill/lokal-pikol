@@ -1,10 +1,10 @@
 import { Box, Button, Field, Flex, Heading, Input, InputGroup, Text } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
-import { update } from '@/actions/App/Http/Customer/Account/Controllers/UpdatePhoneNumberController'; 
+import { update } from '@/actions/App/Http/Customer/Account/Controllers/UpdatePhoneNumberController';
 import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 
-function UpdatePhoneNumberPage() {
+function UpdatePhoneNumberPage({ fromAuth }: { fromAuth?: boolean }) {
     const { errors, data, setData, processing, submit, resetAndClearErrors, clearErrors } = useForm({
         phoneNumber: '',
     });
@@ -23,9 +23,9 @@ function UpdatePhoneNumberPage() {
     return (
         <DefaultPageLayout title="Update Phone Number" contentContainerProps={{ maxWidth: 'xl' }}>
             <BackNavigationBase href="/" label="Back to facilities" />
-            <Heading>Update phone number</Heading>
+            <Heading>{fromAuth ? 'Almost there! Just add a phone number' : 'Add phone number'}</Heading>
             <Text>
-                While this isn't required right away, updating your phone number helps us quickly contact you in case of any issues with your
+                While this isn't required right away, adding your phone number helps us quickly contact you in case of any issues with your
                 reservations.
             </Text>
 
@@ -48,7 +48,7 @@ function UpdatePhoneNumberPage() {
                     </Field.Root>
                     <Flex alignItems="center" justifyContent="flex-end">
                         <Button type="submit" colorPalette="blue" size="md" disabled={!canSubmit} loading={processing}>
-                            Update
+                            Save
                         </Button>
                     </Flex>
                 </form>

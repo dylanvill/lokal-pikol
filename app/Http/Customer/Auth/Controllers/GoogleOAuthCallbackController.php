@@ -13,6 +13,7 @@ use App\Source\Authentication\Enums\UserRoles;
 use App\Source\Authentication\Models\User;
 use App\Source\Customer\Actions\CreateCustomer\CreateCustomer;
 use App\Source\Customer\Actions\CreateCustomer\Dtos\CreateCustomerData;
+use App\Source\Customer\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Socialite;
@@ -66,6 +67,15 @@ class GoogleOAuthCallbackController extends Controller
 
         Auth::guard(GuardEnum::CUSTOMER->value)->login($user, true);
         $request->session()->regenerate();
+
+        /** @var Customer $customer */
+        $customer = $user->getProfileAttribute();
+
+        if (empty($customer->phone)) {
+            return redirect()->route('account.update-phone-number.show', [
+                'fromAuth' => true,
+            ]);
+        }
 
         return redirect()->route('home');
     }

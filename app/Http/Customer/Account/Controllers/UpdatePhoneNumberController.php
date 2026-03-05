@@ -20,7 +20,9 @@ class UpdatePhoneNumberController extends Controller
 
         if (!empty($customer->phone)) return redirect()->route('home');
 
-        return Inertia::render('customer/account/updatePhoneNumber');
+        return Inertia::render('customer/account/updatePhoneNumber', [
+            'fromAuth' => $request->query('fromAuth', false),
+        ]);
     }
 
 
