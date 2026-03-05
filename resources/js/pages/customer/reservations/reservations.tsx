@@ -1,13 +1,16 @@
 import { Box, Heading, SimpleGrid, Tabs, Text } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
-import { InfiniteScroll, router, usePage } from '@inertiajs/react';
+import { InfiniteScroll, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuCalendar, LuCalendarCheck, LuHistory } from 'react-icons/lu';
+import { show } from '@/actions/App/Http/Customer/Account/Controllers/UpdatePhoneNumberController';
 import ReservationCard from '../../../components/customer/ReservationCard';
 import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
+import WarningAlert from '../../../components/shared/Alert/WarningAlert';
 import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import Empty from '../../../components/shared/Empty';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
+import useCustomer from '../../../lib/hooks/useCustomer';
 import type Reservation from '../../../models/customer/reservation/Reservation';
 import type PaginatedData from '../../../models/shared/Pagination';
 
@@ -19,6 +22,7 @@ function ReservationsPage() {
     const { props, flash } = usePage<ReservationPageProps>();
 
     const [activeTab, setActiveTab] = useState<'active' | 'past'>('active');
+    const { customer } = useCustomer();
 
     const reservations = props.reservations.data || [];
     const total = props.reservations.meta.total || 0;
@@ -44,6 +48,22 @@ function ReservationsPage() {
                 <Heading>Active Reservations</Heading>
                 <Text color="gray.600">Here are your court reservations. Click on a reservation to view details or manage your booking.</Text>
             </Box>
+            {!customer!.phone && (
+                <Box marginBottom={4}>
+                    <WarningAlert
+                        title="Add a phone number"
+                        description={
+                            <>
+                                To ensure we can contact you for any issues with your reservations,{' '}
+                                <Link style={{ color: 'blue' }} href={show()}>
+                                    please add a phone number
+                                </Link>{' '}
+                                to your account.
+                            </>
+                        }
+                    />
+                </Box>
+            )}
             {success && (
                 <Box marginBottom={4}>
                     <SuccessAlert title="Receipt uploaded" description={success} />

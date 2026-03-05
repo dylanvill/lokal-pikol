@@ -4,13 +4,22 @@ namespace App\Http\Customer\Account\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Customer\Account\Requests\UpdatePhoneNumberRequest;
+use App\Http\Enums\GuardEnum;
 use App\Source\Customer\Models\Customer;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UpdatePhoneNumberController extends Controller
 {
-    public function show()
+    const FLASH = 'initial-phone-number-update-success';
+
+    public function show(Request $request)
     {
+        /** @var Customer $customer */
+        $customer = $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute();
+
+        if (!empty($customer->phone)) return redirect()->route('home');
+
         return Inertia::render('customer/account/updatePhoneNumber');
     }
 
@@ -18,11 +27,13 @@ class UpdatePhoneNumberController extends Controller
     public function update(UpdatePhoneNumberRequest $request)
     {
         /** @var Customer $customer */
-        $customer = $request->user()->getProfileAttribute();
+        $customer = $request->user(GuardEnum::CUSTOMER->value)->getProfileAttribute();
 
         $customer->phone = "+63" . $request->phoneNumber;
         $customer->save();
 
-        return Inertia::flash('success', true)->back();
+        Inertia::flash(self::FLASH, true);
+
+        return redirect()->route('home');
     }
 }

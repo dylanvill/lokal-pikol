@@ -26,6 +26,7 @@ export default function Home() {
     const facilities = page.props.facilities || [];
 
     const justVerified = page.flash?.verificationSuccess || false;
+    const justUpdateMobileNumber = page.flash?.['initial-phone-number-update-success'] || false;
 
     const queryData = page.props.queryData;
 
@@ -35,6 +36,11 @@ export default function Home() {
                 {justVerified && (
                     <Box marginBottom={4}>
                         <SuccessAlert title="Email verified!" description="Your email has been successfully verified. You can now book courts." />
+                    </Box>
+                )}
+                {justUpdateMobileNumber && (
+                    <Box marginBottom={4}>
+                        <SuccessAlert title="Phone number has been registered" description="Your phone number has been updated. We will use this number to contact you if there are any issues regarding your reservations." />
                     </Box>
                 )}
                 <Box marginBottom={4}>

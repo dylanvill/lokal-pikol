@@ -1,7 +1,6 @@
 import { Box, Button, Field, Flex, Heading, Input, InputGroup, Text } from '@chakra-ui/react';
-import { useForm, usePage } from '@inertiajs/react';
-import { update } from '@/actions/App/Http/Customer/Account/Controllers/UpdatePhoneNumberController';
-import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
+import { useForm } from '@inertiajs/react';
+import { update } from '@/actions/App/Http/Customer/Account/Controllers/UpdatePhoneNumberController'; 
 import BackNavigationBase from '../../../components/shared/BackNavigationBase';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 
@@ -9,10 +8,6 @@ function UpdatePhoneNumberPage() {
     const { errors, data, setData, processing, submit, resetAndClearErrors, clearErrors } = useForm({
         phoneNumber: '',
     });
-
-    const { flash } = usePage();
-
-    const isSuccess = !!flash.success;
 
     const canSubmit = !!data.phoneNumber;
 
@@ -33,15 +28,6 @@ function UpdatePhoneNumberPage() {
                 While this isn't required right away, updating your phone number helps us quickly contact you in case of any issues with your
                 reservations.
             </Text>
-
-            {isSuccess && (
-                <Box marginTop={8}>
-                    <SuccessAlert
-                        title="Phone number updated successfully!"
-                        description="Your phone number has been updated. We will use this number to contact you regarding your reservations."
-                    />
-                </Box>
-            )}
 
             <Box marginTop={8}>
                 <form onSubmit={handleSubmit}>

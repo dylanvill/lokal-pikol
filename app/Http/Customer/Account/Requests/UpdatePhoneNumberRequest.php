@@ -16,6 +16,12 @@ class UpdatePhoneNumberRequest extends FormRequest
      */
     public function authorize(): bool
     {
+
+        /** @var Customer $customer */
+        $customer = $this->user(GuardEnum::CUSTOMER->value)->getProfileAttribute();
+
+        if (!empty($customer->phone)) return false;
+
         return Auth::guard(GuardEnum::CUSTOMER->value)->check();
     }
 
