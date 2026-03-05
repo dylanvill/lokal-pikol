@@ -19,6 +19,7 @@ interface ReservationsPageProps extends PageProps {
 function ReservationsPage() {
     const { props, flash } = usePage<ReservationsPageProps>();
     const [fetchingData, setFetchingData] = useState(false);
+    const [confirming, setConfirming] = useState<string | null>(null);
 
     const reservations = props.reservations.data || [];
     const meta = props.reservations.meta;
@@ -26,7 +27,10 @@ function ReservationsPage() {
     const successFlash = flash?.success as string;
 
     const onConfirmClicked = (id: string) => {
-        router.post(`/facility/reservations/${id}/confirm`);
+        router.post(`/facility/reservations/${id}/confirm`, undefined, {
+            onStart: () => setConfirming(id),
+            onFinish: () => setConfirming(null),
+        });
     };
 
     const columns = [
@@ -91,8 +95,16 @@ function ReservationsPage() {
             id: 'approve',
             name: 'Approve',
             cell: (row: ReservationListItem) => {
+                const isRowConfirming = confirming === row.id;
                 return row.status === 'pending' ? (
-                    <Button size="xs" colorPalette="green" onClick={() => onConfirmClicked(row.id)}>
+                    <Button
+                        size="xs"
+                        colorPalette="green"
+                        onClick={() => onConfirmClicked(row.id)}
+                        disabled={isRowConfirming}
+                        loading={isRowConfirming}
+                        loadingText="Confirming..."
+                    >
                         <LuCheck />
                         Confirm
                     </Button>
