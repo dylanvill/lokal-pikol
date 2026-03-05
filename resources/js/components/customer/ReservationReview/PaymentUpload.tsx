@@ -19,7 +19,7 @@ function PaymentUpload({ reservation }: PaymentUploadProps) {
                             <VStack gap={4}>
                                 <VStack gap={2} alignItems="center">
                                     <Image
-                                        src={reservation.facility.paymentQrCode.url}
+                                        src={reservation.facility.paymentQrCode?.url}
                                         alt="Payment QR Code"
                                         width="full"
                                         maxWidth="md"

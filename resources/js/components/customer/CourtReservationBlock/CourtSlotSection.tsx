@@ -2,6 +2,7 @@ import { Badge, Box, CheckboxCard, Field, VStack, type CheckboxCardCheckedChange
 import { type InertiaFormProps } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
+import { LuCheck, LuHistory, LuX } from 'react-icons/lu';
 import currencyFormatter from '../../../helpers/currencyFormatter';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
 
@@ -44,6 +45,42 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
 
     const isNotSelectable = !isAvailable || isInThePast;
 
+    const uiProps = useMemo(() => {
+        if (!isAvailable || isInThePast) {
+            return { backgroundColor: 'red.200', pointerEvents: 'none' };
+        }
+
+        return {};
+    }, [isAvailable, isInThePast]);
+
+    const badgeColor = useMemo(() => {
+        if (!isAvailable || isInThePast) {
+            return 'red';
+        }
+
+        return 'green';
+    }, [isAvailable, isInThePast]);
+
+    const badgeLabel = useMemo(() => {
+        if (!isAvailable) {
+            return 'Booked';
+        }
+        if (isInThePast) {
+            return 'Past Time';
+        }
+        return 'Available';
+    }, [isAvailable, isInThePast]);
+
+    const badgeIcon = useMemo(() => {
+        if (!isAvailable) {
+            return <LuX />;
+        }
+        if (isInThePast) {
+            return <LuHistory />;
+        }
+        return <LuCheck />;
+    }, [isAvailable, isInThePast]);
+
     return (
         <Field.Root width="full">
             <CheckboxCard.Root
@@ -56,7 +93,7 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                 checked={isChecked}
                 onCheckedChange={handleSelectionChanged}
                 disabled={isNotSelectable}
-                {...(!isAvailable && { pointerEvents: 'none', backgroundColor: 'red.200' })}
+                {...uiProps}
             >
                 <CheckboxCard.HiddenInput value={`${startTime}-${endTime}`} />
                 <CheckboxCard.Control>
@@ -65,8 +102,8 @@ function CourtSlotSection({ courtId, startTime, endTime, price, isAvailable, for
                         <VStack alignItems="stretch" width="full">
                             <CheckboxCard.Description fontSize="sm">{formattedPrice}</CheckboxCard.Description>
                             <Box justifyContent="flex-end" display="flex">
-                                <Badge alignSelf="flex-end" colorPalette={isAvailable ? 'green' : 'orange'}>
-                                    {isAvailable ? 'Available' : 'Unavailable'}
+                                <Badge alignSelf="flex-end" colorPalette={badgeColor}>
+                                    {badgeIcon} {badgeLabel}
                                 </Badge>
                             </Box>
                         </VStack>
