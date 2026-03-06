@@ -45,15 +45,6 @@ class AppServiceProvider extends ServiceProvider
         // Remove the "data" wrapper from JSON resources for a cleaner API response
         JsonResource::withoutWrapping();
 
-        /**
-         * Custom email verification email
-         */
-        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-            $appName = config('app.name');
-            return (new UserVerificationMail($url))
-                ->to($notifiable->email);
-        });
-
         Gate::policy(Reservation::class, ReservationPolicy::class);
         Gate::policy(Facility::class, FacilityPolicy::class);
     }

@@ -46,13 +46,6 @@ Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
     Route::middleware('auth:customer')->group(function () {
         Route::post('/logout', LogoutController::class)->name('logout');
 
-        /* --------------------------------- Sign Up -------------------------------- */
-        Route::prefix("sign-up")->name("sign-up.")->group(function () {
-            Route::get('/notice', [VerificationNoticeController::class, 'show'])->name('verification.notice');
-            Route::post('/notice/send', [VerificationNoticeController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
-            Route::get('/verify/{id}/{hash}', EmailVerificationController::class)->middleware('signed')->name('verification.verify');
-        });
-
         /* --------------------------------- Account -------------------------------- */
         Route::prefix("account")->name("account.")->group(function () {
             Route::get('update-phone-number', [UpdatePhoneNumberController::class, 'show'])->name('update-phone-number.show');

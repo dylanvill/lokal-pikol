@@ -25,7 +25,7 @@ export default function Home() {
 
     const facilities = page.props.facilities || [];
 
-    const justVerified = page.flash?.verificationSuccess || false;
+    const justSignedUp = page.flash?.justSignedUp || false;
     const justUpdateMobileNumber = page.flash?.['initial-phone-number-update-success'] || false;
 
     const queryData = page.props.queryData;
@@ -33,14 +33,17 @@ export default function Home() {
     return (
         <HomePageLayout title="Home">
             <VStack gap={2} align="stretch">
-                {justVerified && (
+                {justSignedUp && (
                     <Box marginBottom={4}>
-                        <SuccessAlert title="Email verified!" description="Your email has been successfully verified. You can now book courts." />
+                        <SuccessAlert title="Welcome to Lokal Pikol!" description="You can now start exploring and booking facilities." />
                     </Box>
                 )}
                 {justUpdateMobileNumber && (
                     <Box marginBottom={4}>
-                        <SuccessAlert title="Phone number has been registered" description="Your phone number has been updated. We will use this number to contact you if there are any issues regarding your reservations." />
+                        <SuccessAlert
+                            title="Phone number has been registered"
+                            description="Your phone number has been updated. We will use this number to contact you if there are any issues regarding your reservations."
+                        />
                     </Box>
                 )}
                 <Box marginBottom={4}>

@@ -42,10 +42,12 @@ class SignUpController extends Controller
             )
         );
 
+        $user->markEmailAsVerified();
+
         Auth::guard(GuardEnum::CUSTOMER->value)->login($user);
 
-        event(new Registered($user));
+        Inertia::flash('justSignedUp', true);
 
-        return redirect()->route('verification.notice');
+        return redirect()->route('home');
     }
 }
