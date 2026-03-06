@@ -2,7 +2,7 @@ import { Box, VStack, Badge, Image, Heading, Text, Flex, Card } from '@chakra-ui
 import { Link, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
-import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun } from 'react-icons/lu';
+import { LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuX } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../helpers/militaryTimeToAmPmTime';
 import type FacilityList from '../../models/customer/facility/FacilityList';
 import type CourtSlot from '../../models/shared/CourtSlot';
@@ -48,6 +48,7 @@ export default function FacilityCard({
     const isSelectedDateToday = selectedDate.isSame(currentDate, 'day');
 
     const dateLabel = isSelectedDateToday ? 'Available times today' : `Available times on ${selectedDate.format('MMMM D')}`;
+    const emptyLabel = isSelectedDateToday ? 'No more available slots for today' : `No more available slots for ${selectedDate.format('MMMM D')}`;
 
     const openingTimeDisplay = militaryTimeToAmPmTime(openingTime);
     const closingTimeDisplay = militaryTimeToAmPmTime(closingTime);
@@ -105,46 +106,33 @@ export default function FacilityCard({
                                     label={`${numberOfCourts} courts`}
                                 />
                             </VStack>
-                            <VStack alignItems="stretch" gap={2} marginTop={4}>
-                                <Text fontSize="xs" color="gray.900">
-                                    {dateLabel}:
+                            {hasAvailableTimes ? (
+                                <VStack alignItems="stretch" gap={2} marginTop={4}>
+                                    <Text fontSize="xs" color="gray.900">
+                                        {dateLabel}:
+                                    </Text>
+                                    <Flex wrap="wrap" gap={1}>
+                                        {firstSevenSlots.map((slot, index) => (
+                                            <Badge key={index} colorPalette="blue" variant="outline" fontSize="xs">
+                                                {`${slot.startTime} - ${slot.endTime}`}
+                                            </Badge>
+                                        ))}
+                                        {remainingSlotCount > 0 && (
+                                            <Badge colorPalette="blue" variant="plain" fontSize="xs">
+                                                +{remainingSlotCount} more
+                                            </Badge>
+                                        )}
+                                    </Flex>
+                                </VStack>
+                            ) : (
+                                <Text fontSize="xs" color="orange.500" marginTop={4} display="inline-flex" alignItems="center">
+                                    <LuX /> {emptyLabel}
                                 </Text>
-                                <Flex wrap="wrap" gap={1}>
-                                    {firstSevenSlots.map((slot, index) => (
-                                        <Badge key={index} colorPalette="blue" variant="outline" fontSize="xs">
-                                            {`${slot.startTime} - ${slot.endTime}`}
-                                        </Badge>
-                                    ))}
-                                    {remainingSlotCount > 0 && (
-                                        <Badge colorPalette="blue" variant="plain" fontSize="xs">
-                                            +{remainingSlotCount} more
-                                        </Badge>
-                                    )}
-                                    {!hasAvailableTimes && (
-                                        <Text fontSize="xs" color="gray.500">
-                                            No available times today
-                                        </Text>
-                                    )}
-                                </Flex>
-                            </VStack>
+                            )}
                         </VStack>
                     </Box>
                 </Card.Body>
             </Card.Root>
         </Link>
-        // <Box
-        //     bg="white"
-        //     borderRadius="xl"
-        //     shadow="sm"
-        //     overflow="hidden"
-        //     border="1px"
-        //     borderColor="gray.200"
-        //     cursor="pointer"
-        //     _hover={{ shadow: 'md', borderColor: 'gray.300' }}
-        //     transition="all 0.2s"
-        //     onClick={handleCardClick}
-        //     key={id}
-        // >
-        // </Box>
     );
 }
