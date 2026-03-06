@@ -5,6 +5,8 @@ use App\Http\Customer\Auth\Controllers\GoogleOAuthCallbackController;
 use App\Http\Customer\Auth\Controllers\GoogleOAuthRedirectController;
 use App\Http\Customer\Auth\Controllers\LoginController;
 use App\Http\Customer\Auth\Controllers\LogoutController;
+use App\Http\Customer\Auth\Controllers\ForgotPasswordController;
+use App\Http\Customer\Auth\Controllers\ResetPasswordController;
 use App\Http\Customer\Auth\Controllers\SignUpController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
@@ -29,6 +31,11 @@ Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
             ->name('facility')
             ->middleware('can:canViewUnpublishedFacility,facility');
     });
+
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])->name('password.request')->middleware('guest:customer');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'send'])->name('password.email')->middleware('guest:customer');
+    Route::get('/reset-password', [ResetPasswordController::class, 'show'])->name('password.reset')->middleware('guest:customer');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update')->middleware('guest:customer');
 
     /* ------------------------------ Registration ------------------------------ */
     Route::prefix("sign-up")->group(function () {

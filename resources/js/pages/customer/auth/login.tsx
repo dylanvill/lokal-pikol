@@ -1,13 +1,18 @@
 import { Box, Button, Field, Heading, Input, Stack, Text, Image, VStack, Link as ChakraLink } from '@chakra-ui/react';
-import { Form, Link } from '@inertiajs/react';
+import { Form, Link, usePage } from '@inertiajs/react';
 import { GrGoogle } from 'react-icons/gr';
 import { LuArrowRight } from 'react-icons/lu';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-primary.svg';
+import SuccessAlert from '../../../components/shared/Alert/SuccessAlert';
 import BackNavigation from '../../../components/shared/BackNavigation';
 import DefaultPageLayout from '../../../layouts/DefaultPageLayout';
 import typographyTokens from '../../../lib/tokens/typography';
 
 export default function LoginPage() {
+    const { flash } = usePage();
+
+    const resetPassword = flash?.['reset-password-success'] as string | null;
+
     return (
         <DefaultPageLayout
             title="Login"
@@ -30,6 +35,7 @@ export default function LoginPage() {
                     now
                 </Text>
             </Box>
+                {resetPassword ? <Box marginBottom={4}><SuccessAlert title="Password has been updated" description={resetPassword} /></Box> : null}
             <Form action="/login" method="post" resetOnSuccess>
                 {({ errors, processing, clearErrors, submit }) => (
                     <Stack gap={4}>
