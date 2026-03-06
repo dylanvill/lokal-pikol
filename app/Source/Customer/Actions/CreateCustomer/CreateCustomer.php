@@ -3,7 +3,9 @@
 namespace App\Source\Customer\Actions\CreateCustomer;
 
 use App\Source\Customer\Actions\CreateCustomer\Dtos\CreateCustomerData;
+use App\Source\Customer\Mail\CustomerWelcomeEmail;
 use App\Source\Customer\Models\Customer;
+use Illuminate\Support\Facades\Mail;
 
 class CreateCustomer
 {
@@ -16,6 +18,8 @@ class CreateCustomer
         $customer->email = $data->email;
         $customer->phone = $data->phone;
         $customer->save();
+
+        Mail::to($customer->email)->send(new CustomerWelcomeEmail($customer));
 
         return $customer->refresh();
     }

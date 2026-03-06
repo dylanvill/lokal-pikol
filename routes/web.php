@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Customer\Account\Controllers\UpdatePhoneNumberController;
-use App\Http\Customer\Auth\Controllers\EmailVerificationController;
 use App\Http\Customer\Auth\Controllers\GoogleOAuthCallbackController;
 use App\Http\Customer\Auth\Controllers\GoogleOAuthRedirectController;
 use App\Http\Customer\Auth\Controllers\LoginController;
 use App\Http\Customer\Auth\Controllers\LogoutController;
 use App\Http\Customer\Auth\Controllers\SignUpController;
-use App\Http\Customer\Auth\Controllers\VerificationNoticeController;
 use App\Http\Customer\Facility\Controllers\FacilityController;
 use App\Http\Customer\Facility\Controllers\FacilitiesController;
 use App\Http\Customer\Legal\Controllers\LegalController;
@@ -17,6 +15,7 @@ use App\Http\Customer\Reservation\Controllers\ReservationsController;
 use App\Http\Customer\Reservation\Controllers\ReserveCourtController;
 use App\Http\Customer\Reservation\Controllers\UploadReceiptController;
 use App\Http\Shared\Middleware\CustomerRoutesMiddleware;
+use App\Source\Customer\Mail\CustomerWelcomeEmail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
