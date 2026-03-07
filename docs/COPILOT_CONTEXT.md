@@ -15,7 +15,8 @@
   - Browse facility courts and availability
   - Book court reservations
   - Account creation and management
-- **Requirements:** Must create account before booking
+  - Browse Negros directory (no account required)
+- **Requirements:** Must create account before booking reservations
 
 #### 2. Facility (Court Owner/Manager)  
 - **Primary Actions:**
@@ -32,12 +33,53 @@
 - Calendar management for facilities
 - Email notifications system
 - Account management for both user types
+- **Negros Directory Sub-Application** - Free directory listing for all pickleball courts in Negros region
 
 ## Technical Stack
 
 - **Backend Framework:** Laravel
 - **Frontend Framework:** InertiaJS
 - **Architecture Pattern:** Full-stack monolith with SPA-like experience
+
+## Negros Directory Sub-Application
+
+### Overview
+**Purpose:** A free directory listing of all pickleball courts in the Negros region  
+**Business Model:** Lead generation and upselling opportunity for main reservation system  
+**Access Control:** Backend-managed by administrators (no public court owner interface)  
+**Domain:** `find.lokalpikol.com` - Discovery-focused branding for comprehensive court listings
+
+### Key Features
+- **Public Directory:** Searchable list of courts with filtering by city
+- **Signed URL Access:** Court owners receive secure links to update their listings
+- **Integration Status:** Clear indicator showing which courts use the main reservation system
+- **Free Listing:** No fees for directory inclusion (unlike main app's 5-peso per hour model)
+- **Lead Generation:** Designed to drive adoption of the full reservation platform
+
+### Directory Court Model Fields
+- **Basic Information:** Name, address, city, description
+- **Media Assets:** Cover photo, profile photo
+- **Operating Hours:** Opening time, closing time  
+- **Contact & Links:** Google Maps URL, social media links, booking URL
+- **Integration Status:** Boolean indicator for main application integration
+### Management:** Backend-managed by administrators (no direct court owner interface)
+
+### User Experience
+- **Players:** Browse directory with city-based filtering (no account required)
+- **Upsell Flow:** Directory listings highlight benefits of upgrading to full reservation system
+
+### Technical Implementation
+- **Separate Model:** New model for directory courts (distinct from main `Facility` model)
+- **No Reservations:** Pure directory functionality, no booking capabilities within directory
+- **Backend Management:** Admin-managed court listings (no public court owner interface)
+- **Single Page:** Directory list with filtering - no additional pages/workflows
+- **Regional Focus:** Specifically targeting Negros region courts
+
+### Business Strategy
+- **Market Penetration:** Get all Negros courts listed for comprehensive directory
+- **Trust Building:** Provide value before asking for paid adoption
+- **Competitive Advantage:** Become the definitive source for Negros court information
+- **Conversion Funnel:** Directory → Interest → Full platform adoption
 
 ## Architecture & Patterns
 
@@ -66,6 +108,7 @@ Domain/
 - **Facility:** Facility entity and location management
 - **MediaLibrary:** Media type management
 - **Reservation:** Booking lifecycle, fees, status management
+- **Directory:** Free court listings for Negros region (no reservations)
 
 #### `/app/Http/` - HTTP Abstraction Layer
 **Purpose:** HTTP-level concerns while maintaining domain separation  
@@ -288,6 +331,32 @@ Http/
 - **Enums:** `MediaTypeEnum` for categorizing media assets
 - **Integration:** Likely Spatie Media Library integration
 
+### Directory Module (Negros Court Directory)
+- **Location:** `/app/Source/Directory/` (planned)
+- **Purpose:** Free directory listing for Negros region pickleball courts
+- **Key Actions:** 
+  - `CreateDirectoryCourt`, `UpdateDirectoryCourt` for court listings
+  - `ListDirectoryCourts` with city filtering
+- **Models:** `DirectoryCourt` entity (separate from Facility)
+- **Key Features:**
+  - **Backend Management:** Admin-managed court listings
+  - **Media Support:** Cover photo, profile photo via Spatie Media Library
+  - **Public Directory:** No authentication required for browsing
+  - **City Filtering:** Filter courts by Negros cities
+  - **Integration Status:** Track which courts use main reservation system
+- **Business Model:** 
+  - Free directory listings (no fees)
+  - Lead generation for main application upselling
+  - Regional market penetration strategy
+- **Access Patterns:**
+  - **Backend Admin:** Manage court listings via admin interface
+  - **Public Users:** Open browsing with city-based filtering
+  - **No Reservations:** Pure directory functionality, no booking workflows
+- **Integration Points:**
+  - Links to main application for integrated courts
+  - Upsell messaging for non-integrated courts
+  - Social media and external booking URL support
+
 ## Performance Considerations
 
 *To be documented as requirements emerge*
@@ -369,6 +438,13 @@ pages/
 ### Email System
 - Reservation lifecycle notifications
 - User account management communications
+
+### Directory Sub-Application Integration
+- **Lead Generation:** Directory listings drive interest in full reservation platform
+- **Cross-Promotion:** Integrated courts get enhanced directory listings
+- **Upsell Messaging:** Non-integrated courts see benefits of upgrading
+- **Shared Media Library:** Directory courts use same media management system
+- **Regional Strategy:** Negros directory as market entry point
 
 ### Database Schema & Entity Relations
 - **Key Tables:** facilities, courts, customers, reservations, court_pricings, reservation_fees, **block_bookings**
