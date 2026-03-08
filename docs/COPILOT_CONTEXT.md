@@ -41,6 +41,63 @@
 - **Frontend Framework:** InertiaJS
 - **Architecture Pattern:** Full-stack monolith with SPA-like experience
 
+## Routing Architecture
+
+### Domain-Based Routing Structure
+The application uses domain-based routing to separate the main application from the directory sub-application:
+
+**Configuration Files:**
+- **`config/app.php`**: Added `'tld' => env('APP_TLD', 'localhost')` for dynamic TLD configuration
+- **`.env`**: `APP_TLD=lokal-pikol.test` (local development)
+
+**Routing Implementation (`bootstrap/app.php`):**
+```php
+// Removed global web routes to prevent domain conflicts
+->withRouting(
+    commands: __DIR__ . '/../routes/console.php',
+    health: '/up',
+    then: function () {
+        $tld = config('app.tld');
+
+        // Main application routes (restricted to main domain)
+        Route::domain($tld)
+            ->middleware('web')
+            ->group(base_path('routes/web.php'));
+
+        // Facility routes (subdirectory on main domain)
+        Route::domain($tld)
+            ->middleware('web')
+            ->prefix('facility')
+            ->name('facility.')
+            ->group(base_path('routes/facility.php'));
+
+        // Find subdomain routes
+        Route::domain("find.{$tld}")
+            ->middleware('web')
+            ->name('find.')
+            ->group(base_path('routes/find.php'));
+    }
+)
+```
+
+**Domain Separation:**
+- **Main Domain** (`lokal-pikol.test`): Full reservation system functionality
+  - `/` → `routes/web.php` (Customer flows, facilities browsing, reservations)
+  - `/facility/*` → `routes/facility.php` (Facility management interface)
+- **Find Subdomain** (`find.lokal-pikol.test`): Directory sub-application
+  - `/` → `routes/find.php` (Directory listing, no reservations)
+
+**Route File Structure:**
+- `routes/web.php`: Main customer-facing application routes
+- `routes/facility.php`: Facility management routes (prefixed)
+- `routes/find.php`: Directory sub-application routes (domain-separated)
+
+**Key Benefits:**
+- **Clean Separation**: No route name conflicts between main app and directory
+- **Independent Development**: Sub-applications can evolve independently
+- **SEO & Branding**: Dedicated subdomain for directory discovery
+- **Performance**: Domain-based routing prevents unnecessary route matching
+
 ## Negros Directory Sub-Application
 
 ### Overview
@@ -69,7 +126,7 @@
 - **Upsell Flow:** Directory listings highlight benefits of upgrading to full reservation system
 
 ### Technical Implementation
-- **Separate Model:** New model for directory courts (distinct from main `Facility` model)
+- **Separate Model:** `Listing` model (distinct from main `Facility` model)
 - **No Reservations:** Pure directory functionality, no booking capabilities within directory
 - **Backend Management:** Admin-managed court listings (no public court owner interface)
 - **Single Page:** Directory list with filtering - no additional pages/workflows
@@ -335,9 +392,9 @@ Http/
 - **Location:** `/app/Source/Directory/` (planned)
 - **Purpose:** Free directory listing for Negros region pickleball courts
 - **Key Actions:** 
-  - `CreateDirectoryCourt`, `UpdateDirectoryCourt` for court listings
-  - `ListDirectoryCourts` with city filtering
-- **Models:** `DirectoryCourt` entity (separate from Facility)
+  - `CreateListing`, `UpdateListing` for court listings
+  - `ListListings` with city filtering
+- **Models:** `Listing` entity (separate from Facility)
 - **Key Features:**
   - **Backend Management:** Admin-managed court listings
   - **Media Support:** Cover photo, profile photo via Spatie Media Library
