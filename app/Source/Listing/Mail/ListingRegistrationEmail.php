@@ -16,7 +16,7 @@ class ListingRegistrationEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(protected string $url)
     {
         //
     }
@@ -27,7 +27,7 @@ class ListingRegistrationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Listing Registration Url',
+            subject: 'Negros Oriental Court Directory | Lokal Pikol',
         );
     }
 
@@ -38,6 +38,7 @@ class ListingRegistrationEmail extends Mailable
     {
         return new Content(
             markdown: 'mail.listing.listing-registration-email',
+            with: ['url' => $this->url]
         );
     }
 
