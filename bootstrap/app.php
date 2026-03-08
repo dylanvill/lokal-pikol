@@ -30,10 +30,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('facility.')
                 ->group(base_path('routes/facility.php'));
 
-            Route::domain("find.{$tld}")
+            Route::domain("directory.{$tld}")
                 ->middleware('web')
-                ->name('find.')
-                ->group(base_path('routes/find.php'));
+                ->name('directory.')
+                ->group(base_path('routes/directory.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {

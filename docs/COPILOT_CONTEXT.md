@@ -71,11 +71,11 @@ The application uses domain-based routing to separate the main application from 
             ->name('facility.')
             ->group(base_path('routes/facility.php'));
 
-        // Find subdomain routes
-        Route::domain("find.{$tld}")
+        // Directory subdomain routes
+        Route::domain("directory.{$tld}")
             ->middleware('web')
-            ->name('find.')
-            ->group(base_path('routes/find.php'));
+            ->name('directory.')
+            ->group(base_path('routes/directory.php'));
     }
 )
 ```
@@ -84,13 +84,13 @@ The application uses domain-based routing to separate the main application from 
 - **Main Domain** (`lokal-pikol.test`): Full reservation system functionality
   - `/` → `routes/web.php` (Customer flows, facilities browsing, reservations)
   - `/facility/*` → `routes/facility.php` (Facility management interface)
-- **Find Subdomain** (`find.lokal-pikol.test`): Directory sub-application
-  - `/` → `routes/find.php` (Directory listing, no reservations)
+- **Directory Subdomain** (`directory.lokal-pikol.test`): Directory sub-application
+  - `/` → `routes/directory.php` (Directory listing, no reservations)
 
 **Route File Structure:**
 - `routes/web.php`: Main customer-facing application routes
 - `routes/facility.php`: Facility management routes (prefixed)
-- `routes/find.php`: Directory sub-application routes (domain-separated)
+- `routes/directory.php`: Directory sub-application routes (domain-separated)
 
 **Key Benefits:**
 - **Clean Separation**: No route name conflicts between main app and directory
@@ -104,7 +104,7 @@ The application uses domain-based routing to separate the main application from 
 **Purpose:** A free directory listing of all pickleball courts in the Negros region  
 **Business Model:** Lead generation and upselling opportunity for main reservation system  
 **Access Control:** Backend-managed by administrators (no public court owner interface)  
-**Domain:** `find.lokalpikol.com` - Discovery-focused branding for comprehensive court listings
+**Domain:** `directory.lokalpikol.com` - Discovery-focused branding for comprehensive court listings
 
 ### Key Features
 - **Public Directory:** Searchable list of courts with filtering by city
