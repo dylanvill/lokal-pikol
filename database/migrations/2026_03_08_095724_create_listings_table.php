@@ -17,12 +17,17 @@ return new class extends Migration
             $table->string('name');
             $table->string('city');
             $table->string('address');
+            $table->time('court_types');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->time('opening_time')->nullable();
             $table->time('closing_time')->nullable();
             $table->string('google_maps_url')->nullable();
             $table->string('booking_url')->nullable();
+            $table->foreignId('facility_id')
+                ->nullable()
+                ->constrained('facilities')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }

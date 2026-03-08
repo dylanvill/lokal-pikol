@@ -1,0 +1,114 @@
+import { Box, Container, Flex, HStack, Image, Text, VStack, type ContainerProps, Link as ChakraLink, SimpleGrid } from '@chakra-ui/react';
+import { Head, Link } from '@inertiajs/react';
+import React from 'react';
+import { GrFacebookOption, GrInstagram, GrMail } from 'react-icons/gr';
+import Logo from '../../../images/logo/lokal-pikol-horizontal-white-out.svg';
+
+function ListingLayout({
+    title,
+    children,
+    contentContainerProps,
+}: {
+    title: string;
+    children: React.ReactNode;
+    contentContainerProps?: ContainerProps;
+}) {
+    return (
+        <>
+            <Head title={title}>
+                <link rel="preconnect" href="https://fonts.bunny.net" />
+                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+            </Head>
+
+            <Box minH="100vh" bg="gray.50" colorPalette="blue">
+                <Box display="flex" flexDirection="column" minH="100vh">
+                    <Container gradientFrom="blue.900" gradientTo="blue.800" bgGradient="to-t" fluid paddingTop={4} paddingBottom={16}>
+                        <Container paddingY={4}>
+                            <Flex justify="center" align="center" flexDirection="column">
+                                <Link href="/">
+                                    <HStack gap={3}>
+                                        <Image src={Logo} alt="Lokal Pikol" objectFit="contain" width="full" maxHeight={16} />
+                                    </HStack>
+                                </Link>
+                                <Text color="white" marginTop={4} fontSize="sm">
+                                    A pickleball court directory in Negros Oriental
+                                </Text>
+                            </Flex>
+                        </Container>
+                    </Container>
+                    <Container py={4} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
+                        {children}
+                    </Container>
+                </Box>
+            </Box>
+
+            <Container as="footer" bg="blue.900" color="gray.100" fluid py={12}>
+                <Container>
+                    <SimpleGrid
+                        columns={{
+                            base: 1,
+                            md: 2,
+                            lg: 4,
+                        }}
+                        gap={4}
+                    >
+                        <VStack align={{ base: 'center', md: 'flex-start' }} gap={3} flex="1" maxW={{ base: 'full', lg: '300px' }}>
+                            <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={12} />
+                            <Text color="white" fontSize="xs" textAlign={{ base: 'center', md: 'left' }}>
+                                A pickleball court directory in Negros Oriental
+                            </Text>
+                        </VStack>
+                        <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '160px' }}>
+                            <Text fontSize="sm" color="color.100" letterSpacing={0.5} fontWeight="semibold" textTransform="uppercase">
+                                Navigation
+                            </Text>
+                            <Link href="/">
+                                <Text fontSize="sm">Home</Text>
+                            </Link>
+                            <Link href="/terms-and-conditions">
+                                <Text fontSize="sm">Terms &amp; Conditions</Text>
+                            </Link>
+                            <Link href="/privacy-policy">
+                                <Text fontSize="sm">Privacy Policy</Text>
+                            </Link>
+                        </VStack>
+                        <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '160px' }}>
+                            <Text fontSize="sm" color="color.100" letterSpacing={0.5} fontWeight="semibold" textTransform="uppercase">
+                                Socials
+                            </Text>
+                            <HStack gap={3}>
+                                <ChakraLink href="https://facebook.com/lokalpikol" display="inline-flex" alignItems="center" gap={2} fontSize="sm">
+                                    <GrFacebookOption color="white" />
+                                    <Text fontSize="sm" color="white">
+                                        Facebook
+                                    </Text>
+                                </ChakraLink>
+                            </HStack>
+                            <HStack gap={3}>
+                                <ChakraLink href="https://instagram.com/lokalpikol" display="inline-flex" alignItems="center" gap={2} fontSize="sm">
+                                    <GrInstagram color="white" />
+                                    <Text fontSize="sm" color="white">
+                                        Instagram
+                                    </Text>
+                                </ChakraLink>
+                            </HStack>
+                        </VStack>
+                        <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '180px' }}>
+                            <Text fontSize="sm" color="color.100" letterSpacing={0.5} fontWeight="semibold" textTransform="uppercase">
+                                Contact us
+                            </Text>
+                            <ChakraLink href="mailto:support@lokalpikol.com" display="inline-flex" alignItems="center" gap={2} fontSize="sm">
+                                <GrMail color="white" />
+                                <Text fontSize="sm" color="white">
+                                    support@lokalpikol.com
+                                </Text>
+                            </ChakraLink>
+                        </VStack>
+                    </SimpleGrid>
+                </Container>
+            </Container>
+        </>
+    );
+}
+
+export default ListingLayout;
