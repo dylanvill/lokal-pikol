@@ -39,10 +39,7 @@ function ListingCard({
     }, [courtType]);
 
     const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
-    console.log('🚀 ~ ListingCard ~ socialLinks:', socialLinks);
-    console.log('🚀 ~ ListingCard ~ facebookLink:', facebookLink);
     const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
-    console.log('🚀 ~ ListingCard ~ instagramLink:', instagramLink);
 
     const hasSocialLinks = facebookLink || instagramLink;
 
