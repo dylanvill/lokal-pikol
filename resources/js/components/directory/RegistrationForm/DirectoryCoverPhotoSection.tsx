@@ -53,18 +53,19 @@ const DirectoryCoverPhotoSection = memo(({ setData }: DirectoryCoverPhotoSection
     return (
         <Box zIndex={1}>
             <FileUpload.RootProvider value={fileUpload} zIndex={1}>
-                <FileUpload.HiddenInput required />
+                <FileUpload.HiddenInput />
                 <FileUploadList />
+
                 <Flex justifyContent="flex-end" width="100%" zIndex={1}>
                     <FileUpload.Trigger asChild zIndex={1}>
                         <Button variant="ghost" size="xs" zIndex={1}>
-                            <LuImageUp /> Select Cover Photo
+                            <LuImageUp /> <span style={{color: 'red'}}>*</span> Select Cover Photo
                         </Button>
                     </FileUpload.Trigger>
                 </Flex>
             </FileUpload.RootProvider>
         </Box>
     );
-})
+});
 
 export default DirectoryCoverPhotoSection;

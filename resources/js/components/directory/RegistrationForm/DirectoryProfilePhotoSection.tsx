@@ -54,14 +54,14 @@ const DirectoryProfilePhotoSection = memo(({ setData }: DirectoryProfilePhotoSec
     return (
         <Box zIndex={2}>
             <FileUpload.RootProvider value={fileUpload} zIndex={2}>
-                <FileUpload.HiddenInput required />
+                <FileUpload.HiddenInput />
                 <Box width={{ base: 24, md: 32 }} height={{ base: 24, md: 32 }} zIndex={2}>
                     <FileUploadList />
                 </Box>
                 <Flex justifyContent="flex-end" zIndex={2}>
                     <FileUpload.Trigger asChild zIndex={2}>
                         <Button variant="ghost" size="xs" zIndex={2}>
-                            <LuImageUp /> Select Profile Photo
+                            <LuImageUp /> <span style={{color: 'red'}}>*</span>Select Profile Photo
                         </Button>
                     </FileUpload.Trigger>
                 </Flex>

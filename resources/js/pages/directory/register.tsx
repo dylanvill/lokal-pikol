@@ -85,6 +85,10 @@ function RegisterPage() {
                         <Box zIndex={2} marginTop={{ base: -24, md: -32 }} marginLeft={{ base: 8, md: 12 }}>
                             <DirectoryProfilePhotoSection setData={setProfilePhoto} />
                         </Box>
+                        <Field.Root invalid={!!form.errors.profilePhoto || !!form.errors.coverPhoto}>
+                            <Field.ErrorText>{form.errors.profilePhoto}</Field.ErrorText>
+                            <Field.ErrorText>{form.errors.coverPhoto}</Field.ErrorText>
+                        </Field.Root>
                     </Box>
                     <FormSectionHeader
                         icon={<LuBuilding2 size={24} />}
@@ -93,7 +97,9 @@ function RegisterPage() {
                     />
                     <VStack alignItems="stretch" gap={4} marginTop={4}>
                         <Field.Root>
-                            <Field.Label><span style={{ color: 'red' }}>*</span>Facility Name</Field.Label>
+                            <Field.Label>
+                                <span style={{ color: 'red' }}>*</span>Facility Name
+                            </Field.Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -145,7 +151,9 @@ function RegisterPage() {
                         <VStack gap={4} alignItems="stretch">
                             <CitySection form={form} />
                             <Field.Root>
-                                <Field.Label><span style={{ color: 'red' }}>*</span>Full address</Field.Label>
+                                <Field.Label>
+                                    <span style={{ color: 'red' }}>*</span>Full address
+                                </Field.Label>
                                 <Input
                                     name="address"
                                     value={form.data.address}
@@ -251,7 +259,9 @@ function RegisterPage() {
                     <Checkbox.Root marginTop={4} required>
                         <Checkbox.HiddenInput />
                         <Checkbox.Control />
-                        <Checkbox.Label><span style={{ color: 'red' }}>*</span> By submitting this form, you agree to our terms and conditions.</Checkbox.Label>
+                        <Checkbox.Label>
+                            <span style={{ color: 'red' }}>*</span> By submitting this form, you agree to our terms and conditions.
+                        </Checkbox.Label>
                     </Checkbox.Root>
                     <Button
                         type="submit"

@@ -1,5 +1,6 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import ListingCard from '../../components/directory/ListingCard';
+import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
 import BackNavigationBase from '../../components/shared/BackNavigationBase';
 import ListingLayout from '../../layouts/listing/ListingLayout';
 import type ListingItem from '../../models/directory/ListingItem';
@@ -16,15 +17,15 @@ function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
                 maxWidth: 'xl',
             }}
         >
-            <BackNavigationBase
-                href="/"
-                label="View directory"
-            />
+            <BackNavigationBase href="/" label="View directory" />
             <Box>
-                <Heading>Your court is now live and discoverable!</Heading>
+                <Box marginBottom={4}>
+                    <SuccessAlert title="Registration Successful!" description="" />
+                </Box>
+                <Heading>Your court is now live and discoverable</Heading>
                 <Text marginBottom={6} color="gray.600">
-                    Your court is now live in our directory and can be discovered by players throughout Negros Oriental. 
-                    Here's how your listing appears to the public:
+                    Your court is now live in our directory and can be discovered by players throughout Negros Oriental. Here's how your listing
+                    appears to the public:
                 </Text>
             </Box>
             <ListingCard
