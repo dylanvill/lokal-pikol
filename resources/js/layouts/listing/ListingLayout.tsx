@@ -28,6 +28,7 @@ function ListingLayout({
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content={title} />
                 <meta property="og:description" content="Negros Oriental pickleball courts directory with verified information from court owners." />
+                <meta property="og:image" content="/images/og-image.jpg" />
                 <meta property="og:site_name" content="Lokal Pikol Directory" />
                 
                 {/* Twitter */}
