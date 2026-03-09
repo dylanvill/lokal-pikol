@@ -31,7 +31,7 @@ function ListingLayout({
                                     </HStack>
                                 </Link>
                                 <Text color="white" marginTop={4} fontSize="sm">
-                                    A pickleball court directory in Negros Oriental
+                                    A pickleball court directory for Negros Oriental
                                 </Text>
                             </Flex>
                         </Container>
@@ -55,7 +55,7 @@ function ListingLayout({
                         <VStack align={{ base: 'center', md: 'flex-start' }} gap={3} flex="1" maxW={{ base: 'full', lg: '300px' }}>
                             <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={12} />
                             <Text color="white" fontSize="xs" textAlign={{ base: 'center', md: 'left' }}>
-                                A pickleball court directory in Negros Oriental
+                                A pickleball court directory for Negros Oriental
                             </Text>
                         </VStack>
                         <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '160px' }}>

@@ -12,8 +12,8 @@ readonly class CreateListingData
         public int $numberOfCourts,
         public ?string $email,
         public ?string $phone,
-        public string $openingTime,
-        public string $closingTime,
+        public ?string $openingTime,
+        public ?string $closingTime,
         public ?string $googleMapsUrl,
         public ?string $bookingUrl,
     ) {}
