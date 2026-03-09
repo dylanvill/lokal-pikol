@@ -20,10 +20,20 @@ const options = [
 function CourtTypesSection({ form }: { form: ReturnType<typeof useForm> }) {
     return (
         <>
-            <RadioCard.Root name='courtTypes' value={form.data.courtTypes} onValueChange={(e) => form.setData('courtTypes', e.value)} size="sm" variant="solid">
+            <RadioCard.Root
+                name="courtTypes"
+                value={form.data.courtTypes}
+                onValueChange={(e) => form.setData('courtTypes', e.value)}
+                size="sm"
+                variant="solid"
+                disabled={form.processing}
+                invalid={!!form.errors.courtTypes}
+            >
                 <RadioCard.Label>Court types</RadioCard.Label>
                 <Field.Root>
-                    <Field.HelperText marginBottom={2}>Help players find the perfect court setup - specify whether your courts are covered, outdoor, or both</Field.HelperText>
+                    <Field.HelperText marginBottom={2}>
+                        Help players find the perfect court setup - specify whether your courts are covered, outdoor, or both
+                    </Field.HelperText>
                 </Field.Root>
                 <SimpleGrid columns={{ base: 3 }} gap={4}>
                     {options.map((option) => (
@@ -33,13 +43,12 @@ function CourtTypesSection({ form }: { form: ReturnType<typeof useForm> }) {
                             flex={1}
                             justifyContent="center"
                             alignItems="center"
-                            padding={2}
                             borderWidth={1}
                             borderColor="gray.200"
                             borderRadius={8}
                         >
                             <RadioCard.ItemHiddenInput />
-                            <RadioCard.ItemControl>
+                            <RadioCard.ItemControl width="100%" height="100%" alignItems="center">
                                 <RadioCard.ItemContent alignItems="center" justifyContent="center" gap={2}>
                                     {option.icon}
                                     <RadioCard.ItemText padding={0} textAlign="center">

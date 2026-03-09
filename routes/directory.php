@@ -5,11 +5,13 @@ use App\Http\Directory\Controllers\ListingController;
 use App\Http\Directory\Controllers\ListingLegalController;
 use App\Http\Shared\Middleware\CustomerRoutesMiddleware;
 use App\Source\Directory\Mail\ListingRegistrationEmail;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
     Route::get('/', ListingController::class)->name('home');
-    Route::get('/register', [CreateListingController::class, 'show'])->name('register')->middleware('signed');
+    Route::get('/register', [CreateListingController::class, 'show'])->name('register.show')->middleware('signed');
+    Route::post('/register', [CreateListingController::class, 'store'])->name('register.store')->middleware(HandlePrecognitiveRequests::class);
     Route::get('/privacy-policy', [ListingLegalController::class, 'privacyPolicy'])->name('privacy-policy');
     Route::get('/terms-and-conditions', [ListingLegalController::class, 'termsAndConditions'])->name('terms-and-conditions');
 

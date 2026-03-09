@@ -1,4 +1,4 @@
-import { Combobox, Portal, useFilter, useListCollection } from '@chakra-ui/react';
+import { Combobox, Field, Portal, useFilter, useListCollection } from '@chakra-ui/react';
 import { type useForm } from '@inertiajs/react';
 import React from 'react';
 
@@ -110,6 +110,10 @@ function CitySection({ form }: { form: ReturnType<typeof useForm> }) {
             onInputValueChange={(e) => filter(e.inputValue)}
             value={form.data.city ? [form.data.city] : []}
             onValueChange={(e) => form.setData('city', e.value[0] || '')}
+            onBlur={() => form.validate('city')}
+            invalid={!!form.errors.city}
+            required
+            disabled={form.processing}
         >
             <Combobox.Label>City</Combobox.Label>
             <Combobox.Control>
@@ -119,6 +123,9 @@ function CitySection({ form }: { form: ReturnType<typeof useForm> }) {
                     <Combobox.Trigger />
                 </Combobox.IndicatorGroup>
             </Combobox.Control>
+            <Field.Root invalid={!!form.errors.city}>
+                <Field.ErrorText>{form.errors.city}</Field.ErrorText>
+            </Field.Root>
             <Portal>
                 <Combobox.Positioner>
                     <Combobox.Content>

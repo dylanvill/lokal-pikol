@@ -1,5 +1,5 @@
 import { Box, Button, FileUpload, Flex, Float, useFileUpload, useFileUploadContext } from '@chakra-ui/react';
-import { type useForm } from '@inertiajs/react';
+import { memo } from 'react';
 import { LuImage, LuImageUp, LuTrash2 } from 'react-icons/lu';
 
 const FileUploadList = () => {
@@ -38,11 +38,15 @@ const FileUploadList = () => {
     );
 };
 
-function DirectoryCoverPhotoSection({ form }: { form: ReturnType<typeof useForm> }) {
+interface DirectoryCoverPhotoSectionProps {
+    setData: (value: File) => void;
+}
+
+const DirectoryCoverPhotoSection = memo(({ setData }: DirectoryCoverPhotoSectionProps) => {
     const fileUpload = useFileUpload({
         accept: ['image/jpeg', 'image/png'],
         onFileAccept: (details) => {
-            form.setData('coverPhoto', details.files[0]);
+            setData(details.files[0]);
         },
     });
 
@@ -61,6 +65,6 @@ function DirectoryCoverPhotoSection({ form }: { form: ReturnType<typeof useForm>
             </FileUpload.RootProvider>
         </Box>
     );
-}
+})
 
 export default DirectoryCoverPhotoSection;

@@ -1,5 +1,5 @@
 import { Box, Button, FileUpload, Flex, Float, useFileUpload, useFileUploadContext } from '@chakra-ui/react';
-import { type useForm } from '@inertiajs/react';
+import { memo } from 'react';
 import { LuImage, LuImageUp, LuTrash2 } from 'react-icons/lu';
 
 const FileUploadList = () => {
@@ -40,18 +40,22 @@ const FileUploadList = () => {
     );
 };
 
-function DirectoryProfilePhotoSection({ form }: { form: ReturnType<typeof useForm> }) {
+interface DirectoryProfilePhotoSectionProps {
+    setData: (value: File) => void;
+}
+
+const DirectoryProfilePhotoSection = memo(({ setData }: DirectoryProfilePhotoSectionProps) => {
     const fileUpload = useFileUpload({
         accept: ['image/jpeg', 'image/png'],
         onFileAccept: (details) => {
-            form.setData('profilePhoto', details.files[0]);
+            setData(details.files[0]);
         },
     });
     return (
         <Box zIndex={2}>
             <FileUpload.RootProvider value={fileUpload} zIndex={2}>
                 <FileUpload.HiddenInput required />
-                <Box width={32} height={32} zIndex={2}>
+                <Box width={{ base: 24, md: 32 }} height={{ base: 24, md: 32 }} zIndex={2}>
                     <FileUploadList />
                 </Box>
                 <Flex justifyContent="flex-end" zIndex={2}>
@@ -64,6 +68,6 @@ function DirectoryProfilePhotoSection({ form }: { form: ReturnType<typeof useFor
             </FileUpload.RootProvider>
         </Box>
     );
-}
+});
 
 export default DirectoryProfilePhotoSection;
