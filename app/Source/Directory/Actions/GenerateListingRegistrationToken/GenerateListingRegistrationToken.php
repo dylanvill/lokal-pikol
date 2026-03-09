@@ -16,7 +16,7 @@ class GenerateListingRegistrationToken
 
         $token = new ListingRegistrationToken();
         $token->token = Hash::make($unhashedToken);
-        $token->expires_at = Carbon::now()->addHours(24);
+        $token->expires_at = Carbon::now()->addDays(7);
         $token->save();
 
         return new ListingRegistrationLinkResult(

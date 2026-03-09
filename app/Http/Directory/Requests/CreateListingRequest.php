@@ -38,6 +38,8 @@ class CreateListingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'uuid' => ['required', 'uuid'],
+            'token' => ['required', 'string'],
             'name' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', Rule::enum(CityEnum::class)],
             'address' => ['required', 'string', 'max:255'],

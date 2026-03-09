@@ -34,7 +34,7 @@ class SendListingRegistrationEmail extends Command
         $tokenResult = (new GenerateListingRegistrationToken())->generate();
 
         $url = URL::temporarySignedRoute(
-            'directory.register',
+            'directory.register.show',
             strtotime($tokenResult->expiresAt),
             ['uuid' => $tokenResult->uuid, 'token' => $tokenResult->token]
         );

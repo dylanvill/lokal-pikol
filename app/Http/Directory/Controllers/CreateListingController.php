@@ -4,17 +4,33 @@ namespace App\Http\Directory\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Directory\Requests\CreateListingRequest;
+use App\Http\Directory\Requests\ShowCreateListingRequest;
 use App\Source\Directory\Actions\CreateListing\CreateListing;
 use App\Source\Directory\Actions\CreateListing\Dtos\CreateListingData;
 use App\Source\Directory\Actions\UpdateSocialLink\UpdateSocialLink;
+use App\Source\Directory\Actions\ValidateListingRegistrationToken\ValidateListingRegistrationToken;
+use App\Source\Directory\Actions\ValidateListingRegistrationToken\Dtos\ValidateListingRegistrationTokenData;
 use App\Source\Directory\Models\Listing;
+use App\Source\Directory\Models\ListingRegistrationToken;
 use App\Source\Shared\Enums\SocialLinkEnum;
 
 class CreateListingController extends Controller
 {
-    public function show()
+    public function show(ShowCreateListingRequest $request, ValidateListingRegistrationToken $tokenValidator)
     {
-        return inertia('directory/register');
+        $isValid = $tokenValidator->validate(new ValidateListingRegistrationTokenData(
+            uuid: $request->uuid,
+            token: $request->token,
+        ));
+
+        if (!$isValid) {
+            abort(403, 'Invalid or expired registration link.');
+        }
+
+        return inertia('directory/register', [
+            'uuid' => $request->uuid,
+            'token' => $request->token,
+        ]);
     }
 
     public function store(CreateListingRequest $request, CreateListing $service)
@@ -38,6 +54,10 @@ class CreateListingController extends Controller
         $listing = $service->create($data);
 
         $this->handleSocialLinks($listing, $request);
+
+        $tokenEntry = ListingRegistrationToken::where('uuid', $request->uuid)->first();
+        $tokenEntry->used = true;
+        $tokenEntry->save();
     }
 
     protected function handleSocialLinks(Listing $listing, CreateListingRequest $request)

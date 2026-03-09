@@ -1,5 +1,5 @@
 import { Box, Button, Field, Heading, HStack, Input, InputGroup, Separator, Text, VStack } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { LuContact, LuMapPin, LuBuilding2 } from 'react-icons/lu';
 import { store } from '@/actions/App/Http/Directory/Controllers/CreateListingController';
@@ -12,6 +12,11 @@ import FormSectionHeader from '../../components/shared/FormSectionHeader';
 import ListingLayout from '../../layouts/listing/ListingLayout';
 
 function RegisterPage() {
+    const { props } = usePage<{ uuid: string; token: string }>();
+
+    const uuid = props.uuid;
+    const token = props.token;
+
     const form = useForm({
         name: '',
         city: '',
@@ -33,6 +38,11 @@ function RegisterPage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         form.clearErrors();
+        form.transform((data) => ({
+            ...data,
+            uuid,
+            token,
+        }));
         form.submit(store(), {
             preserveScroll: true,
         });
