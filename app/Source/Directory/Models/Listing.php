@@ -6,6 +6,8 @@ use App\Models\Traits\HasUuid;
 use App\Source\Directory\Database\Factories\ListingFactory;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Shared\Models\SocialLink;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -51,6 +53,26 @@ class Listing extends Model implements HasMedia
     {
         $this->addMedia($photo)
             ->toMediaCollection(MediaTypeEnum::LISTING_COVER_PHOTO->value);
+    }
+
+    #[Scope]
+    protected function withMedia(Builder $query): void
+    {
+        $query->with('media');
+    }
+
+    public function getCoverPhoto()
+    {
+        return $this->media()
+            ->where('collection_name', MediaTypeEnum::LISTING_COVER_PHOTO->value)
+            ->first();
+    }
+
+    public function getProfilePhoto()
+    {
+        return $this->media()
+            ->where('collection_name', MediaTypeEnum::LISTING_PROFILE_PHOTO->value)
+            ->first();
     }
 
     /**
