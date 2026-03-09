@@ -51,7 +51,7 @@ function ListingLayout({
                                         <Image src={Logo} alt="Lokal Pikol" objectFit="contain" width="full" maxHeight={16} />
                                     </HStack>
                                 </Link>
-                                <Text color="white" marginTop={4} fontSize="sm">
+                                <Text color="white" marginTop={4} fontSize="sm" textAlign="center">
                                     Negros Oriental pickleball courts, verified by facilities
                                 </Text>
                             </Flex>
