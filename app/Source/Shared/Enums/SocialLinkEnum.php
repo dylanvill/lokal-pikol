@@ -4,13 +4,13 @@ namespace App\Source\Shared\Enums;
 
 enum SocialLinkEnum: string
 {
-    case FACEBOOK = 'facebook';
-    case TWITTER = 'twitter';
-    case INSTAGRAM = 'instagram';
-    case LINKEDIN = 'linkedin';
-    case YOUTUBE = 'youtube';
-    case TIKTOK = 'tiktok';
-    case RECLUB = 'reclub';
-    case DUPR = 'dupr';
-    case OTHER = 'other';
+    case FACEBOOK = 'Facebook';
+    case TWITTER = 'Twitter';
+    case INSTAGRAM = 'Instagram';
+    case LINKEDIN = 'LinkedIn';
+    case YOUTUBE = 'YouTube';
+    case TIKTOK = 'TikTok';
+    case RECLUB = 'Reclub';
+    case DUPR = 'Dupr';
+    case OTHER = 'Other';
 }

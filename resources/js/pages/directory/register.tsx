@@ -17,13 +17,15 @@ function RegisterPage() {
         city: '',
         address: '',
         googleMapsUrl: '',
-        courtTypes: '',
+        courtType: '',
         numberOfCourts: '',
         email: '',
         phone: '',
         openingTime: '',
         closingTime: '',
         facebookPageUrl: '',
+        bookingPageUrl: '',
+        instagramUrl: '',
         profilePhoto: null as null | File,
         coverPhoto: null as null | File,
     }).withPrecognition(store());
@@ -44,6 +46,13 @@ function RegisterPage() {
         form.setData('profilePhoto', file);
     }, []);
 
+    const handleTimeChanged = (field: 'openingTime' | 'closingTime', value: string) => {
+        const hour = value.split(':')[0];
+        if (hour) {
+            form.setData(field, `${hour}:00`);
+        }
+    };
+
     return (
         <ListingLayout
             title="Facility Registration"
@@ -54,8 +63,8 @@ function RegisterPage() {
             <Box>
                 <Heading>Get Your Court Listed!</Heading>
                 <Text>
-                    Join the owner-verified directory of pickleball courts in Negros Oriental. Get discovered by players in your area. Simply provide your
-                    court details below to get started.
+                    Join the owner-verified directory of pickleball courts in Negros Oriental. Get discovered by players in your area. Simply provide
+                    your court details below to get started.
                 </Text>
             </Box>
             <Separator marginY={8} width={40} marginX="auto" />
@@ -90,28 +99,32 @@ function RegisterPage() {
                         </Field.Root>
                         <NumberOfCourtsSection form={form} />
                         <CourtTypesSection form={form} />
-                        <HStack>
-                            <Field.Root>
+                        <HStack alignItems="flex-start">
+                            <Field.Root invalid={!!form.errors.openingTime}>
                                 <Field.Label>Opening time (optional)</Field.Label>
                                 <Input
                                     type="time"
                                     name="openingTime"
                                     placeholder="07:00:00"
                                     value={form.data.openingTime}
-                                    onChange={(e) => form.setData('openingTime', e.target.value)}
+                                    onChange={(e) => handleTimeChanged('openingTime', e.target.value)}
+                                    onBlur={() => form.validate('openingTime')}
                                     disabled={form.processing}
                                 />
+                                <Field.ErrorText>{form.errors.openingTime}</Field.ErrorText>
                             </Field.Root>
-                            <Field.Root>
+                            <Field.Root invalid={!!form.errors.closingTime}>
                                 <Field.Label>Closing time (optional)</Field.Label>
                                 <Input
                                     type="time"
                                     name="closingTime"
                                     placeholder="22:00:00"
                                     value={form.data.closingTime}
-                                    onChange={(e) => form.setData('closingTime', e.target.value)}
+                                    onChange={(e) => handleTimeChanged('closingTime', e.target.value)}
+                                    onBlur={() => form.validate('closingTime')}
                                     disabled={form.processing}
                                 />
+                                <Field.ErrorText>{form.errors.closingTime}</Field.ErrorText>
                             </Field.Root>
                         </HStack>
                     </VStack>
@@ -186,6 +199,20 @@ function RegisterPage() {
                                 </InputGroup>
                                 <Field.ErrorText>{form.errors.phone}</Field.ErrorText>
                             </Field.Root>
+                            <Field.Root invalid={!!form.errors.bookingPageUrl}>
+                                <Field.Label>Booking URL (optional)</Field.Label>
+                                <Input
+                                    placeholder="https://www.custom-booking.com"
+                                    value={form.data.bookingPageUrl}
+                                    onChange={(e) => form.setData('bookingPageUrl', e.target.value)}
+                                    onBlur={() => form.validate('bookingPageUrl')}
+                                    disabled={form.processing}
+                                />
+                                <Field.HelperText>
+                                    The website where your players can reserve your courts. Leave blank if you don't have any.
+                                </Field.HelperText>
+                                <Field.ErrorText>{form.errors.bookingPageUrl}</Field.ErrorText>
+                            </Field.Root>
                             <Field.Root invalid={!!form.errors.facebookPageUrl}>
                                 <Field.Label>Facebook URL (optional)</Field.Label>
                                 <Input
@@ -196,6 +223,17 @@ function RegisterPage() {
                                     disabled={form.processing}
                                 />
                                 <Field.ErrorText>{form.errors.facebookPageUrl}</Field.ErrorText>
+                            </Field.Root>
+                            <Field.Root invalid={!!form.errors.instagramUrl}>
+                                <Field.Label>Instagram URL (optional)</Field.Label>
+                                <Input
+                                    placeholder="https://www.instagram.com/yourpage"
+                                    value={form.data.instagramUrl}
+                                    onChange={(e) => form.setData('instagramUrl', e.target.value)}
+                                    onBlur={() => form.validate('instagramUrl')}
+                                    disabled={form.processing}
+                                />
+                                <Field.ErrorText>{form.errors.instagramUrl}</Field.ErrorText>
                             </Field.Root>
                         </VStack>
                     </Box>

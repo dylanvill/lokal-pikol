@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('city');
             $table->string('address');
-            $table->string('court_types');
+            $table->string('court_type');
             $table->integer('number_of_courts');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

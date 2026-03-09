@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+
 class Listing extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\ListingFactory> */
@@ -38,6 +39,18 @@ class Listing extends Model implements HasMedia
     {
         $this->addMediaCollection(MediaTypeEnum::LISTING_COVER_PHOTO->value)->singleFile();
         $this->addMediaCollection(MediaTypeEnum::LISTING_PROFILE_PHOTO->value)->singleFile();
+    }
+
+    public function updateProfilePhoto($photo): void
+    {
+        $this->addMedia($photo)
+            ->toMediaCollection(MediaTypeEnum::LISTING_PROFILE_PHOTO->value);
+    }
+
+    public function updateCoverPhoto($photo): void
+    {
+        $this->addMedia($photo)
+            ->toMediaCollection(MediaTypeEnum::LISTING_COVER_PHOTO->value);
     }
 
     /**

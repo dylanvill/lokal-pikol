@@ -21,13 +21,13 @@ function CourtTypesSection({ form }: { form: ReturnType<typeof useForm> }) {
     return (
         <>
             <RadioCard.Root
-                name="courtTypes"
-                value={form.data.courtTypes}
-                onValueChange={(e) => form.setData('courtTypes', e.value)}
+                name="courtType"
+                value={form.data.courtType}
+                onValueChange={(e) => form.setData('courtType', e.value)}
                 size="sm"
                 variant="solid"
                 disabled={form.processing}
-                invalid={!!form.errors.courtTypes}
+                invalid={!!form.errors.courtType}
             >
                 <RadioCard.Label>Court types</RadioCard.Label>
                 <Field.Root>
