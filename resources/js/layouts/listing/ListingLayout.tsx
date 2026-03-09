@@ -1,7 +1,7 @@
 import { Box, Container, Flex, HStack, Image, Text, VStack, type ContainerProps, Link as ChakraLink, SimpleGrid } from '@chakra-ui/react';
 import { Head, Link } from '@inertiajs/react';
 import React from 'react';
-import { GrFacebookOption, GrInstagram, GrMail } from 'react-icons/gr';
+import { GrFacebookOption, GrInstagram } from 'react-icons/gr';
 import Logo from '../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 
 function ListingLayout({
@@ -31,7 +31,7 @@ function ListingLayout({
                                     </HStack>
                                 </Link>
                                 <Text color="white" marginTop={4} fontSize="sm">
-                                    A pickleball court directory for Negros Oriental
+                                    Negros Oriental pickleball courts, listed by owners / managers
                                 </Text>
                             </Flex>
                         </Container>
@@ -54,8 +54,8 @@ function ListingLayout({
                     >
                         <VStack align={{ base: 'center', md: 'flex-start' }} gap={3} flex="1" maxW={{ base: 'full', lg: '300px' }}>
                             <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={12} />
-                            <Text color="white" fontSize="xs" textAlign={{ base: 'center', md: 'left' }}>
-                                A pickleball court directory for Negros Oriental
+                            <Text color="white" fontSize="sm" textAlign={{ base: 'center', md: 'left' }}>
+                                Negros Oriental pickleball courts, listed by owners / managers
                             </Text>
                         </VStack>
                         <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '160px' }}>
@@ -94,15 +94,10 @@ function ListingLayout({
                             </HStack>
                         </VStack>
                         <VStack align={{ base: 'center', md: 'flex-start' }} gap={2} minW={{ base: 'auto', sm: '180px' }}>
-                            <Text fontSize="sm" color="color.100" letterSpacing={0.5} fontWeight="semibold" textTransform="uppercase">
-                                Contact us
+                            <Text fontSize="sm" color="white" textAlign={{ base: 'center', md: 'left' }}>
+                                Need any changes to your listing? Want to list a new pickleball court? Have any questions or suggestions? Feel free to
+                                reach out to us on our social media platforms and we will get back to you as soon as we can!
                             </Text>
-                            <ChakraLink href="mailto:support@lokalpikol.com" display="inline-flex" alignItems="center" gap={2} fontSize="sm">
-                                <GrMail color="white" />
-                                <Text fontSize="sm" color="white">
-                                    support@lokalpikol.com
-                                </Text>
-                            </ChakraLink>
                         </VStack>
                     </SimpleGrid>
                 </Container>

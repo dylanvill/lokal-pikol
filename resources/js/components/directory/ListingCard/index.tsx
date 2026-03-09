@@ -116,7 +116,7 @@ function ListingCard({
             <Card.Footer>
                 <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
                     {bookingUrl ? (
-                        <ChakraLink marginTop={4} fontSize="sm" textAlign="right">
+                        <ChakraLink href={bookingUrl} marginTop={4} fontSize="sm" textAlign="right">
                             Book Court
                             <LuArrowRight />
                         </ChakraLink>
