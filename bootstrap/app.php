@@ -2,7 +2,7 @@
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Source\Facility\Commands\SendOnboardingInvite;
-use App\Source\Listing\Commands\SendListingRegistrationEmail;
+use App\Source\Directory\Commands\SendListingRegistrationEmail;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

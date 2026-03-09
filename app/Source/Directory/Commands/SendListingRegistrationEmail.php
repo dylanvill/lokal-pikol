@@ -3,8 +3,10 @@
 namespace App\Source\Directory\Commands;
 
 use App\Source\Directory\Actions\GenerateListingRegistrationToken\GenerateListingRegistrationToken;
+use App\Source\Directory\Mail\ListingRegistrationEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
 class SendListingRegistrationEmail extends Command
@@ -14,14 +16,14 @@ class SendListingRegistrationEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'listing:send-registration-email {email}';
+    protected $signature = 'directory:send-registration-email {email}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send listing registration email';
+    protected $description = 'Send directory listing registration email';
 
     /**
      * Execute the console command.
@@ -37,6 +39,6 @@ class SendListingRegistrationEmail extends Command
             ['uuid' => $tokenResult->uuid, 'token' => $tokenResult->token]
         );
 
-        dd($url, $email);
+        Mail::to($email)->send(new ListingRegistrationEmail($url));
     }
 }
