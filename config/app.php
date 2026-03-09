@@ -54,6 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
     'tld' => env('APP_TLD', 'localhost'),
+    'directory_email_bypass_secret' => env('COURT_DIRECTORY_EMAIL_BYPASS_SECRET'),
 
     /*
     |--------------------------------------------------------------------------

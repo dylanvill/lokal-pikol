@@ -13,6 +13,8 @@ use App\Source\Directory\Actions\ValidateListingRegistrationToken\Dtos\ValidateL
 use App\Source\Directory\Models\Listing;
 use App\Source\Directory\Models\ListingRegistrationToken;
 use App\Source\Shared\Enums\SocialLinkEnum;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateListingController extends Controller
 {
@@ -77,5 +79,21 @@ class CreateListingController extends Controller
                 $service->update(SocialLinkEnum::from($platform), $link);
             }
         }
+    }
+
+
+
+    public function bypass(Request $request)
+    {
+        $secret = config('app.directory_email_bypass_secret');
+        if ($request->query('secret') !== $secret) abort(403, 'Unauthorized action.');
+
+        $email = $request->query('email');
+
+        $exitCode = Artisan::call('directory:send-registration-email', [
+            'email' => $email
+        ]);
+
+        return "Exit code: " . $exitCode;
     }
 }
