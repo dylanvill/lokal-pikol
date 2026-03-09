@@ -40,5 +40,8 @@ class SendListingRegistrationEmail extends Command
         );
 
         Mail::to($email)->send(new ListingRegistrationEmail($url));
+
+        $this->info('Listing registration email sent to ' . $email);
+        $this->info('Registration URL: ' . $url);
     }
 }
