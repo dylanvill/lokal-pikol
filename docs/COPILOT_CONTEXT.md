@@ -394,13 +394,15 @@ Http/
 - **Key Actions:** 
   - `CreateListing`, `UpdateListing` for court listings
   - `ListListings` with city filtering
-- **Models:** `Listing` entity (separate from Facility)
+  - `GenerateListingRegistrationToken` for secure invitation system
+- **Models:** `Listing` entity (separate from Facility), `ListingRegistrationToken` for secure onboarding
 - **Key Features:**
   - **Backend Management:** Admin-managed court listings
   - **Media Support:** Cover photo, profile photo via Spatie Media Library
   - **Public Directory:** No authentication required for browsing
   - **City Filtering:** Filter courts by Negros cities
   - **Integration Status:** Track which courts use main reservation system
+  - **Secure Onboarding:** Token-based invitation system with 7-day expiry
 - **Business Model:** 
   - Free directory listings (no fees)
   - Lead generation for main application upselling
@@ -413,6 +415,48 @@ Http/
   - Links to main application for integrated courts
   - Upsell messaging for non-integrated courts
   - Social media and external booking URL support
+
+#### Facility Onboarding Flow
+**Strategy:** Secure, low-friction directory registration to build trust before converting to full reservation platform
+
+**Step-by-Step Process:**
+1. **Token Generation** (`GenerateListingRegistrationToken`)
+   - Creates secure registration token with 7-day expiry
+   - Stores hashed version in `ListingRegistrationToken` model  
+   - Returns UUID, unhashed token, and expiry for signed URL generation
+
+2. **Email Invitation** (`ListingRegistrationEmail`)
+   - Sends personalized invitation with secure signed URL
+   - Subject: "Negros Oriental Court Directory | Lokal Pikol"
+   - Contains time-limited registration link with token parameters
+
+3. **Secure Registration Access**
+   - Court owners access form via signed URL from email
+   - Protected by `signed` middleware (prevents URL tampering)
+   - 7-day window to complete registration before expiry
+
+4. **Listing Creation** (`CreateListing` action)
+   - Processes form data through `CreateListingData` DTO
+   - Creates `Listing` model with complete court information
+   - Handles media uploads (cover photo, profile photo)
+   - Maintains code standardization through action pattern
+
+5. **Immediate Public Availability**
+   - Listing appears instantly in public directory
+   - No additional approval or moderation required
+   - Available for players to discover and contact
+
+**Security Features:**
+- **Signed URLs:** Cryptographically signed to prevent unauthorized access
+- **Token Hashing:** Secure storage using Laravel's Hash facade
+- **Time-Limited Access:** 7-day expiry window for registration completion
+- **UUID-based Identifiers:** Non-guessable, secure token references
+
+**Business Benefits:**
+- **Trust Building:** Facilities see value before being asked for paid adoption
+- **Low Friction:** Simple one-time registration process
+- **Market Coverage:** Comprehensive directory drives player engagement
+- **Conversion Funnel:** Directory → Interest → Full platform adoption
 
 ## Performance Considerations
 
