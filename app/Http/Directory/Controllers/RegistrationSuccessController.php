@@ -12,6 +12,11 @@ class RegistrationSuccessController extends Controller
 {
     public function __invoke(Listing $listing)
     {
+
+        if (!session('registration-success')) {
+            return redirect()->route('directory.home');
+        }
+
         return Inertia::render('directory/registrationSuccess', [
             'listing' => new ListingResource($listing),
         ]);

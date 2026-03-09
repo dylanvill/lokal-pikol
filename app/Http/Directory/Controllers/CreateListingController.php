@@ -59,6 +59,8 @@ class CreateListingController extends Controller
         $tokenEntry->used = true;
         $tokenEntry->save();
 
+        $request->session()->flash('registration-success', true);
+
         return redirect()->route('directory.register.success', ['listing' => $listing->uuid]);
     }
 

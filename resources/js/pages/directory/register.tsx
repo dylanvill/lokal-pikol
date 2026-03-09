@@ -43,9 +43,7 @@ function RegisterPage() {
             uuid,
             token,
         }));
-        form.submit(store(), {
-            preserveScroll: true,
-        });
+        form.submit(store());
     };
 
     const setCoverPhoto = useCallback((file: File) => {
