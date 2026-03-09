@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Listing\Controllers\CreateListingController;
-use App\Http\Listing\Controllers\ListingController;
-use App\Http\Listing\Controllers\ListingLegalController;
+use App\Http\Directory\Controllers\CreateListingController;
+use App\Http\Directory\Controllers\ListingController;
+use App\Http\Directory\Controllers\ListingLegalController;
 use App\Http\Shared\Middleware\CustomerRoutesMiddleware;
-use App\Source\Listing\Mail\ListingRegistrationEmail;
+use App\Source\Directory\Mail\ListingRegistrationEmail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(CustomerRoutesMiddleware::class)->group(function () {
