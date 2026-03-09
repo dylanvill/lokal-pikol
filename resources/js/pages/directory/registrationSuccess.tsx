@@ -20,12 +20,12 @@ function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
             <BackNavigationBase href="/" label="View directory" />
             <Box>
                 <Box marginBottom={4}>
-                    <SuccessAlert title="Registration Successful!" description="" />
+                    <SuccessAlert title="Listing Successful!" description="" />
                 </Box>
-                <Heading>Your court is now live and discoverable</Heading>
+                <Heading>Your court is now live in the directory</Heading>
                 <Text marginBottom={6} color="gray.600">
-                    Your court is now live in our directory and can be discovered by players throughout Negros Oriental. Here's how your listing
-                    appears to the public:
+                    Your court is now listed in the Negros Oriental pickleball directory and can be discovered by players in your area. Here's how
+                    your listing appears to the public:
                 </Text>
             </Box>
             <ListingCard

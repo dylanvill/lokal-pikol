@@ -27,7 +27,7 @@ class ListingRegistrationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Negros Oriental Court Directory | Lokal Pikol',
+            subject: 'Negros Oriental Court Directory | Add Your Court to Lokal Pikol',
         );
     }
 

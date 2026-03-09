@@ -69,10 +69,10 @@ function RegisterPage() {
             }}
         >
             <Box>
-                <Heading>Get Your Court Listed!</Heading>
+                <Heading>Add Your Court to the Directory</Heading>
                 <Text>
-                    Join the owner-verified directory of pickleball courts in Negros Oriental. Get discovered by players in your area. Simply provide
-                    your court details below to get started.
+                    Help players in Negros Oriental discover your pickleball court. Simply provide your court details below and we'll include it in
+                    the public directory.
                 </Text>
             </Box>
             <Separator marginY={8} width={40} marginX="auto" />
