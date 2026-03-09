@@ -16,7 +16,7 @@ Your listing will help players in Negros Oriental discover your court and can se
 <x-mail::button :url="$url">
 Register Your Court
 </x-mail::button>
-This secure link is valid for only 24 hours.
+This link is only valid for 7 days, if you need more time please contact us so we can send a new link.
 
 Thanks,<br>
 {{ config('app.name') }}
