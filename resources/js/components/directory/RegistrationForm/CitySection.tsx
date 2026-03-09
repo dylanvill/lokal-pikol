@@ -110,7 +110,6 @@ function CitySection({ form }: { form: ReturnType<typeof useForm> }) {
             onInputValueChange={(e) => filter(e.inputValue)}
             value={form.data.city ? [form.data.city] : []}
             onValueChange={(e) => form.setData('city', e.value[0] || '')}
-            width="320px"
         >
             <Combobox.Label>City</Combobox.Label>
             <Combobox.Control>
