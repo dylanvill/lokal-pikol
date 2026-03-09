@@ -1,0 +1,52 @@
+import { Box, Heading, Text } from '@chakra-ui/react';
+import ListingCard from '../../components/directory/ListingCard';
+import BackNavigationBase from '../../components/shared/BackNavigationBase';
+import ListingLayout from '../../layouts/listing/ListingLayout';
+import type ListingItem from '../../models/directory/ListingItem';
+
+interface RegistrationSuccessPageProps {
+    listing: ListingItem;
+}
+
+function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
+    return (
+        <ListingLayout
+            title="Registration Successful"
+            contentContainerProps={{
+                maxWidth: 'xl',
+            }}
+        >
+            <BackNavigationBase
+                href="/"
+                label="View directory"
+            />
+            <Box>
+                <Heading>Your court is now live and discoverable!</Heading>
+                <Text marginBottom={6} color="gray.600">
+                    Your court is now live in our directory and can be discovered by players throughout Negros Oriental. 
+                    Here's how your listing appears to the public:
+                </Text>
+            </Box>
+            <ListingCard
+                key={listing.id}
+                id={listing.id}
+                name={listing.name}
+                profilePhoto={listing.profilePhoto}
+                coverPhoto={listing.coverPhoto}
+                city={listing.city}
+                address={listing.address}
+                openingTime={listing.openingTime}
+                closingTime={listing.closingTime}
+                courtType={listing.courtType}
+                numberOfCourts={listing.numberOfCourts}
+                googleMapsUrl={listing.googleMapsUrl}
+                socialLinks={listing.socialLinks}
+                bookingUrl={listing.bookingUrl}
+                email={listing.email}
+                phone={listing.phone}
+            />
+        </ListingLayout>
+    );
+}
+
+export default RegistrationSuccessPage;

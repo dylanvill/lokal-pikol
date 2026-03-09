@@ -58,6 +58,8 @@ class CreateListingController extends Controller
         $tokenEntry = ListingRegistrationToken::where('uuid', $request->uuid)->first();
         $tokenEntry->used = true;
         $tokenEntry->save();
+
+        return redirect()->route('directory.register.success', ['listing' => $listing->uuid]);
     }
 
     protected function handleSocialLinks(Listing $listing, CreateListingRequest $request)

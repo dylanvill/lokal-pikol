@@ -219,7 +219,8 @@ function RegisterPage() {
                                     disabled={form.processing}
                                 />
                                 <Field.HelperText>
-                                    The website where your players can reserve your courts. Leave blank if you don't have any.
+                                    The website where your players can reserve your courts. You can put your Facebook page URL if you use Facebook for
+                                    bookings, otherwise you can just leave this blank.
                                 </Field.HelperText>
                                 <Field.ErrorText>{form.errors.bookingPageUrl}</Field.ErrorText>
                             </Field.Root>
