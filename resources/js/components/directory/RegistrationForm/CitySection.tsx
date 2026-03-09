@@ -115,7 +115,7 @@ function CitySection({ form }: { form: ReturnType<typeof useForm> }) {
             required
             disabled={form.processing}
         >
-            <Combobox.Label>City</Combobox.Label>
+            <Combobox.Label><span style={{ color: 'red' }}>*</span>City</Combobox.Label>
             <Combobox.Control>
                 <Combobox.Input placeholder="Type to search" />
                 <Combobox.IndicatorGroup>

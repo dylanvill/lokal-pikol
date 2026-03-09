@@ -29,7 +29,7 @@ function CourtTypesSection({ form }: { form: ReturnType<typeof useForm> }) {
                 disabled={form.processing}
                 invalid={!!form.errors.courtType}
             >
-                <RadioCard.Label>Court types</RadioCard.Label>
+                <RadioCard.Label><span style={{ color: 'red' }}>*</span> Court types</RadioCard.Label>
                 <Field.Root>
                     <Field.HelperText marginBottom={2}>
                         Help players find the perfect court setup - specify whether your courts are covered, outdoor, or both

@@ -1,4 +1,4 @@
-import { Box, Button, Field, Heading, HStack, Input, InputGroup, Separator, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Field, Heading, HStack, Input, InputGroup, Separator, Text, VStack } from '@chakra-ui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { LuContact, LuMapPin, LuBuilding2 } from 'react-icons/lu';
@@ -93,7 +93,7 @@ function RegisterPage() {
                     />
                     <VStack alignItems="stretch" gap={4} marginTop={4}>
                         <Field.Root>
-                            <Field.Label>Facility Name</Field.Label>
+                            <Field.Label><span style={{ color: 'red' }}>*</span>Facility Name</Field.Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -145,7 +145,7 @@ function RegisterPage() {
                         <VStack gap={4} alignItems="stretch">
                             <CitySection form={form} />
                             <Field.Root>
-                                <Field.Label>Full address</Field.Label>
+                                <Field.Label><span style={{ color: 'red' }}>*</span>Full address</Field.Label>
                                 <Input
                                     name="address"
                                     value={form.data.address}
@@ -247,16 +247,23 @@ function RegisterPage() {
                         </VStack>
                     </Box>
                 </Box>
-                <Button
-                    type="submit"
-                    colorScheme="blue"
-                    marginTop={8}
-                    disabled={form.processing}
-                    loading={form.processing}
-                    loadingText="Posting facility..."
-                >
-                    Post Facility
-                </Button>
+                <Box>
+                    <Checkbox.Root marginTop={4} required>
+                        <Checkbox.HiddenInput />
+                        <Checkbox.Control />
+                        <Checkbox.Label><span style={{ color: 'red' }}>*</span> By submitting this form, you agree to our terms and conditions.</Checkbox.Label>
+                    </Checkbox.Root>
+                    <Button
+                        type="submit"
+                        colorScheme="blue"
+                        marginTop={8}
+                        disabled={form.processing}
+                        loading={form.processing}
+                        loadingText="Posting facility..."
+                    >
+                        Post Facility
+                    </Button>
+                </Box>
             </form>
         </ListingLayout>
     );
