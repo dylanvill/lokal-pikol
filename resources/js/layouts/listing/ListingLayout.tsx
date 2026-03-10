@@ -18,25 +18,29 @@ function ListingLayout({
             <Head title={title}>
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-                
-                {/* SEO Meta Tags */}
-                <meta name="description" content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details." />
-                <meta name="keywords" content="pickleball courts, Negros Oriental, court directory, pickleball facilities, court listings, sports facilities" />
+
+                <meta
+                    name="description"
+                    content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details."
+                />
+                <meta
+                    name="keywords"
+                    content="pickleball courts, Negros Oriental, court directory, pickleball facilities, court listings, sports facilities"
+                />
                 <meta name="author" content="Lokal Pikol" />
-                
-                {/* Open Graph / Facebook */}
+
+                <meta property="og:url" content="https://directory.lokalpikol.com" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content={title} />
-                <meta property="og:description" content="Negros Oriental pickleball courts directory with verified information from court owners." />
-                <meta property="og:image" content="/images/og-image.jpg" />
+                <meta
+                    property="og:description"
+                    content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details."
+                />
+                <meta property="og:image" content="https://directory.lokalpikol.com/images/og-image.jpg" />
+                <meta property="og:image:secure_url" content="https://directory.lokalpikol.com/images/og-image.jpg" />
+                <meta property="og:image:type" content="image/jpeg" />
                 <meta property="og:site_name" content="Lokal Pikol Directory" />
-                
-                {/* Twitter */}
-                <meta name="twitter:card" content="summary" />
-                <meta name="twitter:title" content={title} />
-                <meta name="twitter:description" content="Negros Oriental pickleball courts directory with verified information from court owners." />
-                
-                {/* Additional SEO */}
+
                 <meta name="robots" content="index, follow" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </Head>

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return inertia('ErrorPage');
 })->name('home');
+
 Route::middleware(RedirectToDirectoryMiddleware::class)->group(function () {
     // /* ------------------------------ Public Routes ----------------------------- */
     // Route::get('/', FacilitiesController::class)->name('home');
