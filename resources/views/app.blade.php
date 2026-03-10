@@ -30,8 +30,8 @@
     <meta
         property="og:description"
         content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details." />
-    <meta property="og:image" content="https://directory.lokalpikol.com/images/og-image.jpg" />
-    <meta property="og:image:secure_url" content="https://directory.lokalpikol.com/images/og-image.jpg" />
+    <meta property="og:image" content="https://directory.lokalpikol.com/images/og-image-v2.jpg" />
+    <meta property="og:image:secure_url" content="https://directory.lokalpikol.com/images/og-image-v2.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:site_name" content="Lokal Pikol | Negros Oriental Pickleball Courts Directory" />
 
