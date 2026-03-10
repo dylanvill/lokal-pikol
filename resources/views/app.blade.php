@@ -15,6 +15,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+    <meta
+        name="description"
+        content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details." />
+    <meta
+        name="keywords"
+        content="pickleball courts, Negros Oriental, court directory, pickleball facilities, court listings, sports facilities" />
+    <meta name="author" content="Lokal Pikol" />
+
+    <meta property="og:url" content="https://directory.lokalpikol.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta
+        property="og:description"
+        content="Negros Oriental pickleball courts directory with verified information from court owners. Find local facilities, hours, and contact details." />
+    <meta property="og:image" content="https://directory.lokalpikol.com/images/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://directory.lokalpikol.com/images/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:site_name" content="Lokal Pikol" />
+
+    <meta name="robots" content="index, follow" />
     @viteReactRefresh
     @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
     @inertiaHead
