@@ -49,7 +49,7 @@ class CreateListingRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'digits:10', 'starts_with:9'],
             'openingTime' => ['nullable', 'date_format:H:i'],
-            'closingTime' => ['nullable', 'date_format:H:i', 'after:openingTime'],
+            'closingTime' => ['nullable', 'date_format:H:i'],
             'bookingPageUrl' => ['nullable', 'url', 'max:255'],
             'facebookPageUrl' => ['nullable', 'url', 'max:255'],
             'instagramUrl' => ['nullable', 'url', 'max:255'],
