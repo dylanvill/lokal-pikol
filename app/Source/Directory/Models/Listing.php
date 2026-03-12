@@ -4,6 +4,7 @@ namespace App\Source\Directory\Models;
 
 use App\Models\Traits\HasUuid;
 use App\Source\Directory\Database\Factories\ListingFactory;
+use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Shared\Models\SocialLink;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Listing extends Model implements HasMedia
 {
@@ -41,6 +43,21 @@ class Listing extends Model implements HasMedia
     {
         $this->addMediaCollection(MediaTypeEnum::LISTING_COVER_PHOTO->value)->singleFile();
         $this->addMediaCollection(MediaTypeEnum::LISTING_PROFILE_PHOTO->value)->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion(MediaConversionEnum::COVER_PHOTO_THUMBNAIL->value)
+            ->performOnCollections(MediaTypeEnum::LISTING_COVER_PHOTO->value)
+            ->width(960)
+            ->height(540)
+            ->nonQueued();
+
+        $this->addMediaConversion(MediaConversionEnum::PROFILE_PHOTO_THUMBNAIL->value)
+            ->performOnCollections(MediaTypeEnum::LISTING_PROFILE_PHOTO->value)
+            ->width(480)
+            ->height(480)
+            ->nonQueued();
     }
 
     public function updateProfilePhoto($photo): void
