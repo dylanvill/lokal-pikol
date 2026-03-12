@@ -3,6 +3,7 @@
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Source\Facility\Commands\SendOnboardingInvite;
 use App\Source\Directory\Commands\SendListingRegistrationEmail;
+use App\Source\Directory\Commands\SendListingThankYouEmail;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -51,6 +52,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withCommands([
         SendOnboardingInvite::class,
         SendListingRegistrationEmail::class,
+        SendListingThankYouEmail::class,
     ])->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
             if (!App::environment(['local']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {

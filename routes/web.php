@@ -22,7 +22,7 @@ use App\Source\Customer\Mail\CustomerWelcomeEmail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('home.home');
+    return redirect()->route('directory.home');
 })->name('home');
 
 Route::middleware(RedirectToDirectoryMiddleware::class)->group(function () {
