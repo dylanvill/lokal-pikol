@@ -4,6 +4,7 @@ namespace App\Http\Directory\Resources;
 
 use App\Http\Shared\Resources\LinkResource;
 use App\Http\Shared\Resources\PhotoResource;
+use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +17,9 @@ class ListingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $coverPhoto = $this->getCoverPhoto();
+        $profilePhoto = $this->getProfilePhoto();
+
         return [
             'id' => $this->uuid,
             'name' => $this->name,
@@ -30,8 +34,14 @@ class ListingResource extends JsonResource
             'courtType' => $this->court_type,
             'numberOfCourts' => $this->number_of_courts,
             'socialLinks' => LinkResource::collection($this->socialLinks),
-            'coverPhoto' => new PhotoResource($this->getCoverPhoto()),
-            'profilePhoto' => new PhotoResource($this->getProfilePhoto()),
+            'coverPhoto' => [
+                'uuid' => $coverPhoto?->uuid,
+                'url' => empty($coverPhoto) ? null : $coverPhoto->getUrl(MediaConversionEnum::COVER_PHOTO_THUMBNAIL->value),
+            ],
+            'profilePhoto' => [
+                'uuid' => $profilePhoto?->uuid,
+                'url' => empty($profilePhoto) ? null : $profilePhoto->getUrl(MediaConversionEnum::PROFILE_PHOTO_THUMBNAIL->value),
+            ]
         ];
     }
 }
