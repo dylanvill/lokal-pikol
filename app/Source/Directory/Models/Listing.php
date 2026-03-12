@@ -49,8 +49,8 @@ class Listing extends Model implements HasMedia
     {
         $this->addMediaConversion(MediaConversionEnum::COVER_PHOTO_THUMBNAIL->value)
             ->performOnCollections(MediaTypeEnum::LISTING_COVER_PHOTO->value)
-            ->width(960)
-            ->height(540)
+            ->width(1280)
+            ->height(720)
             ->nonQueued();
 
         $this->addMediaConversion(MediaConversionEnum::PROFILE_PHOTO_THUMBNAIL->value)
