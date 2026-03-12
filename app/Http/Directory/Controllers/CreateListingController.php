@@ -10,11 +10,16 @@ use App\Source\Directory\Actions\CreateListing\Dtos\CreateListingData;
 use App\Source\Directory\Actions\UpdateSocialLink\UpdateSocialLink;
 use App\Source\Directory\Actions\ValidateListingRegistrationToken\ValidateListingRegistrationToken;
 use App\Source\Directory\Actions\ValidateListingRegistrationToken\Dtos\ValidateListingRegistrationTokenData;
+use App\Source\Directory\Mail\ListingPostedThankYouEmail;
 use App\Source\Directory\Models\Listing;
 use App\Source\Directory\Models\ListingRegistrationToken;
 use App\Source\Shared\Enums\SocialLinkEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 class CreateListingController extends Controller
 {
@@ -37,29 +42,51 @@ class CreateListingController extends Controller
 
     public function store(CreateListingRequest $request, CreateListing $service)
     {
-        $data = new CreateListingData(
-            name: $request->name,
-            city: $request->city,
-            address: $request->address,
-            courtType: $request->courtType,
-            numberOfCourts: $request->numberOfCourts,
-            profilePhoto: $request->profilePhoto,
-            coverPhoto: $request->coverPhoto,
-            email: $request->email,
-            phone: $request->phone,
-            openingTime: $request->openingTime,
-            closingTime: $request->closingTime,
-            googleMapsUrl: $request->googleMapsUrl,
-            bookingUrl: $request->bookingPageUrl,
-        );
+        DB::beginTransaction();
+        try {
+            $data = new CreateListingData(
+                name: $request->name,
+                city: $request->city,
+                address: $request->address,
+                courtType: $request->courtType,
+                numberOfCourts: $request->numberOfCourts,
+                profilePhoto: $request->profilePhoto,
+                coverPhoto: $request->coverPhoto,
+                email: $request->email,
+                phone: $request->phone,
+                openingTime: $request->openingTime,
+                closingTime: $request->closingTime,
+                googleMapsUrl: $request->googleMapsUrl,
+                bookingUrl: $request->bookingPageUrl,
+            );
 
-        $listing = $service->create($data);
+            $listing = $service->create($data);
 
-        $this->handleSocialLinks($listing, $request);
+            $this->handleSocialLinks($listing, $request);
 
-        $tokenEntry = ListingRegistrationToken::where('uuid', $request->uuid)->first();
-        $tokenEntry->used = true;
-        $tokenEntry->save();
+            $tokenEntry = ListingRegistrationToken::where('uuid', $request->uuid)->first();
+            $tokenEntry->used = true;
+            $tokenEntry->save();
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            Log::error('Error creating listing: ' . $th->getMessage(), [
+                'stack' => $th->getTraceAsString()
+            ]);
+            DB::rollBack();
+            Inertia::flash('form-error', 'An error occurred while saving your facility. Please try again.');
+            return redirect()->back();
+        }
+
+        try {
+            if (!empty($listing->email)) {
+                Mail::to($listing->email)->send(new ListingPostedThankYouEmail($listing));
+            }
+        } catch (\Throwable $th) {
+            Log::error('Error sending listing posted thank you email: ' . $th->getMessage(), [
+                'stack' => $th->getTraceAsString()
+            ]);
+        }
 
         $request->session()->flash('registration-success', true);
 
@@ -80,8 +107,6 @@ class CreateListingController extends Controller
             }
         }
     }
-
-
 
     public function bypass(Request $request)
     {

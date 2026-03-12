@@ -8,11 +8,14 @@ import CourtTypesSection from '../../components/directory/RegistrationForm/Court
 import DirectoryCoverPhotoSection from '../../components/directory/RegistrationForm/DirectoryCoverPhotoSection';
 import DirectoryProfilePhotoSection from '../../components/directory/RegistrationForm/DirectoryProfilePhotoSection';
 import NumberOfCourtsSection from '../../components/directory/RegistrationForm/NumberOfCourtsSection';
+import DangerAlert from '../../components/shared/Alert/DangerAlert';
 import FormSectionHeader from '../../components/shared/FormSectionHeader';
 import ListingLayout from '../../layouts/listing/ListingLayout';
 
 function RegisterPage() {
-    const { props } = usePage<{ uuid: string; token: string }>();
+    const { props, flash } = usePage<{ uuid: string; token: string }>();
+
+    const hasError = flash?.['form-error'] as string | undefined;
 
     const uuid = props.uuid;
     const token = props.token;
@@ -76,6 +79,14 @@ function RegisterPage() {
                 </Text>
             </Box>
             <Separator marginY={8} width={40} marginX="auto" />
+            {hasError && (
+                <Box marginBottom={4}>
+                    <DangerAlert
+                        title="An error occurred while saving your facility."
+                        description="Your facility couldn't be saved because an error occured. If the issue persists, please send us a message on our social platforms."
+                    />
+                </Box>
+            )}
             <form onSubmit={handleSubmit}>
                 <Box>
                     <Box marginBottom={8}>
