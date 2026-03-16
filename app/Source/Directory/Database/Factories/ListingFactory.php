@@ -24,12 +24,12 @@ class ListingFactory extends Factory
     {
         $openingHour = $this->faker->numberBetween(6, 10);
         $closingHour = $this->faker->numberBetween(20, 23);
-        
+
         return [
             'name' => $this->faker->company() . ' Courts',
             'city' => $this->faker->randomElement(CityEnum::values()),
             'address' => $this->faker->address(),
-            'court_types' => $this->faker->randomElement(ListingCourtTypeEnum::values()),
+            'court_type' => $this->faker->randomElement(ListingCourtTypeEnum::values()),
             'number_of_courts' => $this->faker->numberBetween(1, 6),
             'email' => $this->faker->optional(0.8)->companyEmail(),
             'phone' => $this->faker->optional(0.9)->bothify("+639#########"),
@@ -47,11 +47,11 @@ class ListingFactory extends Factory
     {
         return $this->afterCreating(function (Listing $listing) {
             $listing
-                ->addMediaFromUrl('https://picsum.photos/300/300')
+                ->addMediaFromUrl('https://picsum.photos/480/480')
                 ->toMediaCollection(MediaTypeEnum::LISTING_PROFILE_PHOTO->value);
 
             $listing
-                ->addMediaFromUrl('https://picsum.photos/854/480')
+                ->addMediaFromUrl('https://picsum.photos/1280/720')
                 ->toMediaCollection(MediaTypeEnum::LISTING_COVER_PHOTO->value);
         });
     }
