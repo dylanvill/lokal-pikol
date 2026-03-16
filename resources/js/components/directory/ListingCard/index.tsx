@@ -93,14 +93,14 @@ function ListingCard({
                         <DetailWithIcon
                             icon={<FaFacebookF />}
                             textProps={{ color: 'black', fontSize: 'sm' }}
-                            label={<ChakraLink href={facebookLink.url}>Facebook</ChakraLink>}
+                            label={<ChakraLink target="_blank" href={facebookLink.url}>Facebook</ChakraLink>}
                         />
                     )}
                     {instagramLink && (
                         <DetailWithIcon
                             icon={<FaInstagram />}
                             textProps={{ color: 'black', fontSize: 'sm' }}
-                            label={<ChakraLink href={instagramLink.url}>Instagram</ChakraLink>}
+                            label={<ChakraLink target="_blank" href={instagramLink.url}>Instagram</ChakraLink>}
                         />
                     )}
                 </VStack>
