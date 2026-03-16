@@ -62,6 +62,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                 [filterKey]: null,
             },
             {
+                reset: ['listings', 'filters'],
                 preserveState: true,
                 preserveScroll: true,
             },
@@ -123,7 +124,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                     ))}
                 </SimpleGrid>
             </InfiniteScroll>
-            {hasNoMoreData && (
+            {hasNoMoreData && !hasFilters ? (
                 <>
                     <Separator marginY={8} />
                     <Box>
@@ -141,7 +142,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                         </Text>
                     </Box>
                 </>
-            )}
+            ) : null}
         </ListingLayout>
     );
 }
