@@ -6,7 +6,7 @@ interface ListingItem {
     name: string;
     profilePhoto: Photo;
     coverPhoto: Photo;
-    courtType: string;
+    courtType: "Covered" | "Outdoor" | "Covered and Outdoor";
     numberOfCourts: number;
     email: string | null;
     phone: string | null;

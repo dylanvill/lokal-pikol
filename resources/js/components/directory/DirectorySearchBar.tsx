@@ -9,27 +9,29 @@ interface Item {
     label: string;
 }
 
-interface Filters extends PageProps {
+interface ListingPageProps extends PageProps {
     cities: Item[];
     courtTypes: Item[];
     numberOfCourts: Item[];
+    filters: {
+        city: string | null;
+        courtType: string | null;
+        numberOfCourts: string | null;
+    };
 }
 
 function DirectorySearchBar() {
-    const { props } = usePage<Filters>();
-
-    const params = new URLSearchParams(window.location.search);
+    const { props } = usePage<ListingPageProps>();
 
     const { data, submit, setData } = useForm({
-        city: params.get('city') || '',
-        courtType: params.get('courtType') || '',
-        numberOfCourts: params.get('numberOfCourts') || '',
+        city: props.filters.city || '',
+        courtType: props.filters.courtType || '',
+        numberOfCourts: props.filters.numberOfCourts || '',
     });
 
     useEffect(() => {
         submit(invoke(), {
-            method: 'get',
-            reset: ['listings'],
+            reset: ['listings', 'filters'],
             preserveState: true,
         });
     }, [data]);
@@ -37,10 +39,14 @@ function DirectorySearchBar() {
     return (
         <Container p={4} shadow="2xl" borderRadius={12} backgroundColor="white" flex="1">
             <form action="">
-                <HStack alignItems="flex-end" flexWrap={{
-                    base: 'wrap',
-                    md: 'nowrap',
-                }} gap={4}>
+                <HStack
+                    alignItems="flex-end"
+                    flexWrap={{
+                        base: 'wrap',
+                        md: 'nowrap',
+                    }}
+                    gap={4}
+                >
                     <Field.Root>
                         <Field.Label>City</Field.Label>
                         <NativeSelect.Root>

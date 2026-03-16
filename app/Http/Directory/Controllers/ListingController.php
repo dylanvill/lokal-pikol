@@ -36,7 +36,12 @@ class ListingController extends Controller
             'listings' => Inertia::scroll(fn() => ListingResource::collection($listings)),
             'cities' => $this->getCities(),
             'courtTypes' => $this->getCourtTypes(),
-            'numberOfCourts' => $this->getNumberOfCourts()
+            'numberOfCourts' => $this->getNumberOfCourts(),
+            'filters' => [
+                'city' => $request->city ?? null,
+                'courtType' => $request->courtType ?? null,
+                'numberOfCourts' => $request->numberOfCourts ?? null,
+            ],
         ]);
     }
 
