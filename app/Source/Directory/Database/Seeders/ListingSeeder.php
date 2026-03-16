@@ -23,7 +23,7 @@ class ListingSeeder extends Seeder
      */
     public function run(): void
     {
-        Listing::factory()->count(20)->create()->each(function (Listing $listing) {
+        Listing::factory()->count(50)->create()->each(function (Listing $listing) {
             // Add social links
             $socialLinksData = [
                 [

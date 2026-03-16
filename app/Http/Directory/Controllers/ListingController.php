@@ -12,10 +12,10 @@ class ListingController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $all = Listing::with('socialLinks')->withMedia()->get();
+        $listings = Listing::with('socialLinks')->withMedia()->paginate(12);
 
         return Inertia::render('directory/listing', [
-            'listings' => ListingResource::collection($all),
+            'listings' => Inertia::scroll(fn() => ListingResource::collection($listings)),
         ]);
     }
 }
