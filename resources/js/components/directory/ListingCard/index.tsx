@@ -1,4 +1,4 @@
-import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Separator, Text, Flex } from '@chakra-ui/react';
+import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone } from 'react-icons/lu';
@@ -40,8 +40,6 @@ function ListingCard({
 
     const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
     const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
-
-    const hasSocialLinks = facebookLink || instagramLink;
 
     return (
         <Card.Root padding={0} borderRadius={8} key={id}>
@@ -91,27 +89,21 @@ function ListingCard({
                     />
                     {email && <DetailWithIcon icon={<LuMail />} textProps={{ color: 'black', fontSize: 'sm' }} label={email} />}
                     {phone && <DetailWithIcon icon={<LuPhone />} textProps={{ color: 'black', fontSize: 'sm' }} label={phone} />}
+                    {facebookLink && (
+                        <DetailWithIcon
+                            icon={<FaFacebookF />}
+                            textProps={{ color: 'black', fontSize: 'sm' }}
+                            label={<ChakraLink href={facebookLink.url}>Facebook</ChakraLink>}
+                        />
+                    )}
+                    {instagramLink && (
+                        <DetailWithIcon
+                            icon={<FaInstagram />}
+                            textProps={{ color: 'black', fontSize: 'sm' }}
+                            label={<ChakraLink href={instagramLink.url}>Instagram</ChakraLink>}
+                        />
+                    )}
                 </VStack>
-                {hasSocialLinks && (
-                    <>
-                        <HStack marginY={4} display="flex" alignItems="center" justifyContent="center">
-                            <Text fontSize="xs">SOCIAL LINKS</Text>
-                            <Separator flex={1} />
-                        </HStack>
-                        <HStack gap={4}>
-                            {facebookLink && (
-                                <ChakraLink href={facebookLink.url}>
-                                    <FaFacebookF color="#141F4A" />
-                                </ChakraLink>
-                            )}
-                            {instagramLink && (
-                                <ChakraLink href={instagramLink.url}>
-                                    <FaInstagram color="#141F4A" />
-                                </ChakraLink>
-                            )}
-                        </HStack>
-                    </>
-                )}
             </Card.Body>
             <Card.Footer>
                 <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
