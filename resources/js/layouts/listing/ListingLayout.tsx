@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import React from 'react';
 import { GrFacebookOption, GrInstagram } from 'react-icons/gr';
 import Logo from '../../../images/logo/lokal-pikol-horizontal-white-out.svg';
+import DirectorySearchBar from '../../components/directory/DirectorySearchBar';
 
 function ListingLayout({
     title,
@@ -35,8 +36,9 @@ function ListingLayout({
                                 </Text>
                             </Flex>
                         </Container>
+                        <DirectorySearchBar />
                     </Container>
-                    <Container py={4} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
+                    <Container py={8} shadow="2xl" borderTopRadius={12} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
                         {children}
                     </Container>
                 </Box>
