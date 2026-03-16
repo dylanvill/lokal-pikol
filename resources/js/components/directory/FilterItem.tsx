@@ -9,7 +9,7 @@ interface FilterItemProps {
 
 function FilterItem({ icon, label, onRemove }: FilterItemProps) {
     return (
-        <Tag.Root onClick={onRemove} cursor="pointer">
+        <Tag.Root onClick={onRemove} cursor="pointer" colorPalette="orange">
             <Tag.StartElement>{icon}</Tag.StartElement>
             <Tag.Label>{label}</Tag.Label>
             <Tag.EndElement>
