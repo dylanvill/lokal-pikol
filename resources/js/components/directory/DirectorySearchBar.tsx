@@ -37,7 +37,10 @@ function DirectorySearchBar() {
     return (
         <Container p={4} shadow="2xl" borderRadius={12} backgroundColor="white" flex="1">
             <form action="">
-                <HStack>
+                <HStack alignItems="flex-end" flexWrap={{
+                    base: 'wrap',
+                    md: 'nowrap',
+                }} gap={4}>
                     <Field.Root>
                         <Field.Label>City</Field.Label>
                         <NativeSelect.Root>

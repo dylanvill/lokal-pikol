@@ -38,7 +38,7 @@ function ListingLayout({
                         </Container>
                         <DirectorySearchBar />
                     </Container>
-                    <Container py={8} shadow="2xl" borderTopRadius={12} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
+                    <Container p={8} shadow="2xl" borderTopRadius={12} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
                         {children}
                     </Container>
                 </Box>
