@@ -55,6 +55,12 @@ return [
     'use_default_collection_serialization' => false,
 
     /*
+     * Custom temporary directory for file processing.
+     * This ensures we use a directory within our storage folder with proper permissions.
+     */
+    'temporary_directory_path' => storage_path('media-library/temp'),
+
+    /*
      * The fully qualified class name of the model used for temporary uploads.
      *
      * This model is only used in Media Library Pro (https://medialibrary.pro)
