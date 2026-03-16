@@ -27,11 +27,13 @@ class ListingSeeder extends Seeder
             // Add social links
             $socialLinksData = [
                 [
-                    'type' => SocialLinkEnum::FACEBOOK->value,
+                    'platform' => SocialLinkEnum::FACEBOOK->value,
+                    'label' => SocialLinkEnum::FACEBOOK->value,
                     'url' => 'https://www.facebook.com/' . Str::slug($listing->name),
                 ],
                 [
-                    'type' => SocialLinkEnum::INSTAGRAM->value,
+                    'platform' => SocialLinkEnum::INSTAGRAM->value,
+                    'label' => SocialLinkEnum::INSTAGRAM->value,
                     'url' => 'https://www.instagram.com/' . Str::slug($listing->name),
                 ],
             ];
