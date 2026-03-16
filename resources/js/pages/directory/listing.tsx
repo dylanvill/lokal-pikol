@@ -1,4 +1,4 @@
-import { Heading, Link as ChakraLink, Separator, SimpleGrid, Text, Box, HStack, Flex } from '@chakra-ui/react';
+import { Heading, Link as ChakraLink, SimpleGrid, Text, Box, HStack, Flex } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, router } from '@inertiajs/react';
 import { useMemo } from 'react';
@@ -124,10 +124,8 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                     ))}
                 </SimpleGrid>
             </InfiniteScroll>
-            {hasNoMoreData && !hasFilters ? (
-                <>
-                    <Separator marginY={8} />
-                    <Box>
+            {hasNoMoreData && (
+                    <Box marginTop={16}>
                         <Heading size="lg" marginBottom={4} textAlign="center">
                             That's all the courts we have for now
                         </Heading>
@@ -141,8 +139,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                             This is a community effort, your contribution will be highly appreciated!
                         </Text>
                     </Box>
-                </>
-            ) : null}
+            )}
         </ListingLayout>
     );
 }
