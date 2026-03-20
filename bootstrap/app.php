@@ -11,6 +11,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 use Inertia\Inertia;
@@ -57,6 +58,15 @@ return Application::configure(basePath: dirname(__DIR__))
         SendListingThankYouEmail::class,
     ])->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            $tld = config('app.tld');
+            $isDirectory = $request->getHost() === "directory.{$tld}";
+
+            if ($isDirectory && $exception instanceof InvalidSignatureException) {
+                return Inertia::render('directory/linkInvalid', ['status' => $response->getStatusCode()])
+                    ->toResponse($request)
+                    ->setStatusCode($response->getStatusCode());
+            }
+
             if (!App::environment(['local']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
                 return Inertia::render('ErrorPage', ['status' => $response->getStatusCode()])
                     ->toResponse($request)

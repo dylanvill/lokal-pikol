@@ -1,6 +1,5 @@
-import { Heading, Text, Container, Box, Center, Image, Separator } from '@chakra-ui/react';
+import { Heading, Text, Container, Box, Center} from '@chakra-ui/react';
 import { PiHandPeace } from 'react-icons/pi';
-import LokalPikol from '../../images/logo/lokal-pikol-horizontal-primary.svg';
 import RootLayout from '../layouts/RootLayout';
 
 function ErrorPage({ status }: { status: number }) {
@@ -26,19 +25,8 @@ function ErrorPage({ status }: { status: number }) {
                     <Center>
                         <PiHandPeace size={48} />
                     </Center>
-                    <Heading textAlign="center">Don't worry</Heading>
-                    <Text textAlign="center">You're seeing this because we're cooking up something in the back. We're going live soon.</Text>
-
-                    <Separator marginTop={8} />
-                    <Center marginTop={12} marginBottom={2}>
-                        <Image src={LokalPikol} alt="Lokal Pikol Logo" width={200} objectFit="contain" />
-                    </Center>
-
-                    <Text textAlign="center" fontSize="sm" fontStyle="italic" color="gray.500">
-                        A cost effective pickleball
-                        <br />
-                        booking system made in Negros Oriental
-                    </Text>
+                    <Heading textAlign="center">{title}</Heading>
+                    <Text textAlign="center">{description}</Text>
                 </Container>
             </Box>
         </RootLayout>
