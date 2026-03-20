@@ -14,6 +14,11 @@ function ListingLayout({
     children: React.ReactNode;
     contentContainerProps?: ContainerProps;
 }) {
+
+    const path = window.location.pathname;
+    const isHomePage = path === '/';
+
+
     return (
         <>
             <Head title={title}>
@@ -36,7 +41,7 @@ function ListingLayout({
                                 </Text>
                             </Flex>
                         </Container>
-                        <DirectorySearchBar />
+                        {isHomePage && <DirectorySearchBar />}
                     </Container>
                     <Container p={8} shadow="2xl" borderTopRadius={12} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
                         {children}
