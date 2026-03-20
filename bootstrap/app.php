@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Source\Facility\Commands\SendOnboardingInvite;
 use App\Source\Directory\Commands\SendListingRegistrationEmail;
@@ -33,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::domain("directory.{$tld}")
                 ->middleware('web')
+                ->middleware(DirectoryInertiaTemplateMiddleware::class)
                 ->name('directory.')
                 ->group(base_path('routes/directory.php'));
         }
