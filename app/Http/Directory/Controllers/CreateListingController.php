@@ -25,10 +25,6 @@ class CreateListingController extends Controller
 {
     public function show(ShowCreateListingRequest $request, ValidateListingRegistrationToken $tokenValidator)
     {
-        if(!$request->hasValidRelativeSignature()) {
-            return inertia('directory/linkInvalid');
-        };
-
         $isValid = $tokenValidator->validate(new ValidateListingRegistrationTokenData(
             uuid: $request->uuid,
             token: $request->token,

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', ListingController::class)->name('home');
-Route::get('/register', [CreateListingController::class, 'show'])->name('register.show');
+Route::get('/register', [CreateListingController::class, 'show'])->name('register.show')->middleware('signed');
 Route::post('/register', [CreateListingController::class, 'store'])->name('register.store')->middleware(HandlePrecognitiveRequests::class);
 Route::get('/register/{listing:uuid}/success', RegistrationSuccessController::class)->name('register.success');
 Route::get('/privacy-policy', [ListingLegalController::class, 'privacyPolicy'])->name('privacy-policy');
