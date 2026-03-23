@@ -1,4 +1,5 @@
 import type Photo from '../shared/Photo';
+import type ListingItemCourtType from './ListingItemCourtType';
 import type SocialLink from './SocialLink';
 
 interface ListingItem {
@@ -6,7 +7,7 @@ interface ListingItem {
     name: string;
     profilePhoto: Photo;
     coverPhoto: Photo;
-    courtType: "Covered" | "Outdoor" | "Covered and Outdoor";
+    courtType: ListingItemCourtType;
     numberOfCourts: number;
     email: string | null;
     phone: string | null;
