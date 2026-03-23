@@ -1,7 +1,6 @@
 import { Box, Button, Checkbox, Field, Heading, HStack, Input, InputGroup, Separator, Text, VStack } from '@chakra-ui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
-import { LuContact, LuMapPin, LuBuilding2 } from 'react-icons/lu';
 import { store } from '@/actions/App/Http/Directory/Controllers/CreateListingController';
 import CitySection from '../../components/directory/RegistrationForm/CitySection';
 import CourtTypesSection from '../../components/directory/RegistrationForm/CourtTypesSection';
@@ -87,7 +86,7 @@ function RegisterPage() {
                     />
                 </Box>
             )}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} method="post">
                 <Box>
                     <Box marginBottom={8}>
                         <Box zIndex={1}>
@@ -101,11 +100,6 @@ function RegisterPage() {
                             <Field.ErrorText>{form.errors.coverPhoto}</Field.ErrorText>
                         </Field.Root>
                     </Box>
-                    <FormSectionHeader
-                        icon={<LuBuilding2 size={24} />}
-                        title="Facility Details"
-                        description="General information about your facility"
-                    />
                     <VStack alignItems="stretch" gap={4} marginTop={4}>
                         <Field.Root>
                             <Field.Label>
@@ -124,62 +118,75 @@ function RegisterPage() {
                         </Field.Root>
                         <NumberOfCourtsSection form={form} />
                         <CourtTypesSection form={form} />
-                        <HStack alignItems="flex-start">
-                            <Field.Root invalid={!!form.errors.openingTime}>
-                                <Field.Label>Opening time (optional)</Field.Label>
-                                <Input
-                                    type="time"
-                                    name="openingTime"
-                                    placeholder="07:00:00"
-                                    value={form.data.openingTime}
-                                    onChange={(e) => handleTimeChanged('openingTime', e.target.value)}
-                                    onBlur={() => form.validate('openingTime')}
-                                    disabled={form.processing}
-                                />
-                                <Field.ErrorText>{form.errors.openingTime}</Field.ErrorText>
-                            </Field.Root>
-                            <Field.Root invalid={!!form.errors.closingTime}>
-                                <Field.Label>Closing time (optional)</Field.Label>
-                                <Input
-                                    type="time"
-                                    name="closingTime"
-                                    placeholder="22:00:00"
-                                    value={form.data.closingTime}
-                                    onChange={(e) => handleTimeChanged('closingTime', e.target.value)}
-                                    onBlur={() => form.validate('closingTime')}
-                                    disabled={form.processing}
-                                />
-                                <Field.ErrorText>{form.errors.closingTime}</Field.ErrorText>
-                            </Field.Root>
-                        </HStack>
+                        <CitySection form={form} />
+                        <Field.Root>
+                            <Field.Label>
+                                <span style={{ color: 'red' }}>*</span>Full address
+                            </Field.Label>
+                            <Input
+                                name="address"
+                                value={form.data.address}
+                                onChange={(e) => form.setData('address', e.target.value)}
+                                onBlur={() => form.validate('address')}
+                                required
+                                placeholder="Facility Address"
+                                disabled={form.processing}
+                            />
+                        </Field.Root>
+                        <Field.Root invalid={!!form.errors.bookingPageUrl}>
+                            <Field.Label>Booking URL (optional)</Field.Label>
+                            <Input
+                                placeholder="https://www.custom-booking.com"
+                                value={form.data.bookingPageUrl}
+                                onChange={(e) => form.setData('bookingPageUrl', e.target.value)}
+                                onBlur={() => form.validate('bookingPageUrl')}
+                                disabled={form.processing}
+                            />
+                            <Field.HelperText>
+                                The website where your players can reserve your courts. You can put your Facebook page URL if you use Facebook for
+                                bookings, otherwise you can just leave this blank.
+                            </Field.HelperText>
+                            <Field.ErrorText>{form.errors.bookingPageUrl}</Field.ErrorText>
+                        </Field.Root>
                     </VStack>
-                    <Box marginTop={8}>
-                        <FormSectionHeader
-                            icon={<LuMapPin size={24} />}
-                            title="Location details"
-                            description="Help players find and visit your courts"
-                        />
+                    <Box marginTop={12}>
+                        <Box marginBottom={8}>
+                            <FormSectionHeader
+                                title="Additional details"
+                                description="These details are optional, but providing them can help players learn more about your facility and how to contact you or book courts"
+                            />
+                        </Box>
                         <VStack gap={4} alignItems="stretch">
-                            <CitySection form={form} />
-                            <Field.Root>
-                                <Field.Label>
-                                    <span style={{ color: 'red' }}>*</span>Full address
-                                </Field.Label>
-                                <Input
-                                    name="address"
-                                    value={form.data.address}
-                                    onChange={(e) => form.setData('address', e.target.value)}
-                                    onBlur={() => form.validate('address')}
-                                    required
-                                    placeholder="Facility Address"
-                                    disabled={form.processing}
-                                />
-                                <Field.HelperText marginTop={2}>
-                                    Provide the address of your facility (you can include landmarks) to help players find you easily.
-                                </Field.HelperText>
-                            </Field.Root>
+                            <HStack alignItems="flex-start">
+                                <Field.Root invalid={!!form.errors.openingTime}>
+                                    <Field.Label>Opening time</Field.Label>
+                                    <Input
+                                        type="time"
+                                        name="openingTime"
+                                        placeholder="07:00:00"
+                                        value={form.data.openingTime}
+                                        onChange={(e) => handleTimeChanged('openingTime', e.target.value)}
+                                        onBlur={() => form.validate('openingTime')}
+                                        disabled={form.processing}
+                                    />
+                                    <Field.ErrorText>{form.errors.openingTime}</Field.ErrorText>
+                                </Field.Root>
+                                <Field.Root invalid={!!form.errors.closingTime}>
+                                    <Field.Label>Closing time</Field.Label>
+                                    <Input
+                                        type="time"
+                                        name="closingTime"
+                                        placeholder="22:00:00"
+                                        value={form.data.closingTime}
+                                        onChange={(e) => handleTimeChanged('closingTime', e.target.value)}
+                                        onBlur={() => form.validate('closingTime')}
+                                        disabled={form.processing}
+                                    />
+                                    <Field.ErrorText>{form.errors.closingTime}</Field.ErrorText>
+                                </Field.Root>
+                            </HStack>
                             <Field.Root invalid={!!form.errors.googleMapsUrl}>
-                                <Field.Label>Google Maps URL (optional)</Field.Label>
+                                <Field.Label>Google Maps URL</Field.Label>
                                 <Input
                                     name="googleMapsUrl"
                                     value={form.data.googleMapsUrl}
@@ -190,17 +197,8 @@ function RegisterPage() {
                                 />
                                 <Field.ErrorText>{form.errors.googleMapsUrl}</Field.ErrorText>
                             </Field.Root>
-                        </VStack>
-                    </Box>
-                    <Box marginTop={8}>
-                        <FormSectionHeader
-                            icon={<LuContact size={24} />}
-                            title="Contact details"
-                            description="Provide contact information so players can reach out with questions or to book courts"
-                        />
-                        <VStack gap={4} alignItems="stretch">
                             <Field.Root invalid={!!form.errors.email}>
-                                <Field.Label>Email (optional)</Field.Label>
+                                <Field.Label>Email</Field.Label>
                                 <Input
                                     type="email"
                                     name="email"
@@ -213,7 +211,7 @@ function RegisterPage() {
                                 <Field.ErrorText>{form.errors.email}</Field.ErrorText>
                             </Field.Root>
                             <Field.Root invalid={!!form.errors.phone}>
-                                <Field.Label>Phone (optional)</Field.Label>
+                                <Field.Label>Phone</Field.Label>
                                 <InputGroup startElement="+63">
                                     <Input
                                         placeholder="916 123 4567"
@@ -226,23 +224,8 @@ function RegisterPage() {
                                 </InputGroup>
                                 <Field.ErrorText>{form.errors.phone}</Field.ErrorText>
                             </Field.Root>
-                            <Field.Root invalid={!!form.errors.bookingPageUrl}>
-                                <Field.Label>Booking URL (optional)</Field.Label>
-                                <Input
-                                    placeholder="https://www.custom-booking.com"
-                                    value={form.data.bookingPageUrl}
-                                    onChange={(e) => form.setData('bookingPageUrl', e.target.value)}
-                                    onBlur={() => form.validate('bookingPageUrl')}
-                                    disabled={form.processing}
-                                />
-                                <Field.HelperText>
-                                    The website where your players can reserve your courts. You can put your Facebook page URL if you use Facebook for
-                                    bookings, otherwise you can just leave this blank.
-                                </Field.HelperText>
-                                <Field.ErrorText>{form.errors.bookingPageUrl}</Field.ErrorText>
-                            </Field.Root>
                             <Field.Root invalid={!!form.errors.facebookPageUrl}>
-                                <Field.Label>Facebook URL (optional)</Field.Label>
+                                <Field.Label>Facebook URL</Field.Label>
                                 <Input
                                     placeholder="https://www.facebook.com/yourpage"
                                     value={form.data.facebookPageUrl}
@@ -253,7 +236,7 @@ function RegisterPage() {
                                 <Field.ErrorText>{form.errors.facebookPageUrl}</Field.ErrorText>
                             </Field.Root>
                             <Field.Root invalid={!!form.errors.instagramUrl}>
-                                <Field.Label>Instagram URL (optional)</Field.Label>
+                                <Field.Label>Instagram URL</Field.Label>
                                 <Input
                                     placeholder="https://www.instagram.com/yourpage"
                                     value={form.data.instagramUrl}

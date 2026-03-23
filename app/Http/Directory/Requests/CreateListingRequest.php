@@ -57,11 +57,4 @@ class CreateListingRequest extends FormRequest
             'coverPhoto' => ['required', 'image', 'mimetypes:image/jpeg,image/png']
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'closingTime.after' => 'The closing time must be after the opening time.',
-        ];
-    }
 }
