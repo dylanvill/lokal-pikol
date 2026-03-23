@@ -34,8 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/facility.php'));
 
             Route::domain("directory.{$tld}")
-                ->middleware('web')
-                ->middleware(DirectoryInertiaTemplateMiddleware::class)
+                ->middleware(['web', DirectoryInertiaTemplateMiddleware::class])
                 ->name('directory.')
                 ->group(base_path('routes/directory.php'));
         }
