@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, router } from '@inertiajs/react';
 import { LuX } from 'react-icons/lu';
@@ -7,6 +7,7 @@ import ActiveFilters from '../../components/directory/ActiveFilters';
 import EndOfListingCta from '../../components/directory/EndOfListingCta';
 import ListingCard from '../../components/directory/ListingCard';
 import useSkeletons from '../../components/directory/ListingCard/useSkeletons';
+import ListingCta from '../../components/directory/ListingCta';
 import Empty from '../../components/shared/Empty';
 import ListingLayout from '../../layouts/listing/ListingLayout';
 import type ListingFilters from '../../models/directory/ListingFilters';
@@ -52,6 +53,11 @@ function ListingPage({ listings, filters }: ListingPageProps) {
 
     return (
         <ListingLayout title="Negros Oriental Pickleball Court Directory">
+            {!hasFilters && (
+                <Box marginBottom={4}>
+                    <ListingCta />
+                </Box>
+            )}
             {hasFilters && <ActiveFilters {...filters} onRemoveFilter={handleFilterRemove} />}
             {noMatchingCourts && (
                 <Empty
