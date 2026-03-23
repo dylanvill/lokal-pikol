@@ -1,25 +1,22 @@
-import { Alert, Link as ChakraLink } from '@chakra-ui/react';
-import { GrCircleQuestion } from 'react-icons/gr';
+import { Alert, Center, Link as ChakraLink } from '@chakra-ui/react';
 import { LuArrowRight } from 'react-icons/lu';
 
 function ListingCta() {
     return (
-        <Alert.Root status="info">
-            <Alert.Indicator>
-                <GrCircleQuestion />
-            </Alert.Indicator>
-
-            <Alert.Content color="fg">
-                <Alert.Title>Want to include your court in the directory?</Alert.Title>
-                <Alert.Description>
-                    Send us a message on our{' '}
-                    <ChakraLink href="https://facebook.com/lokalpikol" target="_blank">
-                        Facebook Page
-                        <LuArrowRight />
-                    </ChakraLink>
-                </Alert.Description>
-            </Alert.Content>
-        </Alert.Root>
+        <ChakraLink href="https://facebook.com/lokalpikol" target="_blank" width="full">
+            <Alert.Root status="info">
+                <Alert.Content color="fg">
+                    <Alert.Title>Want to include your court in the directory?</Alert.Title>
+                    <Alert.Description>
+                        Send us a message on our <span style={{ color: 'blue' }}>Facebook page</span> to get started. It's free and only takes a few
+                        minutes.
+                    </Alert.Description>
+                </Alert.Content>
+                <Center height="auto" flexShrink={0}>
+                    <LuArrowRight />
+                </Center>
+            </Alert.Root>
+        </ChakraLink>
     );
 }
 
