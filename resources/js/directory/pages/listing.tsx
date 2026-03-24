@@ -5,8 +5,6 @@ import { LuX } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/ListingController';
 import Empty from '../../components/shared/Empty';
 import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
-import type ListingFilters from '../../models/directory/ListingFilters';
-import type ListingItem from '../../models/directory/ListingItem';
 import type PaginatedData from '../../models/shared/Pagination';
 import ActiveFilters from '../components/ActiveFilters';
 import DirectorySearchBar from '../components/DirectorySearchBar';
@@ -14,6 +12,9 @@ import EndOfListingCta from '../components/EndOfListingCta';
 import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
+import type ListingFilters from '../models/ListingFilters';
+import type ListingItem from '../models/ListingItem';
+
 export interface ListingPageProps extends PageProps {
     listings: PaginatedData<ListingItem>;
     filters: ListingFilters;

@@ -1,6 +1,6 @@
 import { type IconType } from 'react-icons/lib';
 import { LuHouse, LuSun, LuCheckCheck } from 'react-icons/lu';
-import type ListingItemCourtType from '../../models/directory/ListingItemCourtType';
+import type ListingItemCourtType from '../models/ListingItemCourtType';
 
 export const listingItemCourtTypeIconParser = (courtType: ListingItemCourtType): IconType => {
     switch (courtType) {

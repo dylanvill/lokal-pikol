@@ -4,7 +4,7 @@ import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone } from 'react-icons/lu';
 import DetailWithIcon from '../../../components/shared/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../helpers/militaryTimeToAmPmTime';
-import type ListingItem from '../../../models/directory/ListingItem';
+import type ListingItem from '../../models/ListingItem';
 
 type ListingCardProps = ListingItem;
 
