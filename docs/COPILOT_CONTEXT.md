@@ -5,8 +5,8 @@
 ## Domain Overview
 
 **Application Name:** Lokal Pikol  
-**Purpose:** A pickleball court reservation system designed specifically for local communities ("lokals")  
-**Core Business:** Connecting pickleball players with court facilities through a streamlined reservation platform
+**Purpose:** A comprehensive pickleball court directory for Negros region with optional reservation system for local communities ("lokals")  
+**Core Business:** Connecting pickleball players with court facilities through a comprehensive directory, with booking services as an enhanced offering
 
 ### User Types & Roles
 
@@ -27,13 +27,13 @@
 - **Management Role:** Controls court availability and reservation approval
 
 ### Key Features
-- Court browsing and availability viewing
-- Reservation booking system with approval workflow
+- **Negros Directory Sub-Application** - Free comprehensive directory listing for all pickleball courts in Negros region (PRIMARY)
+- Court browsing and availability viewing (secondary - booking system)
+- Reservation booking system with approval workflow (secondary - upsell feature)
 - **Block booking system** for recurring court schedules (open plays, events)
 - Calendar management for facilities
 - Email notifications system
 - Account management for both user types
-- **Negros Directory Sub-Application** - Free directory listing for all pickleball courts in Negros region
 
 ## Technical Stack
 
@@ -101,8 +101,8 @@ The application uses domain-based routing to separate the main application from 
 ## Negros Directory Sub-Application
 
 ### Overview
-**Purpose:** A free directory listing of all pickleball courts in the Negros region  
-**Business Model:** Lead generation and upselling opportunity for main reservation system  
+**Purpose:** A free comprehensive directory listing of all pickleball courts in the Negros region (PRIMARY PRODUCT FOCUS)  
+**Business Model:** Primary value delivery through directory discovery, with reservation system as secondary upsell offering  
 **Access Control:** Backend-managed by administrators (no public court owner interface)  
 **Domain:** `directory.lokalpikol.com` - Discovery-focused branding for comprehensive court listings
 
@@ -122,7 +122,10 @@ The application uses domain-based routing to separate the main application from 
 ### Management:** Backend-managed by administrators (no direct court owner interface)
 
 ### User Experience
-- **Players:** Browse directory with city-based filtering (no account required)
+- **Players:** Browse directory with city-based filtering (no account required) - PRIMARY USER FLOW
+- **Booking Integration:** "Book Court" button directs to:
+  - Lokal Pikol facility booking page (for integrated courts)
+  - External booking URL (for non-integrated courts)
 - **Upsell Flow:** Directory listings highlight benefits of upgrading to full reservation system
 
 ### Technical Implementation
@@ -133,10 +136,11 @@ The application uses domain-based routing to separate the main application from 
 - **Regional Focus:** Specifically targeting Negros region courts
 
 ### Business Strategy
-- **Market Penetration:** Get all Negros courts listed for comprehensive directory
-- **Trust Building:** Provide value before asking for paid adoption
+- **Primary Value:** Comprehensive directory as the main product offering
+- **Market Penetration:** Get all Negros courts listed for definitive regional coverage
+- **Trust Building:** Directory provides immediate value, booking system offers enhanced services
 - **Competitive Advantage:** Become the definitive source for Negros court information
-- **Conversion Funnel:** Directory → Interest → Full platform adoption
+- **User Journey:** Directory Discovery → Court Contact → Optional Booking System Integration
 
 ## Architecture & Patterns
 
@@ -373,11 +377,14 @@ Http/
 - **Hybrid Architecture:** DDD for pure business logic + Layered for orchestration and UI
 - **Laravel + InertiaJS:** Traditional backend architecture with modern SPA experience
 - **Single Repository:** All domains in one codebase for simplified development and deployment
+- **Sub-Application Pattern:** Directory remains separate subdomain while integrating with main booking system
 
 ### Business Model Decisions
-- **Approval-based Reservations:** Ensures facility control over court usage
-- **Directory Sub-Application:** Free listings as lead generation funnel for paid platform
+- **Directory-First Strategy:** Free comprehensive directory as primary product value
+- **Approval-based Reservations:** Ensures facility control over court usage (secondary booking system)
+- **Directory Sub-Application:** Maintains architectural separation while providing seamless booking integration
 - **Token-based Listing Registration:** Secure, time-limited onboarding without account requirements
+- **Flexible Booking Integration:** Courts can use Lokal Pikol booking or maintain external booking systems
 
 ### Technical Decisions
 - **UUID Primary Keys:** All entities use UUIDs for security and distributed system compatibility
@@ -473,9 +480,12 @@ Http/
   - **Public Users:** Open browsing with city-based filtering
   - **No Reservations:** Pure directory functionality, no booking workflows
 - **Integration Points:**
-  - Links to main application for integrated courts
-  - Upsell messaging for non-integrated courts
+  - "Book Court" button integration:
+    - Routes to Lokal Pikol facility booking page (integrated courts)
+    - Routes to external booking URL (non-integrated courts)
+  - Listing model has optional reference to Facility for seamless booking integration
   - Social media and external booking URL support
+  - Maintains separation between directory (primary) and booking (secondary) systems
 
 #### Facility Onboarding Flow
 **Strategy:** Secure, low-friction directory registration to build trust before converting to full reservation platform
