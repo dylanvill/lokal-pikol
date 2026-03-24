@@ -2,11 +2,11 @@ import { Box, Button, Checkbox, Field, Heading, HStack, Input, InputGroup, Separ
 import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { store } from '@/actions/App/Http/Directory/Controllers/CreateListingController';
-import CitySection from '../../components/directory/RegistrationForm/CitySection';
-import CourtTypesSection from '../../components/directory/RegistrationForm/CourtTypesSection';
-import DirectoryCoverPhotoSection from '../../components/directory/RegistrationForm/DirectoryCoverPhotoSection';
-import DirectoryProfilePhotoSection from '../../components/directory/RegistrationForm/DirectoryProfilePhotoSection';
-import NumberOfCourtsSection from '../../components/directory/RegistrationForm/NumberOfCourtsSection';
+import CitySection from '../components/RegistrationForm/CitySection';
+import CourtTypesSection from '../components/RegistrationForm/CourtTypesSection';
+import DirectoryCoverPhotoSection from '../components/RegistrationForm/DirectoryCoverPhotoSection';
+import DirectoryProfilePhotoSection from '../components/RegistrationForm/DirectoryProfilePhotoSection';
+import NumberOfCourtsSection from '../components/RegistrationForm/NumberOfCourtsSection';
 import DangerAlert from '../../components/shared/Alert/DangerAlert';
 import FormSectionHeader from '../../components/shared/FormSectionHeader';
 import DirectoryLayout from '../../layouts/directory/DirectoryLayout';

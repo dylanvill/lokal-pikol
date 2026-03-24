@@ -8,7 +8,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Lokal Pikol';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+    resolve: (name) => resolvePageComponent(`./directory/pages/${name}.tsx`, import.meta.glob('./directory/pages/**/*.tsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
 

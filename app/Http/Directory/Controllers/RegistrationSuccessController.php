@@ -17,7 +17,7 @@ class RegistrationSuccessController extends Controller
             return redirect()->route('directory.home');
         }
 
-        return Inertia::render('directory/registrationSuccess', [
+        return Inertia::render('registrationSuccess', [
             'listing' => new ListingResource($listing),
         ]);
     }

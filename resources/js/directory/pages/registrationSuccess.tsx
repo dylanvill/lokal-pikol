@@ -1,5 +1,5 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
-import ListingCard from '../../components/directory/ListingCard';
+import ListingCard from '../components/ListingCard';
 import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
 import BackNavigationBase from '../../components/shared/BackNavigationBase';
 import DirectoryLayout from '../../layouts/directory/DirectoryLayout';

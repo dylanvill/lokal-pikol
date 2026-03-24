@@ -9,11 +9,11 @@ class ListingLegalController extends Controller
 {
     public function termsAndConditions()
     {
-        return inertia('directory/termsAndConditions');
+        return inertia('termsAndConditions');
     }
 
     public function privacyPolicy()
     {
-        return inertia('directory/privacyPolicy');
+        return inertia('privacyPolicy');
     }
 }

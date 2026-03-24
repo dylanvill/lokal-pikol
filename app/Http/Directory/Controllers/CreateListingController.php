@@ -34,7 +34,7 @@ class CreateListingController extends Controller
             abort(403, 'Invalid or expired registration link.');
         }
 
-        return inertia('directory/register', [
+        return inertia('register', [
             'uuid' => $request->uuid,
             'token' => $request->token,
         ]);

@@ -32,7 +32,7 @@ class ListingController extends Controller
             ->withMedia()
             ->paginate(12);
 
-        return Inertia::render('directory/listing', [
+        return Inertia::render('listing', [
             'listings' => Inertia::scroll(fn() => ListingResource::collection($listings)),
             'cities' => $this->getCities(),
             'courtTypes' => $this->getCourtTypes(),

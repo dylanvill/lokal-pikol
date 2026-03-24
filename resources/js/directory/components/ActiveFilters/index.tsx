@@ -1,8 +1,8 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { LuGrid2X2, LuMapPin } from 'react-icons/lu';
-import { listingItemCourtTypeIconParser } from '../../../helpers/directory/listingItemCourtTypeIconParser';
 import type ListingFilters from '../../../models/directory/ListingFilters';
+import { listingItemCourtTypeIconParser } from '../../helpers/listingItemCourtTypeIconParser';
 import FilterItem from './FilterItem';
 
 export interface ActiveFiltersProps extends ListingFilters {
