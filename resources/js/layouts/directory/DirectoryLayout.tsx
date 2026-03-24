@@ -3,22 +3,15 @@ import { Head, Link } from '@inertiajs/react';
 import React from 'react';
 import { GrFacebookOption, GrInstagram } from 'react-icons/gr';
 import Logo from '../../../images/logo/lokal-pikol-horizontal-white-out.svg';
-import DirectorySearchBar from '../../components/directory/DirectorySearchBar';
 
-function ListingLayout({
-    title,
-    children,
-    contentContainerProps,
-}: {
+export interface DirectoryLayout {
     title: string;
-    children: React.ReactNode;
+    headerComponent?: React.ReactNode;
     contentContainerProps?: ContainerProps;
-}) {
+    children: React.ReactNode;
+}
 
-    const path = window.location.pathname;
-    const isHomePage = path === '/';
-
-
+function DirectoryLayout({ title, children, headerComponent, contentContainerProps }: DirectoryLayout) {
     return (
         <>
             <Head title={title}>
@@ -41,7 +34,7 @@ function ListingLayout({
                                 </Text>
                             </Flex>
                         </Container>
-                        {isHomePage && <DirectorySearchBar />}
+                        {headerComponent}
                     </Container>
                     <Container p={8} shadow="2xl" borderTopRadius={12} backgroundColor="white" marginTop={-12} flex="1" {...contentContainerProps}>
                         {children}
@@ -113,4 +106,4 @@ function ListingLayout({
     );
 }
 
-export default ListingLayout;
+export default DirectoryLayout;

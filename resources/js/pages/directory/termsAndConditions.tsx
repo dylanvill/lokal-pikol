@@ -1,10 +1,10 @@
 import { Heading, Link as ChakraLink, List, Text, VStack } from '@chakra-ui/react';
 import BackNavigation from '../../components/shared/BackNavigation';
-import ListingLayout from '../../layouts/listing/ListingLayout';
+import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 
 function TermsAndConditionsPage() {
     return (
-        <ListingLayout title="Terms and Conditions - Court Directory">
+        <DirectoryLayout title="Terms and Conditions - Court Directory">
             <BackNavigation />
             <VStack align="stretch" gap={6} mt={4}>
                 <Heading size="3xl">Terms and Conditions - Court Directory</Heading>
@@ -128,7 +128,7 @@ function TermsAndConditionsPage() {
                     .
                 </Text>
             </VStack>
-        </ListingLayout>
+        </DirectoryLayout>
     );
 }
 

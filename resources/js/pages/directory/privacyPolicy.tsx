@@ -1,10 +1,10 @@
 import { Heading, Link as ChakraLink, List, Text, VStack } from '@chakra-ui/react';
 import BackNavigation from '../../components/shared/BackNavigation';
-import ListingLayout from '../../layouts/listing/ListingLayout';
+import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 
 function PrivacyPolicyPage() {
     return (
-        <ListingLayout title="Privacy Policy - Court Directory">
+        <DirectoryLayout title="Privacy Policy - Court Directory">
             <BackNavigation />
             <VStack align="stretch" gap={6}>
                 <Heading size="3xl">Privacy Policy - Court Directory</Heading>
@@ -152,7 +152,7 @@ function PrivacyPolicyPage() {
                     .
                 </Text>
             </VStack>
-        </ListingLayout>
+        </DirectoryLayout>
     );
 }
 

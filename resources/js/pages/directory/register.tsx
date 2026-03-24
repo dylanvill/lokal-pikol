@@ -9,7 +9,7 @@ import DirectoryProfilePhotoSection from '../../components/directory/Registratio
 import NumberOfCourtsSection from '../../components/directory/RegistrationForm/NumberOfCourtsSection';
 import DangerAlert from '../../components/shared/Alert/DangerAlert';
 import FormSectionHeader from '../../components/shared/FormSectionHeader';
-import ListingLayout from '../../layouts/listing/ListingLayout';
+import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 
 function RegisterPage() {
     const { props, flash } = usePage<{ uuid: string; token: string }>();
@@ -64,7 +64,7 @@ function RegisterPage() {
     };
 
     return (
-        <ListingLayout
+        <DirectoryLayout
             title="Facility Registration"
             contentContainerProps={{
                 maxWidth: 'xl',
@@ -269,7 +269,7 @@ function RegisterPage() {
                     </Button>
                 </Box>
             </form>
-        </ListingLayout>
+        </DirectoryLayout>
     );
 }
 

@@ -2,7 +2,7 @@ import { Box, Heading, Text } from '@chakra-ui/react';
 import ListingCard from '../../components/directory/ListingCard';
 import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
 import BackNavigationBase from '../../components/shared/BackNavigationBase';
-import ListingLayout from '../../layouts/listing/ListingLayout';
+import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 import type ListingItem from '../../models/directory/ListingItem';
 
 interface RegistrationSuccessPageProps {
@@ -11,7 +11,7 @@ interface RegistrationSuccessPageProps {
 
 function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
     return (
-        <ListingLayout
+        <DirectoryLayout
             title="Registration Successful"
             contentContainerProps={{
                 maxWidth: 'xl',
@@ -46,7 +46,7 @@ function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
                 email={listing.email}
                 phone={listing.phone}
             />
-        </ListingLayout>
+        </DirectoryLayout>
     );
 }
 

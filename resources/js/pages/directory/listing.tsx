@@ -4,12 +4,13 @@ import { InfiniteScroll, router } from '@inertiajs/react';
 import { LuX } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/ListingController';
 import ActiveFilters from '../../components/directory/ActiveFilters';
+import DirectorySearchBar from '../../components/directory/DirectorySearchBar';
 import EndOfListingCta from '../../components/directory/EndOfListingCta';
 import ListingCard from '../../components/directory/ListingCard';
 import useSkeletons from '../../components/directory/ListingCard/useSkeletons';
 import ListingCta from '../../components/directory/ListingCta';
 import Empty from '../../components/shared/Empty';
-import ListingLayout from '../../layouts/listing/ListingLayout';
+import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 import type ListingFilters from '../../models/directory/ListingFilters';
 import type ListingItem from '../../models/directory/ListingItem';
 import type PaginatedData from '../../models/shared/Pagination';
@@ -52,7 +53,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
     };
 
     return (
-        <ListingLayout title="Negros Oriental Pickleball Court Directory">
+        <DirectoryLayout title="Negros Oriental Pickleball Court Directory" headerComponent={<DirectorySearchBar />}>
             {!hasFilters && (
                 <Box marginBottom={4}>
                     <ListingCta />
@@ -98,7 +99,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                 </SimpleGrid>
             </InfiniteScroll>
             {hasNoMoreData && listings.data.length !== 0 && <EndOfListingCta />}
-        </ListingLayout>
+        </DirectoryLayout>
     );
 }
 
