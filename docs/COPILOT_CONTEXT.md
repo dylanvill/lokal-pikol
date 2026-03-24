@@ -140,16 +140,18 @@ The application uses domain-based routing to separate the main application from 
 
 ## Architecture & Patterns
 
-### Domain-Driven Design (DDD) Approach
+### Hybrid Architecture Approach
 
-**Primary Philosophy:** Domain-focused organization with clear separation of concerns
+**Primary Philosophy:** Combines Domain-Driven Design (DDD) for business logic with Layered Architecture for HTTP and frontend concerns
 
-#### `/app/Source/` - Core Domain Layer
-**Purpose:** Contains pure business logic and domain models  
+#### `/app/Source/` - Pure Business Domain Layer (DDD)
+**Purpose:** Non-negotiable core business functionalities and domain models  
+**Philosophy:** Single-responsibility actions that focus purely on business operations  
 **Structure Pattern:**
 ```
 Domain/
-├── Actions/          # Business use cases and operations
+├── Actions/          # Pure business use cases and operations
+├── Commands/         # Artisan commands for domain
 ├── Database/         # Domain-specific factories & seeders
 ├── Enums/           # Domain constants and value objects
 ├── Models/          # Domain entities
@@ -157,6 +159,8 @@ Domain/
 ├── Notifications/   # Domain-specific notifications
 └── ...              # Other domain concerns
 ```
+
+**Core Principle:** Each action performs one business operation (e.g., "save a directory listing") without side effects or orchestration concerns.
 
 **Active Domains:**
 - **Authentication:** User management, verification, roles
@@ -167,40 +171,90 @@ Domain/
 - **Reservation:** Booking lifecycle, fees, status management
 - **Directory:** Free court listings for Negros region (no reservations)
 
-#### `/app/Http/` - HTTP Abstraction Layer
-**Purpose:** HTTP-level concerns while maintaining domain separation  
-**Pattern:** Domain-organized controllers and resources
+#### `/app/Http/` - Orchestration Layer (Layered Architecture)
+**Purpose:** HTTP-specific orchestration and workflow management  
+**Philosophy:** Controllers orchestrate business actions with additional HTTP-specific operations  
+**Pattern:** Domain-organized controllers that coordinate business operations
 ```
 Http/
 ├── Controllers/     # Base controllers
-├── Customer/        # Customer-facing HTTP endpoints
-├── Facility/        # Facility-facing HTTP endpoints  
+├── Customer/        # Customer-facing HTTP endpoints & orchestration
+├── Directory/       # Directory-facing HTTP endpoints & orchestration
+├── Facility/        # Facility-facing HTTP endpoints & orchestration
 ├── Enums/          # HTTP-level enums (Guards, etc.)
 ├── Middleware/     # Request/response middleware
 └── Shared/         # Cross-domain HTTP resources
 ```
 
-#### `/resources/` - Frontend Layer  
-**Status:** Transitioning to DDD (not fully refactored)  
-**Current Structure:** Mixed traditional + domain organization
-- Domain-specific pages: `customer/`, `facility/`
-- Domain-specific components: `customer/`, `facility/`, `shared/`
-- Domain-specific models: organized by domain context
+**Core Principle:** HTTP controllers call core business actions but orchestrate additional operations like:
+- Sending notifications after business operations
+- Saving supplementary data across multiple domains
+- Handling HTTP-specific concerns (authentication, validation, responses)
+- Coordinating multiple business actions in a single request
+
+**Example:** A "create listing" HTTP request:
+1. Calls core `CreateListing` action (pure business logic)
+2. Orchestrates social link updates (additional data)
+3. Sends thank you email (post-operation notification)
+4. Marks registration token as used (HTTP workflow state)
+
+#### `/resources/` - Frontend Layer (Layered Architecture)  
+**Purpose:** User interface organized by user context and domain concerns  
+**Structure:** Domain and user-type separation
+- Domain-specific pages: `customer/`, `directory/`, `facility/`
+- Domain-specific components: `customer/`, `directory/`, `facility/`, `shared/`
+- Domain-specific models: organized by domain and user context
+
+### Hybrid Architecture in Practice
+
+#### Example: Directory Listing Creation
+**Business Layer (DDD):**
+- `CreateListing` action: Performs single business operation - creates a listing record
+- Input: `CreateListingData` DTO with validated business data
+- Output: `Listing` model entity
+- Concerns: Pure business logic, no side effects
+
+**HTTP Layer (Layered):**
+- `CreateListingController::store()` orchestrates the complete workflow:
+  1. Validates HTTP request data
+  2. Calls `CreateListing` action (core business operation)
+  3. Handles social links via `UpdateSocialLink` actions (supplementary data)
+  4. Marks registration token as used (HTTP workflow state)
+  5. Sends thank you email (post-operation notification)
+  6. Manages database transaction boundaries
+  7. Handles HTTP responses and redirects
+
+**Benefits of Separation:**
+- **Reusability:** `CreateListing` action can be called from admin interfaces, APIs, or commands
+- **Testability:** Business logic tested independently from HTTP orchestration
+- **Maintainability:** HTTP concerns (emails, tokens, transactions) separate from business rules
+- **Flexibility:** Different HTTP contexts can orchestrate the same business action differently
 
 ### Key Architectural Decisions
 
-#### Actions Pattern
-- **Purpose:** Encapsulate business operations as discrete, reusable units
-- **Usage:** Cross-system business logic (e.g., `CreateReservation`, `ConfirmReservation`)
-- **Benefits:** Testable, composable, single responsibility
+#### Hybrid Architecture Choice
+- **Business Layer (DDD):** Pure domain actions focused on single business operations
+- **Orchestration Layer (Layered):** HTTP controllers coordinate business operations with additional concerns
+- **Separation Benefits:** Business logic remains testable and reusable while HTTP layer handles orchestration
+
+#### Actions Pattern in Business Layer
+- **Purpose:** Encapsulate single business operations as discrete, reusable units
+- **Usage:** Pure business logic without side effects (e.g., `CreateListing`, `CreateReservation`)
+- **Benefits:** Testable, composable, single responsibility, reusable across different HTTP contexts
+
+#### HTTP Orchestration Pattern
+- **Purpose:** Coordinate business actions with HTTP-specific operations
+- **Usage:** Controllers call business actions + handle notifications, supplementary data, workflow state
+- **Benefits:** Different HTTP contexts can orchestrate the same business action differently
 
 #### DTO Pattern  
 - **Implementation:** Data Transfer Objects for action inputs
-- **Examples:** `CreateReservationData`, `CreateCourtData`
+- **Examples:** `CreateReservationData`, `CreateCourtData`, `CreateListingData`
 - **Benefits:** Type safety, validation boundaries, clear contracts
 
 #### Dual User Type Architecture
-- **HTTP Layer:** Separate controller namespaces for `Customer/` and `Facility/`
+- **Business Layer:** Domain actions serve all user types uniformly
+- **HTTP Layer:** Separate controller namespaces for `Customer/`, `Directory/`, `Facility/`
 - **Frontend:** Separate page hierarchies and components
 - **Auth:** Distinct authentication flows and resources
 
@@ -281,16 +335,17 @@ Http/
 
 ### ✅ Positive Patterns Observed
 
-1. **Clear Domain Boundaries:** Each domain is well-encapsulated with its own concerns
-2. **Actions Pattern:** Business logic is extracted into reusable, testable units
-3. **DTO Pattern:** Strong input validation and type safety
-4. **Dual User Context:** Clean separation between customer and facility workflows
-5. **Domain-Specific HTTP:** Controllers organized by domain and user type
-6. **Consistent Structure:** Predictable folder patterns across domains
+1. **Clear Separation of Concerns:** Business logic (DDD) cleanly separated from orchestration concerns (Layered)
+2. **Pure Business Actions:** Domain actions focus on single operations without side effects
+3. **HTTP Orchestration:** Controllers coordinate business operations with additional HTTP-specific concerns
+4. **DTO Pattern:** Strong input validation and type safety across layers
+5. **Dual User Context:** Clean separation between customer, directory, and facility workflows
+6. **Reusable Business Logic:** Core actions can be orchestrated differently across HTTP contexts
+7. **Consistent Structure:** Predictable folder patterns across domains and layers
 
 ### ⚠️ Areas for Consideration
 
-1. **Database Concerns in Domains:** Factories/seeders in domain modules
+1. **Database Concerns in Business Domains:** Factories/seeders in domain modules
    - **Current:** `/app/Source/{Domain}/Database/`
    - **Consideration:** Typically kept separate, but may be intentional for domain encapsulation
    - **Trade-off:** Better domain cohesion vs. traditional Laravel structure
@@ -303,26 +358,32 @@ Http/
    - **Observation:** Minimal domain with full directory structure
    - **Consideration:** May indicate future expansion or could be merged
 
-4. **Frontend DDD Migration:** In-progress refactoring
-   - **Current State:** Mixed traditional + domain organization
-   - **Goal:** Full domain separation (acknowledged work in progress)
-
 ### 🎯 Architecture Strengths
 
-- **Business Logic Clarity:** Actions make use cases explicit
-- **Testability:** Domain isolation enables focused testing
-- **Scalability:** New domains can be added without existing code changes  
-- **User Context Separation:** Clear customer vs facility workflows
+- **Business Logic Clarity:** Actions make use cases explicit and focused
+- **HTTP Orchestration Flexibility:** Different controllers can coordinate the same business operations differently
+- **Testability:** Both business logic and HTTP orchestration can be tested independently
+- **Scalability:** New domains and HTTP contexts can be added without affecting existing code  
+- **User Context Separation:** Clear customer vs directory vs facility workflows
+- **Reusability:** Business actions serve multiple HTTP contexts uniformly
 
 ## Important Decisions & Rationale
 
-### Tech Stack Choices
-- **Laravel + InertiaJS:** Provides traditional backend architecture with modern SPA experience
-- **Approval-based reservations:** Ensures facility control over court usage
+### Architecture Choices
+- **Hybrid Architecture:** DDD for pure business logic + Layered for orchestration and UI
+- **Laravel + InertiaJS:** Traditional backend architecture with modern SPA experience
+- **Single Repository:** All domains in one codebase for simplified development and deployment
 
-### Domain Organization
-- **Source-based modules:** Clean separation of business domains
-- **Dual user types:** Separate concerns for customer vs facility workflows
+### Business Model Decisions
+- **Approval-based Reservations:** Ensures facility control over court usage
+- **Directory Sub-Application:** Free listings as lead generation funnel for paid platform
+- **Token-based Listing Registration:** Secure, time-limited onboarding without account requirements
+
+### Technical Decisions
+- **UUID Primary Keys:** All entities use UUIDs for security and distributed system compatibility
+- **Actions + DTOs:** Standardized pattern for business operations with strong typing
+- **Domain-based Routing:** Separate subdomains for different application contexts
+- **Polymorphic Reservations:** Both customers and facilities can make reservations
 
 ## Module Deep Dives
 
