@@ -37,7 +37,7 @@
 
     <meta name="robots" content="index, follow" />
     @viteReactRefresh
-    @vite(['resources/js/directory.tsx', "resources/js/pages/{$page['component']}.tsx"])
+    @vite(['resources/js/directory.tsx', "resources/js/directory/pages/{$page['component']}.tsx"])
     @inertiaHead
 </head>
 
