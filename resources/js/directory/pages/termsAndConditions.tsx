@@ -1,6 +1,6 @@
 import { Heading, Link as ChakraLink, List, Text, VStack } from '@chakra-ui/react';
 import BackNavigation from '../../components/shared/BackNavigation';
-import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
+import DirectoryLayout from '../layouts/DirectoryLayout';
 
 function TermsAndConditionsPage() {
     return (

@@ -2,14 +2,14 @@ import { Box, Button, Checkbox, Field, Heading, HStack, Input, InputGroup, Separ
 import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { store } from '@/actions/App/Http/Directory/Controllers/CreateListingController';
+import DangerAlert from '../../components/shared/Alert/DangerAlert';
+import FormSectionHeader from '../../components/shared/FormSectionHeader';
 import CitySection from '../components/RegistrationForm/CitySection';
 import CourtTypesSection from '../components/RegistrationForm/CourtTypesSection';
 import DirectoryCoverPhotoSection from '../components/RegistrationForm/DirectoryCoverPhotoSection';
 import DirectoryProfilePhotoSection from '../components/RegistrationForm/DirectoryProfilePhotoSection';
 import NumberOfCourtsSection from '../components/RegistrationForm/NumberOfCourtsSection';
-import DangerAlert from '../../components/shared/Alert/DangerAlert';
-import FormSectionHeader from '../../components/shared/FormSectionHeader';
-import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
+import DirectoryLayout from '../layouts/DirectoryLayout';
 
 function RegisterPage() {
     const { props, flash } = usePage<{ uuid: string; token: string }>();

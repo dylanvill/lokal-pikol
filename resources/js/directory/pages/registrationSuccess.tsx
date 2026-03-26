@@ -1,9 +1,9 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
-import ListingCard from '../components/ListingCard';
 import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
 import BackNavigationBase from '../../components/shared/BackNavigationBase';
-import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
-import type ListingItem from '../../models/directory/ListingItem';
+import ListingCard from '../components/ListingCard';
+import DirectoryLayout from '../layouts/DirectoryLayout';
+import type ListingItem from '../models/ListingItem';
 
 interface RegistrationSuccessPageProps {
     listing: ListingItem;

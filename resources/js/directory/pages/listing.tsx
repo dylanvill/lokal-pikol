@@ -4,7 +4,6 @@ import { InfiniteScroll, router } from '@inertiajs/react';
 import { LuX } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/ListingController';
 import Empty from '../../components/shared/Empty';
-import DirectoryLayout from '../../layouts/directory/DirectoryLayout';
 import type PaginatedData from '../../models/shared/Pagination';
 import ActiveFilters from '../components/ActiveFilters';
 import DirectorySearchBar from '../components/DirectorySearchBar';
@@ -12,6 +11,7 @@ import EndOfListingCta from '../components/EndOfListingCta';
 import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
+import DirectoryLayout from '../layouts/DirectoryLayout';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
 
