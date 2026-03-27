@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Booking\Middleware\BookingInertiaTemplateMiddleware;
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Source\Facility\Commands\SendOnboardingInvite;
@@ -27,11 +28,15 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->middleware('web')
                 ->group(base_path('routes/web.php'));
 
-            Route::domain($tld)
+            Route::domain("facility.{$tld}")
                 ->middleware('web')
-                ->prefix('facility')
                 ->name('facility.')
                 ->group(base_path('routes/facility.php'));
+
+            Route::domain("booking.{$tld}")
+                ->middleware(['web', BookingInertiaTemplateMiddleware::class])
+                ->name('booking.')
+                ->group(base_path('routes/booking.php'));
 
             Route::domain("directory.{$tld}")
                 ->middleware(['web', DirectoryInertiaTemplateMiddleware::class])

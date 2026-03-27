@@ -22,44 +22,48 @@ use App\Http\Facility\Reservation\Controllers\CreateReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationController;
 use App\Http\Facility\Reservation\Controllers\ReservationsController;
 
-Route::prefix('auth')->name('auth.')->group(function () {
-    Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:facility');
-    Route::post('/register', FacilityRegistrationController::class)->name('register');
+Route::get('/', function(){
+    return "Facility Test";
 });
 
-Route::get('/onboarding', [OnboardingController::class, 'show'])
-    ->name('onboarding')
-    ->middleware('signed');
+// Route::prefix('auth')->name('auth.')->group(function () {
+//     Route::get('/lpo-login', [LoginController::class, 'show'])->name('show');
+//     Route::post('/login', [LoginController::class, 'login'])->name('login');
+//     Route::post('/logout', LogoutController::class)->name('logout')->middleware('auth:facility');
+//     Route::post('/register', FacilityRegistrationController::class)->name('register');
+// });
 
-Route::group(["middleware" => "auth:facility"], function () {
-    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+// Route::get('/onboarding', [OnboardingController::class, 'show'])
+//     ->name('onboarding')
+//     ->middleware('signed');
 
-    Route::prefix("account")->name("account.")->group(function () {
-        Route::get('/', GetAccountController::class)->name('index');
-        Route::post('/update-information', UpdateInformationController::class)->name('update-information');
-        Route::post('/update-media', UpdateMediaController::class)->name('update-media');
-        Route::post('/update-payment-qr', UpdatePaymentQrController::class)->name('update-payment-qr');
-    });
+// Route::group(["middleware" => "auth:facility"], function () {
+//     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-    Route::prefix("reservations")->name("reservations.")->group(function () {
-        Route::get('/', ReservationsController::class)->name('list');
-        Route::get('/create', [CreateReservationController::class, 'show'])->name('create');
-        Route::post('/create', [CreateReservationController::class, 'store'])->name('store');
-        Route::get('/{reservation:uuid}', ReservationController::class)->name('show');
-        Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
-        Route::post('/{reservation:uuid}/cancel', CancelReservationController::class)->name('cancel');
-    });
+//     Route::prefix("account")->name("account.")->group(function () {
+//         Route::get('/', GetAccountController::class)->name('index');
+//         Route::post('/update-information', UpdateInformationController::class)->name('update-information');
+//         Route::post('/update-media', UpdateMediaController::class)->name('update-media');
+//         Route::post('/update-payment-qr', UpdatePaymentQrController::class)->name('update-payment-qr');
+//     });
 
-    Route::prefix("courts")->name("courts.")->group(function () {
-        Route::get('/', CourtsController::class)->name('index');
-        Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings.index');
-        Route::get('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.show');
-        Route::post('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'store'])->name('block-bookings.store');
-        Route::delete('/block-bookings/{blockBooking:uuid}', DeleteBlockBookingController::class)->name('block-bookings.delete');
-        Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
-        Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
-        Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');
-    });
-});
+//     Route::prefix("reservations")->name("reservations.")->group(function () {
+//         Route::get('/', ReservationsController::class)->name('list');
+//         Route::get('/create', [CreateReservationController::class, 'show'])->name('create');
+//         Route::post('/create', [CreateReservationController::class, 'store'])->name('store');
+//         Route::get('/{reservation:uuid}', ReservationController::class)->name('show');
+//         Route::post('/{reservation:uuid}/confirm', ConfirmReservationController::class)->name('confirm');
+//         Route::post('/{reservation:uuid}/cancel', CancelReservationController::class)->name('cancel');
+//     });
+
+//     Route::prefix("courts")->name("courts.")->group(function () {
+//         Route::get('/', CourtsController::class)->name('index');
+//         Route::get('/block-bookings', [BlockBookingsController::class, 'show'])->name('block-bookings.index');
+//         Route::get('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'show'])->name('block-bookings.show');
+//         Route::post('/{court:uuid}/block-bookings/create', [CreateBlockBookingController::class, 'store'])->name('block-bookings.store');
+//         Route::delete('/block-bookings/{blockBooking:uuid}', DeleteBlockBookingController::class)->name('block-bookings.delete');
+//         Route::get('/create', [CreateCourtController::class, 'show'])->name('show');
+//         Route::post('/create', [CreateCourtController::class, 'store'])->name('store');
+//         Route::get('/{court:uuid}/calendar', CourtCalendarController::class)->name('calendar');
+//     });
+// });
