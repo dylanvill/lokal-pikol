@@ -5,7 +5,6 @@ namespace App\Source\Authentication\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Source\Authentication\Database\Factories\UserFactory;
 use App\Source\Customer\Models\Customer;
-use App\Source\Facility\Models\Facility;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -37,11 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function facility(): HasOne
-    {
-        return $this->hasOne(Facility::class);
     }
 
     public function customer(): HasOne

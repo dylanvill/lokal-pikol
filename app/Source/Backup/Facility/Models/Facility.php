@@ -16,6 +16,7 @@ use App\Source\Shared\Contracts\HasReservations;
 use App\Source\Shared\Traits\InteractsWithReservations;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -26,7 +27,7 @@ class Facility extends Model implements HasMedia, HasReservations
 
     protected $fillable = [
         'uuid',
-        'user_id',
+        'slug',
         'name',
         'address',
         'email',
@@ -43,6 +44,17 @@ class Facility extends Model implements HasMedia, HasReservations
         'published' => 'boolean'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->name)) {
+                $model->slug = Str::slug($model->name);
+            }
+        });
+    }
+
     public function reservationNameDisplay(): string
     {
         return $this->name;
@@ -56,11 +68,6 @@ class Facility extends Model implements HasMedia, HasReservations
     public function reservationEmail(): string
     {
         return $this->email;
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function courts(): HasMany
