@@ -2,8 +2,8 @@
 
 namespace App\Source\Directory\Database\Factories;
 
-use App\Source\Facility\Enums\CityEnum;
-use App\Source\Directory\Enums\ListingCourtTypeEnum;
+use App\Source\Shared\Enums\CityEnum;
+use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Directory\Models\Listing;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,7 +29,7 @@ class ListingFactory extends Factory
             'name' => $this->faker->company() . ' Courts',
             'city' => $this->faker->randomElement(CityEnum::values()),
             'address' => $this->faker->address(),
-            'court_type' => $this->faker->randomElement(ListingCourtTypeEnum::values()),
+            'court_type' => $this->faker->randomElement(FacilityCourtTypeEnum::values()),
             'number_of_courts' => $this->faker->numberBetween(1, 6),
             'email' => $this->faker->optional(0.8)->companyEmail(),
             'phone' => $this->faker->optional(0.9)->bothify("+639#########"),

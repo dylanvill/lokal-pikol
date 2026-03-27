@@ -2,10 +2,10 @@
 
 namespace App\Http\Directory\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Shared\Contracts\Controller;
 use App\Http\Directory\Requests\ListingRequest;
 use App\Http\Directory\Resources\ListingResource;
-use App\Source\Directory\Enums\ListingCourtTypeEnum;
+use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Directory\Models\Listing;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,7 +24,7 @@ class ListingController extends Controller
                 $query->where('city', $city);
             })
             ->when($request->courtType, function ($query, $courtType) {
-                $query->whereIn('court_type', [$courtType, ListingCourtTypeEnum::COVERED_AND_OUTDOOR->value]);
+                $query->whereIn('court_type', [$courtType, FacilityCourtTypeEnum::COVERED_AND_OUTDOOR->value]);
             })
             ->when($request->numberOfCourts, function ($query, $numberOfCourts) {
                 $query->where('number_of_courts', $numberOfCourts);
@@ -47,7 +47,7 @@ class ListingController extends Controller
 
     private function getCourtTypes(): array
     {
-        $courtTypes = collect(ListingCourtTypeEnum::values())
+        $courtTypes = collect(FacilityCourtTypeEnum::values())
             ->map(fn($courtType) => ["value" => $courtType, "label" => $courtType]);
 
         return [["value" => null, "label" => self::ALL_COURT_TYPES], ...$courtTypes];

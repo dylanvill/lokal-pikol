@@ -2,7 +2,7 @@
 
 namespace App\Http\Directory\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Shared\Contracts\Controller;
 use App\Http\Directory\Resources\ListingResource;
 use App\Source\Directory\Models\Listing;
 use Illuminate\Http\Request;

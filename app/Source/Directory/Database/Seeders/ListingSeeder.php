@@ -7,7 +7,7 @@ use App\Source\Directory\Actions\CreateListing\Dtos\CreateListingData;
 use App\Source\Directory\Actions\UpdateSocialLink\UpdateSocialLink;
 use App\Source\Directory\Database\Factories\ListingFactory;
 use App\Source\Directory\Models\Listing;
-use App\Source\Facility\Enums\CityEnum;
+use App\Source\Shared\Enums\CityEnum;
 use App\Source\Shared\Enums\SocialLinkEnum;
 use App\Source\Shared\Models\SocialLink;
 use Exception;

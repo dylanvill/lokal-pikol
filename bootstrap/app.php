@@ -2,7 +2,7 @@
 
 use App\Http\Booking\Middleware\BookingInertiaTemplateMiddleware;
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
-use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Shared\Middleware\HandleInertiaRequests;
 use App\Source\Facility\Commands\SendOnboardingInvite;
 use App\Source\Directory\Commands\SendListingRegistrationEmail;
 use App\Source\Directory\Commands\SendListingThankYouEmail;

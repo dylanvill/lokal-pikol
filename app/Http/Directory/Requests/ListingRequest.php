@@ -2,7 +2,7 @@
 
 namespace App\Http\Directory\Requests;
 
-use App\Source\Directory\Enums\ListingCourtTypeEnum;
+use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Shared\Enums\CityEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -29,7 +29,7 @@ class ListingRequest extends FormRequest
         return [
             'city' => ['nullable', 'string', Rule::enum(CityEnum::class)],
             'numberOfCourts' => ['nullable', 'integer', 'min:1'],
-            'courtType' => ['nullable', 'string', Rule::enum(ListingCourtTypeEnum::class)],
+            'courtType' => ['nullable', 'string', Rule::enum(FacilityCourtTypeEnum::class)],
         ];
     }
 }

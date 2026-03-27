@@ -2,7 +2,7 @@
 
 namespace App\Http\Directory\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Shared\Contracts\Controller;
 use Illuminate\Http\Request;
 
 class ListingLegalController extends Controller

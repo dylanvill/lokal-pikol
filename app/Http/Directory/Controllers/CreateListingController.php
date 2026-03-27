@@ -2,7 +2,7 @@
 
 namespace App\Http\Directory\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Shared\Contracts\Controller;
 use App\Http\Directory\Requests\CreateListingRequest;
 use App\Http\Directory\Requests\ShowCreateListingRequest;
 use App\Source\Directory\Actions\CreateListing\CreateListing;
