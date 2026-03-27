@@ -3,7 +3,7 @@
 namespace App\Http\Directory\Requests;
 
 use App\Source\Directory\Enums\ListingCourtTypeEnum;
-use App\Source\Facility\Enums\CityEnum;
+use App\Source\Shared\Enums\CityEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

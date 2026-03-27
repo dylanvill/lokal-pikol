@@ -3,7 +3,6 @@
 namespace App\Http\Directory\Resources;
 
 use App\Http\Shared\Resources\LinkResource;
-use App\Http\Shared\Resources\PhotoResource;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

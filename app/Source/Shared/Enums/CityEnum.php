@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Source\Facility\Enums;
+namespace App\Source\Shared\Enums;
 
 enum CityEnum: string
 {
