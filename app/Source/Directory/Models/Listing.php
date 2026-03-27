@@ -2,7 +2,7 @@
 
 namespace App\Source\Directory\Models;
 
-use App\Models\Traits\HasUuid;
+use App\Source\Shared\Models\HasUuid;
 use App\Source\Directory\Database\Factories\ListingFactory;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;

@@ -2,7 +2,7 @@
 
 namespace App\Source\Directory\Models;
 
-use App\Models\Traits\HasUuid;
+use App\Source\Shared\Models\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class ListingRegistrationToken extends Model
