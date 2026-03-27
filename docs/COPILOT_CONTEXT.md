@@ -1,22 +1,23 @@
 # Lokal Pikol - Copilot Context
 
-**Last Updated:** February 25, 2026
+**Last Updated:** March 27, 2026
+
+**Major Architectural Update:** Shifted to directory-only entry model. No standalone booking home page - all user discovery flows through the comprehensive Negros directory at directory.lokalpikol.com, with "Book Court" buttons redirecting to either external booking URLs or booking.lokalpikol.com/facility/{slug} for integrated courts.
 
 ## Domain Overview
 
 **Application Name:** Lokal Pikol  
 **Purpose:** A comprehensive pickleball court directory for Negros region with optional reservation system for local communities ("lokals")  
-**Core Business:** Connecting pickleball players with court facilities through a comprehensive directory, with booking services as an enhanced offering
+**Core Business:** Connecting pickleball players with court facilities through the comprehensive directory as the single entry point, with booking services as an enhanced offering
 
 ### User Types & Roles
 
 #### 1. Customer (Player/Renter)
 - **Primary Actions:**
-  - Browse facility courts and availability
-  - Book court reservations
-  - Account creation and management
-  - Browse Negros directory (no account required)
-- **Requirements:** Must create account before booking reservations
+  - Browse Negros directory (no account required) - PRIMARY ENTRY POINT
+  - Book court reservations (via directory links)
+  - Account creation and management (when using booking system)
+- **Requirements:** Must create account before booking reservations on integrated courts
 
 #### 2. Facility (Court Owner/Manager)  
 - **Primary Actions:**
@@ -27,13 +28,12 @@
 - **Management Role:** Controls court availability and reservation approval
 
 ### Key Features
-- **Negros Directory Sub-Application** - Free comprehensive directory listing for all pickleball courts in Negros region (PRIMARY)
-- Court browsing and availability viewing (secondary - booking system)
-- Reservation booking system with approval workflow (secondary - upsell feature)
+- **Negros Directory** - Free comprehensive directory listing for all pickleball courts in Negros region (PRIMARY ENTRY POINT)
+- Reservation booking system with approval workflow (upsell feature - no standalone home page)
 - **Block booking system** for recurring court schedules (open plays, events)
 - Calendar management for facilities
 - Email notifications system
-- Account management for both user types
+- Account management for booking users
 
 ## Technical Stack
 
@@ -59,52 +59,62 @@ The application uses domain-based routing to separate the main application from 
     then: function () {
         $tld = config('app.tld');
 
-        // Main application routes (restricted to main domain)
-        Route::domain($tld)
-            ->middleware('web')
-            ->group(base_path('routes/web.php'));
-
-        // Facility routes (subdirectory on main domain)
-        Route::domain($tld)
-            ->middleware('web')
-            ->prefix('facility')
-            ->name('facility.')
-            ->group(base_path('routes/facility.php'));
-
-        // Directory subdomain routes
+        // Directory subdomain routes (PRIMARY ENTRY POINT)
         Route::domain("directory.{$tld}")
             ->middleware('web')
             ->name('directory.')
             ->group(base_path('routes/directory.php'));
+
+        // Booking subdomain routes (upsell functionality)
+        Route::domain("booking.{$tld}")
+            ->middleware('web')
+            ->name('booking.')
+            ->group(base_path('routes/booking.php'));
+
+        // Main domain - admin/auth routes only (no public home page)
+        Route::domain($tld)
+            ->middleware('web')
+            ->group(base_path('routes/web.php'));
+
+        // Facility management routes (on booking subdomain)
+        Route::domain("booking.{$tld}")
+            ->middleware('web')
+            ->prefix('facility')
+            ->name('facility.')
+            ->group(base_path('routes/facility.php'));
     }
 )
 ```
 
 **Domain Separation:**
-- **Main Domain** (`lokal-pikol.test`): Full reservation system functionality
-  - `/` → `routes/web.php` (Customer flows, facilities browsing, reservations)
+- **Directory Subdomain** (`directory.lokal-pikol.test`): Primary entry point
+  - `/` → `routes/directory.php` (Directory listing - MAIN USER ENTRY)
+- **Booking Subdomain** (`booking.lokal-pikol.test`): Reservation system functionality
+  - `/facility/{slug}` → Individual facility booking pages
   - `/facility/*` → `routes/facility.php` (Facility management interface)
-- **Directory Subdomain** (`directory.lokal-pikol.test`): Directory sub-application
-  - `/` → `routes/directory.php` (Directory listing, no reservations)
+- **Main Domain** (`lokal-pikol.test`): Administrative and auth routes
+  - `/` → Administrative routes only (no public home page)
 
 **Route File Structure:**
-- `routes/web.php`: Main customer-facing application routes
+- `routes/directory.php`: Primary user-facing directory routes (main entry point)
+- `routes/booking.php`: Booking system routes for individual facilities
 - `routes/facility.php`: Facility management routes (prefixed)
-- `routes/directory.php`: Directory sub-application routes (domain-separated)
+- `routes/web.php`: Administrative and auth routes only
 
 **Key Benefits:**
-- **Clean Separation**: No route name conflicts between main app and directory
-- **Independent Development**: Sub-applications can evolve independently
-- **SEO & Branding**: Dedicated subdomain for directory discovery
+- **Clean Separation**: No route name conflicts between directory and booking subdomains
+- **Independent Development**: Directory and booking applications can evolve independently
+- **SEO & Branding**: Dedicated subdomain for directory discovery as primary entry point
 - **Performance**: Domain-based routing prevents unnecessary route matching
+- **Simplified User Journey**: Single entry point (directory) eliminates confusion
 
-## Negros Directory Sub-Application
+## Negros Directory (Primary Application)
 
 ### Overview
-**Purpose:** A free comprehensive directory listing of all pickleball courts in the Negros region (PRIMARY PRODUCT FOCUS)  
-**Business Model:** Primary value delivery through directory discovery, with reservation system as secondary upsell offering  
+**Purpose:** A free comprehensive directory listing of all pickleball courts in the Negros region (PRIMARY APPLICATION & SOLE PUBLIC ENTRY POINT)  
+**Business Model:** Primary value delivery and sole discovery method through directory, with reservation system as upsell offering  
 **Access Control:** Backend-managed by administrators (no public court owner interface)  
-**Domain:** `directory.lokalpikol.com` - Discovery-focused branding for comprehensive court listings
+**Domain:** `directory.lokalpikol.com` - Primary discovery platform for comprehensive court listings
 
 ### Key Features
 - **Public Directory:** Searchable list of courts with filtering by city
@@ -122,10 +132,11 @@ The application uses domain-based routing to separate the main application from 
 ### Management:** Backend-managed by administrators (no direct court owner interface)
 
 ### User Experience
-- **Players:** Browse directory with city-based filtering (no account required) - PRIMARY USER FLOW
+- **Players:** Browse directory with city-based filtering (no account required) - SOLE ENTRY POINT
 - **Booking Integration:** "Book Court" button directs to:
-  - Lokal Pikol facility booking page (for integrated courts)
+  - `booking.lokalpikol.com/facility/{slug}` (for integrated courts)
   - External booking URL (for non-integrated courts)
+- **No Booking Home Page:** No standalone list of booking-enabled facilities - directory is the only discovery method
 - **Upsell Flow:** Directory listings highlight benefits of upgrading to full reservation system
 
 ### Technical Implementation
@@ -136,11 +147,11 @@ The application uses domain-based routing to separate the main application from 
 - **Regional Focus:** Specifically targeting Negros region courts
 
 ### Business Strategy
-- **Primary Value:** Comprehensive directory as the main product offering
+- **Directory-Only Entry:** Comprehensive directory as the SOLE public-facing entry point
 - **Market Penetration:** Get all Negros courts listed for definitive regional coverage
 - **Trust Building:** Directory provides immediate value, booking system offers enhanced services
 - **Competitive Advantage:** Become the definitive source for Negros court information
-- **User Journey:** Directory Discovery → Court Contact → Optional Booking System Integration
+- **User Journey:** Directory Discovery → Direct Booking (integrated courts) OR External Contact → Optional Booking System Integration
 
 ## Architecture & Patterns
 
@@ -182,8 +193,8 @@ Domain/
 ```
 Http/
 ├── Controllers/     # Base controllers
-├── Customer/        # Customer-facing HTTP endpoints & orchestration
-├── Directory/       # Directory-facing HTTP endpoints & orchestration
+├── Directory/       # Directory-facing HTTP endpoints & orchestration (PRIMARY)
+├── Booking/         # Booking subdomain HTTP endpoints & orchestration
 ├── Facility/        # Facility-facing HTTP endpoints & orchestration
 ├── Enums/          # HTTP-level enums (Guards, etc.)
 ├── Middleware/     # Request/response middleware
@@ -380,8 +391,9 @@ Http/
 - **Sub-Application Pattern:** Directory remains separate subdomain while integrating with main booking system
 
 ### Business Model Decisions
-- **Directory-First Strategy:** Free comprehensive directory as primary product value
-- **Approval-based Reservations:** Ensures facility control over court usage (secondary booking system)
+- **Directory-Only Entry Strategy:** Free comprehensive directory as the sole public entry point
+- **No Booking Home Page:** Eliminates standalone booking system discovery - all traffic flows through directory
+- **Approval-based Reservations:** Ensures facility control over court usage (booking.lokalpikol.com)
 - **Directory Sub-Application:** Maintains architectural separation while providing seamless booking integration
 - **Token-based Listing Registration:** Secure, time-limited onboarding without account requirements
 - **Flexible Booking Integration:** Courts can use Lokal Pikol booking or maintain external booking systems
@@ -389,7 +401,8 @@ Http/
 ### Technical Decisions
 - **UUID Primary Keys:** All entities use UUIDs for security and distributed system compatibility
 - **Actions + DTOs:** Standardized pattern for business operations with strong typing
-- **Domain-based Routing:** Separate subdomains for different application contexts
+- **Domain-based Routing:** Separate subdomains for directory (primary) and booking (upsell) functionality
+- **Directory-Only Public Access:** No standalone booking home page - all discovery through directory
 - **Polymorphic Reservations:** Both customers and facilities can make reservations
 
 ## Module Deep Dives
@@ -481,11 +494,12 @@ Http/
   - **No Reservations:** Pure directory functionality, no booking workflows
 - **Integration Points:**
   - "Book Court" button integration:
-    - Routes to Lokal Pikol facility booking page (integrated courts)
+    - Routes to `booking.lokalpikol.com/facility/{slug}` (integrated courts)
     - Routes to external booking URL (non-integrated courts)
   - Listing model has optional reference to Facility for seamless booking integration
   - Social media and external booking URL support
-  - Maintains separation between directory (primary) and booking (secondary) systems
+  - Maintains separation between directory (sole entry) and booking (upsell) systems
+  - **No Booking Home Page:** All booking discovery happens through directory listings
 
 #### Facility Onboarding Flow
 **Strategy:** Secure, low-friction directory registration to build trust before converting to full reservation platform
@@ -570,25 +584,34 @@ CreateReservation/
 ### HTTP Resource Organization
 ```php
 // Domain-specific HTTP structure
-Customer/
-├── Auth/Controllers/         # Customer authentication
-├── Court/Resources/          # Customer court views
-├── Facility/Controllers/     # Customer facility interactions  
-└── Reservation/Controllers/  # Customer reservation management
+Directory/
+├── Controllers/         # Directory browsing and listing management (PRIMARY)
+└── Resources/          # Directory court display resources
+
+Booking/
+├── Controllers/        # Individual facility booking pages
+├── Court/Resources/    # Booking court views
+└── Reservation/Controllers/  # Reservation management
+
+Facility/
+├── Controllers/        # Facility management interfaces
+└── Resources/          # Facility admin views
 ```
 
 ### Frontend Domain Patterns
 ```typescript
 // Component organization by user type
 components/
-├── customer/        # Customer-facing components
+├── directory/       # Directory-facing components (PRIMARY)
+├── booking/         # Booking subdomain components
 ├── facility/        # Facility-facing components  
 └── shared/         # Cross-domain components
 
 // Page organization by user type  
 pages/
-├── customer/       # Customer user flows
-└── facility/       # Facility user flows
+├── directory/       # Directory user flows (PRIMARY)
+├── booking/         # Booking subdomain pages
+└── facility/        # Facility user flows
 ```
 
 ### Enum Usage Patterns
@@ -611,12 +634,13 @@ pages/
 - Reservation lifecycle notifications
 - User account management communications
 
-### Directory Sub-Application Integration
-- **Lead Generation:** Directory listings drive interest in full reservation platform
-- **Cross-Promotion:** Integrated courts get enhanced directory listings
-- **Upsell Messaging:** Non-integrated courts see benefits of upgrading
+### Directory Integration (Primary Application)
+- **Sole Entry Point:** Directory is the only public discovery method - no booking system home page
+- **Lead Generation:** Directory listings drive all interest in full reservation platform  
+- **Cross-Promotion:** Integrated courts get enhanced directory listings with direct booking links
+- **Upsell Messaging:** Non-integrated courts see benefits of upgrading to integrated booking
 - **Shared Media Library:** Directory courts use same media management system
-- **Regional Strategy:** Negros directory as market entry point
+- **Regional Strategy:** Negros directory as comprehensive market coverage
 
 ### Database Schema & Entity Relations
 - **Key Tables:** facilities, courts, customers, reservations, court_pricings, reservation_fees, **block_bookings**
