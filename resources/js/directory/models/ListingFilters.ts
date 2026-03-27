@@ -1,8 +1,9 @@
-import type ListingItemCourtType from "./ListingItemCourtType";
+// Type equivalent for App\Http\Directory\Requests\ListingRequest
+import type FacilityCourtType from "./FacilityCourtType";
 
 interface ListingFilters {
     city: string | null;
-    courtType: ListingItemCourtType | null;
+    courtType: FacilityCourtType | null;
     numberOfCourts: number | null;
 }
 

@@ -1,5 +1,6 @@
-import type Photo from '../shared/Photo';
-import type ListingItemCourtType from './ListingItemCourtType';
+// Type equivalent for App\Http\Directory\Resources\ListingResource
+import type Photo from '../../shared/models/Photo';
+import type FacilityCourtType from './FacilityCourtType';
 import type SocialLink from './SocialLink';
 
 interface ListingItem {
@@ -7,7 +8,7 @@ interface ListingItem {
     name: string;
     profilePhoto: Photo;
     coverPhoto: Photo;
-    courtType: ListingItemCourtType;
+    courtType: FacilityCourtType;
     numberOfCourts: number;
     email: string | null;
     phone: string | null;

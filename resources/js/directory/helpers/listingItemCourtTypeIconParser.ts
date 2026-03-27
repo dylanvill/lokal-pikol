@@ -1,8 +1,8 @@
 import { type IconType } from 'react-icons/lib';
 import { LuHouse, LuSun, LuCheckCheck } from 'react-icons/lu';
-import type ListingItemCourtType from '../models/ListingItemCourtType';
+import type FacilityCourtType from '../models/FacilityCourtType';
 
-export const listingItemCourtTypeIconParser = (courtType: ListingItemCourtType): IconType => {
+export const FacilityCourtTypeIconParser = (courtType: FacilityCourtType): IconType => {
     switch (courtType) {
         case 'Outdoor':
             return LuSun;
@@ -14,4 +14,4 @@ export const listingItemCourtTypeIconParser = (courtType: ListingItemCourtType):
     }
 };
 
-export default listingItemCourtTypeIconParser;
+export default FacilityCourtTypeIconParser;
