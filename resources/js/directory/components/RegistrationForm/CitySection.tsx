@@ -1,5 +1,5 @@
 import { Combobox, Field, Portal, useFilter, useListCollection } from '@chakra-ui/react';
-import { type useForm } from '@inertiajs/react';
+import { type InertiaPrecognitiveFormProps } from '@inertiajs/react';
 
 const cities = [
     {
@@ -96,7 +96,7 @@ const cities = [
     },
 ];
 
-function CitySection({ form }: { form: ReturnType<typeof useForm> }) {
+function CitySection({ form }: { form: InertiaPrecognitiveFormProps<{ city: string }> }) {
     const { contains } = useFilter({ sensitivity: 'base' });
 
     const { collection, filter } = useListCollection({
