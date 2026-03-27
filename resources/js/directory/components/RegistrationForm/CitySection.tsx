@@ -1,6 +1,5 @@
 import { Combobox, Field, Portal, useFilter, useListCollection } from '@chakra-ui/react';
 import { type useForm } from '@inertiajs/react';
-import React from 'react';
 
 const cities = [
     {

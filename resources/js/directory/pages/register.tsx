@@ -2,8 +2,8 @@ import { Box, Button, Checkbox, Field, Heading, HStack, Input, InputGroup, Separ
 import { useForm, usePage } from '@inertiajs/react';
 import { useCallback } from 'react';
 import { store } from '@/actions/App/Http/Directory/Controllers/CreateListingController';
-import DangerAlert from '../../components/shared/Alert/DangerAlert';
-import FormSectionHeader from '../../components/shared/FormSectionHeader';
+import DangerAlert from '../../shared/components/Alert/DangerAlert';
+import FormSectionHeader from '../../shared/components/FormSectionHeader';
 import CitySection from '../components/RegistrationForm/CitySection';
 import CourtTypesSection from '../components/RegistrationForm/CourtTypesSection';
 import DirectoryCoverPhotoSection from '../components/RegistrationForm/DirectoryCoverPhotoSection';

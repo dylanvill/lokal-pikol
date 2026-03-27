@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
-import SuccessAlert from '../../components/shared/Alert/SuccessAlert';
-import BackNavigationBase from '../../components/shared/BackNavigationBase';
+import SuccessAlert from '../../shared/components/Alert/SuccessAlert';
+import BackNavigationBase from '../../shared/components/BackNavigation/BackNavigationBase';
 import ListingCard from '../components/ListingCard';
 import DirectoryLayout from '../layouts/DirectoryLayout';
 import type ListingItem from '../models/ListingItem';
