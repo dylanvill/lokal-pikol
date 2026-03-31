@@ -73,7 +73,7 @@ class CreateListingCommand extends Command
                         courtType: $responses['courtType'],
                         numberOfCourts: $responses['numberOfCourts'],
                         email: $responses['email'],
-                        phone: $responses['phoneNumber'],
+                        phone: empty($responses['phoneNumber']) ? null : "+63" . $responses['phoneNumber'],
                         openingTime: $responses['openingTime'],
                         closingTime: $responses['closingTime'],
                         googleMapsUrl: $responses['googleMapsUrl'],

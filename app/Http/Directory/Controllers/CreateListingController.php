@@ -53,7 +53,7 @@ class CreateListingController extends Controller
                 courtType: $request->courtType,
                 numberOfCourts: $request->numberOfCourts,
                 email: $request->email,
-                phone: "+63" . $request->phone,
+                phone: empty($request->phone) ? null : "+63" . $request->phone,
                 openingTime: $request->openingTime,
                 closingTime: $request->closingTime,
                 googleMapsUrl: $request->googleMapsUrl,
