@@ -3,20 +3,12 @@
 use App\Http\Booking\Middleware\BookingInertiaTemplateMiddleware;
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
 use App\Http\Shared\Middleware\HandleInertiaRequests;
-use App\Source\Directory\Commands\DeleteListing;
-use App\Source\Directory\Commands\RestoreListing;
-use App\Source\Facility\Commands\SendOnboardingInvite;
-use App\Source\Directory\Commands\SendListingRegistrationEmail;
-use App\Source\Directory\Commands\SendListingThankYouEmail;
-use App\Source\Directory\Commands\UpdateListingMedia;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Exceptions\InvalidSignatureException;
-use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 use Inertia\Inertia;
 
@@ -60,11 +52,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withCommands([
-        SendListingRegistrationEmail::class,
-        SendListingThankYouEmail::class,
-        DeleteListing::class,
-        RestoreListing::class,
-        UpdateListingMedia::class,
+        __DIR__ . '/../app/Source/Directory/Commands'
     ])->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
 
