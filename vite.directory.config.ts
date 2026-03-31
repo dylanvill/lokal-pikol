@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/directory.tsx'],
+            input: ['resources/css/directory.css', 'resources/js/directory.tsx'],
             refresh: true,
             // detectTls: 'lokal-pikol.test',
         }),

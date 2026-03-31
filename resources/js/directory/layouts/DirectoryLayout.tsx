@@ -14,11 +14,7 @@ export interface DirectoryLayout {
 function DirectoryLayout({ title, children, headerComponent, contentContainerProps }: DirectoryLayout) {
     return (
         <>
-            <Head title={title}>
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-            </Head>
-
+            <Head title={title}></Head>
             <Box minH="100vh" bg="gray.50" colorPalette="blue">
                 <Box display="flex" flexDirection="column" minH="100vh">
                     <Container gradientFrom="blue.900" gradientTo="blue.800" bgGradient="to-t" fluid paddingTop={4} paddingBottom={16}>
