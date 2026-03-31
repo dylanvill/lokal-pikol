@@ -12,7 +12,7 @@ function BaseAlert({ status, title, description }: BaseAlertProps) {
         <Alert.Root status={status}>
             <Alert.Indicator />
             <Alert.Content>
-                <Alert.Title>{title}</Alert.Title>
+                <Alert.Title fontWeight="bold">{title}</Alert.Title>
                 <Alert.Description>{description}</Alert.Description>
             </Alert.Content>
         </Alert.Root>

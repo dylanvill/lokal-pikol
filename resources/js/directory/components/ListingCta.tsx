@@ -6,7 +6,7 @@ function ListingCta() {
         <ChakraLink href="https://facebook.com/lokalpikol" target="_blank" width="full">
             <Alert.Root status="info">
                 <Alert.Content color="fg">
-                    <Alert.Title>Want to include your court in the directory?</Alert.Title>
+                    <Alert.Title fontWeight="bold">Want to include your court in the directory?</Alert.Title>
                     <Alert.Description>
                         Send us a message on our <span style={{ color: 'blue' }}>Facebook page</span> to get started. It's free and only takes a few
                         minutes.
