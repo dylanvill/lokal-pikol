@@ -1,10 +1,10 @@
 import { Heading, Text, Container, Box, Center, Link as ChakraLink } from '@chakra-ui/react';
 import { PiHandPeace } from 'react-icons/pi';
-import RootLayout from '../../layouts/RootLayout';
+import DirectoryLayout from '../layouts/DirectoryLayout';
 
 function LinkInvalidPage() {
     return (
-        <RootLayout>
+        <DirectoryLayout title="Invalid link">
             <Box display="flex" flexDirection="column" minH="100vh">
                 <Container gradientFrom="blue.900" gradientTo="blue.800" bgGradient="to-t" fluid paddingTop={4} paddingBottom={20}></Container>
                 <Container py={4} shadow="2xl" borderTopRadius={20} backgroundColor="white" marginTop={-12} flex="1" maxWidth="lg" paddingTop={12}>
@@ -22,7 +22,7 @@ function LinkInvalidPage() {
                     </Text>
                 </Container>
             </Box>
-        </RootLayout>
+        </DirectoryLayout>
     );
 }
 

@@ -1,7 +1,7 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { LuGrid2X2, LuMapPin } from 'react-icons/lu';
-import { FacilityCourtTypeIconParser } from '../../helpers/FacilityCourtTypeIconParser';
+import listingItemCourtTypeIconParser from '../../helpers/listingItemCourtTypeIconParser';
 import type ListingFilters from '../../models/ListingFilters';
 import FilterItem from './FilterItem';
 
@@ -10,7 +10,7 @@ export interface ActiveFiltersProps extends ListingFilters {
 }
 
 function ActiveFilters({ city, courtType, numberOfCourts, onRemoveFilter }: ActiveFiltersProps) {
-    const CourtTypeIcon = useMemo(() => FacilityCourtTypeIconParser(courtType!), [courtType]);
+    const CourtTypeIcon = useMemo(() => listingItemCourtTypeIconParser(courtType!), [courtType]);
 
     const numberOfCourtsLabel = useMemo(() => {
         if (!numberOfCourts) return '';
