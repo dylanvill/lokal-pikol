@@ -7,12 +7,14 @@ use App\Http\Directory\Requests\CreateListingRequest;
 use App\Http\Directory\Requests\ShowCreateListingRequest;
 use App\Source\Directory\Actions\CreateListing\CreateListing;
 use App\Source\Directory\Actions\CreateListing\Dtos\CreateListingData;
+use App\Source\Directory\Actions\UpdateListingMedia\UpdateListingMedia;
 use App\Source\Directory\Actions\UpdateSocialLink\UpdateSocialLink;
 use App\Source\Directory\Actions\ValidateListingRegistrationToken\ValidateListingRegistrationToken;
 use App\Source\Directory\Actions\ValidateListingRegistrationToken\Dtos\ValidateListingRegistrationTokenData;
 use App\Source\Directory\Mail\ListingPostedThankYouEmail;
 use App\Source\Directory\Models\Listing;
 use App\Source\Directory\Models\ListingRegistrationToken;
+use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Shared\Enums\SocialLinkEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -50,10 +52,8 @@ class CreateListingController extends Controller
                 address: $request->address,
                 courtType: $request->courtType,
                 numberOfCourts: $request->numberOfCourts,
-                profilePhoto: $request->profilePhoto,
-                coverPhoto: $request->coverPhoto,
                 email: $request->email,
-                phone: $request->phone,
+                phone: "+63" . $request->phone,
                 openingTime: $request->openingTime,
                 closingTime: $request->closingTime,
                 googleMapsUrl: $request->googleMapsUrl,
@@ -61,6 +61,7 @@ class CreateListingController extends Controller
             );
 
             $listing = $service->create($data);
+            $this->handleMedia($listing, $request);
 
             $this->handleSocialLinks($listing, $request);
 
@@ -91,6 +92,13 @@ class CreateListingController extends Controller
         $request->session()->flash('registration-success', true);
 
         return redirect()->route('directory.register.success', ['listing' => $listing->uuid]);
+    }
+
+    protected function handleMedia(Listing $listing, CreateListingRequest $request)
+    {
+        $service = new UpdateListingMedia($listing);
+        $service->setMediaType(MediaTypeEnum::LISTING_PROFILE_PHOTO)->update($request->profilePhoto);
+        $service->setMediaType(MediaTypeEnum::LISTING_COVER_PHOTO)->update($request->coverPhoto);
     }
 
     protected function handleSocialLinks(Listing $listing, CreateListingRequest $request)

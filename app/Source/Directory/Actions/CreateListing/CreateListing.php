@@ -24,9 +24,6 @@ class CreateListing
         $listing->booking_url = $data->bookingUrl;
         $listing->save();
 
-        $listing->updateCoverPhoto($data->coverPhoto);
-        $listing->updateProfilePhoto($data->profilePhoto);
-
         return $listing;
     }
 }
