@@ -8,6 +8,7 @@ enum CityEnum: string
     case TANJAY = 'Tanjay';
     case VALENCIA = 'Valencia';
     case BACONG = 'Bacong';
+    case BAYAWAN = 'Bayawan';
     case SIBULAN = 'Sibulan';
     case BAIS = 'Bais';
     case CANLAON = 'Canlaon';
