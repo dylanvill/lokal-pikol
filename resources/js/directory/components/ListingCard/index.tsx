@@ -60,7 +60,7 @@ function ListingCard({
                             marginLeft={4}
                         />
 
-                        <Badge marginBottom={4}>{city}</Badge>
+                        <Badge marginBottom={4} fontFamily="sans-serif" fontWeight={400}>{city}</Badge>
                     </HStack>
                 </VStack>
             </Card.Header>
