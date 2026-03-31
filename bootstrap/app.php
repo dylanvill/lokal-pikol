@@ -8,6 +8,7 @@ use App\Source\Directory\Commands\RestoreListing;
 use App\Source\Facility\Commands\SendOnboardingInvite;
 use App\Source\Directory\Commands\SendListingRegistrationEmail;
 use App\Source\Directory\Commands\SendListingThankYouEmail;
+use App\Source\Directory\Commands\UpdateListingMedia;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -63,6 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
         SendListingThankYouEmail::class,
         DeleteListing::class,
         RestoreListing::class,
+        UpdateListingMedia::class,
     ])->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
 
