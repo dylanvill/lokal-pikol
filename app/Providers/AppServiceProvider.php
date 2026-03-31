@@ -45,8 +45,8 @@ class AppServiceProvider extends ServiceProvider
         // Remove the "data" wrapper from JSON resources for a cleaner API response
         JsonResource::withoutWrapping();
 
-        Gate::policy(Reservation::class, ReservationPolicy::class);
-        Gate::policy(Facility::class, FacilityPolicy::class);
+        // Gate::policy(Reservation::class, ReservationPolicy::class);
+        // Gate::policy(Facility::class, FacilityPolicy::class);
     }
 
     protected function configureDefaults(): void
