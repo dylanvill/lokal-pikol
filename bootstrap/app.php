@@ -4,6 +4,7 @@ use App\Http\Booking\Middleware\BookingInertiaTemplateMiddleware;
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
 use App\Http\Shared\Middleware\HandleInertiaRequests;
 use App\Source\Directory\Commands\DeleteListing;
+use App\Source\Directory\Commands\RestoreListing;
 use App\Source\Facility\Commands\SendOnboardingInvite;
 use App\Source\Directory\Commands\SendListingRegistrationEmail;
 use App\Source\Directory\Commands\SendListingThankYouEmail;
@@ -61,6 +62,7 @@ return Application::configure(basePath: dirname(__DIR__))
         SendListingRegistrationEmail::class,
         SendListingThankYouEmail::class,
         DeleteListing::class,
+        RestoreListing::class,
     ])->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
 

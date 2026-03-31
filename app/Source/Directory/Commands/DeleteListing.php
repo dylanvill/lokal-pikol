@@ -3,11 +3,9 @@
 namespace App\Source\Directory\Commands;
 
 use App\Source\Directory\Commands\Enums\DirectoryCommandNamespaceEnum;
-use App\Source\Directory\Mail\ListingPostedThankYouEmail;
 use App\Source\Directory\Models\Listing;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Illuminate\Support\Facades\Mail;
 
 class DeleteListing extends Command implements PromptsForMissingInput
 {
