@@ -5,11 +5,10 @@ namespace App\Source\Directory\Commands;
 use App\Source\Directory\Actions\GenerateListingRegistrationToken\GenerateListingRegistrationToken;
 use App\Source\Directory\Mail\ListingRegistrationEmail;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
-class SendListingRegistrationEmail extends Command
+class SendListingRegistrationEmailCommand extends Command
 {
     /**
      * The name and signature of the console command.

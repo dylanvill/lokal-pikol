@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\Mail;
 
-class SendListingThankYouEmail extends Command implements PromptsForMissingInput
+class SendListingThankYouEmailCommand extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

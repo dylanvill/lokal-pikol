@@ -12,7 +12,7 @@ use function Laravel\Prompts\form;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\confirm;
 
-class UpdateListingMedia extends Command implements PromptsForMissingInput
+class UpdateListingMediaCommand extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

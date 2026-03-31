@@ -7,7 +7,7 @@ use App\Source\Directory\Models\Listing;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class DeleteListing extends Command implements PromptsForMissingInput
+class DeleteListingCommand extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.
