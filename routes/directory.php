@@ -4,12 +4,12 @@ use App\Http\Directory\Controllers\CreateListingController;
 use App\Http\Directory\Controllers\ListingController;
 use App\Http\Directory\Controllers\ListingLegalController;
 use App\Http\Directory\Controllers\RegistrationSuccessController;
-use App\Http\Shared\Middleware\CustomerRoutesMiddleware;
-use App\Source\Directory\Mail\ListingRegistrationEmail;
+use App\Http\Directory\Controllers\TrackListingEventController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', ListingController::class)->name('home');
+Route::post('/track/{listing:uuid}/{event}', TrackListingEventController::class)->name('track-event');
 Route::get('/register', [CreateListingController::class, 'show'])->name('register.show')->middleware('signed');
 Route::post('/register', [CreateListingController::class, 'store'])->name('register.store')->middleware(HandlePrecognitiveRequests::class);
 Route::get('/register/{listing:uuid}/success', RegistrationSuccessController::class)->name('register.success');

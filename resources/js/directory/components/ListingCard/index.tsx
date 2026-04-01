@@ -1,7 +1,9 @@
-import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex } from '@chakra-ui/react';
+import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
 import { useMemo } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone } from 'react-icons/lu';
+import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventController';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type ListingItem from '../../models/ListingItem';
@@ -41,6 +43,36 @@ function ListingCard({
     const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
     const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
 
+    const trackSocialClick = (platform: string, url: string) => {
+        router.post(
+            invoke({ listing: id, event: platform }),
+            {},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                except: ['listings', 'filters'],
+            },
+        );
+
+        window.open(url, '_blank');
+    };
+
+    const onBookCourtClicked = () => {
+        router.post(
+            invoke({ listing: id, event: 'book' }),
+            {},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                except: ['listings', 'filters'],
+            },
+        );
+
+        if (bookingUrl) {
+            window.open(bookingUrl, '_blank');
+        }
+    };
+
     return (
         <Card.Root padding={0} borderRadius={8} key={id}>
             <Card.Header padding={0} borderTopRadius={8}>
@@ -60,7 +92,9 @@ function ListingCard({
                             marginLeft={4}
                         />
 
-                        <Badge marginBottom={4} fontFamily="sans-serif" fontWeight={400}>{city}</Badge>
+                        <Badge marginBottom={4} fontFamily="sans-serif" fontWeight={400}>
+                            {city}
+                        </Badge>
                     </HStack>
                 </VStack>
             </Card.Header>
@@ -93,14 +127,34 @@ function ListingCard({
                         <DetailWithIcon
                             icon={<FaFacebookF />}
                             textProps={{ color: 'black', fontSize: 'sm' }}
-                            label={<ChakraLink target="_blank" href={facebookLink.url}>Facebook</ChakraLink>}
+                            label={
+                                <ChakraLink
+                                    cursor="pointer"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        trackSocialClick('facebook', facebookLink.url);
+                                    }}
+                                >
+                                    Facebook
+                                </ChakraLink>
+                            }
                         />
                     )}
                     {instagramLink && (
                         <DetailWithIcon
                             icon={<FaInstagram />}
                             textProps={{ color: 'black', fontSize: 'sm' }}
-                            label={<ChakraLink target="_blank" href={instagramLink.url}>Instagram</ChakraLink>}
+                            label={
+                                <ChakraLink
+                                    cursor="pointer"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        trackSocialClick('instagram', instagramLink.url);
+                                    }}
+                                >
+                                    Instagram
+                                </ChakraLink>
+                            }
                         />
                     )}
                 </VStack>
@@ -108,10 +162,10 @@ function ListingCard({
             <Card.Footer>
                 <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
                     {bookingUrl ? (
-                        <ChakraLink href={bookingUrl} marginTop={4} fontSize="sm" textAlign="right">
+                        <Button size="sm" variant="ghost" marginTop={4} fontSize="sm" textAlign="right" onClick={onBookCourtClicked}>
                             Book Court
                             <LuArrowRight />
-                        </ChakraLink>
+                        </Button>
                     ) : (
                         <Text marginTop={4} fontSize="sm" color="gray.500" textAlign="right">
                             No booking link available
