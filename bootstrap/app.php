@@ -53,7 +53,11 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withCommands([
         __DIR__ . '/../app/Source/Directory/Commands'
-    ])->withExceptions(function (Exceptions $exceptions) {
+    ])
+    ->withEvents(discover: [
+        __DIR__ . '/../app/Source/Directory/Listeners',
+    ])
+    ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
 
             if ($response->getStatusCode() === 419) {
