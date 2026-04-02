@@ -74,8 +74,8 @@ class CreateListingCommand extends Command
                         numberOfCourts: $responses['numberOfCourts'],
                         email: $responses['email'],
                         phone: empty($responses['phoneNumber']) ? null : "+63" . $responses['phoneNumber'],
-                        openingTime: $responses['openingTime'],
-                        closingTime: $responses['closingTime'],
+                        openingTime: empty($responses['openingTime']) ? null : $responses['openingTime'],
+                        closingTime: empty($responses['closingTime']) ? null : $responses['closingTime'],
                         googleMapsUrl: $responses['googleMapsUrl'],
                         bookingUrl: $responses['bookingUrl'],
                     );
