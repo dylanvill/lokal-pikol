@@ -72,12 +72,12 @@ class CreateListingCommand extends Command
                         address: $responses['address'],
                         courtType: $responses['courtType'],
                         numberOfCourts: $responses['numberOfCourts'],
-                        email: $responses['email'],
+                        email: empty($responses['email']) ? null : $responses['email'],
                         phone: empty($responses['phoneNumber']) ? null : "+63" . $responses['phoneNumber'],
                         openingTime: empty($responses['openingTime']) ? null : $responses['openingTime'],
                         closingTime: empty($responses['closingTime']) ? null : $responses['closingTime'],
-                        googleMapsUrl: $responses['googleMapsUrl'],
-                        bookingUrl: $responses['bookingUrl'],
+                        googleMapsUrl: empty($responses['googleMapsUrl']) ? null : $responses['googleMapsUrl'],
+                        bookingUrl: empty($responses['bookingUrl']) ? null : $responses['bookingUrl'],
                     );
                     return $this->createListing($data);
                 },
