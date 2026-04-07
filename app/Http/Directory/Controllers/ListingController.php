@@ -8,6 +8,7 @@ use App\Http\Directory\Resources\ListingResource;
 use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Directory\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class ListingController extends Controller
@@ -19,6 +20,8 @@ class ListingController extends Controller
 
     public function __invoke(ListingRequest $request)
     {
+        $seed = $this->getRandomSeed();
+
         $listings = Listing::with('socialLinks')
             ->when($request->city, function ($query, $city) {
                 $query->where('city', $city);
@@ -30,6 +33,7 @@ class ListingController extends Controller
                 $query->where('number_of_courts', $numberOfCourts);
             })
             ->withMedia()
+            ->inRandomOrder($seed)
             ->paginate(12);
 
         return Inertia::render('listing', [
@@ -43,6 +47,13 @@ class ListingController extends Controller
                 'numberOfCourts' => $request->numberOfCourts ?? null,
             ],
         ]);
+    }
+
+    private function getRandomSeed(): int
+    {
+        $seedKey = 'directory_seed_' . session()->getId();
+
+        return Cache::remember($seedKey, now()->addHours(6), fn() => random_int(1, 1000000));
     }
 
     private function getCourtTypes(): array
