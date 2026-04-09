@@ -28,6 +28,7 @@ enum CityEnum: string
     case TAYASAN = 'Tayasan';
     case VALLEHERMOSO = 'Vallehermoso';
     case ZAMBOANGUITA = 'Zamboanguita';
+    case BASAY = 'Basay';
 
     public static function values(): array
     {
