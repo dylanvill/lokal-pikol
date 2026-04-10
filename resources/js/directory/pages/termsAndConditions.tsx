@@ -22,8 +22,7 @@ function TermsAndConditionsPage() {
                 <Heading size="md">1. About the Directory</Heading>
                 <Text fontSize="md">
                     The Lokal Pikol Court Directory is a free service that provides public listings of pickleball courts in the Negros region. The
-                    directory helps players discover courts and contact them directly. This is separate from our main reservation platform and does
-                    not include booking functionality.
+                    directory helps players discover courts and contact them directly.
                 </Text>
 
                 <Heading size="md">2. Court Listing Process</Heading>
@@ -41,7 +40,7 @@ function TermsAndConditionsPage() {
                 <Heading size="md">3. Public Information</Heading>
                 <Text fontSize="md">
                     All information you provide through the listing form becomes publicly visible in the directory. This includes your court name,
-                    address, contact information, operating hours, photos, and any social media or booking links you choose to share. Only provide
+                    address, contact information, operating hours, photos, and any social media or external links you choose to share. Only provide
                     information you are comfortable making public.
                 </Text>
 
@@ -87,39 +86,42 @@ function TermsAndConditionsPage() {
                     service at any time.
                 </Text>
 
-                <Heading size="md">9. Relationship to Main Platform</Heading>
+                <Heading size="md">9. Use of Your Information</Heading>
                 <Text fontSize="md">
-                    This free directory service operates separately from our main Lokal Pikol reservation platform. Having a directory listing does
-                    not automatically enroll you in our full reservation system. If you're interested in our complete facility management and
-                    reservation platform, separate terms and registration will apply.
+                    By submitting your court information, you grant us permission to use, display, and promote your court information in various formats and platforms. This may include featuring your court in our social media posts, marketing materials, newsletters, or other promotional content. We may also use your court photos and information to showcase the directory service and promote pickleball in the Negros region.
                 </Text>
 
-                <Heading size="md">10. No Service Fees</Heading>
+                <Heading size="md">10. Analytics and Tracking</Heading>
+                <Text fontSize="md">
+                    We collect analytics data to improve our directory service, including but not limited to: page visits, clicks on court listings, social media clicks, and general usage patterns. This data helps us understand how the directory is being used and allows us to make improvements. We do not collect personal information from directory browsers, but we do track interactions with court listings for analytical purposes.
+                </Text>
+
+                <Heading size="md">11. No Service Fees</Heading>
                 <Text fontSize="md">
                     The directory service is completely free. We do not charge for listings or take any fees from transactions between players and
                     courts. Players and courts handle all arrangements and payments directly.
                 </Text>
 
-                <Heading size="md">11. Limitation of Liability</Heading>
+                <Heading size="md">12. Limitation of Liability</Heading>
                 <Text fontSize="md">
                     To the fullest extent permitted by law, Lokal Pikol will not be liable for any damages arising from your use of the directory,
                     interactions with courts or players you meet through the directory, or any inaccuracies in court information. Your participation
                     in the directory and visits to listed courts are at your own risk.
                 </Text>
 
-                <Heading size="md">12. Governing Law</Heading>
+                <Heading size="md">13. Governing Law</Heading>
                 <Text fontSize="md">
                     These Terms are governed by the laws of the Philippines. Any disputes will be subject to the jurisdiction of the appropriate
                     courts in the Philippines.
                 </Text>
 
-                <Heading size="md">13. Changes to These Terms</Heading>
+                <Heading size="md">14. Changes to These Terms</Heading>
                 <Text fontSize="md">
                     We may update these Terms from time to time. When we make changes, we will update the date at the top of this page and may provide
                     notice through the directory. Your continued use of the directory after changes take effect means you accept the updated Terms.
                 </Text>
 
-                <Heading size="md">14. Contact Us</Heading>
+                <Heading size="md">15. Contact Us</Heading>
                 <Text fontSize="md">
                     If you have questions about these Terms or need to update or remove a court listing, please contact us at{' '}
                     <ChakraLink href="mailto:directory@lokalpikol.com" color="blue.600">
