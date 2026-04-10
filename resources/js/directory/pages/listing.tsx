@@ -14,6 +14,7 @@ import ListingCta from '../components/ListingCta';
 import DirectoryLayout from '../layouts/DirectoryLayout';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
+import SurveyCard from '../components/transients/SurveyCard';
 
 export interface ListingPageProps extends PageProps {
     listings: PaginatedData<ListingItem>;
@@ -77,25 +78,28 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                 )}
             >
                 <SimpleGrid columns={COLUMNS_CONFIG} gap={COLUMN_GAP_CONFIG}>
-                    {listings.data.map((listing) => (
-                        <ListingCard
-                            key={listing.id}
-                            id={listing.id}
-                            name={listing.name}
-                            profilePhoto={listing.profilePhoto}
-                            coverPhoto={listing.coverPhoto}
-                            city={listing.city}
-                            address={listing.address}
-                            openingTime={listing.openingTime}
-                            closingTime={listing.closingTime}
-                            courtType={listing.courtType}
-                            numberOfCourts={listing.numberOfCourts}
-                            googleMapsUrl={listing.googleMapsUrl}
-                            socialLinks={listing.socialLinks}
-                            bookingUrl={listing.bookingUrl}
-                            email={listing.email}
-                            phone={listing.phone}
-                        />
+                    {listings.data.map((listing, index) => (
+                        <>
+                            <ListingCard
+                                key={listing.id}
+                                id={listing.id}
+                                name={listing.name}
+                                profilePhoto={listing.profilePhoto}
+                                coverPhoto={listing.coverPhoto}
+                                city={listing.city}
+                                address={listing.address}
+                                openingTime={listing.openingTime}
+                                closingTime={listing.closingTime}
+                                courtType={listing.courtType}
+                                numberOfCourts={listing.numberOfCourts}
+                                googleMapsUrl={listing.googleMapsUrl}
+                                socialLinks={listing.socialLinks}
+                                bookingUrl={listing.bookingUrl}
+                                email={listing.email}
+                                phone={listing.phone}
+                            />
+                            {index === 4 && <SurveyCard />}
+                        </>
                     ))}
                 </SimpleGrid>
             </InfiniteScroll>
