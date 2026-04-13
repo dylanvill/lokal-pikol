@@ -175,6 +175,7 @@ Domain/
 
 **Active Domains:**
 - **Directory:** Free court listings for Negros region (primary and sole active domain)
+- **Analytics:** Custom event tracking for high-priority user interactions
 - **Authentication:** User management (for admin access)
 - **MediaLibrary:** Media type management
 
@@ -459,10 +460,28 @@ js/
 - **Location:** `/app/Source/Reservation/`
 - _Part of the abandoned booking system. No further development._
 
+### Analytics Module — ACTIVE
+- **Location:** `/app/Source/Analytics/`
+- **Purpose:** Custom first-party event tracking for high-priority user interactions
+- **Key Components:**
+  - `AddEntry` action: Creates an analytics record from any `AnalyticsEntry` contract implementation
+  - `AnalyticsEntry` contract: Interface requiring `getTrackableType()`, `getTrackableId()`, `getEvent()`, `getDomain()`, `getMetadata()`
+  - `Analytics` model: Polymorphic `trackable` relation, stores `event`, `domain`, and optional `metadata` (JSON)
+- **Schema:** `analytics` table — `id`, `uuid`, `nullableMorphs('trackable')`, `event` (string), `domain` (string), `metadata` (JSON nullable), timestamps
+- **Directory Integration:**
+  - `TrackListingAnalytics` action dispatches `ListingClicked` event with `ListingAnalyticsData` DTO
+  - `ListingAnalyticsData` implements `AnalyticsEntry` — polymorphic via `Listing`, domain = `"directory"`
+  - `ListingEventEnum`: `FACEBOOK_CLICKED`, `INSTAGRAM_CLICKED`, `BOOK_COURT_CLICKED`
+  - Tracked via `POST /track/{listing:uuid}/{event}` endpoint on directory subdomain
+- **Dual Analytics Strategy:**
+  - **Google Analytics (GA4):** Installed via gtag.js (`G-JNMXKBD68M`) in Blade templates, production-only. Handles general traffic metrics, page views, sessions, demographics, and acquisition data.
+  - **Custom Analytics:** Purpose-built for high-priority business events that require precise, queryable tracking tied to specific domain entities (e.g., which listing's Facebook link was clicked, how many book-court clicks per listing). GA4 handles the broad picture; custom analytics handles entity-level business intelligence.
+  - **Why both:** GA4 is great for traffic analysis but makes it difficult to query specific entity-level interactions (e.g., "show me all click events for Listing X"). Custom analytics provides direct database access with polymorphic relationships to domain models, enabling business-specific reporting and potential future features like popularity sorting.
+
 ### MediaLibrary Module
 - **Location:** `/app/Source/MediaLibrary/`
 - **Enums:** `MediaTypeEnum` for categorizing media assets
-- **Integration:** Likely Spatie Media Library integration
+- **Integration:** Spatie Media Library integration
 
 ### Directory Module (Negros Court Directory) — ACTIVE
 - **Location:** `/app/Source/Directory/`
@@ -700,6 +719,16 @@ wayfinder/           # Global navigation utilities
 - Lokal Pikol is now exclusively a free pickleball court directory for the Negros region
 - Legacy booking code remains in the codebase but is unmaintained
 - Focus is entirely on the directory experience and court listing coverage
+
+## Planned Features
+
+### Directory UX Improvements (To-Do)
+1. **Text search by court name** — Allow users to search for a specific court by name. Currently there is no way to find a known court without scrolling through the entire directory.
+2. **Listing count indicator** — Display "Showing X of Y courts" above the grid that updates as filters change. Gives users immediate context about directory size and whether their filters are too narrow.
+3. **"New" badge on recent listings** — A small visual badge on listing cards added within the last 14 days. Creates a sense of freshness, rewards new court registrations with visibility, and gives returning visitors something to notice.
+4. **Share button on each card** — Using the Web Share API (with clipboard fallback). Players frequently share court info with friends via Messenger/group chats — currently requires screenshotting.
+5. **Sort by popularity** — Leverage custom analytics data (e.g., total click events per listing) to rank courts by engagement. Requires aggregating analytics entries per listing.
+6. **Sort by city** — Alphabetical city-based sorting as an alternative to the existing city filter dropdown.
 
 ## Future Considerations
 
