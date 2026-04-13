@@ -1,39 +1,41 @@
 # Lokal Pikol - Copilot Context
 
-**Last Updated:** March 27, 2026
+**Last Updated:** April 13, 2026
 
-**Major Architectural Update:** Shifted to directory-only entry model. No standalone booking home page - all user discovery flows through the comprehensive Negros directory at directory.lokalpikol.com, with "Book Court" buttons redirecting to either external booking URLs or booking.lokalpikol.com/facility/{slug} for integrated courts.
+**Major Architectural Update:** The booking/reservation system has been **abandoned**. Lokal Pikol is now exclusively a pickleball court directory for the Negros region. The project originally started as a court reservation/booking system, evolved to a directory-first model with booking as an upsell, and has now fully dropped the booking feature. The booking-related code remains in the codebase as legacy but will receive no further development.
+
+> **Evolution History:** Booking System (original) → Directory + Booking Upsell (mid-pivot) → Directory Only (current, April 2026)
 
 ## Domain Overview
 
 **Application Name:** Lokal Pikol  
-**Purpose:** A comprehensive pickleball court directory for Negros region with optional reservation system for local communities ("lokals")  
-**Core Business:** Connecting pickleball players with court facilities through the comprehensive directory as the single entry point, with booking services as an enhanced offering
+**Purpose:** A comprehensive pickleball court directory for the Negros region  
+**Core Business:** Connecting pickleball players with court facilities through a free, comprehensive directory  
+**Note:** The reservation/booking system has been abandoned as of April 2026. All booking-related code is legacy and will not be developed further.
 
 ### User Types & Roles
 
-#### 1. Customer (Player/Renter)
+#### 1. Player (Public User)
 - **Primary Actions:**
-  - Browse Negros directory (no account required) - PRIMARY ENTRY POINT
-  - Book court reservations (via directory links)
-  - Account creation and management (when using booking system)
-- **Requirements:** Must create account before booking reservations on integrated courts
+  - Browse Negros directory (no account required)
+  - Discover court locations, hours, and contact information
 
-#### 2. Facility (Court Owner/Manager)  
-- **Primary Actions:**
-  - Add and edit court information
-  - Approve/manage reservation requests
-  - View calendar of activities and bookings
-  - Self-book courts for facility use
-- **Management Role:** Controls court availability and reservation approval
+#### 2. ~~Facility (Court Owner/Manager)~~ [LEGACY - Booking System]
+- _This role was part of the abandoned booking system. No further development._
+- **Historical Actions:** Court management, reservation approval, calendar management, self-booking
 
-### Key Features
-- **Negros Directory** - Free comprehensive directory listing for all pickleball courts in Negros region (PRIMARY ENTRY POINT)
-- Reservation booking system with approval workflow (upsell feature - no standalone home page)
-- **Block booking system** for recurring court schedules (open plays, events)
-- Calendar management for facilities
-- Email notifications system
-- Account management for booking users
+### Key Features (Active)
+- **Negros Directory** - Free comprehensive directory listing for all pickleball courts in Negros region
+- Public searchable directory with city filtering
+- Signed URL access for court owner listing updates
+- Token-based facility onboarding system
+
+### Key Features (Abandoned - Legacy Code)
+- ~~Reservation booking system with approval workflow~~
+- ~~Block booking system for recurring court schedules~~
+- ~~Calendar management for facilities~~
+- ~~Email notifications for reservation lifecycle~~
+- ~~Account management for booking users~~
 
 ## Technical Stack
 
@@ -87,19 +89,19 @@ The application uses domain-based routing to separate the main application from 
 ```
 
 **Domain Separation:**
-- **Directory Subdomain** (`directory.lokal-pikol.test`): Primary entry point
-  - `/` → `routes/directory.php` (Directory listing - MAIN USER ENTRY)
-- **Booking Subdomain** (`booking.lokal-pikol.test`): Reservation system functionality
-  - `/facility/{slug}` → Individual facility booking pages
-  - `/facility/*` → `routes/facility.php` (Facility management interface)
+- **Directory Subdomain** (`directory.lokal-pikol.test`): Primary and only active entry point
+  - `/` → `routes/directory.php` (Directory listing)
+- **Booking Subdomain** (`booking.lokal-pikol.test`): ~~ABANDONED~~ - Legacy reservation system code
+  - `/facility/{slug}` → Individual facility booking pages (legacy)
+  - `/facility/*` → `routes/facility.php` (Facility management interface - legacy)
 - **Main Domain** (`lokal-pikol.test`): Administrative and auth routes
-  - `/` → Administrative routes only (no public home page)
+  - `/` → Administrative routes only
 
 **Route File Structure:**
-- `routes/directory.php`: Primary user-facing directory routes (main entry point)
-- `routes/booking.php`: Booking system routes for individual facilities
-- `routes/facility.php`: Facility management routes (prefixed)
-- `routes/web.php`: Administrative and auth routes only
+- `routes/directory.php`: Primary user-facing directory routes (active)
+- `routes/booking.php`: ~~Booking system routes~~ (legacy - abandoned)
+- `routes/facility.php`: ~~Facility management routes~~ (legacy - abandoned)
+- `routes/web.php`: Administrative and auth routes
 
 **Key Benefits:**
 - **Clean Separation**: No route name conflicts between directory and booking subdomains
@@ -108,20 +110,18 @@ The application uses domain-based routing to separate the main application from 
 - **Performance**: Domain-based routing prevents unnecessary route matching
 - **Simplified User Journey**: Single entry point (directory) eliminates confusion
 
-## Negros Directory (Primary Application)
+## Negros Directory (Sole Application)
 
 ### Overview
-**Purpose:** A free comprehensive directory listing of all pickleball courts in the Negros region (PRIMARY APPLICATION & SOLE PUBLIC ENTRY POINT)  
-**Business Model:** Primary value delivery and sole discovery method through directory, with reservation system as upsell offering  
-**Access Control:** Backend-managed by administrators (no public court owner interface)  
-**Domain:** `directory.lokalpikol.com` - Primary discovery platform for comprehensive court listings
+**Purpose:** A free comprehensive directory listing of all pickleball courts in the Negros region  
+**Business Model:** Free directory providing value to the pickleball community  
+**Access Control:** Backend-managed by administrators + signed URL access for court owners  
+**Domain:** `directory.lokalpikol.com` - Comprehensive court directory
 
 ### Key Features
 - **Public Directory:** Searchable list of courts with filtering by city
 - **Signed URL Access:** Court owners receive secure links to update their listings
-- **Integration Status:** Clear indicator showing which courts use the main reservation system
-- **Free Listing:** No fees for directory inclusion (unlike main app's 5-peso per hour model)
-- **Lead Generation:** Designed to drive adoption of the full reservation platform
+- **Free Listing:** No fees for directory inclusion
 
 ### Directory Court Model Fields
 - **Basic Information:** Name, address, city, description
@@ -132,12 +132,9 @@ The application uses domain-based routing to separate the main application from 
 ### Management:** Backend-managed by administrators (no direct court owner interface)
 
 ### User Experience
-- **Players:** Browse directory with city-based filtering (no account required) - SOLE ENTRY POINT
-- **Booking Integration:** "Book Court" button directs to:
-  - `booking.lokalpikol.com/facility/{slug}` (for integrated courts)
-  - External booking URL (for non-integrated courts)
-- **No Booking Home Page:** No standalone list of booking-enabled facilities - directory is the only discovery method
-- **Upsell Flow:** Directory listings highlight benefits of upgrading to full reservation system
+- **Players:** Browse directory with city-based filtering (no account required)
+- **Court Owners:** Receive signed URL invitations to register their court listings
+- **External Links:** Listings may include external booking URLs or contact information for courts that manage their own reservations
 
 ### Technical Implementation
 - **Separate Model:** `Listing` model (distinct from main `Facility` model)
@@ -147,11 +144,10 @@ The application uses domain-based routing to separate the main application from 
 - **Regional Focus:** Specifically targeting Negros region courts
 
 ### Business Strategy
-- **Directory-Only Entry:** Comprehensive directory as the SOLE public-facing entry point
+- **Community Value:** Free comprehensive directory providing immediate value to the pickleball community
 - **Market Penetration:** Get all Negros courts listed for definitive regional coverage
-- **Trust Building:** Directory provides immediate value, booking system offers enhanced services
 - **Competitive Advantage:** Become the definitive source for Negros court information
-- **User Journey:** Directory Discovery → Direct Booking (integrated courts) OR External Contact → Optional Booking System Integration
+- **User Journey:** Directory Discovery → Contact Court Directly (via external links, social media, or Google Maps)
 
 ## Architecture & Patterns
 
@@ -178,13 +174,15 @@ Domain/
 **Core Principle:** Each action performs one business operation (e.g., "save a directory listing") without side effects or orchestration concerns.
 
 **Active Domains:**
-- **Authentication:** User management, verification, roles
-- **Court:** Court entities, pricing, slot management, time conversions  
-- **Customer:** Customer entity and creation workflows
-- **Facility:** Facility entity and location management
+- **Directory:** Free court listings for Negros region (primary and sole active domain)
+- **Authentication:** User management (for admin access)
 - **MediaLibrary:** Media type management
-- **Reservation:** Booking lifecycle, fees, status management
-- **Directory:** Free court listings for Negros region (no reservations)
+
+**Legacy Domains (Abandoned - Booking System):**
+- ~~**Court:** Court entities, pricing, slot management, time conversions~~
+- ~~**Customer:** Customer entity and creation workflows~~
+- ~~**Facility:** Facility entity and location management~~
+- ~~**Reservation:** Booking lifecycle, fees, status management~~
 
 #### `/app/Http/` - Orchestration Layer (Layered Architecture)
 **Purpose:** HTTP-specific orchestration and workflow management  
@@ -303,6 +301,11 @@ js/
 
 ## Business Rules
 
+> **Note:** The booking-related business rules below (Court Pricing, Court Slots, Reservations, Block Bookings, Access Control) are from the **abandoned booking system** and are preserved here for historical reference only. No further development will occur on these features.
+
+<details>
+<summary>Abandoned Booking System Business Rules (click to expand)</summary>
+
 ### Court Pricing Model
 - **Time-Based Pricing:** Courts have pricing ranges based on time periods
 - **Consecutive Ranges Required:** Pricing ranges MUST be consecutive without gaps
@@ -360,6 +363,8 @@ js/
 - Account required for customers to make bookings
 - Facilities have management privileges for their courts
 - Self-booking allowed for facilities
+
+</details>
 
 ## Code Conventions
 
@@ -419,19 +424,15 @@ js/
 - **Sub-Application Pattern:** Directory remains separate subdomain while integrating with main booking system
 
 ### Business Model Decisions
-- **Directory-Only Entry Strategy:** Free comprehensive directory as the sole public entry point
-- **No Booking Home Page:** Eliminates standalone booking system discovery - all traffic flows through directory
-- **Approval-based Reservations:** Ensures facility control over court usage (booking.lokalpikol.com)
-- **Directory Sub-Application:** Maintains architectural separation while providing seamless booking integration
+- **Booking System Abandoned (April 2026):** The reservation/booking system was the original product vision but has been dropped entirely. No further development will occur on booking, reservation, facility management, or related features. The codebase retains the legacy code but it is not actively maintained.
+- **Directory-Only Strategy:** The directory is the sole product — a free comprehensive listing of Negros pickleball courts
 - **Token-based Listing Registration:** Secure, time-limited onboarding without account requirements
-- **Flexible Booking Integration:** Courts can use Lokal Pikol booking or maintain external booking systems
+- **Evolution Path:** Started as a booking system → pivoted to directory-first with booking upsell → fully abandoned booking in favor of directory-only
 
 ### Technical Decisions
 - **UUID Primary Keys:** All entities use UUIDs for security and distributed system compatibility
 - **Actions + DTOs:** Standardized pattern for business operations with strong typing
-- **Domain-based Routing:** Separate subdomains for directory (primary) and booking (upsell) functionality
-- **Directory-Only Public Access:** No standalone booking home page - all discovery through directory
-- **Polymorphic Reservations:** Both customers and facilities can make reservations
+- **Domain-based Routing:** Directory subdomain is the only active subdomain; booking subdomain code remains as legacy
 
 ## Module Deep Dives
 
@@ -442,63 +443,29 @@ js/
 - **Email:** `UserVerificationMail` for account verification
 - **Database:** Custom user factory and seeding
 
-### Court Module  
+### ~~Court Module~~ [LEGACY - Abandoned]
 - **Location:** `/app/Source/Court/`
-- **Key Actions:** 
-  - `CreateCourt`, `CreateCourtPricing` for court management
-  - `RangeToSlot`/`SlotsToRange` for time slot conversions
-  - Block booking management (planned)
-- **Models:** 
-  - `Court`: Basic court entity with media support
-  - `CourtPricing`: Time-based pricing ranges with consecutive validation
-  - `BlockBooking`: Recurring court availability blocks (NEW)
-- **DTOs:** `CourtSlot` for frontend time slot representation
-- **Business Logic:** 
-  - Time slot management and pricing calculations
-  - Consecutive pricing range enforcement (no gaps allowed)
-  - Court slot ↔ time range conversions for UI/backend translation
-  - **Block booking availability**: Recurring schedule management for open plays/events
-- **Pricing Constraints:**
-  - All pricing ranges must be consecutive
-  - Coverage required for all operating hours
-  - Fixed price per time range (e.g., 100 pesos for 07:00-11:00)
-- **Block Booking Constraints:**
-  - Single day per record (0=Sunday, 1=Monday, etc.)
-  - Time-based blocking (start_time, end_time) 
-  - Multiple records needed for multi-day blocks
-  - Affects court slot availability calculations
+- _Part of the abandoned booking system. No further development._
 
-### Customer Module
+### ~~Customer Module~~ [LEGACY - Abandoned]
 - **Location:** `/app/Source/Customer/`
-- **Key Actions:** `CreateCustomer` with DTO pattern
-- **Models:** `Customer` entity
-- **Integration:** Links to reservation and authentication systems
+- _Part of the abandoned booking system. No further development._
 
-### Facility Module
+### ~~Facility Module~~ [LEGACY - Abandoned]
 - **Location:** `/app/Source/Facility/`
-- **Models:** `Facility` entity with location management
-- **Enums:** `CityEnum` for supported locations
-- **Database:** Factory and seeding support
+- _Part of the abandoned booking system. No further development._
 
-### Reservation Module (Core Business Domain)
+### ~~Reservation Module~~ [LEGACY - Abandoned]
 - **Location:** `/app/Source/Reservation/`
-- **Key Actions:**
-  - `CreateReservation` - Booking initiation
-  - `ConfirmReservation` - Approval workflow
-  - `CancelReservation` - Cancellation handling  
-  - `SetReservationFees` - Fee calculation
-- **Models:** `Reservation`, `ReservationFee`
-- **Enums:** `ReservationStatusEnum`, `ReservationFeeItemsEnum`
-- **Communications:** `ReservationPendingMail`, `ReservationPendingNotification`
-- **Business Logic:** Multi-step approval workflow with fee calculation
+- _Part of the abandoned booking system. No further development._
 
 ### MediaLibrary Module
 - **Location:** `/app/Source/MediaLibrary/`
 - **Enums:** `MediaTypeEnum` for categorizing media assets
 - **Integration:** Likely Spatie Media Library integration
 
-### Directory Module (Negros Court Directory)
-- **Location:** `/app/Source/Directory/` (planned)
+### Directory Module (Negros Court Directory) — ACTIVE
+- **Location:** `/app/Source/Directory/`
 - **Purpose:** Free directory listing for Negros region pickleball courts
 - **Key Actions:** 
   - `CreateListing`, `UpdateListing` for court listings
@@ -514,20 +481,16 @@ js/
   - **Secure Onboarding:** Token-based invitation system with 7-day expiry
 - **Business Model:** 
   - Free directory listings (no fees)
-  - Lead generation for main application upselling
   - Regional market penetration strategy
+  - Community value — definitive Negros pickleball court source
 - **Access Patterns:**
   - **Backend Admin:** Manage court listings via admin interface
   - **Public Users:** Open browsing with city-based filtering
   - **No Reservations:** Pure directory functionality, no booking workflows
-- **Integration Points:**
-  - "Book Court" button integration:
-    - Routes to `booking.lokalpikol.com/facility/{slug}` (integrated courts)
-    - Routes to external booking URL (non-integrated courts)
-  - Listing model has optional reference to Facility for seamless booking integration
-  - Social media and external booking URL support
-  - Maintains separation between directory (sole entry) and booking (upsell) systems
-  - **No Booking Home Page:** All booking discovery happens through directory listings
+- **External Links:**
+  - Listings may include external booking URLs for courts that manage their own reservations
+  - Social media and Google Maps URL support
+  - No internal booking integration (booking system abandoned)
 
 #### Facility Onboarding Flow
 **Strategy:** Secure, low-friction directory registration to build trust before converting to full reservation platform
@@ -566,16 +529,20 @@ js/
 - **UUID-based Identifiers:** Non-guessable, secure token references
 
 **Business Benefits:**
-- **Trust Building:** Facilities see value before being asked for paid adoption
+- **Community Value:** Facilities get free exposure to the pickleball community
 - **Low Friction:** Simple one-time registration process
 - **Market Coverage:** Comprehensive directory drives player engagement
-- **Conversion Funnel:** Directory → Interest → Full platform adoption
 
 ## Performance Considerations
 
 *To be documented as requirements emerge*
 
 ## Critical Validation Rules
+
+> **Note:** Court Pricing and Reservation validation rules below are from the **abandoned booking system** and preserved for historical reference only.
+
+<details>
+<summary>Abandoned Booking System Validation Rules (click to expand)</summary>
 
 ### Court Pricing Validation
 - **Consecutive Range Rule:** Court pricing ranges CANNOT have gaps
@@ -597,6 +564,8 @@ js/
 - **Approval Workflow:** Reservations require facility approval before confirmation
 - **Fee Calculation:** Total fees calculated based on selected court slots and pricing
 - **Status Transitions:** Reservations follow defined status workflow (pending → confirmed/cancelled)
+
+</details>
 
 ## Common Patterns & Conventions
 
@@ -667,13 +636,8 @@ wayfinder/           # Global navigation utilities
 - **Component Hierarchy**: Domain components can use shared components, but not vice versa
 
 ### Enum Usage Patterns
-- **Status Management:** `ReservationStatusEnum` for workflow states. The enum includes:
-  - `ON_HOLD`: Temporary hold (10 minutes) when a customer initiates a reservation. Blocks the slot for others. If not confirmed in time, the reservation is deleted by a cron worker or scheduler (not marked as cancelled).
-  - `PENDING`: Awaiting facility approval. Blocks the slot for others.
-  - `CONFIRMED`: Approved reservation. Blocks the slot for others.
-  - `CANCELLED`: Explicit user or facility action to cancel a reservation. Slot becomes available. Not used for expired holds.
-- **Business Values:** `ReservationFeeItemsEnum` for fee categorization  
 - **System Configuration:** `CityEnum`, `MediaTypeEnum`, `UserRoles`
+- **Legacy (Booking System):** `ReservationStatusEnum`, `ReservationFeeItemsEnum` — abandoned, no further development
 
 ### Database Integration Patterns
 - **Domain Factories:** Each domain contains its own model factories
@@ -686,12 +650,9 @@ wayfinder/           # Global navigation utilities
 - Reservation lifecycle notifications
 - User account management communications
 
-### Directory Integration (Primary Application)
-- **Sole Entry Point:** Directory is the only public discovery method - no booking system home page
-- **Lead Generation:** Directory listings drive all interest in full reservation platform  
-- **Cross-Promotion:** Integrated courts get enhanced directory listings with direct booking links
-- **Upsell Messaging:** Non-integrated courts see benefits of upgrading to integrated booking
-- **Shared Media Library:** Directory courts use same media management system
+### Directory (Sole Application)
+- **Only Product:** Directory is the sole application — booking system has been abandoned
+- **Shared Media Library:** Directory courts use Spatie Media Library for court photos
 - **Regional Strategy:** Negros directory as comprehensive market coverage
 
 ### Database Schema & Entity Relations
@@ -721,6 +682,24 @@ wayfinder/           # Global navigation utilities
   - `start_time`, `end_time` - Time range for blocked slots
   - `court_id` - Associated court with cascade delete
   - **Pattern Example:** Two records: day=2 + 18:00-22:00 & day=4 + 18:00-22:00 = Every Tue/Thu 6PM-10PM
+
+## Project Evolution & Decision History
+
+### Phase 1: Booking System (Original Vision)
+- Built as a court reservation/booking platform with approval workflows
+- Features: Court pricing, slot management, reservations, block bookings, facility management
+- Business model: 5-peso per hour fee on reservations
+
+### Phase 2: Directory-First with Booking Upsell
+- Pivoted to a free directory as the primary entry point
+- Booking system repositioned as an upsell feature for integrated courts
+- Directory served as lead generation for booking platform adoption
+
+### Phase 3: Directory Only (Current — April 2026)
+- **Booking system fully abandoned** — no further development on reservations, facility management, or related features
+- Lokal Pikol is now exclusively a free pickleball court directory for the Negros region
+- Legacy booking code remains in the codebase but is unmaintained
+- Focus is entirely on the directory experience and court listing coverage
 
 ## Future Considerations
 
