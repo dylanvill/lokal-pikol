@@ -19,6 +19,8 @@ interface ListingItem {
     openingTime: string | null;
     closingTime: string | null;
     socialLinks: SocialLink[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export default ListingItem;

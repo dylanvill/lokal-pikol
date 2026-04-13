@@ -40,7 +40,9 @@ class ListingResource extends JsonResource
             'profilePhoto' => [
                 'uuid' => $profilePhoto?->uuid,
                 'url' => empty($profilePhoto) ? null : $profilePhoto->getUrl(MediaConversionEnum::PROFILE_PHOTO_THUMBNAIL->value),
-            ]
+            ],
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }
