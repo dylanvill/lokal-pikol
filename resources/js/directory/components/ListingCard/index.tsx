@@ -1,14 +1,16 @@
-import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button } from '@chakra-ui/react';
+import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button, Float } from '@chakra-ui/react';
 import { router } from '@inertiajs/react';
 import { useMemo } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
-import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone } from 'react-icons/lu';
+import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventController';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type ListingItem from '../../models/ListingItem';
 
-type ListingCardProps = ListingItem;
+type ListingCardProps = Omit<ListingItem, 'createdAt' | 'updatedAt'> & {
+    isNew?: boolean;
+};
 
 function ListingCard({
     id,
@@ -26,6 +28,7 @@ function ListingCard({
     bookingUrl,
     email,
     phone,
+    isNew = false,
 }: ListingCardProps) {
     const businessHoursDisplay = useMemo((): string | null => {
         if (openingTime && closingTime) {
@@ -77,6 +80,14 @@ function ListingCard({
         <Card.Root padding={0} borderRadius={8} key={id}>
             <Card.Header padding={0} borderTopRadius={8}>
                 <VStack justifyItems="flex-start" alignItems="flex-start">
+                    {isNew && (
+                        <Float placement="top-end" marginRight={10} marginTop={6} colorPalette="yellow">
+                            <Badge>
+                                <LuSparkles />
+                                New
+                            </Badge>
+                        </Float>
+                    )}
                     <Image src={coverPhoto.url} alt="Cover Photo" aspectRatio={16 / 9} objectFit="cover" width="full" borderTopRadius={8} />
                     <HStack>
                         <Image

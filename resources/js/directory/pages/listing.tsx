@@ -1,6 +1,8 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, router } from '@inertiajs/react';
+import dayjs from 'dayjs';
+import { useCallback } from 'react';
 import { LuX } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/ListingController';
 import Empty from '../../shared/components/Empty';
@@ -11,10 +13,10 @@ import EndOfListingCta from '../components/EndOfListingCta';
 import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
+import SurveyCard from '../components/transients/SurveyCard';
 import DirectoryLayout from '../layouts/DirectoryLayout';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
-import SurveyCard from '../components/transients/SurveyCard';
 
 export interface ListingPageProps extends PageProps {
     listings: PaginatedData<ListingItem>;
@@ -53,6 +55,12 @@ function ListingPage({ listings, filters }: ListingPageProps) {
             },
         );
     };
+
+    const isNew = useCallback((createdAt: string): boolean => {
+        const sevenDaysAgo = dayjs().subtract(7, 'day');
+        const createdAtDate = dayjs(createdAt).isAfter(sevenDaysAgo);
+        return createdAtDate;
+    }, []);
 
     return (
         <DirectoryLayout title="Negros Oriental Pickleball Court Directory" headerComponent={<DirectorySearchBar />}>
@@ -97,6 +105,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                                 bookingUrl={listing.bookingUrl}
                                 email={listing.email}
                                 phone={listing.phone}
+                                isNew={isNew(listing.createdAt)}
                             />
                             {index === 4 && <SurveyCard />}
                         </>
