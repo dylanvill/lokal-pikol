@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark'=> ($appearance ?? 'system') == 'dark'])>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title inertia>Free Paddle Stacking System by Lokal Pikol</title>
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap" rel="stylesheet">
+
+    <meta
+        name="description"
+        content="Free Paddle Stacking System by Lokal Pikol. Organize and manage your pickleball games efficiently." />
+    <meta
+        name="keywords"
+        content="pickleball, stacking system, Lokal Pikol, game management, sports organization" />
+    <meta name="author" content="Lokal Pikol" />
+
+    <meta property="og:url" content="https://stacking.lokalpikol.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Free Paddle Stacking System by Lokal Pikol" />
+    <meta
+        property="og:description"
+        content="Free Paddle Stacking System by Lokal Pikol. Organize and manage your pickleball games efficiently." />
+    <meta property="og:image" content="https://stacking.lokalpikol.com/images/og-image-v3.jpg" />
+    <meta property="og:image:secure_url" content="https://stacking.lokalpikol.com/images/og-image-v3.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:site_name" content="Free Paddle Stacking System by Lokal Pikol" />
+
+    <meta name="robots" content="index, follow" />
+    @viteReactRefresh
+    @vite(['resources/css/app.css', 'resources/js/stacking.tsx', "resources/js/stacking/pages/{$page['component']}.tsx"])
+    @inertiaHead
+</head>
+
+<body class="font-sans antialiased">
+    @inertia
+</body>
+
+</html>

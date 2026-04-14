@@ -3,6 +3,7 @@
 use App\Http\Booking\Middleware\BookingInertiaTemplateMiddleware;
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
 use App\Http\Shared\Middleware\HandleInertiaRequests;
+use App\Http\Stacking\Middleware\StackingInertiaTemplateMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -37,6 +38,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->middleware(['web', DirectoryInertiaTemplateMiddleware::class])
                 ->name('directory.')
                 ->group(base_path('routes/directory.php'));
+
+            Route::domain("stacking.{$tld}")
+                ->middleware(['web', StackingInertiaTemplateMiddleware::class])
+                ->name('stacking.')
+                ->group(base_path('routes/stacking.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
