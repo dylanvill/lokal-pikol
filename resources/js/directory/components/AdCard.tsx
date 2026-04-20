@@ -30,10 +30,10 @@ function AdCard({ id, title, description, redirectUrl, ctaLabel, photo }: AdCard
     };
 
     return (
-        <Card.Root padding={0} borderRadius={8} borderColor="blue.300" borderWidth={2} boxShadow="0px 0px 10px 0px rgba(145,182,255,0.25)">
+        <Card.Root padding={0} borderRadius={8} borderColor="blue.300" backgroundColor="blue.50" borderWidth={2} boxShadow="0px 0px 10px 0px rgba(145,182,255,0.25)">
             <Card.Header padding={0} borderTopRadius={8}>
                 <VStack justifyItems="flex-start" alignItems="flex-start">
-                    <Float placement="top-start" marginTop={4} marginLeft={6}>
+                    <Float placement="top-start" marginTop={6} marginLeft={7}>
                         <Badge colorPalette="orange" fontSize="xs" paddingX={2} paddingY={1} borderRadius={4}>
                             Ad
                         </Badge>
@@ -52,11 +52,11 @@ function AdCard({ id, title, description, redirectUrl, ctaLabel, photo }: AdCard
             <Card.Footer>
                 <Button
                     size="sm"
-                    variant="subtle"
+                    variant="solid"
                     marginTop={4}
                     fontSize="sm"
                     textAlign="right"
-                    colorPalette="gray"
+                    colorPalette="blue"
                     marginLeft="auto"
                     onClick={onCtaClicked}
                 >
