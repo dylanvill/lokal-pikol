@@ -8,12 +8,12 @@ import invoke from '@/actions/App/Http/Directory/Controllers/ListingController';
 import Empty from '../../shared/components/Empty';
 import type PaginatedData from '../../shared/models/Pagination';
 import ActiveFilters from '../components/ActiveFilters';
+import AdCard from '../components/AdCard';
 import DirectorySearchBar from '../components/DirectorySearchBar';
 import EndOfListingCta from '../components/EndOfListingCta';
 import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
-import SurveyCard from '../components/transients/SurveyCard';
 import DirectoryLayout from '../layouts/DirectoryLayout';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
@@ -107,7 +107,7 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                                 phone={listing.phone}
                                 isNew={isNew(listing.createdAt)}
                             />
-                            {index === 4 && <SurveyCard />}
+                            {index === 4 && <AdCard />}
                         </>
                     ))}
                 </SimpleGrid>
