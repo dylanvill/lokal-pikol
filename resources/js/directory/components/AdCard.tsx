@@ -1,6 +1,34 @@
 import { Badge, Button, Card, Float, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { router } from '@inertiajs/react';
+import invoke from '@/actions/App/Http/Directory/Controllers/TrackAdEventController';
+import type Photo from '../../shared/models/Photo';
 
-function AdCard() {
+interface AdCardProps {
+    id: string;
+    title: string;
+    description: string;
+    redirectUrl: string;
+    ctaLabel: string;
+    photo: Photo;
+}
+
+function AdCard({ id, title, description, redirectUrl, ctaLabel, photo }: AdCardProps) {
+    const onCtaClicked = () => {
+        router.post(
+            invoke({ ad: id }),
+            {},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                except: ['listings', 'filters'],
+            },
+        );
+
+        if (redirectUrl) {
+            window.open(redirectUrl, '_blank');
+        }
+    };
+
     return (
         <Card.Root padding={0} borderRadius={8} borderColor="blue.300" borderWidth={2} boxShadow="0px 0px 10px 0px rgba(145,182,255,0.25)">
             <Card.Header padding={0} borderTopRadius={8}>
@@ -10,27 +38,29 @@ function AdCard() {
                             Ad
                         </Badge>
                     </Float>
-                    <Image
-                        src="https://images.pexels.com/photos/31228830/pexels-photo-31228830.jpeg?_gl=1*1brzw79*_ga*NzE5NjA0MTA4LjE3NjUzMjU5MTk.*_ga_8JE65Q40S6*czE3NzY2NTAwOTgkbzQ3JGcxJHQxNzc2NjUwMTIyJGozNiRsMCRoMA.."
-                        alt="Cover Photo"
-                        aspectRatio={1}
-                        objectFit="cover"
-                        width="full"
-                        borderTopRadius={6}
-                    />
+                    <Image src={photo.url} alt="Ad Image" aspectRatio={1} objectFit="cover" width="full" borderTopRadius={6} />
                 </VStack>
             </Card.Header>
             <Card.Body paddingTop={0}>
                 <Heading size="lg" color="gray.800" marginTop={4}>
-                    Company XYZ Cafe and Pastry Shop
+                    {title}
                 </Heading>
                 <Text color="gray.600" fontSize="sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    {description}
                 </Text>
             </Card.Body>
             <Card.Footer>
-                <Button size="sm" variant="subtle" marginTop={4} fontSize="sm" textAlign="right" colorPalette="gray" marginLeft="auto">
-                    Learn More
+                <Button
+                    size="sm"
+                    variant="subtle"
+                    marginTop={4}
+                    fontSize="sm"
+                    textAlign="right"
+                    colorPalette="gray"
+                    marginLeft="auto"
+                    onClick={onCtaClicked}
+                >
+                    {ctaLabel}
                 </Button>
             </Card.Footer>
         </Card.Root>

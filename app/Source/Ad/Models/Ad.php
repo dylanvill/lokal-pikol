@@ -22,6 +22,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon $updated_at
  * 
  * @method Media getAdImage()
+ * @method Ad|null getActiveAd()
  */
 class Ad extends Model implements HasMedia
 {
@@ -41,8 +42,14 @@ class Ad extends Model implements HasMedia
             ->nonQueued();
     }
 
-    public function getAdImage(): Media
+    public function getAdImage(): Media|null
     {
         return $this->getFirstMedia(MediaTypeEnum::AD_IMAGE->value);
+    }
+
+    public static function getActiveAd(): Ad|null {
+        $instance = new static;
+
+        return $instance->newQuery()->where('is_active', true)->first();
     }
 }

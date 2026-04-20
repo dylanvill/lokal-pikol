@@ -4,10 +4,11 @@ namespace App\Http\Directory\Controllers;
 
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Directory\Requests\ListingRequest;
+use App\Http\Directory\Resources\AdResource;
 use App\Http\Directory\Resources\ListingResource;
+use App\Source\Ad\Models\Ad;
 use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Directory\Models\Listing;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
@@ -36,6 +37,8 @@ class ListingController extends Controller
             ->inRandomOrder($seed)
             ->paginate(12);
 
+        $ad = Ad::getActiveAd();;
+
         return Inertia::render('listing', [
             'listings' => Inertia::scroll(fn() => ListingResource::collection($listings)),
             'cities' => $this->getCities(),
@@ -46,6 +49,7 @@ class ListingController extends Controller
                 'courtType' => $request->courtType ?? null,
                 'numberOfCourts' => $request->numberOfCourts ?? null,
             ],
+            'ad' => empty($ad) ? null : new AdResource($ad),
         ]);
     }
 

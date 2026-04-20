@@ -15,12 +15,14 @@ import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
 import DirectoryLayout from '../layouts/DirectoryLayout';
+import type Ad from '../models/Ad';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
 
 export interface ListingPageProps extends PageProps {
     listings: PaginatedData<ListingItem>;
     filters: ListingFilters;
+    ad: Ad | null;
 }
 
 const COLUMNS_CONFIG = {
@@ -34,7 +36,7 @@ const COLUMN_GAP_CONFIG = {
     base: 4,
 };
 
-function ListingPage({ listings, filters }: ListingPageProps) {
+function ListingPage({ listings, filters, ad }: ListingPageProps) {
     const skeletons = useSkeletons();
 
     const hasNoMoreData = listings.meta.current_page === listings.meta.last_page;
@@ -107,7 +109,14 @@ function ListingPage({ listings, filters }: ListingPageProps) {
                                 phone={listing.phone}
                                 isNew={isNew(listing.createdAt)}
                             />
-                            {index === 4 && <AdCard />}
+                            {index === 4 && ad ? <AdCard
+                                id={ad.id}
+                                title={ad.title}
+                                description={ad.description}
+                                redirectUrl={ad.redirectUrl}
+                                ctaLabel={ad.ctaLabel}
+                                photo={ad.photo}
+                            /> : null}
                         </>
                     ))}
                 </SimpleGrid>
