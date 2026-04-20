@@ -45,7 +45,7 @@ function AdCard({ id, title, description, redirectUrl, ctaLabel, photo }: AdCard
                 <Heading size="lg" color="gray.800" marginTop={4}>
                     {title}
                 </Heading>
-                <Text color="gray.600" fontSize="sm">
+                <Text color="gray.600" fontSize="sm" whiteSpace="pre-line">
                     {description}
                 </Text>
             </Card.Body>
