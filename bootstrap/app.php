@@ -52,7 +52,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withCommands([
-        __DIR__ . '/../app/Source/Directory/Commands'
+        __DIR__ . '/../app/Source/Directory/Commands',
+        __DIR__ . '/../app/Source/Ad/Commands',
     ])
     ->withEvents(discover: [
         __DIR__ . '/../app/Source/Directory/Listeners',

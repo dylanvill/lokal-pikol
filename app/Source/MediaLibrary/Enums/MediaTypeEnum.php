@@ -13,4 +13,7 @@ enum MediaTypeEnum: string
     /* --------------------------------- Listing -------------------------------- */
     case LISTING_PROFILE_PHOTO = 'listing profile photo';
     case LISTING_COVER_PHOTO = 'listing cover photo';
+
+    /* ----------------------------------- Ad ----------------------------------- */
+    case AD_IMAGE = 'ad image';
 }

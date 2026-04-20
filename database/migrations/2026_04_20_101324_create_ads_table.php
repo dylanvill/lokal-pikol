@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('title');
-            $table->text('description');
+            $table->longText('description');
             $table->string('cta_url')->nullable();
             $table->string('cta_label')->nullable();
             $table->boolean('is_active')->default(true);
