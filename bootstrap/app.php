@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Directory\Middleware\DirectoryInertiaTemplateMiddleware;
+use App\Http\Scheduling\Middleware\SchedulingInertiaTemplateMiddleware;
 use App\Http\Shared\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::domain($tld)
                 ->middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            Route::domain("scheduling.{$tld}")
+                ->middleware(['web', SchedulingInertiaTemplateMiddleware::class])
+                ->name('scheduling.')
+                ->group(base_path('routes/scheduling.php'));
 
             Route::domain("directory.{$tld}")
                 ->middleware(['web', DirectoryInertiaTemplateMiddleware::class])
