@@ -1,10 +1,12 @@
 # Lokal Pikol - Copilot Context
 
-**Last Updated:** April 13, 2026
+**Last Updated:** April 24, 2026
 
 **Major Architectural Update:** The booking/reservation system has been **abandoned**. Lokal Pikol is now exclusively a pickleball court directory for the Negros region. The project originally started as a court reservation/booking system, evolved to a directory-first model with booking as an upsell, and has now fully dropped the booking feature. The booking-related code remains in the codebase as legacy but will receive no further development.
 
-> **Evolution History:** Booking System (original) → Directory + Booking Upsell (mid-pivot) → Directory Only (current, April 2026)
+**Planned Next Phase:** A lightweight internal scheduling layer and date/time availability search — see [Availability Search](#planned-availability-search) below.
+
+> **Evolution History:** Booking System (original) → Directory + Booking Upsell (mid-pivot) → Directory Only (current, April 2026) → Directory + Availability Search (planned)
 
 ## Domain Overview
 
@@ -29,6 +31,11 @@
 - Public searchable directory with city filtering
 - Signed URL access for court owner listing updates
 - Token-based facility onboarding system
+
+### Key Features (Planned)
+- **Date/Time Availability Search** — Players can search for courts available on a specific date and time window. Only courts with internal schedule data or an API integration will appear in results. Directory-only courts remain browsable but are excluded from availability search.
+- **Lightweight Internal Scheduling** — Facility managers (admin-provisioned accounts, no self-registration) manually log reservations (name, date, start time, end time) via a simple form. Viewable as a list or calendar. No player accounts, no payments, no approval workflow.
+- **Third-Party API Integration** — Courts with their own booking systems can integrate via a webhook/API. Lokal Pikol queries their system at search time to check real-time availability.
 
 ### Key Features (Abandoned - Legacy Code)
 - ~~Reservation booking system with approval workflow~~
@@ -702,6 +709,42 @@ wayfinder/           # Global navigation utilities
   - `court_id` - Associated court with cascade delete
   - **Pattern Example:** Two records: day=2 + 18:00-22:00 & day=4 + 18:00-22:00 = Every Tue/Thu 6PM-10PM
 
+## Planned: Availability Search
+
+### Overview
+The next major feature is a date/time availability search — allowing players to find courts that are open at a specific time on a specific date. This requires Lokal Pikol to have schedule data per court, which is sourced in two ways.
+
+### Three-Tier Court Model
+
+| Tier | Description | Appears in Availability Search |
+|------|-------------|-------------------------------|
+| **1 — Internally managed** | Facility manager has an admin-provisioned Lokal Pikol account and manually logs reservations | Yes |
+| **2 — API-integrated** | Court has its own booking system; their devs expose an API/webhook that Lokal Pikol queries at search time | Yes |
+| **3 — Directory-only** | Listed in the directory but no schedule data available | No — browsable only |
+
+A court is either tier 1 or tier 2, never both. If a court has their own system, they do not use the internal scheduling tool. If their system lacks an API (or their devs decline to integrate), they remain tier 3.
+
+### Internal Scheduling Tool (Tier 1)
+- **Purpose:** Lightweight record-keeping for courts without their own booking system
+- **Who uses it:** Facility managers only — accounts are created by system admins, no self-registration
+- **What gets logged:** Reservation name, date, start time, end time
+- **UI:** Form-based entry; viewable as a list or calendar
+- **Scope:** Deliberately minimal — no player accounts, no payments, no approval workflow. Think glorified shared spreadsheet.
+
+### Third-Party API Integration (Tier 2)
+- **Trigger:** When a player searches by date/time, Lokal Pikol queries the court's API in real time
+- **Data returned:** Availability for the requested window
+- **Fallback:** If the court's API is down or unresponsive, they are excluded from that search result
+- **Setup:** Integration is negotiated per-court with their development team
+
+### Player-Facing Search
+- Player selects a date and time window (e.g., April 25, 7:00 PM – 10:00 PM)
+- Lokal Pikol checks internal schedule data (tier 1) and fires API calls (tier 2) in parallel
+- Results show courts with confirmed availability for that window
+- Tier 3 courts do not appear in search results but remain accessible via the standard directory browse
+
+---
+
 ## Project Evolution & Decision History
 
 ### Phase 1: Booking System (Original Vision)
@@ -714,11 +757,18 @@ wayfinder/           # Global navigation utilities
 - Booking system repositioned as an upsell feature for integrated courts
 - Directory served as lead generation for booking platform adoption
 
-### Phase 3: Directory Only (Current — April 2026)
+### Phase 3: Directory Only (April 2026)
 - **Booking system fully abandoned** — no further development on reservations, facility management, or related features
 - Lokal Pikol is now exclusively a free pickleball court directory for the Negros region
 - Legacy booking code remains in the codebase but is unmaintained
 - Focus is entirely on the directory experience and court listing coverage
+
+### Phase 4: Directory + Availability Search (Planned)
+- Add date/time search so players can find courts available at a specific time
+- Lightweight internal scheduling tool for facility managers (admin-provisioned accounts, manual reservation logging)
+- Third-party API integration for courts with their own booking systems
+- Three-tier court model: internally managed, API-integrated, or directory-only
+- No player accounts, payments, or approval workflows — scheduling is purely operational record-keeping
 
 ## Planned Features
 
