@@ -2,18 +2,10 @@
 
 namespace App\Source\Directory\Database\Seeders;
 
-use App\Source\Directory\Actions\CreateListing\CreateListing;
-use App\Source\Directory\Actions\CreateListing\Dtos\CreateListingData;
-use App\Source\Directory\Actions\UpdateSocialLink\UpdateSocialLink;
-use App\Source\Directory\Database\Factories\ListingFactory;
 use App\Source\Directory\Models\Listing;
-use App\Source\Shared\Enums\CityEnum;
 use App\Source\Shared\Enums\SocialLinkEnum;
-use App\Source\Shared\Models\SocialLink;
 use Exception;
 use Illuminate\Database\Seeder;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class ListingSeeder extends Seeder

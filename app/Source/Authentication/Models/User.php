@@ -36,22 +36,4 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'password' => 'hashed',
         ];
     }
-
-    /**
-     * @return Facility|Customer
-     */
-    public function getProfileAttribute()
-    {
-        return $this->role === 'facility' ? $this->facility : $this->customer;
-    }
-
-    public function isFacility(): bool
-    {
-        return $this->role === 'facility';
-    }
-
-    public function isCustomer(): bool
-    {
-        return $this->role === 'customer';
-    }
 }
