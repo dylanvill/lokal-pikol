@@ -50,6 +50,7 @@ class ListingController extends Controller
                 'numberOfCourts' => $request->numberOfCourts ?? null,
             ],
             'ad' => empty($ad) ? null : new AdResource($ad),
+            'sortBy' => $request->input('sortBy', 'default'),
         ]);
     }
 

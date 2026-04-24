@@ -8,9 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * @property string $city
- * @property string $courtType
- * @property int $numberOfCourts
+ * @property string|null $city
+ * @property string|null $courtType
+ * @property int|null $numberOfCourts
+ * @property string|null $sortBy
  */
 class ListingRequest extends FormRequest
 {
@@ -27,6 +28,7 @@ class ListingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'sortBy' => ['nullable', 'string', Rule::in(['default', 'popularity', 'newest', 'oldest'])],
             'city' => ['nullable', 'string', Rule::enum(CityEnum::class)],
             'numberOfCourts' => ['nullable', 'integer', 'min:1'],
             'courtType' => ['nullable', 'string', Rule::enum(FacilityCourtTypeEnum::class)],

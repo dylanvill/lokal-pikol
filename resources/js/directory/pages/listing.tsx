@@ -18,6 +18,7 @@ import DirectoryLayout from '../layouts/DirectoryLayout';
 import type Ad from '../models/Ad';
 import type ListingFilters from '../models/ListingFilters';
 import type ListingItem from '../models/ListingItem';
+import SortDropdown from '../components/SortDropdown';
 
 export interface ListingPageProps extends PageProps {
     listings: PaginatedData<ListingItem>;
@@ -71,6 +72,9 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
                     <ListingCta />
                 </Box>
             )}
+            <Box marginBottom={4}>
+                <SortDropdown />
+            </Box>
             {hasFilters && <ActiveFilters {...filters} onRemoveFilter={handleFilterRemove} />}
             {noMatchingCourts && (
                 <Empty
@@ -109,14 +113,16 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
                                 phone={listing.phone}
                                 isNew={isNew(listing.createdAt)}
                             />
-                            {index === 4 && ad ? <AdCard
-                                id={ad.id}
-                                title={ad.title}
-                                description={ad.description}
-                                redirectUrl={ad.redirectUrl}
-                                ctaLabel={ad.ctaLabel}
-                                photo={ad.photo}
-                            /> : null}
+                            {index === 4 && ad ? (
+                                <AdCard
+                                    id={ad.id}
+                                    title={ad.title}
+                                    description={ad.description}
+                                    redirectUrl={ad.redirectUrl}
+                                    ctaLabel={ad.ctaLabel}
+                                    photo={ad.photo}
+                                />
+                            ) : null}
                         </>
                     ))}
                 </SimpleGrid>
