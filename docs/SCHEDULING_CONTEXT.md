@@ -2,6 +2,8 @@
 
 **Created:** April 24, 2026
 
+> **Roadmap:** See [`SCHEDULING_ROADMAP.md`](./SCHEDULING_ROADMAP.md) for the full module-by-module task list.
+
 ## Why This Exists
 
 The Lokal Pikol directory is useful but static. The most valuable thing it can become is a court finder that answers "where can I play at this time, on this date?" — but that requires knowing each court's live availability.
