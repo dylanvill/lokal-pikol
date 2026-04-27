@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Shared\Enums\GuardEnum;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => env('AUTH_GUARD', GuardEnum::FACILITY->value),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -39,7 +41,11 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ]
+        ],
+        GuardEnum::FACILITY->value => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
