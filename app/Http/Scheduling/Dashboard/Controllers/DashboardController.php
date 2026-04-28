@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Scheduling\Dashboard;
+namespace App\Http\Scheduling\Dashboard\Controllers;
 
 use App\Http\Shared\Contracts\Controller;
 use Illuminate\Http\Request;

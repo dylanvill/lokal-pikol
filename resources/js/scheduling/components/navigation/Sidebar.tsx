@@ -1,8 +1,12 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuBuilding2, LuCalendarDays, LuLayoutGrid, LuTicket } from 'react-icons/lu';
-import invoke from '@/actions/App/Http/Scheduling/Dashboard/DashboardController';
+import { LuBuilding2, LuCalendarDays, LuLayoutDashboard, LuLayoutGrid, LuTicket } from 'react-icons/lu';
+import BookingsController from '@/actions/App/Http/Scheduling/Bookings/Controllers/BookingsController';
+import CalendarController from '@/actions/App/Http/Scheduling/Bookings/Controllers/CalendarController';
+import CourtsController from '@/actions/App/Http/Scheduling/Courts/Controllers/CourtsController';
+import DashboardController from '@/actions/App/Http/Scheduling/Dashboard/Controllers/DashboardController';
+import ProfileController from '@/actions/App/Http/Scheduling/Profile/Controllers/ProfileController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 
 interface NavItem {
@@ -12,10 +16,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-    { label: 'Profile', href: '/profile', icon: <LuBuilding2 /> },
-    { label: 'Courts', href: '/courts', icon: <LuLayoutGrid /> },
-    { label: 'Bookings', href: '/bookings', icon: <LuTicket /> },
-    { label: 'Calendar', href: '/calendar', icon: <LuCalendarDays /> },
+    { label: 'Dashboard', href: DashboardController.url(), icon: <LuLayoutDashboard /> },
+    { label: 'Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
+    { label: 'Courts', href: CourtsController.show.url(), icon: <LuLayoutGrid /> },
+    { label: 'Bookings', href: BookingsController.show.url(), icon: <LuTicket /> },
+    { label: 'Calendar', href: CalendarController.show.url(), icon: <LuCalendarDays /> },
 ];
 
 function Sidebar() {
@@ -33,13 +38,12 @@ function Sidebar() {
             flexDirection="column"
         >
             <Flex align="center" justify={{ base: 'center', md: 'flex-start' }} px={{ base: 0, md: 6 }} py={6}>
-                <Link href={invoke().url}>
-                    <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={10} />
-                </Link>
+                <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={10} />
             </Flex>
             <VStack as="nav" align="stretch" gap={1} px={{ base: 2, md: 4 }} flex="1">
                 {navItems.map((item) => {
-                    const isActive = url.startsWith(item.href);
+                    const itemPath = item.href.startsWith('http') ? new URL(item.href).pathname : item.href;
+                    const isActive = url.startsWith(itemPath);
                     return (
                         <ChakraLink
                             key={item.href}
