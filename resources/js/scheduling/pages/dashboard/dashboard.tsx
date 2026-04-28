@@ -1,8 +1,11 @@
 import React from 'react'
+import SchedulingLayout from '../../layouts/SchedulingLayout'
 
 function DashboardPage() {
   return (
-    <div>dashboard</div>
+    <SchedulingLayout title="Dashboard">
+      <h1>Dashboard</h1>
+    </SchedulingLayout>
   )
 }
 
