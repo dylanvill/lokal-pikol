@@ -1,5 +1,5 @@
-import { Field, Input, SimpleGrid, VStack } from '@chakra-ui/react';
-import { useState } from 'react';
+import { DatePicker, Portal, SimpleGrid, VStack } from '@chakra-ui/react';
+import { LuCalendar } from 'react-icons/lu';
 import BookingCourtCard from '../../components/booking/BookingCourtCard';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 
@@ -15,19 +15,38 @@ const dummyCourts: Court[] = [
 ];
 
 function BookingsPage() {
-    const [date, setDate] = useState('');
-
     return (
         <SchedulingLayout title="Bookings">
             <VStack align="stretch" gap={6}>
-                <Field.Root maxW="xs">
-                    <Field.Label>Date</Field.Label>
-                    <Input
-                        type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                    />
-                </Field.Root>
+                <DatePicker.Root maxW="xs">
+                    <DatePicker.Label>Date</DatePicker.Label>
+                    <DatePicker.Control>
+                        <DatePicker.Input />
+                        <DatePicker.IndicatorGroup>
+                            <DatePicker.Trigger>
+                                <LuCalendar />
+                            </DatePicker.Trigger>
+                        </DatePicker.IndicatorGroup>
+                    </DatePicker.Control>
+                    <Portal>
+                        <DatePicker.Positioner>
+                            <DatePicker.Content>
+                                <DatePicker.View view="day">
+                                    <DatePicker.Header />
+                                    <DatePicker.DayTable />
+                                </DatePicker.View>
+                                <DatePicker.View view="month">
+                                    <DatePicker.Header />
+                                    <DatePicker.MonthTable />
+                                </DatePicker.View>
+                                <DatePicker.View view="year">
+                                    <DatePicker.Header />
+                                    <DatePicker.YearTable />
+                                </DatePicker.View>
+                            </DatePicker.Content>
+                        </DatePicker.Positioner>
+                    </Portal>
+                </DatePicker.Root>
 
                 <SimpleGrid columns={{ base: 1, lg: 2 }} gap={4}>
                     {dummyCourts.map((court) => (
