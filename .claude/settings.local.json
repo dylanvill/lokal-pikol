@@ -3,7 +3,12 @@
     "allow": [
       "Bash(xargs basename *)",
       "Bash(php artisan *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(xargs cat *)",
+      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Source/Scheduling/Court/Actions/CreateCourt/CreateCourt.php)",
+      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Source/Scheduling/Court/Actions/CreateCourt/Dtos/CreateCourtData.php)",
+      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Source/Scheduling/Court/Actions/CreateReservation/CreateReservation.php)",
+      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Source/Scheduling/Court/Actions/CreateReservation/Dtos/CreateReservationData.php)"
     ]
   }
 }
