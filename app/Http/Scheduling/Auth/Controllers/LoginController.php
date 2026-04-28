@@ -3,6 +3,7 @@
 namespace App\Http\Scheduling\Auth\Controllers;
 
 use App\Http\Scheduling\Auth\Requests\LoginRequest;
+use App\Http\Scheduling\Routes;
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +21,11 @@ class LoginController extends Controller
     {
 
         $credentials = $request->only('email', 'password');
-        $credentials['role'] = GuardEnum::FACILITY->value;
 
         if (Auth::guard(GuardEnum::FACILITY->value)->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('home'));
+            return redirect()->route(Routes::getFullName(Routes::DASHBOARD));
         }
 
         return back()->withErrors([
