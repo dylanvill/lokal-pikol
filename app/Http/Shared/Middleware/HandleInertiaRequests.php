@@ -2,7 +2,11 @@
 
 namespace App\Http\Shared\Middleware;
 
+use App\Http\Shared\Enums\GuardEnum;
+use App\Source\Directory\Models\Listing;
+use App\Source\Scheduling\Facility\Models\FacilityAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -35,8 +39,35 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $tld = config('app.tld');
+        $isScheduling = $request->getHost() === "scheduling.{$tld}";
+
         $shared = [...parent::share($request), 'name' => config('app.name'), 'auth' => null];
 
+        if ($isScheduling && Auth::check(GuardEnum::FACILITY->value)) {
+            $shared = [...$shared, ...$this->handleSchedulingData($request)];
+        }
+
         return $shared;
+    }
+
+    protected function handleSchedulingData(Request $request): array
+    {
+        $user = $request->user(GuardEnum::FACILITY->value);
+        $facilityAdmin = FacilityAdmin::where('user_id', $user->id)->first();
+        $listing = Listing::where('id', $facilityAdmin->listing_id)->first();
+
+        return [
+            'facilityAdmin' => [
+                'email' => $facilityAdmin->email,
+                'firstName' => $facilityAdmin->first_name,
+                'lastName' => $facilityAdmin->last_name
+            ],
+            'facility' => [
+                'id' => $listing->uuid,
+                'name' => $listing->name,
+                'city' => $listing->city
+            ]
+        ];
     }
 }
