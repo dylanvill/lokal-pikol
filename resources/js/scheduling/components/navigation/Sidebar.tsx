@@ -2,9 +2,9 @@ import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/r
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
 import { LuBuilding2, LuCalendarDays, LuLayoutGrid, LuTicket } from 'react-icons/lu';
-import BookingsController from '@/actions/App/Http/Scheduling/Bookings/Controllers/BookingsController';
-import CalendarController from '@/actions/App/Http/Scheduling/Bookings/Controllers/CalendarController';
-import CourtsController from '@/actions/App/Http/Scheduling/Courts/Controllers/CourtsController';
+import BookingsController from '@/actions/App/Http/Scheduling/Booking/Controllers/BookingsController';
+import CalendarController from '@/actions/App/Http/Scheduling/Booking/Controllers/CalendarController';
+import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 import ProfileController from '@/actions/App/Http/Scheduling/Profile/Controllers/ProfileController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 

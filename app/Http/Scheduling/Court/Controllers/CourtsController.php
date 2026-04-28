@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Scheduling\Courts\Controllers;
+namespace App\Http\Scheduling\Court\Controllers;
 
 use App\Http\Shared\Contracts\Controller;
 use Inertia\Inertia;

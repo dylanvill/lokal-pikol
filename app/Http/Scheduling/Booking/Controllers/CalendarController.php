@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Scheduling\Bookings\Controllers;
+namespace App\Http\Scheduling\Booking\Controllers;
 
 use App\Http\Shared\Contracts\Controller;
 use Inertia\Inertia;

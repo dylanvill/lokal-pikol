@@ -2,7 +2,7 @@ import { Box, Button, Card, Flex, HStack, Text, Wrap } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuCalendarDays } from 'react-icons/lu';
-import CalendarController from '@/actions/App/Http/Scheduling/Bookings/Controllers/CalendarController';
+import CalendarController from '@/actions/App/Http/Scheduling/Booking/Controllers/CalendarController';
 
 interface TimeSlot {
     value: string;

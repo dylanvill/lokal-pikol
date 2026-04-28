@@ -12,6 +12,7 @@ class Routes
     const PROFILE = 'profile';
 
     const COURTS = 'courts';
+    const CREATE_COURT = 'courts.create';
 
     const BOOKINGS = 'bookings';
     const BOOKINGS_CREATE = 'bookings.create';

@@ -2,16 +2,16 @@ import { Button, Dialog, Field, Input, Portal } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
+import CreateCourtController from '@/actions/App/Http/Scheduling/Court/Controllers/CreateCourtController';
 
 function AddCourtModal() {
     const [open, setOpen] = useState(false);
-    const { data, setData, processing, errors, reset } = useForm({ name: '' });
+    const { data, setData, post, processing, errors, reset } = useForm({ name: '' });
 
     function handleSubmit() {
-        // TODO: wire up to POST /courts once the controller is ready
-        // post(CourtsStoreController.url(), {
-        //     onSuccess: () => { reset(); setOpen(false); },
-        // });
+        post(CreateCourtController.store.url(), {
+            onSuccess: () => { reset(); setOpen(false); },
+        });
     }
 
     function handleOpenChange(open: boolean) {
