@@ -16,8 +16,6 @@ Route::get('/login', [LoginController::class, 'show'])->name(Routes::LOGIN);
 Route::post('/login', [LoginController::class, 'login'])->name(Routes::LOGIN_POST);
 
 Route::group(['middleware' => [SchedulingAuthenticate::class . ':' . GuardEnum::FACILITY->value]], function () {
-    Route::get('/dashboard', DashboardController::class)->name(Routes::DASHBOARD);
-
     Route::get('/profile', [ProfileController::class, 'show'])->name(Routes::PROFILE);
 
     Route::get('/courts', [CourtsController::class, 'show'])->name(Routes::COURTS);

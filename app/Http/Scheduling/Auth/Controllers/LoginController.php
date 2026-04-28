@@ -25,7 +25,7 @@ class LoginController extends Controller
         if (Auth::guard(GuardEnum::FACILITY->value)->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route(Routes::getFullName(Routes::DASHBOARD));
+            return redirect()->route(Routes::getFullName(Routes::COURTS));
         }
 
         return back()->withErrors([

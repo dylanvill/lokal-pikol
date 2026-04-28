@@ -9,8 +9,6 @@ class Routes
     const LOGIN = 'login';
     const LOGIN_POST = 'login.post';
 
-    const DASHBOARD = 'dashboard';
-
     const PROFILE = 'profile';
 
     const COURTS = 'courts';
