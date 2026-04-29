@@ -1,5 +1,6 @@
 import { Badge, Button, Dialog, Field, Input, Portal, Stack, Text, Wrap } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
+import slotsToTimeRange, { areSlotsContiguous } from './helpers/slotsToTimeRange';
 
 interface BookCourtCardModalProps {
     open: boolean;
@@ -12,14 +13,21 @@ interface BookCourtCardModalProps {
 }
 
 function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSlots, date, onSuccess }: BookCourtCardModalProps) {
+    const { startTime, endTime } = selectedSlots.length > 0
+        ? slotsToTimeRange(selectedSlots)
+        : { startTime: '', endTime: '' };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         court_id: courtId,
         reservation_name: '',
-        slots: selectedSlots,
         date,
+        start_time: startTime,
+        end_time: endTime,
     });
 
     function handleSubmit() {
+        if (!areSlotsContiguous(selectedSlots)) return;
+
         post('/bookings', {
             onSuccess: () => {
                 reset();
@@ -33,6 +41,8 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
         if (!open) reset();
         onOpenChange(open);
     }
+
+    const nonContiguous = selectedSlots.length > 1 && !areSlotsContiguous(selectedSlots);
 
     return (
         <Dialog.Root open={open} onOpenChange={(e) => handleOpenChange(e.open)}>
@@ -58,6 +68,11 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
                                             </Badge>
                                         ))}
                                     </Wrap>
+                                    {nonContiguous && (
+                                        <Text fontSize="xs" color="red.500">
+                                            Selected slots must be consecutive.
+                                        </Text>
+                                    )}
                                 </Stack>
 
                                 <Field.Root invalid={!!errors.reservation_name}>
@@ -81,7 +96,7 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
                             </Dialog.ActionTrigger>
                             <Button
                                 colorPalette="blue"
-                                disabled={!data.reservation_name.trim() || processing}
+                                disabled={!data.reservation_name.trim() || processing || nonContiguous}
                                 loading={processing}
                                 onClick={handleSubmit}
                             >
