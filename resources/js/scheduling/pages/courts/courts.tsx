@@ -1,11 +1,11 @@
-import { Box, DatePicker, type DateValue, HStack, parseDate, Portal, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Box, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
 import { router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { LuCalendar } from 'react-icons/lu';
 import { show } from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 import AddCourtModal from '../../components/court/AddCourtModal';
 import CourtCard from '../../components/court/CourtCard';
+import CourtPageDatePicker, { type ValueChangeDetails } from '../../components/court/CourtPageDatePicker';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type Court from '../../models/Court';
 import { type DateString } from '../../types/DateTime';
@@ -20,10 +20,11 @@ function CourtsPage() {
     const { courts, date } = usePage<CourtsPageProps>().props;
 
     const dateString = useMemo(() => dayjs(date).format('YYYY-MM-DD'), [date]);
+    const dateDisplay = useMemo(() => dayjs(date).format('dddd, MMMM DD, YYYY'), [date]);
 
-    function handleDateChange(date: DateValue) {
+    function handleDateChange(details: ValueChangeDetails) {
         router.get(show(), {
-            date: date.toString(),
+            date: details.value[0].toString(),
         });
     }
 
@@ -32,36 +33,8 @@ function CourtsPage() {
             <VStack align="stretch" gap={6}>
                 <HStack justify="space-between" align="center">
                     <Box>
-                        <DatePicker.Root value={[parseDate(date)]} onValueChange={(e) => e.value[0] && handleDateChange(e.value[0])}>
-                            <DatePicker.Control>
-                                <DatePicker.Input />
-                                <DatePicker.IndicatorGroup>
-                                    <DatePicker.Trigger>
-                                        <LuCalendar />
-                                    </DatePicker.Trigger>
-                                </DatePicker.IndicatorGroup>
-                            </DatePicker.Control>
-                            <Portal>
-                                <DatePicker.Positioner>
-                                    <DatePicker.Content>
-                                        <DatePicker.View view="day">
-                                            <DatePicker.Header />
-                                            <DatePicker.DayTable />
-                                        </DatePicker.View>
-                                        <DatePicker.View view="month">
-                                            <DatePicker.Header />
-                                            <DatePicker.MonthTable />
-                                        </DatePicker.View>
-                                        <DatePicker.View view="year">
-                                            <DatePicker.Header />
-                                            <DatePicker.YearTable />
-                                        </DatePicker.View>
-                                    </DatePicker.Content>
-                                </DatePicker.Positioner>
-                            </Portal>
-                        </DatePicker.Root>
+                        <CourtPageDatePicker date={date} dateDisplay={dateDisplay} onValueChange={handleDateChange} />
                     </Box>
-
                     <AddCourtModal />
                 </HStack>
 
