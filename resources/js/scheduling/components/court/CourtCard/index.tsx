@@ -1,25 +1,18 @@
 import { Badge, Button, Card, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useState } from 'react';
+import type CourtSlot from '../../../models/CourtSlot';
+import { type DateString } from '../../../types/DateTime';
+import { type UuidString } from '../../../types/String';
 import CheckboxSlotCard from '../../shared/CheckboxSlotCard';
 import BookCourtCardModal from './BookCourtCardModal';
-
-interface Slot {
-    value: string;
-    booked: boolean;
-}
-
 interface CourtCardProps {
-    id: number;
+    id: UuidString;
     name: string;
-    date?: Date;
-    slots: Slot[];
+    date?: DateString;
+    slots: CourtSlot[];
 }
 
-function formatDate(date: Date): string {
-    return date.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-}
-
-function CourtCard({ id, name, date = new Date(), slots }: CourtCardProps) {
+function CourtCard({ id, name, date, slots }: CourtCardProps) {
     const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -37,16 +30,18 @@ function CourtCard({ id, name, date = new Date(), slots }: CourtCardProps) {
                 <Card.Body gap={3}>
                     <HStack justify="space-between" align="flex-start">
                         <Card.Title fontSize="md">{name}</Card.Title>
-                        <Badge colorPalette="green" size="sm">Active</Badge>
+                        <Badge colorPalette="green" size="sm">
+                            Active
+                        </Badge>
                     </HStack>
                     <SimpleGrid columns={3} gap={2}>
                         {slots.map((slot) => (
                             <CheckboxSlotCard
-                                key={slot.value}
-                                label={slot.value}
-                                checked={selectedSlots.includes(slot.value)}
-                                onCheckedChange={(checked) => toggleSlot(slot.value, checked)}
-                                disabled={slot.booked}
+                                key={slot.slot}
+                                label={slot.display}
+                                checked={selectedSlots.includes(slot.slot)}
+                                onCheckedChange={(checked) => toggleSlot(slot.slot, checked)}
+                                disabled={!slot.isAvailable}
                             />
                         ))}
                     </SimpleGrid>
@@ -64,7 +59,7 @@ function CourtCard({ id, name, date = new Date(), slots }: CourtCardProps) {
                 )}
             </Card.Root>
 
-            <BookCourtCardModal
+            {/* <BookCourtCardModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
                 courtId={id}
@@ -72,7 +67,7 @@ function CourtCard({ id, name, date = new Date(), slots }: CourtCardProps) {
                 selectedSlots={selectedSlots}
                 date={formatDate(date)}
                 onSuccess={handleReserveSuccess}
-            />
+            /> */}
         </>
     );
 }

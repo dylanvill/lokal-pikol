@@ -5,6 +5,9 @@ namespace App\Http\Scheduling\Court\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Undocumented class
+ */
 class CourtSlotResource extends JsonResource
 {
     /**
@@ -15,9 +18,9 @@ class CourtSlotResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'slot' => $this['slot'],
-            'display' => $this['display'],
-            'isAvailable' => $this['isAvailable']
+            'slot' => $this->slot,
+            'display' => $this->display,
+            'isAvailable' => $this->isAvailable
         ];
     }
 }
