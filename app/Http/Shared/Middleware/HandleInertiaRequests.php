@@ -2,6 +2,8 @@
 
 namespace App\Http\Shared\Middleware;
 
+use App\Http\Scheduling\Auth\Resources\FacilityAdminAuthResource;
+use App\Http\Scheduling\Auth\Resources\ListingAuthResource;
 use App\Http\Shared\Enums\GuardEnum;
 use App\Source\Directory\Models\Listing;
 use App\Source\Scheduling\Facility\Models\FacilityAdmin;
@@ -58,16 +60,8 @@ class HandleInertiaRequests extends Middleware
         $listing = Listing::where('id', $facilityAdmin->listing_id)->first();
 
         return [
-            'facilityAdmin' => [
-                'email' => $facilityAdmin->email,
-                'firstName' => $facilityAdmin->first_name,
-                'lastName' => $facilityAdmin->last_name
-            ],
-            'facility' => [
-                'id' => $listing->uuid,
-                'name' => $listing->name,
-                'city' => $listing->city
-            ]
+            'facilityAdmin' => new FacilityAdminAuthResource($facilityAdmin),
+            'facility' => new ListingAuthResource($listing)
         ];
     }
 }
