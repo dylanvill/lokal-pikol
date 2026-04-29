@@ -13,6 +13,7 @@ class Routes
 
     const COURTS = 'courts';
     const CREATE_COURT = 'courts.create';
+    const RESERVE_COURT = 'courts.reserve';
 
     const BOOKINGS = 'bookings';
     const BOOKINGS_CREATE = 'bookings.create';

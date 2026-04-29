@@ -1,34 +1,42 @@
 import { Badge, Button, Dialog, Field, Input, Portal, Stack, Text, Wrap } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
+import { reserve } from '@/actions/App/Http/Scheduling/Court/Controllers/ReserveCourtController';
+import type Court from '../../../models/Court';
+import type CourtSlot from '../../../models/CourtSlot';
+import { type DateString } from '../../../types/DateTime';
 import slotsToTimeRange, { areSlotsContiguous } from './helpers/slotsToTimeRange';
 
-interface BookCourtCardModalProps {
+interface ReserveCourtCardModalProps {
+    court: Omit<Court, 'createdAt'>;
+    selectedSlots: CourtSlot[];
+    date?: DateString;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    courtId: number;
-    courtName: string;
-    selectedSlots: string[];
-    date: string;
     onSuccess: () => void;
 }
 
-function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSlots, date, onSuccess }: BookCourtCardModalProps) {
-    const { startTime, endTime } = selectedSlots.length > 0
-        ? slotsToTimeRange(selectedSlots)
-        : { startTime: '', endTime: '' };
+function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date, onSuccess }: ReserveCourtCardModalProps) {
+    const slotValues = selectedSlots.map((s) => s.slot);
+    const { startTime, endTime } = slotValues.length > 0 ? slotsToTimeRange(slotValues) : { startTime: '', endTime: '' };
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        court_id: courtId,
-        reservation_name: '',
+    const { data, setData, post, processing, errors, reset, transform } = useForm({
+        courtId: court.id,
+        reservationName: '',
         date,
-        start_time: startTime,
-        end_time: endTime,
+        startTime: startTime,
+        endTime: endTime,
     });
 
     function handleSubmit() {
-        if (!areSlotsContiguous(selectedSlots)) return;
+        if (!areSlotsContiguous(slotValues)) return;
 
-        post('/bookings', {
+        transform((data) => ({
+            ...data,
+            startTime: startTime,
+            endTime: endTime,
+        }));
+
+        post(reserve(court.id).url, {
             onSuccess: () => {
                 reset();
                 onSuccess();
@@ -42,7 +50,7 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
         onOpenChange(open);
     }
 
-    const nonContiguous = selectedSlots.length > 1 && !areSlotsContiguous(selectedSlots);
+    const nonContiguous = slotValues.length > 1 && !areSlotsContiguous(slotValues);
 
     return (
         <Dialog.Root open={open} onOpenChange={(e) => handleOpenChange(e.open)}>
@@ -52,19 +60,23 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
                     <Dialog.Content>
                         <Dialog.Header>
                             <Stack gap={0.5}>
-                                <Dialog.Title>{courtName}</Dialog.Title>
-                                <Text fontSize="sm" color="gray.500" fontWeight="normal">{date}</Text>
+                                <Dialog.Title>{court.name}</Dialog.Title>
+                                <Text fontSize="sm" color="gray.500" fontWeight="normal">
+                                    {date}
+                                </Text>
                             </Stack>
                         </Dialog.Header>
 
                         <Dialog.Body>
                             <Stack gap={4}>
                                 <Stack gap={2}>
-                                    <Text fontSize="sm" fontWeight="medium">Selected slots</Text>
+                                    <Text fontSize="sm" fontWeight="medium">
+                                        Selected slots
+                                    </Text>
                                     <Wrap gap={2}>
                                         {selectedSlots.map((slot) => (
-                                            <Badge key={slot} variant="outline" colorPalette="blue" size="sm">
-                                                {slot}
+                                            <Badge key={slot.slot} variant="outline" colorPalette="blue" size="sm">
+                                                {slot.display}
                                             </Badge>
                                         ))}
                                     </Wrap>
@@ -75,17 +87,15 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
                                     )}
                                 </Stack>
 
-                                <Field.Root invalid={!!errors.reservation_name}>
+                                <Field.Root invalid={!!errors.reservationName}>
                                     <Field.Label>Reservation name</Field.Label>
                                     <Input
                                         placeholder="e.g. John Smith"
-                                        value={data.reservation_name}
-                                        onChange={(e) => setData('reservation_name', e.target.value)}
+                                        value={data.reservationName}
+                                        onChange={(e) => setData('reservationName', e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                                     />
-                                    {errors.reservation_name && (
-                                        <Field.ErrorText>{errors.reservation_name}</Field.ErrorText>
-                                    )}
+                                    {errors.reservationName && <Field.ErrorText>{errors.reservationName}</Field.ErrorText>}
                                 </Field.Root>
                             </Stack>
                         </Dialog.Body>
@@ -96,7 +106,7 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
                             </Dialog.ActionTrigger>
                             <Button
                                 colorPalette="blue"
-                                disabled={!data.reservation_name.trim() || processing || nonContiguous}
+                                disabled={!data.reservationName.trim() || processing || nonContiguous}
                                 loading={processing}
                                 onClick={handleSubmit}
                             >
@@ -111,4 +121,4 @@ function BookCourtCardModal({ open, onOpenChange, courtId, courtName, selectedSl
     );
 }
 
-export default BookCourtCardModal;
+export default ReserveCourtCardModal;

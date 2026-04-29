@@ -4,7 +4,8 @@ import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
 import { type UuidString } from '../../../types/String';
 import CheckboxSlotCard from '../../shared/CheckboxSlotCard';
-import BookCourtCardModal from './BookCourtCardModal';
+import ReserveCourtCardModal from './ReserveCourtCardModal';
+
 interface CourtCardProps {
     id: UuidString;
     name: string;
@@ -13,11 +14,13 @@ interface CourtCardProps {
 }
 
 function CourtCard({ id, name, date, slots }: CourtCardProps) {
-    const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
+    const [selectedSlots, setSelectedSlots] = useState<CourtSlot[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
 
-    function toggleSlot(slot: string, checked: boolean) {
-        setSelectedSlots((prev) => (checked ? [...prev, slot] : prev.filter((s) => s !== slot)));
+    function toggleSlot(toggledSlot: CourtSlot, checked: boolean) {
+        setSelectedSlots((prev) =>
+            checked ? [...prev, toggledSlot] : prev.filter((s) => s.slot !== toggledSlot.slot),
+        );
     }
 
     function handleReserveSuccess() {
@@ -39,8 +42,8 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                             <CheckboxSlotCard
                                 key={slot.slot}
                                 label={slot.display}
-                                checked={selectedSlots.includes(slot.slot)}
-                                onCheckedChange={(checked) => toggleSlot(slot.slot, checked)}
+                                checked={selectedSlots.some((s) => s.slot === slot.slot)}
+                                onCheckedChange={(checked) => toggleSlot(slot, checked)}
                                 disabled={!slot.isAvailable}
                             />
                         ))}
@@ -59,15 +62,14 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                 )}
             </Card.Root>
 
-            {/* <BookCourtCardModal
+            <ReserveCourtCardModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
-                courtId={id}
-                courtName={name}
+                court={{ id, name, slots }}
                 selectedSlots={selectedSlots}
-                date={formatDate(date)}
+                date={date}
                 onSuccess={handleReserveSuccess}
-            /> */}
+            />
         </>
     );
 }
