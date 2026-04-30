@@ -19,8 +19,7 @@ interface ReserveCourtCardModalProps {
 }
 
 function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date, onSuccess }: ReserveCourtCardModalProps) {
-    const slotValues = selectedSlots.map((s) => s.slot);
-    const { startTime, endTime } = slotValues.length > 0 ? slotsToTimeRange(slotValues) : { startTime: '', endTime: '' };
+    const { startTime, endTime } = selectedSlots.length > 0 ? slotsToTimeRange(selectedSlots) : { startTime: '', endTime: '' };
 
     const { data, setData, post, processing, errors, reset, transform } = useForm({
         courtId: court.id,
@@ -33,7 +32,7 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
     const dateDisplay = dayjs(date).format('dddd MMM DD, YYYY');
 
     function handleSubmit() {
-        if (!areSlotsContiguous(slotValues)) return;
+        if (!areSlotsContiguous(selectedSlots)) return;
 
         transform((data) => ({
             ...data,
@@ -62,7 +61,7 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
         onOpenChange(open);
     }
 
-    const nonContiguous = slotValues.length > 1 && !areSlotsContiguous(slotValues);
+    const nonContiguous = selectedSlots.length > 1 && !areSlotsContiguous(selectedSlots);
 
     return (
         <Dialog.Root open={open} onOpenChange={(e) => handleOpenChange(e.open)}>
