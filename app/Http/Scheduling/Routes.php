@@ -15,6 +15,9 @@ class Routes
     const CREATE_COURT = 'courts.create';
     const RESERVE_COURT = 'courts.reserve';
 
+    const BLOCK_RESERVATION = 'reservations.block-reservation';
+    const CREATE_BLOCK_RESERVATION = 'reservations.create-block-reservation';
+
     const BOOKINGS = 'bookings';
     const BOOKINGS_CREATE = 'bookings.create';
 

@@ -11,7 +11,8 @@
       "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Source/Scheduling/Court/Actions/CreateReservation/Dtos/CreateReservationData.php)",
       "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Http/Scheduling/Court/Controllers/CreateCourtController.php)",
       "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Http/Scheduling/Court/Requests/CreateCourtRequest.php)",
-      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Http/Scheduling/Court/Resources/CourtResource.php)"
+      "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Http/Scheduling/Court/Resources/CourtResource.php)",
+      "Bash(xargs ls *)"
     ]
   }
 }
