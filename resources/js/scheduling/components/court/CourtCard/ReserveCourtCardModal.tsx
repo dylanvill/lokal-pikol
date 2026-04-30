@@ -1,6 +1,9 @@
 import { Badge, Button, Dialog, Field, Input, Portal, Stack, Text, Wrap } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { reserve } from '@/actions/App/Http/Scheduling/Court/Controllers/ReserveCourtController';
+import { toaster } from '../../../../shared/components/ui/toaster';
+import militaryTimeToAmPmTime from '../../../../shared/helpers/militaryTimeToAmPmTime';
 import type Court from '../../../models/Court';
 import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
@@ -27,6 +30,8 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
         endTime: endTime,
     });
 
+    const dateDisplay = dayjs(date).format('dddd MMM DD, YYYY');
+
     function handleSubmit() {
         if (!areSlotsContiguous(slotValues)) return;
 
@@ -38,6 +43,13 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
 
         post(reserve(court.id).url, {
             onSuccess: () => {
+                const formattedStartTime = militaryTimeToAmPmTime(startTime);
+                const formattedEndTime = militaryTimeToAmPmTime(endTime);
+                toaster.create({
+                    title: `Reservation for ${data.reservationName} on ${dateDisplay} ${formattedStartTime} - ${formattedEndTime} has been created successfully.`,
+                    type: 'success',
+                    duration: 5000
+                });
                 reset();
                 onSuccess();
                 onOpenChange(false);
@@ -60,10 +72,12 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
                     <Dialog.Content>
                         <Dialog.Header>
                             <Stack gap={0.5}>
-                                <Dialog.Title>{court.name}</Dialog.Title>
                                 <Text fontSize="sm" color="gray.500" fontWeight="normal">
-                                    {date}
+                                    Creating reservation for:
                                 </Text>
+                                <Dialog.Title>
+                                    {court.name} on {dateDisplay}
+                                </Dialog.Title>
                             </Stack>
                         </Dialog.Header>
 

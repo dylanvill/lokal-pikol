@@ -3,6 +3,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import { Provider } from '@/shared/components/ui/provider';
+import { Toaster } from './shared/components/ui/toaster';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Lokal Pikol';
 
@@ -15,6 +16,7 @@ createInertiaApp({
         root.render(
             <Provider>
                 <App {...props} />
+                <Toaster />
             </Provider>,
         );
     },

@@ -15,10 +15,17 @@ function CheckboxSlotCard({ label, checked, onCheckedChange, disabled }: Checkbo
             disabled={disabled}
             size="sm"
             variant="solid"
+            {...(disabled
+                ? {
+                      backgroundColor: 'red.100',
+                  }
+                : { cursor: 'pointer' })}
         >
             <CheckboxCard.HiddenInput />
             <CheckboxCard.Control>
-                <CheckboxCard.Label fontSize="xs" fontWeight="bold">{label}</CheckboxCard.Label>
+                <CheckboxCard.Label fontSize="xs" fontWeight="bold">
+                    {label}
+                </CheckboxCard.Label>
             </CheckboxCard.Control>
         </CheckboxCard.Root>
     );
