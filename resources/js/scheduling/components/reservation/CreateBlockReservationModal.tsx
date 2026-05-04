@@ -1,185 +1,166 @@
-import { Button, Dialog, Field, Input, Portal, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Button, Dialog, Field, Input, NativeSelect, Portal, RadioCard, SimpleGrid, Stack, Text, Wrap } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
-import { store } from '@/actions/App/Http/Scheduling/Reservation/Controllers/CreateBlockReservationController';
+import { useState } from 'react';
+import { LuPlus } from 'react-icons/lu';
+import CreateBlockReservationController from '@/actions/App/Http/Scheduling/Reservation/Controllers/CreateBlockReservationController';
 import { toaster } from '../../../shared/components/ui/toaster';
-import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
-import type BlockReservation from '../../models/BlockReservation';
 import type Court from '../../models/Court';
 import type CourtSlot from '../../models/CourtSlot';
-import { type UuidString } from '../../types/String';
 import slotsToTimeRange, { areSlotsContiguous } from '../court/CourtCard/helpers/slotsToTimeRange';
 import CheckboxSlotCard from '../shared/CheckboxSlotCard';
 
-const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 interface CreateBlockReservationModalProps {
     courts: Court[];
-    slots: CourtSlot[];
-    blockReservations: BlockReservation[];
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
 }
 
-function CreateBlockReservationModal({ courts, slots, blockReservations, open, onOpenChange }: CreateBlockReservationModalProps) {
-    const [selectedCourt, setSelectedCourt] = useState<UuidString | null>(null);
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+function CreateBlockReservationModal({ courts }: CreateBlockReservationModalProps) {
+    const [open, setOpen] = useState(false);
     const [selectedSlots, setSelectedSlots] = useState<CourtSlot[]>([]);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        courtId: '',
+    const { data, setData, post, processing, errors, reset, transform } = useForm({
+        courtId: courts[0]?.id ?? '',
         name: '',
         dayOfTheWeek: '',
         startTime: '',
         endTime: '',
     });
 
-    useEffect(() => {
-        setSelectedSlots([]);
-    }, [selectedCourt, selectedDay]);
+    const slots = courts.find((c) => c.id === data.courtId)?.slots ?? [];
+    const nonContiguous = selectedSlots.length > 1 && !areSlotsContiguous(selectedSlots);
 
-    const blockedSlots = useMemo(() => {
-        if (!selectedCourt || !selectedDay) return new Set<string>();
-
-        const blocked = new Set<string>();
-        blockReservations
-            .filter((br) => br.courtId === selectedCourt && br.dayOfTheWeek === selectedDay)
-            .forEach((br) => br.blockedSlots.forEach((slot) => blocked.add(slot.slot)));
-
-        return blocked;
-    }, [selectedCourt, selectedDay, blockReservations]);
-
-    function handleCourtToggle(courtId: UuidString) {
-        const next = selectedCourt === courtId ? null : courtId;
-        setSelectedCourt(next);
-        setData('courtId', next ?? '');
-    }
-
-    function handleDayToggle(day: string) {
-        const next = selectedDay === day ? null : day;
-        setSelectedDay(next);
-        setData('dayOfTheWeek', next ?? '');
-    }
-
-    function handleSlotToggle(slot: CourtSlot, checked: boolean) {
+    function toggleSlot(slot: CourtSlot, checked: boolean) {
         setSelectedSlots((prev) => (checked ? [...prev, slot] : prev.filter((s) => s.slot !== slot.slot)));
     }
 
+    function handleDayChange(day: string) {
+        setData('dayOfTheWeek', day);
+        setSelectedSlots([]);
+    }
+
     function handleSubmit() {
-        if (selectedSlots.length === 0 || !areSlotsContiguous(selectedSlots)) return;
+        if (!data.dayOfTheWeek || selectedSlots.length === 0 || nonContiguous) return;
 
         const { startTime, endTime } = slotsToTimeRange(selectedSlots);
 
-        post(store().url, {
+        transform((formData) => ({ ...formData, startTime, endTime }));
+
+        post(CreateBlockReservationController.store.url(), {
             onSuccess: () => {
-                const start = militaryTimeToAmPmTime(startTime);
-                const end = militaryTimeToAmPmTime(endTime);
                 toaster.create({
-                    title: `Block reservation "${data.name}" created for ${selectedDay} ${start} – ${end}.`,
+                    title: `Block reservation "${data.name}" saved for every ${data.dayOfTheWeek}.`,
                     type: 'success',
-                    duration: 5000,
+                    duration: 4000,
                 });
-                handleClose(false);
+                reset();
+                setSelectedSlots([]);
+                setOpen(false);
             },
         });
     }
 
-    function handleClose(nextOpen: boolean) {
-        if (!nextOpen) {
+    function handleOpenChange(isOpen: boolean) {
+        if (!isOpen) {
             reset();
-            setSelectedCourt(null);
-            setSelectedDay(null);
             setSelectedSlots([]);
         }
-        onOpenChange(nextOpen);
+        setOpen(isOpen);
     }
 
-    const nonContiguous = selectedSlots.length > 1 && !areSlotsContiguous(selectedSlots);
-    const canSubmit = data.courtId && data.dayOfTheWeek && data.name.trim() && selectedSlots.length > 0 && !nonContiguous;
-
     return (
-        <Dialog.Root open={open} onOpenChange={(e) => handleClose(e.open)}>
+        <Dialog.Root open={open} onOpenChange={(e) => handleOpenChange(e.open)}>
+            <Dialog.Trigger asChild>
+                <Button colorPalette="blue" size="sm">
+                    <LuPlus />
+                    Add block reservation
+                </Button>
+            </Dialog.Trigger>
             <Portal>
                 <Dialog.Backdrop />
                 <Dialog.Positioner>
-                    <Dialog.Content maxW="xl">
+                    <Dialog.Content maxW="2xl">
                         <Dialog.Header>
                             <Dialog.Title>Add block reservation</Dialog.Title>
                         </Dialog.Header>
 
                         <Dialog.Body>
-                            <Stack gap={5}>
-                                <Stack gap={2}>
-                                    <Text fontSize="sm" fontWeight="medium">
-                                        Court
-                                    </Text>
-                                    <SimpleGrid columns={3} gap={2}>
-                                        {courts.map((court) => (
-                                            <CheckboxSlotCard
-                                                key={court.id}
-                                                label={court.name}
-                                                checked={selectedCourt === court.id}
-                                                onCheckedChange={() => handleCourtToggle(court.id)}
-                                            />
-                                        ))}
-                                    </SimpleGrid>
-                                </Stack>
+                            <Stack gap={6}>
+                                <RadioCard.Root
+                                    value={data.dayOfTheWeek}
+                                    onValueChange={(e) => e.value && handleDayChange(e.value)}
+                                    colorPalette="blue"
+                                    size="sm"
+                                >
+                                    <Field.Root>
+                                        <Field.Label>Day of the week</Field.Label>
+                                        <Wrap gap={2} mt={1}>
+                                            {DAYS.map((day) => (
+                                                <RadioCard.Item key={day} value={day}>
+                                                    <RadioCard.ItemHiddenInput />
+                                                    <RadioCard.ItemControl>
+                                                        <RadioCard.ItemText>{day}</RadioCard.ItemText>
+                                                        <RadioCard.ItemIndicator />
+                                                    </RadioCard.ItemControl>
+                                                </RadioCard.Item>
+                                            ))}
+                                        </Wrap>
+                                    </Field.Root>
+                                </RadioCard.Root>
 
-                                <Stack gap={2}>
-                                    <Text fontSize="sm" fontWeight="medium">
-                                        Day
-                                    </Text>
-                                    <SimpleGrid columns={4} gap={2}>
-                                        {DAYS_OF_WEEK.map((day) => (
-                                            <CheckboxSlotCard
-                                                key={day}
-                                                label={day.slice(0, 3)}
-                                                checked={selectedDay === day}
-                                                onCheckedChange={() => handleDayToggle(day)}
-                                            />
-                                        ))}
-                                    </SimpleGrid>
-                                </Stack>
+                                {data.dayOfTheWeek && (
+                                    <>
+                                        {courts.length > 1 && (
+                                            <Field.Root>
+                                                <Field.Label>Court</Field.Label>
+                                                <NativeSelect.Root>
+                                                    <NativeSelect.Field
+                                                        value={data.courtId}
+                                                        onChange={(e) => setData('courtId', e.target.value)}
+                                                    >
+                                                        {courts.map((court) => (
+                                                            <option key={court.id} value={court.id}>
+                                                                {court.name}
+                                                            </option>
+                                                        ))}
+                                                    </NativeSelect.Field>
+                                                    <NativeSelect.Indicator />
+                                                </NativeSelect.Root>
+                                            </Field.Root>
+                                        )}
 
-                                {selectedCourt && selectedDay && (
-                                    <Stack gap={2}>
-                                        <Text fontSize="sm" fontWeight="medium">
-                                            Time slots
-                                        </Text>
-                                        <SimpleGrid columns={3} gap={2}>
-                                            {slots.map((slot) => {
-                                                const isBlocked = blockedSlots.has(slot.slot);
-                                                return (
+                                        <Field.Root invalid={!!errors.name}>
+                                            <Field.Label>Name</Field.Label>
+                                            <Input
+                                                placeholder="e.g. Training session, League match"
+                                                value={data.name}
+                                                onChange={(e) => setData('name', e.target.value)}
+                                            />
+                                            {errors.name && <Field.ErrorText>{errors.name}</Field.ErrorText>}
+                                        </Field.Root>
+
+                                        <Field.Root>
+                                            <Field.Label>Time slots</Field.Label>
+                                            {nonContiguous && (
+                                                <Text fontSize="xs" color="red.500" mb={1}>
+                                                    Selected slots must be consecutive.
+                                                </Text>
+                                            )}
+                                            <SimpleGrid columns={3} gap={2} mt={1}>
+                                                {slots.map((slot) => (
                                                     <CheckboxSlotCard
                                                         key={slot.slot}
-                                                        label={slot.display}
-                                                        checked={selectedSlots.some((s) => s.slot === slot.slot) || isBlocked}
-                                                        onCheckedChange={(checked) => !isBlocked && handleSlotToggle(slot, checked)}
-                                                        disabled={isBlocked}
+                                                        time={slot.display}
+                                                        label={slot.label}
+                                                        checked={selectedSlots.some((s) => s.slot === slot.slot)}
+                                                        onCheckedChange={(checked) => toggleSlot(slot, checked)}
+                                                        disabled={!slot.isAvailable}
                                                     />
-                                                );
-                                            })}
-                                        </SimpleGrid>
-                                        {nonContiguous && (
-                                            <Text fontSize="xs" color="red.500">
-                                                Selected slots must be consecutive.
-                                            </Text>
-                                        )}
-                                    </Stack>
+                                                ))}
+                                            </SimpleGrid>
+                                        </Field.Root>
+                                    </>
                                 )}
-
-                                <Field.Root invalid={!!errors.name}>
-                                    <Field.Label fontSize="sm" fontWeight="medium">
-                                        Name
-                                    </Field.Label>
-                                    <Input
-                                        placeholder="e.g. Staff training"
-                                        value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                                    />
-                                    {errors.name && <Field.ErrorText>{errors.name}</Field.ErrorText>}
-                                </Field.Root>
                             </Stack>
                         </Dialog.Body>
 
@@ -187,8 +168,19 @@ function CreateBlockReservationModal({ courts, slots, blockReservations, open, o
                             <Dialog.ActionTrigger asChild>
                                 <Button variant="outline">Cancel</Button>
                             </Dialog.ActionTrigger>
-                            <Button colorPalette="blue" disabled={!canSubmit || processing} loading={processing} onClick={handleSubmit}>
-                                Add block reservation
+                            <Button
+                                colorPalette="blue"
+                                disabled={
+                                    !data.dayOfTheWeek ||
+                                    !data.name.trim() ||
+                                    selectedSlots.length === 0 ||
+                                    nonContiguous ||
+                                    processing
+                                }
+                                loading={processing}
+                                onClick={handleSubmit}
+                            >
+                                Save
                             </Button>
                         </Dialog.Footer>
                         <Dialog.CloseTrigger />
