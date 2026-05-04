@@ -38,7 +38,7 @@ function CourtsPage() {
                     <AddCourtModal />
                 </HStack>
 
-                <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} maxW={{ sm: courts.length === 1 ? '50%' : 'full' }}>
+                <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gap={4}>
                     {courts.map((court) => (
                         <CourtCard key={court.id} id={court.id} name={court.name} slots={court.slots} date={dateString} />
                     ))}

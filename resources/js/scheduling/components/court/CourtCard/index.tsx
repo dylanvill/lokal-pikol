@@ -1,4 +1,4 @@
-import { Badge, Button, Card, HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Card, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
@@ -18,9 +18,7 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
     const [modalOpen, setModalOpen] = useState(false);
 
     function toggleSlot(toggledSlot: CourtSlot, checked: boolean) {
-        setSelectedSlots((prev) =>
-            checked ? [...prev, toggledSlot] : prev.filter((s) => s.slot !== toggledSlot.slot),
-        );
+        setSelectedSlots((prev) => (checked ? [...prev, toggledSlot] : prev.filter((s) => s.slot !== toggledSlot.slot)));
     }
 
     function handleReserveSuccess() {
@@ -28,7 +26,7 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
     }
 
     return (
-        <>
+        <Box>
             <Card.Root variant="outline" size="md">
                 <Card.Body gap={3}>
                     <HStack justify="space-between" align="flex-start">
@@ -37,7 +35,7 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                             Active
                         </Badge>
                     </HStack>
-                    <SimpleGrid columns={3} gap={2}>
+                    <SimpleGrid columns={{ sm: 2, md: 1, xl: 2 }} gap={2}>
                         {slots.map((slot) => (
                             <CheckboxSlotCard
                                 key={slot.slot}
@@ -62,7 +60,6 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                     </Card.Footer>
                 )}
             </Card.Root>
-
             <ReserveCourtCardModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
@@ -71,7 +68,7 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                 date={date}
                 onSuccess={handleReserveSuccess}
             />
-        </>
+        </Box>
     );
 }
 
