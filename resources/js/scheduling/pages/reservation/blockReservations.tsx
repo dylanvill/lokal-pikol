@@ -1,9 +1,9 @@
 import { HStack } from '@chakra-ui/react';
 import { usePage } from '@inertiajs/react';
-import CreateBlockReservationModal from '../../components/reservation/CreateBlockReservationModal';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type Court from '../../models/Court';
 import type SchedulingPageProps from '../../types/SchedulingPageProps';
+import CreateBlockReservationModal from '../../components/reservation/CreateBlockReservationModal';
 
 interface BlockReservationsPageProps extends SchedulingPageProps {
     courts: Court[];

@@ -1,15 +1,15 @@
-import { Button, Dialog, Field, Input, NativeSelect, Portal, RadioCard, SimpleGrid, Stack, Text, Wrap } from '@chakra-ui/react';
+import { Button, Dialog, Field, Input, Portal, Stack } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import CreateBlockReservationController from '@/actions/App/Http/Scheduling/Reservation/Controllers/CreateBlockReservationController';
-import { toaster } from '../../../shared/components/ui/toaster';
-import type Court from '../../models/Court';
-import type CourtSlot from '../../models/CourtSlot';
-import slotsToTimeRange, { areSlotsContiguous } from '../court/CourtCard/helpers/slotsToTimeRange';
-import CheckboxSlotCard from '../shared/CheckboxSlotCard';
-
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+import { toaster } from '../../../../shared/components/ui/toaster';
+import type Court from '../../../models/Court';
+import type CourtSlot from '../../../models/CourtSlot';
+import slotsToTimeRange, { areSlotsContiguous } from '../../court/CourtCard/helpers/slotsToTimeRange';
+import CourtSection from './CourtSection';
+import DayOfTheWeekSection from './DayOfTheWeekSection';
+import TimeSlotsSection from './TimeSlotsSection';
 
 interface CreateBlockReservationModalProps {
     courts: Court[];
@@ -86,47 +86,19 @@ function CreateBlockReservationModal({ courts }: CreateBlockReservationModalProp
 
                         <Dialog.Body>
                             <Stack gap={6}>
-                                <RadioCard.Root
+                                <DayOfTheWeekSection
                                     value={data.dayOfTheWeek}
-                                    onValueChange={(e) => e.value && handleDayChange(e.value)}
-                                    colorPalette="blue"
-                                    size="sm"
-                                >
-                                    <Field.Root>
-                                        <Field.Label>Day of the week</Field.Label>
-                                        <Wrap gap={2} mt={1}>
-                                            {DAYS.map((day) => (
-                                                <RadioCard.Item key={day} value={day}>
-                                                    <RadioCard.ItemHiddenInput />
-                                                    <RadioCard.ItemControl>
-                                                        <RadioCard.ItemText>{day}</RadioCard.ItemText>
-                                                        <RadioCard.ItemIndicator />
-                                                    </RadioCard.ItemControl>
-                                                </RadioCard.Item>
-                                            ))}
-                                        </Wrap>
-                                    </Field.Root>
-                                </RadioCard.Root>
+                                    onChange={handleDayChange}
+                                />
 
                                 {data.dayOfTheWeek && (
                                     <>
                                         {courts.length > 1 && (
-                                            <Field.Root>
-                                                <Field.Label>Court</Field.Label>
-                                                <NativeSelect.Root>
-                                                    <NativeSelect.Field
-                                                        value={data.courtId}
-                                                        onChange={(e) => setData('courtId', e.target.value)}
-                                                    >
-                                                        {courts.map((court) => (
-                                                            <option key={court.id} value={court.id}>
-                                                                {court.name}
-                                                            </option>
-                                                        ))}
-                                                    </NativeSelect.Field>
-                                                    <NativeSelect.Indicator />
-                                                </NativeSelect.Root>
-                                            </Field.Root>
+                                            <CourtSection
+                                                courts={courts}
+                                                value={data.courtId}
+                                                onChange={(courtId) => setData('courtId', courtId)}
+                                            />
                                         )}
 
                                         <Field.Root invalid={!!errors.name}>
@@ -139,26 +111,12 @@ function CreateBlockReservationModal({ courts }: CreateBlockReservationModalProp
                                             {errors.name && <Field.ErrorText>{errors.name}</Field.ErrorText>}
                                         </Field.Root>
 
-                                        <Field.Root>
-                                            <Field.Label>Time slots</Field.Label>
-                                            {nonContiguous && (
-                                                <Text fontSize="xs" color="red.500" mb={1}>
-                                                    Selected slots must be consecutive.
-                                                </Text>
-                                            )}
-                                            <SimpleGrid columns={3} gap={2} mt={1}>
-                                                {slots.map((slot) => (
-                                                    <CheckboxSlotCard
-                                                        key={slot.slot}
-                                                        time={slot.display}
-                                                        label={slot.label}
-                                                        checked={selectedSlots.some((s) => s.slot === slot.slot)}
-                                                        onCheckedChange={(checked) => toggleSlot(slot, checked)}
-                                                        disabled={!slot.isAvailable}
-                                                    />
-                                                ))}
-                                            </SimpleGrid>
-                                        </Field.Root>
+                                        <TimeSlotsSection
+                                            slots={slots}
+                                            selectedSlots={selectedSlots}
+                                            onToggle={toggleSlot}
+                                            nonContiguous={nonContiguous}
+                                        />
                                     </>
                                 )}
                             </Stack>

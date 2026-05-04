@@ -15,7 +15,9 @@
       "Bash(xargs ls *)",
       "Bash(php *)",
       "Bash(npx eslint *)",
-      "Bash(vendor/bin/pint *)"
+      "Bash(vendor/bin/pint *)",
+      "mcp__chakra-ui__get_component_example",
+      "mcp__laravel-boost__browser-logs"
     ]
   },
   "enabledMcpjsonServers": [
