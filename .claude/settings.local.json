@@ -16,5 +16,8 @@
       "Bash(php *)",
       "Bash(npx eslint *)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
 }
