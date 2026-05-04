@@ -5,17 +5,13 @@ import { store } from '@/actions/App/Http/Scheduling/Reservation/Controllers/Cre
 import { toaster } from '../../../shared/components/ui/toaster';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type BlockReservation from '../../models/BlockReservation';
+import type Court from '../../models/Court';
 import type CourtSlot from '../../models/CourtSlot';
 import { type UuidString } from '../../types/String';
 import slotsToTimeRange, { areSlotsContiguous } from '../court/CourtCard/helpers/slotsToTimeRange';
 import CheckboxSlotCard from '../shared/CheckboxSlotCard';
 
 const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-interface Court {
-    id: UuidString;
-    name: string;
-}
 
 interface CreateBlockReservationModalProps {
     courts: Court[];
@@ -48,17 +44,10 @@ function CreateBlockReservationModal({ courts, slots, blockReservations, open, o
         const blocked = new Set<string>();
         blockReservations
             .filter((br) => br.courtId === selectedCourt && br.dayOfTheWeek === selectedDay)
-            .forEach((br) => {
-                slots.forEach((slot) => {
-                    const [slotStart, slotEnd] = slot.slot.split(' - ');
-                    if (br.startTime <= slotStart && br.endTime >= slotEnd) {
-                        blocked.add(slot.slot);
-                    }
-                });
-            });
+            .forEach((br) => br.blockedSlots.forEach((slot) => blocked.add(slot.slot)));
 
         return blocked;
-    }, [selectedCourt, selectedDay, blockReservations, slots]);
+    }, [selectedCourt, selectedDay, blockReservations]);
 
     function handleCourtToggle(courtId: UuidString) {
         const next = selectedCourt === courtId ? null : courtId;

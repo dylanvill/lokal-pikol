@@ -9,7 +9,8 @@ class CourtSlot implements Arrayable
     public function __construct(
         public string $slot,
         public string $display,
-        public bool $isAvailable
+        public ?bool $isAvailable,
+        public ?string $label
     ) {}
 
     public function toArray()
@@ -17,7 +18,8 @@ class CourtSlot implements Arrayable
         return [
             "slot" => $this->slot,
             "display" => $this->display,
-            "isAvailable" => $this->isAvailable
+            "isAvailable" => $this->isAvailable,
+            "label" => $this->label
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Scheduling\Court\Controllers;
 
+use App\Http\Scheduling\Court\ApiModels\CourtApiModel;
 use App\Http\Scheduling\Court\Requests\CreateCourtRequest;
-use App\Http\Scheduling\Court\Resources\CourtResource;
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Shared\Enums\GuardEnum;
 use App\Source\Directory\Models\Listing;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CreateCourtController extends Controller
 {
-    public function store(CreateCourtRequest $request, CreateCourt $action): CourtResource
+    public function store(CreateCourtRequest $request, CreateCourt $action): CourtApiModel
     {
         $user = Auth::guard(GuardEnum::FACILITY->value)->user();
 
@@ -27,6 +27,6 @@ class CreateCourtController extends Controller
             name: $request->name,
         ));
 
-        return new CourtResource($court);
+        return CourtApiModel::fromCourtAndSlots($court, []);
     }
 }

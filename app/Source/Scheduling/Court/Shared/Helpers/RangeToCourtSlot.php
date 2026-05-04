@@ -28,6 +28,7 @@ class RangeToCourtSlot
                 slot: $current->format('H:i') . ' - ' . $next->format('H:i'),
                 display: $current->format('g:i A') . ' - ' . $next->format('g:i A'),
                 isAvailable: true,
+                label: null,
             );
 
             $current->addHour();

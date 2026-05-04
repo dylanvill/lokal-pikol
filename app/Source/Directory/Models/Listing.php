@@ -11,12 +11,37 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Source\Scheduling\Facility\Models\FacilityAdmin;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * @property int $id
+ * @property string $uuid
+ * @property string $name
+ * @property string $city
+ * @property string $address
+ * @property string $court_type
+ * @property int $number_of_courts
+ * @property string|null $email
+ * @property string|null $phone
+ * @property string|null $opening_time
+ * @property string|null $closing_time
+ * @property string|null $google_maps_url
+ * @property string|null $booking_url
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, FacilityAdmin> $facilityAdmins
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Scheduling\Court\Models\Court> $courts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Shared\Models\SocialLink> $socialLinks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ */
 class Listing extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\ListingFactory> */
@@ -34,6 +59,16 @@ class Listing extends Model implements HasMedia
         'google_maps_url',
         'booking_url',
     ];
+
+    public function facilityAdmins(): HasMany
+    {
+        return $this->hasMany(FacilityAdmin::class);
+    }
+
+    public function courts(): HasMany
+    {
+        return $this->hasMany(\App\Source\Scheduling\Court\Models\Court::class);
+    }
 
     public function socialLinks(): MorphMany
     {

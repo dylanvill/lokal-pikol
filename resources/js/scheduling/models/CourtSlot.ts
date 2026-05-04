@@ -7,7 +7,8 @@ export type SlotDisplay = string;
 interface CourtSlot {
     slot: Slot;
     display: SlotDisplay;
-    isAvailable: boolean;
+    isAvailable: boolean | null;
+    label: string | null;
 }
 
 export default CourtSlot;

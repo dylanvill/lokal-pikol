@@ -4,44 +4,32 @@ namespace App\Source\Scheduling\Court\Actions\GenerateSlots;
 
 use App\Source\Scheduling\Court\Shared\Dtos\CourtSlot;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
+// Generates plain hourly slots between two times. Does not compute availability.
 class GenerateSlots
 {
-
     /**
-     * @param string $openingTime
-     * @param string $closingTime
-     * @param Collection $reservations
-     * @return Array<CourtSlot>
+     * @return array<CourtSlot>
      */
-    public function generate(string $openingTime, string $closingTime, Collection $reservations): array
+    public function generate(string $startTime, string $endTime): array
     {
-        $current = Carbon::createFromTimeString($openingTime);
-        $closing = Carbon::createFromTimeString($closingTime);
+        $current = Carbon::createFromTimeString($startTime);
+        $end = Carbon::createFromTimeString($endTime);
 
-        if ($closing->lte($current)) {
-            $closing->addDay();
+        if ($end->lte($current)) {
+            $end->addDay();
         }
 
         $slots = [];
 
-        while ($current->lt($closing)) {
+        while ($current->lt($end)) {
             $next = $current->copy()->addHour();
-            $slot = $current->format('H:i') . ' - ' . $next->format('H:i');
-            $display = $current->format('g:i A') . ' - ' . $next->format('g:i A');
-
-            $isAvailable = $reservations->every(function ($reservation) use ($current, $next) {
-                $start = Carbon::createFromTimeString($reservation->start_time);
-                $end = Carbon::createFromTimeString($reservation->end_time);
-
-                return $start->gte($next) || $end->lte($current);
-            });
 
             $slots[] = new CourtSlot(
-                slot: $slot,
-                display: $display,
-                isAvailable: $isAvailable,
+                slot: $current->format('H:i') . ' - ' . $next->format('H:i'),
+                display: $current->format('g:i A') . ' - ' . $next->format('g:i A'),
+                isAvailable: true,
+                label: null,
             );
 
             $current->addHour();

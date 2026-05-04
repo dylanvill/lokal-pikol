@@ -1,4 +1,5 @@
 import { type UuidString } from '../types/String';
+import type CourtSlot from './CourtSlot';
 
 interface BlockReservation {
     id: UuidString;
@@ -6,8 +7,7 @@ interface BlockReservation {
     courtId: UuidString;
     courtName: string;
     dayOfTheWeek: string;
-    startTime: string;
-    endTime: string;
+    blockedSlots: CourtSlot[];
 }
 
 export default BlockReservation;

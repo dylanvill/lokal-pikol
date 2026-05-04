@@ -1,29 +1,25 @@
-import { Badge, Button, HStack, Stack, Table, Text, VStack } from '@chakra-ui/react';
+import { Badge, Button, HStack, Table, Text, VStack } from '@chakra-ui/react';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
+import slotsToTimeRange from '../../components/court/CourtCard/helpers/slotsToTimeRange';
 import CreateBlockReservationModal from '../../components/reservation/CreateBlockReservationModal';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type BlockReservation from '../../models/BlockReservation';
-import type CourtSlot from '../../models/CourtSlot';
+import type Court from '../../models/Court';
 import type SchedulingPageProps from '../../types/SchedulingPageProps';
-import { type UuidString } from '../../types/String';
-
-interface Court {
-    id: UuidString;
-    name: string;
-}
 
 interface BlockReservationsPageProps extends SchedulingPageProps {
     courts: Court[];
-    slots: CourtSlot[];
     blockReservations: BlockReservation[];
 }
 
 function BlockReservationsPage() {
-    const { courts, slots, blockReservations } = usePage<BlockReservationsPageProps>().props;
+    const { courts, blockReservations } = usePage<BlockReservationsPageProps>().props;
     const [modalOpen, setModalOpen] = useState(false);
+
+    const slots = courts[0]?.slots ?? [];
 
     return (
         <SchedulingLayout title="Block reservations">
@@ -50,20 +46,23 @@ function BlockReservationsPage() {
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {blockReservations.map((br) => (
-                                <Table.Row key={br.id}>
-                                    <Table.Cell fontWeight="medium">{br.name}</Table.Cell>
-                                    <Table.Cell>
-                                        <Badge variant="outline" colorPalette="blue" size="sm">
-                                            {br.courtName}
-                                        </Badge>
-                                    </Table.Cell>
-                                    <Table.Cell>{br.dayOfTheWeek}</Table.Cell>
-                                    <Table.Cell>
-                                        {militaryTimeToAmPmTime(br.startTime)} – {militaryTimeToAmPmTime(br.endTime)}
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
+                            {blockReservations.map((br) => {
+                                const { startTime, endTime } = slotsToTimeRange(br.blockedSlots);
+                                return (
+                                    <Table.Row key={br.id}>
+                                        <Table.Cell fontWeight="medium">{br.name}</Table.Cell>
+                                        <Table.Cell>
+                                            <Badge variant="outline" colorPalette="blue" size="sm">
+                                                {br.courtName}
+                                            </Badge>
+                                        </Table.Cell>
+                                        <Table.Cell>{br.dayOfTheWeek}</Table.Cell>
+                                        <Table.Cell>
+                                            {militaryTimeToAmPmTime(startTime)} – {militaryTimeToAmPmTime(endTime)}
+                                        </Table.Cell>
+                                    </Table.Row>
+                                );
+                            })}
                         </Table.Body>
                     </Table.Root>
                 )}
