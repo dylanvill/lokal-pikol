@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import CreateCourtController from '@/actions/App/Http/Scheduling/Court/Controllers/CreateCourtController';
+import { toaster } from '../../../shared/components/ui/toaster';
 
 function AddCourtModal() {
     const [open, setOpen] = useState(false);
@@ -10,7 +11,15 @@ function AddCourtModal() {
 
     function handleSubmit() {
         post(CreateCourtController.store.url(), {
-            onSuccess: () => { reset(); setOpen(false); },
+            onSuccess: () => {
+                toaster.create({
+                    title: `${data.name} has been added successfully.`,
+                    type: 'success',
+                    duration: 4000,
+                });
+                reset();
+                setOpen(false);
+            },
         });
     }
 
