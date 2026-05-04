@@ -41,7 +41,8 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
                         {slots.map((slot) => (
                             <CheckboxSlotCard
                                 key={slot.slot}
-                                label={slot.display}
+                                time={slot.display}
+                                label={slot.label}
                                 checked={selectedSlots.some((s) => s.slot === slot.slot)}
                                 onCheckedChange={(checked) => toggleSlot(slot, checked)}
                                 disabled={!slot.isAvailable}

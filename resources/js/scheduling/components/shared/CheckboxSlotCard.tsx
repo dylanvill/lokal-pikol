@@ -1,13 +1,14 @@
 import { CheckboxCard } from '@chakra-ui/react';
 
 interface CheckboxSlotCardProps {
-    label: string;
+    time: string;
+    label?: string;
     checked: boolean;
     onCheckedChange: (checked: boolean) => void;
     disabled?: boolean;
 }
 
-function CheckboxSlotCard({ label, checked, onCheckedChange, disabled }: CheckboxSlotCardProps) {
+function CheckboxSlotCard({ time, label, checked, onCheckedChange, disabled }: CheckboxSlotCardProps) {
     return (
         <CheckboxCard.Root
             checked={checked}
@@ -24,7 +25,7 @@ function CheckboxSlotCard({ label, checked, onCheckedChange, disabled }: Checkbo
             <CheckboxCard.HiddenInput />
             <CheckboxCard.Control>
                 <CheckboxCard.Label fontSize="xs" fontWeight="bold">
-                    {label}
+                    {time} {disabled ? `(${label})` : null}
                 </CheckboxCard.Label>
             </CheckboxCard.Control>
         </CheckboxCard.Root>
