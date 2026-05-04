@@ -2,7 +2,7 @@ import { CheckboxCard } from '@chakra-ui/react';
 
 interface CheckboxSlotCardProps {
     time: string;
-    label?: string;
+    label: string | null;
     checked: boolean;
     onCheckedChange: (checked: boolean) => void;
     disabled?: boolean;
