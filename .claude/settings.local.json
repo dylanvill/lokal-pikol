@@ -14,7 +14,8 @@
       "Bash(php -l /Volumes/Data/dev-apps/lokal-pikol/app/Http/Scheduling/Court/Resources/CourtResource.php)",
       "Bash(xargs ls *)",
       "Bash(php *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(vendor/bin/pint *)"
     ]
   },
   "enabledMcpjsonServers": [

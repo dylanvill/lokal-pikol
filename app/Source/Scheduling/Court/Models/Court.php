@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
- *
  * @property-read Listing $listing
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reservation> $reservations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, BlockReservation> $blockReservations
  */
 class Court extends Model
 {
@@ -33,5 +33,10 @@ class Court extends Model
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function blockReservations(): HasMany
+    {
+        return $this->hasMany(BlockReservation::class);
     }
 }
