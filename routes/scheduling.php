@@ -6,6 +6,7 @@ use App\Http\Scheduling\Court\Controllers\CourtsController;
 use App\Http\Scheduling\Court\Controllers\CreateBlockReservationController;
 use App\Http\Scheduling\Court\Controllers\CreateCourtController;
 use App\Http\Scheduling\Court\Controllers\ReserveCourtController;
+use App\Http\Scheduling\Court\Controllers\ShowCreateBlockReservationsController;
 use App\Http\Scheduling\Middleware\SchedulingAuthenticate;
 use App\Http\Scheduling\Profile\Controllers\ProfileController;
 use App\Http\Scheduling\Routes;
@@ -24,5 +25,6 @@ Route::group(['middleware' => [SchedulingAuthenticate::class . ':' . GuardEnum::
     Route::post('/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'reserve'])->name(Routes::RESERVE_COURT);
 
     Route::get('/reservations/block-reservation', [BlockReservationsController::class, 'show'])->name(Routes::BLOCK_RESERVATION);
+    Route::get('/reservations/block-reservation/create', [ShowCreateBlockReservationsController::class, 'show'])->name(Routes::SHOW_CREATE_BLOCK_RESERVATION);
     Route::post('/reservations/block-reservation', [CreateBlockReservationController::class, 'store'])->name(Routes::CREATE_BLOCK_RESERVATION);
 });

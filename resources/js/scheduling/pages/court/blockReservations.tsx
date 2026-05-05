@@ -1,10 +1,11 @@
-import { Button, Flex} from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
+import { Link } from '@inertiajs/react';
+import { LuPlus } from 'react-icons/lu';
 import CourtBlockReservationSection from '../../components/court/CourtBlockReservationSection';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type CourtBlockReservation from '../../models/CourtBlockReservation';
 import type SchedulingPageProps from '../../types/SchedulingPageProps';
-import { LuPlus } from 'react-icons/lu';
-import { Link } from '@inertiajs/react';
+import ShowCreateBlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/ShowCreateBlockReservationsController';
 
 interface BlockReservationsPageProps extends SchedulingPageProps {
     courts: CourtBlockReservation[];
@@ -14,7 +15,7 @@ function BlockReservationsPage({ courts }: BlockReservationsPageProps) {
     return (
         <SchedulingLayout title="Block reservations">
             <Flex justify="space-between" align="center">
-                <Link>
+                <Link href={ShowCreateBlockReservationsController.show().url}>
                     <Button colorPalette="blue" size="sm">
                         <LuPlus />
                         Create Block Booking
