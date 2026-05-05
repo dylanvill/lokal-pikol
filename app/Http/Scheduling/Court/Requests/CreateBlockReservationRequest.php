@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Scheduling\Reservation\Requests;
+namespace App\Http\Scheduling\Court\Requests;
 
 use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Foundation\Http\FormRequest;

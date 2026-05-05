@@ -2,8 +2,8 @@ import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/r
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
 import { LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import BlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/BlockReservationsController';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
-import BlockReservationsController from '@/actions/App/Http/Scheduling/Reservation/Controllers/BlockReservationsController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 
 interface NavItem {

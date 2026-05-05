@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Scheduling\Reservation\Controllers;
+namespace App\Http\Scheduling\Court\Controllers;
 
 use App\Http\Scheduling\Court\ApiModels\CourtBlockReservationApiModel;
 use App\Http\Shared\Contracts\Controller;
@@ -18,7 +18,7 @@ class BlockReservationsController extends Controller
         $user = Auth::guard(GuardEnum::FACILITY->value)->user();
         $courts = $user->facilityAdmin->listing->courts()->with('blockReservations')->orderBy('created_at')->get();
 
-        return Inertia::render('reservation/blockReservations', [
+        return Inertia::render('court/blockReservations', [
             'courts' => CourtBlockReservationApiModel::fromManyCourts($courts),
         ]);
     }

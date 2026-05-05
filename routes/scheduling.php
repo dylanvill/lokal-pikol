@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Scheduling\Auth\Controllers\LoginController;
+use App\Http\Scheduling\Court\Controllers\BlockReservationsController;
 use App\Http\Scheduling\Court\Controllers\CourtsController;
+use App\Http\Scheduling\Court\Controllers\CreateBlockReservationController;
 use App\Http\Scheduling\Court\Controllers\CreateCourtController;
 use App\Http\Scheduling\Court\Controllers\ReserveCourtController;
 use App\Http\Scheduling\Middleware\SchedulingAuthenticate;
 use App\Http\Scheduling\Profile\Controllers\ProfileController;
-use App\Http\Scheduling\Reservation\Controllers\BlockReservationsController;
-use App\Http\Scheduling\Reservation\Controllers\CreateBlockReservationController;
 use App\Http\Scheduling\Routes;
 use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Support\Facades\Route;

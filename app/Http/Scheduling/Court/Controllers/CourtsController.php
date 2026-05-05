@@ -24,7 +24,7 @@ class CourtsController extends Controller
 
         $courts = $listing->courts()->with(['reservations', 'blockReservations'])->get();
 
-        return Inertia::render('courts/courts', [
+        return Inertia::render('court/courts', [
             'courts' => $courts->map(fn ($court) => CourtApiModel::fromCourtAndSlots(
                 $court,
                 $generateSlots->generate($listing->opening_time, $listing->closing_time, $date, $court),

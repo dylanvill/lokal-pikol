@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Scheduling\Reservation\Controllers;
+namespace App\Http\Scheduling\Court\Controllers;
 
-use App\Http\Scheduling\Reservation\Requests\CreateBlockReservationRequest;
+use App\Http\Scheduling\Court\Requests\CreateBlockReservationRequest;
 use App\Source\Scheduling\Court\Actions\CreateBlockReservation\CreateBlockReservation;
 use App\Source\Scheduling\Court\Actions\CreateBlockReservation\Dtos\CreateBlockReservationData;
 use App\Source\Scheduling\Court\Models\Court;
