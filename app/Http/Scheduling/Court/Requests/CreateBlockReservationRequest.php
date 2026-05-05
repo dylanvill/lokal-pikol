@@ -6,6 +6,13 @@ use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property-read array<string> $courtIds
+ * @property-read string $name
+ * @property-read array<string> $daysOfTheWeek
+ * @property-read string $startTime
+ * @property-read string $endTime
+ */
 class CreateBlockReservationRequest extends FormRequest
 {
     /**
@@ -24,11 +31,13 @@ class CreateBlockReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'courtId'      => ['required', 'exists:courts,uuid'],
-            'name'         => ['required', 'string'],
-            'dayOfTheWeek' => ['required', 'string', 'in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday'],
-            'startTime'    => ['required', 'date_format:H:i'],
-            'endTime'      => ['required', 'date_format:H:i', 'after:startTime'],
+            'courtIds' => ['required', 'array'],
+            'courtIds.*' => ['required', 'exists:courts,uuid'],
+            'name' => ['required', 'string'],
+            'daysOfTheWeek' => ['required', 'array'],
+            'daysOfTheWeek.*' => ['required', 'string', 'in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday'],
+            'startTime' => ['required', 'date_format:H:i'],
+            'endTime' => ['required', 'date_format:H:i', 'after:startTime'],
         ];
     }
 }

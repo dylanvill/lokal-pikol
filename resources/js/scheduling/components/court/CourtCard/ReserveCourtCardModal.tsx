@@ -7,7 +7,8 @@ import militaryTimeToAmPmTime from '../../../../shared/helpers/militaryTimeToAmP
 import type Court from '../../../models/Court';
 import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
-import slotsToTimeRange, { areSlotsContiguous } from './helpers/slotsToTimeRange';
+import areSlotsContiguous from '../../../helpers/areSlotsContiguous';
+import courtSlotsToRange from '../../../helpers/courtSlotToRange';
 
 interface ReserveCourtCardModalProps {
     court: Omit<Court, 'createdAt'>;
@@ -19,7 +20,7 @@ interface ReserveCourtCardModalProps {
 }
 
 function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date, onSuccess }: ReserveCourtCardModalProps) {
-    const { startTime, endTime } = selectedSlots.length > 0 ? slotsToTimeRange(selectedSlots) : { startTime: '', endTime: '' };
+    const { startTime, endTime } = selectedSlots.length > 0 ? courtSlotsToRange(selectedSlots) : { startTime: '', endTime: '' };
 
     const { data, setData, post, processing, errors, reset, transform } = useForm({
         courtId: court.id,

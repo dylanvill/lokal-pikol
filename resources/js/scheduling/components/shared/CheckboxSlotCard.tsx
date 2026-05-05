@@ -26,7 +26,7 @@ function CheckboxSlotCard({ time, label, checked, onCheckedChange, disabled }: C
             <CheckboxCard.HiddenInput />
             <CheckboxCard.Control>
                 <CheckboxCard.Label fontSize="xs" fontWeight="bold">
-                    {time} {disabled ? `(${label})` : null}
+                    {time} {disabled && label ? `(${label})` : null}
                 </CheckboxCard.Label>
             </CheckboxCard.Control>
         </CheckboxCard.Root>

@@ -59,7 +59,7 @@ class BlockReservationApiModel extends Data
                         id: $reservation->uuid,
                         slots: $slots,
                     );
-                })->values()->toArray(),
+                })->values()->all(),
             );
         }, BlockReservationDaysEnum::cases());
     }

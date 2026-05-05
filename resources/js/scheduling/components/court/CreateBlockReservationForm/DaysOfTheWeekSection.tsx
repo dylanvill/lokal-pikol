@@ -1,7 +1,39 @@
-import React from 'react';
+import { CheckboxCard, CheckboxGroup, Fieldset, SimpleGrid } from '@chakra-ui/react';
+import { type CreateBlockReservationFormInterface, type DayOfTheWeek } from './types';
 
-function DaysOfTheWeekSection() {
-    return <div>DaysOfTheWeekSection</div>;
+const DAYS: DayOfTheWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+export interface DaysOfTheWeekSectionProps {
+    selectedDays: CreateBlockReservationFormInterface['days'];
+    onCheckChanged: (checked: boolean, day: DayOfTheWeek) => void;
+}
+
+function DaysOfTheWeekSection({ selectedDays, onCheckChanged }: DaysOfTheWeekSectionProps) {
+    return (
+        <Fieldset.Root>
+            <CheckboxGroup>
+                <Fieldset.Legend>Day of the week</Fieldset.Legend>
+                <SimpleGrid columns={3} gap={4} width="full">
+                    {DAYS.map((day) => (
+                        <CheckboxCard.Root
+                            key={day}
+                            value={day}
+                            checked={selectedDays.includes(day)}
+                            onCheckedChange={(details) => onCheckChanged(details.checked as boolean, day)}
+                            size="sm"
+                            colorPalette="blue"
+                            variant="solid"
+                        >
+                            <CheckboxCard.HiddenInput />
+                            <CheckboxCard.Control>
+                                <CheckboxCard.Label>{day}</CheckboxCard.Label>
+                            </CheckboxCard.Control>
+                        </CheckboxCard.Root>
+                    ))}
+                </SimpleGrid>
+            </CheckboxGroup>
+        </Fieldset.Root>
+    );
 }
 
 export default DaysOfTheWeekSection;
