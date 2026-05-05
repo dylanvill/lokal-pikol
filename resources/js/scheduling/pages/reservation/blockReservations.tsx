@@ -11,7 +11,7 @@ function BlockReservationsPage({ courts }: BlockReservationsPageProps) {
     return (
         <SchedulingLayout title="Block reservations">
             {courts.map((court) => (
-                <CourtBlockReservationSection id={court.id} name={court.name} blockedReservations={court.blockedReservations} />
+                <CourtBlockReservationSection id={court.id} name={court.name} blockReservations={court.blockReservations} />
             ))}
         </SchedulingLayout>
     );

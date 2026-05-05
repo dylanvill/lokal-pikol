@@ -1,8 +1,8 @@
 import type CourtSlot from './CourtSlot';
 
-interface BlockedReservation {
+interface BlockReservation {
     dayOfTheWeek: "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
     slots: CourtSlot[];
 }
 
-export default BlockedReservation;
+export default BlockReservation;

@@ -1,10 +1,10 @@
 import { type UuidString } from '../types/String';
-import type BlockReservation from './BlockedReservation';
+import type BlockReservation from './BlockReservation';
 
 interface CourtBlockReservation {
     id: UuidString;
     name: string;
-    blockedReservations: BlockReservation[];
+    blockReservations: BlockReservation[];
     createdAt: string;
 }
 

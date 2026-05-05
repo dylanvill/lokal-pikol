@@ -12,7 +12,7 @@ class CourtBlockReservationApiModel extends Data
         public string $id,
         public string $name,
         /** @var array<BlockReservationApiModel> */
-        public array $blockedReservations,
+        public array $blockReservations,
         public string $createdAt
     ) {}
 
@@ -21,7 +21,7 @@ class CourtBlockReservationApiModel extends Data
         return new self(
             id: $court->uuid,
             name: $court->name,
-            blockedReservations: BlockReservationApiModel::fromManyBlockReservations($court->blockReservations),
+            blockReservations: BlockReservationApiModel::fromManyBlockReservations($court->blockReservations),
             createdAt: $court->created_at,
         );
     }
