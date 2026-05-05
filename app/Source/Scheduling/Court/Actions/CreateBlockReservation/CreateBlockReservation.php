@@ -10,14 +10,14 @@ class CreateBlockReservation
 {
     public function create(CreateBlockReservationData $data): BlockReservation
     {
-        $blockReservation = new BlockReservation();
+        $blockReservation = new BlockReservation;
         $blockReservation->uuid = Str::uuid();
         $blockReservation->listing_id = $data->court->listing_id;
         $blockReservation->court_id = $data->court->id;
         $blockReservation->name = $data->name;
         $blockReservation->day_of_the_week = $data->dayOfTheWeek;
-        $blockReservation->startTime = $data->startTime;
-        $blockReservation->endTime = $data->endTime;
+        $blockReservation->start_time = $data->startTime;
+        $blockReservation->end_time = $data->endTime;
         $blockReservation->save();
 
         return $blockReservation;

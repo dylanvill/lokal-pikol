@@ -2,7 +2,7 @@
 
 namespace App\Source\Scheduling\Court\Enums;
 
-enum BlockBookingDaysEnum: string
+enum BlockReservationDaysEnum: string
 {
     case MONDAY = 'monday';
     case TUESDAY = 'tuesday';

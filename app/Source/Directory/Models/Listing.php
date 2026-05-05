@@ -2,16 +2,16 @@
 
 namespace App\Source\Directory\Models;
 
-use App\Source\Shared\Models\HasUuid;
 use App\Source\Directory\Database\Factories\ListingFactory;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
+use App\Source\Scheduling\Facility\Models\FacilityAdmin;
+use App\Source\Shared\Models\HasUuid;
 use App\Source\Shared\Models\SocialLink;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Source\Scheduling\Facility\Models\FacilityAdmin;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -36,9 +36,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, FacilityAdmin> $facilityAdmins
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Scheduling\Court\Models\Court> $courts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Scheduling\Court\Models\BlockReservation> $blockReservations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Shared\Models\SocialLink> $socialLinks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  */
@@ -68,6 +68,11 @@ class Listing extends Model implements HasMedia
     public function courts(): HasMany
     {
         return $this->hasMany(\App\Source\Scheduling\Court\Models\Court::class);
+    }
+
+    public function blockReservations(): HasMany
+    {
+        return $this->hasMany(\App\Source\Scheduling\Court\Models\BlockReservation::class);
     }
 
     public function socialLinks(): MorphMany

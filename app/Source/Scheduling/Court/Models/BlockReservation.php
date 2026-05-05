@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $court_id
  * @property string $name
  * @property string $day_of_the_week
- * @property string $startTime
- * @property string $endTime
+ * @property string $start_time
+ * @property string $end_time
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Listing $listing

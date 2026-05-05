@@ -15,6 +15,7 @@ function CheckboxSlotCard({ time, label, checked, onCheckedChange, disabled }: C
             onCheckedChange={(e) => onCheckedChange(!!e.checked)}
             disabled={disabled}
             size="sm"
+            value={time}
             variant="solid"
             {...(disabled
                 ? {

@@ -1,22 +1,18 @@
-import { HStack } from '@chakra-ui/react';
-import { usePage } from '@inertiajs/react';
+import CourtBlockReservationSection from '../../components/court/CourtBlockReservationSection';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
-import type Court from '../../models/Court';
+import type CourtBlockReservation from '../../models/CourtBlockReservation';
 import type SchedulingPageProps from '../../types/SchedulingPageProps';
-import CreateBlockReservationModal from '../../components/reservation/CreateBlockReservationModal';
 
 interface BlockReservationsPageProps extends SchedulingPageProps {
-    courts: Court[];
+    courts: CourtBlockReservation[];
 }
 
-function BlockReservationsPage() {
-    const { courts } = usePage<BlockReservationsPageProps>().props;
-
+function BlockReservationsPage({ courts }: BlockReservationsPageProps) {
     return (
         <SchedulingLayout title="Block reservations">
-            <HStack justify="flex-end">
-                <CreateBlockReservationModal courts={courts} />
-            </HStack>
+            {courts.map((court) => (
+                <CourtBlockReservationSection id={court.id} name={court.name} blockedReservations={court.blockedReservations} />
+            ))}
         </SchedulingLayout>
     );
 }

@@ -1,9 +1,8 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuBuilding2, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import { LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
-import ProfileController from '@/actions/App/Http/Scheduling/Profile/Controllers/ProfileController';
 import BlockReservationsController from '@/actions/App/Http/Scheduling/Reservation/Controllers/BlockReservationsController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 
@@ -16,7 +15,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     { label: 'Courts', href: CourtsController.show.url(), icon: <LuLayoutGrid /> },
     { label: 'Block reservations', href: BlockReservationsController.show.url(), icon: <LuCalendarX2 /> },
-    { label: 'Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
+    // { label: 'Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
 ];
 
 function Sidebar() {

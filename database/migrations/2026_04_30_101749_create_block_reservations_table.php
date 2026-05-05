@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('court_id');
             $table->string('name');
             $table->string('day_of_the_week');
-            $table->time('startTime');
-            $table->time('endTime');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
         });
     }
