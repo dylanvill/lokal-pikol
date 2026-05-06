@@ -19,8 +19,8 @@ class BlockReservationConflictResolver extends BaseSlotConflictResolver
         return $court->blockReservations
             ->where('day_of_the_week', $dayOfWeek)
             ->map(fn ($block) => new ConflictRange(
-                start: Carbon::createFromTimeString($block->startTime),
-                end: Carbon::createFromTimeString($block->endTime),
+                start: Carbon::createFromTimeString($block->start_time),
+                end: Carbon::createFromTimeString($block->end_time),
                 label: $block->name,
             ))
             ->values();
