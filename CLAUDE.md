@@ -223,3 +223,30 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 </laravel-boost-guidelines>
+
+# Project: Lokal Pikol
+
+A pickleball court directory and scheduling platform for the Negros region (Philippines).
+
+## Active Domains
+
+| Domain | Subdomain | Purpose |
+|--------|-----------|---------|
+| **Directory** | `directory.lokal-pikol.test` | Public court directory — browse and discover courts |
+| **Scheduling** | `scheduling.lokal-pikol.test` | Internal tool for facility managers to log reservations |
+| **Admin/Auth** | `lokal-pikol.test` | Admin-only routes |
+
+## Architecture
+
+- **Source layer** (`app/Source/`): Pure domain business logic — actions + DTOs + models
+- **HTTP layer** (`app/Http/`): Inertia controllers, requests, API models (Spatie Laravel Data for Scheduling)
+- **Frontend** (`resources/js/`): Domain-organised — `directory/`, `scheduling/`, `shared/`
+- Scheduling domain uses the `facility` auth guard + `FacilityAdmin` profile model linked to a `Listing`
+
+## Key Docs (load only what's relevant)
+
+- `docs/DIRECTORY_DOMAIN_CONTEXT.md` — directory product context
+- `docs/DIRECTORY_DOMAIN_ROADMAP.md` — directory feature backlog
+- `docs/SCHEDULING_DOMAIN_CONTEXT.md` — scheduling product context and all design decisions
+- `docs/SCHEDULING_DOMAIN_ROADMAP.md` — scheduling build sequence and business vision
+- `docs/SCHEDULING_DOMAIN_TODO.md` — scheduling concrete todo list (start here for scheduling work)

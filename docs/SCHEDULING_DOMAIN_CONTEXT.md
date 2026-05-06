@@ -1,0 +1,137 @@
+# Scheduling Domain — Product Context
+
+**Last Updated:** 2026-05-06  
+**Supersedes:** `SCHEDULING_CONTEXT.md` (earlier planning doc — see deviations below)
+
+## What It Is
+
+A lightweight internal scheduling tool for pickleball facility managers. They use it to log reservations manually, set recurring block schedules, view court availability, and generate shareable availability content for social media.
+
+This is a **tracking tool**, not a booking platform. No player accounts, no payments, no automated workflows. Think glorified shared spreadsheet with a calendar view.
+
+## Who Uses It
+
+| User | How they get access |
+|------|-------------------|
+| **Facility manager** | Account created by admin (developer) — no self-registration |
+| **Admin (developer)** | Provisions accounts via Artisan command: `CreateAdminForListingCommand` |
+
+Each facility manager is linked to exactly one `Listing`. They only see and manage data for their own listing.
+
+## Subdomain
+
+- **Production:** `scheduling.lokalpikol.com`
+- **Local:** `scheduling.lokal-pikol.test`
+
+## Core Concepts
+
+### Listing → Courts → Reservations
+
+A `Listing` (from the Directory domain) can have multiple `Court` entities. Each court has its own:
+- Regular reservations (a specific date + time + name)
+- Block reservations (recurring weekly schedules, e.g. "Every Tuesday 6–10pm")
+
+The slot grid (hourly slots shown on the Courts page) is bounded by the listing's `opening_time` and `closing_time`. All courts at the same listing share the same operating hours.
+
+### FacilityAdmin
+
+A `FacilityAdmin` is a profile model linking a `User` (for authentication) to a `Listing`. It stores the manager's personal details (name, email, phone). Authentication uses the `facility` guard backed by the `users` table.
+
+## Pages & Features
+
+### Courts page (`/courts?date=YYYY-MM-DD`)
+The primary working view. Shows all courts for the facility with an hourly slot grid for the selected date. Facility managers:
+- Pick a date from the date picker
+- See each court's slots — available, taken by a reservation (shows name), or blocked by a block reservation (shows block name)
+- Click available slots on a court to open the reservation modal and log a name
+- Add new courts via a modal
+
+**Slot rules:**
+- Slots taken by a regular reservation are unavailable
+- Slots taken by a block reservation are **hard blocked** — cannot be clicked to create a regular reservation
+- Multi-slot selection is supported; slots must be contiguous
+
+### Block Reservations page (`/reservations/block-reservation`)
+Recurring weekly schedules that lock out slots across all future occurrences of that day.
+
+- **View:** Grouped by court. Each court shows its recurring blocks beneath it.
+- **Create:** Multi-court, multi-day selection form. One submission creates individual `BlockReservation` records per court × day combination.
+- **Delete:** Per individual record, with a confirmation dialog.
+- **Edit:** Not supported — delete and recreate.
+- **Display:** Each block reservation rendered as court slots with `isAvailable: false` and the block name as label.
+
+### Reservations page (`/reservations?court=UUID&date=YYYY-MM-DD`)
+Calendar view of logged reservations for a selected court.
+
+- **Library:** react-big-calendar
+- **Default view:** Week view; day view accessible by clicking a day
+- **Court selector:** Dropdown — defaults to first court if no `?court=` param (auto-redirect)
+- **Delete:** Per reservation, with a confirmation dialog
+- **Edit:** Not supported — delete and recreate via the Courts page
+
+### Availability page (`/availability`)
+A utility page for generating shareable availability content. Facility managers use it to replicate the local social media behaviour of posting court availability on Facebook/Messenger.
+
+- **Input:** Date picker
+- **Output (text):** Free slots grouped by court — copy to clipboard
+- **Output (image):** All slots per court with strikethroughs on taken slots — downloadable via `html2canvas`
+- **Computation:** Reuses `GenerateCourtSlotsWithAvailability`; text filters for `isAvailable: true`, image shows all slots
+- **No social media integration** — facility manager copies/downloads and posts manually
+
+Format example:
+```
+COURT 1:
+4PM – 6PM
+7PM – 10PM
+
+COURT 2:
+(fully booked)
+```
+
+### Facility Profile page (`/profile`)
+Facility manager can view and edit their linked `Listing` record. Changes reflect immediately in the public Directory.
+
+- Cross-domain: Scheduling HTTP layer calls Directory domain actions (`UpdateListing` etc.)
+- Editable fields: name, address, operating hours, contact info, social links, photos
+
+## Key Business Rules
+
+| Rule | Detail |
+|------|--------|
+| Block reservations are hard | Blocked slots cannot be overridden with regular reservations |
+| Delete only | No edit for regular or block reservations — delete and recreate |
+| Confirmation dialogs | Both reservation types require confirmation before deletion |
+| Courts inherit listing hours | No per-court operating hours |
+| Slot granularity | Hourly slots only |
+| Null hours guard | Manual onboarding process ensures `opening_time`/`closing_time` are set before a `FacilityAdmin` is provisioned |
+
+## What It Is Not
+
+- Not a booking system — no player-facing booking flow
+- No player accounts
+- No payments or fees
+- No reservation approval workflow
+- No automated notifications
+- Not a replacement for courts that have their own booking systems
+
+## Deviations from the Original Planning Doc (`SCHEDULING_CONTEXT.md`)
+
+| Planning doc said | Actual implementation |
+|---|---|
+| Domain: `App\Source\Schedule\` | `App\Source\Scheduling\Court\` + `App\Source\Scheduling\Facility\` |
+| Route prefix: `schedule.` | `scheduling.` |
+| Reservations belong to `Listing` directly | `Court` entity sits between `Listing` and `Reservation` |
+| Add `listing_id` to `User` | Separate `FacilityAdmin` profile model |
+| Simple role on `User` | Separate `facility` auth guard |
+| Slot grid 00:00–24:00 | Slot grid bounded by `listing.opening_time`/`closing_time` |
+| Laravel Resource classes | Spatie Laravel Data (`BlockReservationApiModel` etc.) for Scheduling domain |
+
+## Known Deferred Issues
+
+See `SCHEDULING_DOMAIN_TODO.md` for the full todo list including deferred items.
+
+| Issue | Status |
+|-------|--------|
+| Court ownership authorisation | Deferred — scaffold in one pass after all features are built |
+| `CheckReservationOverlap` doesn't check block reservations | Deferred — fix in correctness pass |
+| `BlockReservation.listing_id` redundancy | Deferred — revisit when building availability search |
