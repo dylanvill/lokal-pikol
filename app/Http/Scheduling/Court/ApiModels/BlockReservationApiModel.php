@@ -32,6 +32,7 @@ class BlockReservationApiModel extends Data
             dayOfTheWeek: ucwords($blockReservation->day_of_the_week),
             schedules: [new BlockReservationScheduleApiObject(
                 id: $blockReservation->uuid,
+                name: $blockReservation->name,
                 slots: $slots,
             )]
         );
@@ -57,6 +58,7 @@ class BlockReservationApiModel extends Data
 
                     return new BlockReservationScheduleApiObject(
                         id: $reservation->uuid,
+                        name: $reservation->name,
                         slots: $slots,
                     );
                 })->values()->all(),

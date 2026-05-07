@@ -26,7 +26,7 @@ class RangeToCourtSlot
 
             $slots[] = new CourtSlot(
                 slot: $current->format('H:i') . ' - ' . $next->format('H:i'),
-                display: $current->format('g:i A') . ' - ' . $next->format('g:i A'),
+                display: $current->format('h:i A') . ' - ' . $next->format('h:i A'),
                 isAvailable: true,
                 label: null,
             );
