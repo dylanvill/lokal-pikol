@@ -1,6 +1,6 @@
 import { Box, Button, Card, Field, Input, Stack } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
-import { type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { store } from '@/actions/App/Http/Scheduling/Court/Controllers/CreateBlockReservationController';
 import courtSlotsToRange from '../../../helpers/courtSlotToRange';
 import type CourtBlockReservation from '../../../models/CourtBlockReservation';
@@ -23,8 +23,41 @@ function CreateBlockReservationForm({ courts, slots }: CreateBlockReservationFor
         days: [],
         slots: [],
     });
-
     const slotsDisabled = data.courts.length === 0 || data.days.length === 0;
+
+    const [normalizedSlots, setNormalizedSlots] = useState<CourtSlot[]>(slots);
+
+    useEffect(() => {
+        if (slotsDisabled) return;
+
+        const selectedCourts = courts.filter((court) => data.courts.includes(court.id));
+        const blockReservations = selectedCourts.flatMap((court) =>
+            court.blockReservations.filter((block) => data.days.includes(block.dayOfTheWeek)),
+        );
+
+        const schedules = blockReservations.flatMap((block) => {
+            return block.schedules;
+        });
+
+        const scheduleSlots = schedules.flatMap((schedule) => schedule.slots.map((slot) => ({ ...slot, label: schedule.name })));
+
+        setNormalizedSlots((prev) =>
+            prev.map((slot) => {
+                const conflicts = scheduleSlots.filter((scheduleSlot) => scheduleSlot.slot === slot.slot);
+                const label = conflicts.flatMap((scheduleSlot) => scheduleSlot.label).join(', ');
+
+                return {
+                    ...slot,
+                    isAvailable: conflicts.length > 0 ? false : true,
+                    label: label,
+                };
+            }),
+        );
+
+        return () => {
+            setNormalizedSlots(slots);
+        };
+    }, [data.courts, data.days, slotsDisabled, slots, courts]);
 
     const formattedCourts = courts.map((court) => ({ id: court.id, name: court.name }));
 
@@ -88,7 +121,7 @@ function CreateBlockReservationForm({ courts, slots }: CreateBlockReservationFor
                         <CourtsSection courtSelection={formattedCourts} selectedCourts={data.courts} onCheckChanged={handleCourtCheckChanged} />
                         <DaysOfTheWeekSection selectedDays={data.days} onCheckChanged={handleDayCheckChanged} />
                         <Box pointerEvents={slotsDisabled ? 'none' : 'initial'} opacity={slotsDisabled ? 0.25 : 1}>
-                            <TimeSlotsSection slots={slots} selectedSlots={data.slots} onCheckChanged={handleSlotCheckChanged} />
+                            <TimeSlotsSection slots={normalizedSlots} selectedSlots={data.slots} onCheckChanged={handleSlotCheckChanged} />
                         </Box>
                     </Stack>
                 </Card.Body>
