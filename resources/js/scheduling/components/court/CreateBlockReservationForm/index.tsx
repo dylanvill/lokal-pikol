@@ -31,21 +31,17 @@ function CreateBlockReservationForm({ courts, slots }: CreateBlockReservationFor
         if (slotsDisabled) return;
 
         const selectedCourts = courts.filter((court) => data.courts.includes(court.id));
-        const blockReservations = selectedCourts.flatMap((court) =>
-            court.blockReservations.filter((block) => data.days.includes(block.dayOfTheWeek)),
-        );
-
-        const schedules = blockReservations.flatMap((block) => {
-            return block.schedules;
-        });
-
-        const scheduleSlots = schedules.flatMap((schedule) => schedule.slots.map((slot) => ({ ...slot, label: schedule.name })));
+        const scheduleSlots = selectedCourts
+            .flatMap((court) => court.blockReservations.filter((block) => data.days.includes(block.dayOfTheWeek)))
+            .flatMap((block) => block.schedules)
+            .flatMap((schedule) => schedule.slots.map((slot) => ({ ...slot, label: schedule.name })));
 
         setNormalizedSlots((prev) =>
             prev.map((slot) => {
                 const conflicts = scheduleSlots.filter((scheduleSlot) => scheduleSlot.slot === slot.slot);
-                const label = conflicts.flatMap((scheduleSlot) => scheduleSlot.label).join(', ');
+                if (!conflicts) return slot;
 
+                const label = conflicts.flatMap((scheduleSlot) => scheduleSlot.label).join(', ');
                 return {
                     ...slot,
                     isAvailable: conflicts.length > 0 ? false : true,
