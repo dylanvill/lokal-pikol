@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Scheduling\Auth\Controllers\LoginController;
+use App\Http\Scheduling\Court\Controllers\AvailabilityController;
 use App\Http\Scheduling\Court\Controllers\BlockReservationsController;
 use App\Http\Scheduling\Court\Controllers\CourtsController;
 use App\Http\Scheduling\Court\Controllers\CreateBlockReservationController;
@@ -29,6 +30,8 @@ Route::group(['middleware' => [SchedulingAuthenticate::class.':'.GuardEnum::FACI
 
     Route::get('/reservations', [ReservationsController::class, 'show'])->name(Routes::RESERVATIONS);
     Route::delete('/reservations/{reservation:uuid}', [DeleteReservationController::class, 'destroy'])->name(Routes::DELETE_RESERVATION);
+
+    Route::get('/availability', [AvailabilityController::class, 'show'])->name(Routes::AVAILABILITY);
 
     Route::get('/reservations/block-reservation', [BlockReservationsController::class, 'show'])->name(Routes::BLOCK_RESERVATION);
     Route::get('/reservations/block-reservation/create', [ShowCreateBlockReservationsController::class, 'show'])->name(Routes::SHOW_CREATE_BLOCK_RESERVATION);

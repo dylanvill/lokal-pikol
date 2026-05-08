@@ -47,20 +47,36 @@
 
 ---
 
-## ⬜ Availability Page
+## ✅ Done — Availability Page
+
+**Design decisions:**
+- Date change triggers an Inertia visit (`?date=YYYY-MM-DD`), consistent with the rest of the app
+- Page layout: date picker + global colour picker + "copy all" at top; responsive `SimpleGrid` of court cards below (1/2/3 columns by breakpoint)
+- All courts always shown regardless of availability (even fully booked courts stay visible)
+- On-screen slot display: every slot rendered as a Chakra `Badge` (blue if available, red if taken) — shows full picture at a glance
+- Image intent: admins share on Instagram and Facebook — 1:1 square is the correct format; image template still shows every slot with strikethrough on taken (not merged)
+- **Strikethrough is rendered as an absolutely-positioned overlay line** (not CSS `text-decoration`) because `html2canvas` mis-renders `text-decoration: line-through` as an underline
+- **Clipboard text merges contiguous available slots into ranges** — e.g. four contiguous available slots from 8am to noon paste as `08:00 AM - 12:00 PM` rather than four separate lines. Fully booked courts still print "Fully booked".
+- **Per-court copy:** header is `{court name} - {date}`, then ranges
+- **Copy all courts:** date appears once as a top header, then each court block is just `{court name}` + ranges (no repeated date per court)
+- Copy buttons use inline state change ("Copied!" for 2s), not a toast
+- Downloaded filename: `{slugified-court-name}-{YYYY-MM-DD}.png`
+- Global colour picker (full palette, text colour auto-computed from luminance for contrast), saved to `localStorage` key `lokal-pikol:availability-brand-color`
+- No logo on image for now (planned for future)
 
 **Backend**
-- [ ] Availability controller — accepts `?date=`, runs `GenerateCourtSlotsWithAvailability` for all courts
+- [x] `AvailabilityCourtApiModel` — Spatie Data model; fields: `id`, `name`, `slots: CourtSlot[]`
+- [x] Availability controller — accepts `?date=` (defaults to today), runs `GenerateCourtSlotsWithAvailability` for all courts, renders `availability/availability`
+- [x] Availability route (`GET /availability`)
 
 **Frontend**
-- [ ] Availability page (`resources/js/scheduling/pages/availability/index.tsx`)
-  - Date picker
-  - Free slots grouped by court (text format)
-  - Copy to clipboard button
-- [ ] `AvailabilityImageTemplate` component — all slots with strikethrough on taken ones
-- [ ] Install `html2canvas`
-- [ ] Download image button
-- [ ] Add Availability to sidebar nav
+- [x] Availability page (`resources/js/scheduling/pages/availability/availability.tsx`)
+- [x] `AvailabilityImageTemplate` component (1080×1080)
+- [x] `AvailabilityCourtCard`, `AvailabilityBrandColorPicker`, `AvailabilityCopyButton`, `AvailabilityEmptyState`
+- [x] Helpers: `getContrastTextColor`, `formatAvailabilityText`, `mergeContiguousAvailableSlots`
+- [x] Hooks: `useAvailabilityPage`, `useBrandColor`, `useCopyToClipboard`, `useDownloadCourtImage`
+- [x] Install `html2canvas`
+- [x] Add Availability to sidebar nav
 
 ---
 

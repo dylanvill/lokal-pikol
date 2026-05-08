@@ -25,9 +25,9 @@ The scheduling tool is a standalone product sold to pickleball facility managers
 | Block reservation view (grouped by court) | ✅ Done |
 | Block reservation delete | ✅ Done |
 | Reservations page (calendar) | ✅ Done |
-| Availability page | ⬜ Not started |
+| Availability page | ✅ Done |
 | Facility Profile page | ⬜ Not started |
-| Nav update (add Reservations, Availability) | ⬜ Not started |
+| Nav update (add Reservations, Availability) | 🔄 In progress (Reservations + Availability done; rename Profile pending) |
 
 ---
 

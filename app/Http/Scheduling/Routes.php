@@ -30,6 +30,8 @@ class Routes
 
     const CREATE_BLOCK_RESERVATION = 'reservations.create-block-reservation';
 
+    const AVAILABILITY = 'availability';
+
     const BOOKINGS = 'bookings';
 
     const BOOKINGS_CREATE = 'bookings.create';

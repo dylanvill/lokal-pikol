@@ -1,7 +1,8 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuCalendar, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import { LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import AvailabilityController from '@/actions/App/Http/Scheduling/Court/Controllers/AvailabilityController';
 import BlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/BlockReservationsController';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 import ReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/ReservationsController';
@@ -16,6 +17,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     { label: 'Courts', href: CourtsController.show.url(), icon: <LuLayoutGrid /> },
     { label: 'Reservations', href: ReservationsController.show.url(), icon: <LuCalendar /> },
+    { label: 'Availability', href: AvailabilityController.show.url(), icon: <LuCalendarCheck /> },
     { label: 'Block reservations', href: BlockReservationsController.show.url(), icon: <LuCalendarX2 /> },
     // { label: 'Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
 ];
