@@ -1,5 +1,6 @@
 import { Box, Button, Dialog, HStack, Portal, Text, VStack } from '@chakra-ui/react';
 import { LuCalendar, LuClock, LuMapPin } from 'react-icons/lu';
+import { destroy } from '@/actions/App/Http/Scheduling/Court/Controllers/DeleteReservationController';
 import type ReservationCalendarItem from '../../models/ReservationCalendarItem';
 import useDeleteReservation from './useDeleteReservation';
 
@@ -28,8 +29,7 @@ function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) 
     const isBlockReservation = item.type === 'block_reservation';
 
     const onDelete = () => {
-        // TODO: wire up delete URL during data integration
-        handleDelete('#');
+        handleDelete(destroy(item.id).url);
     };
 
     return (

@@ -19,7 +19,7 @@
 ## ⬜ Reservations Page
 
 **Design decisions:**
-- Monthly data loading — one Inertia visit per month navigation (`?court=uuid&date=YYYY-MM-DD`)
+- Monthly data loading — one Inertia visit per month navigation (`?court=uuid&month=YYYY-MM`)
 - Both reservation types normalised into `ReservationCalendarItemApiModel` (Spatie Data)
 - Regular reservations: blue events; block reservations: orange events with `(Blocked)` name prefix
 - Event click opens a Chakra Dialog — detail view from already-loaded payload, no extra HTTP request
@@ -27,22 +27,23 @@
 - Delete: dialog acts as confirmation (no nested step), page reloads same court + month after
 
 **Backend**
-- [ ] `ReservationCalendarItemApiModel` — unified Spatie Data model; fields: `id` (uuid, null for block), `type` (reservation|block_reservation), `title` (display name with prefix), `start` (ISO datetime), `end` (ISO datetime), `name`, `courtName`, `formattedDate`, `formattedTimeRange`
-- [ ] Reservations controller — `?court=uuid&date=YYYY-MM-DD`, loads full calendar month, auto-redirect to first court if no `?court=` param
-- [ ] Reservations route (`GET /reservations`)
-- [ ] Reservation delete route (`DELETE /reservations/{reservation:uuid}`)
-- [ ] Reservation delete controller — flash success message, redirect back
+- [x] `ReservationCalendarItemApiModel` — unified Spatie Data model; fields: `id`, `type`, `title`, `start`, `end`, `courtName`, `dateDisplay`, `timeDisplay`
+- [x] Reservations controller — `?court=uuid&month=YYYY-MM`, loads full calendar month, auto-redirect to first court if no `?court=` param, empty state if no courts
+- [x] Reservations route (`GET /reservations`)
+- [x] Reservation delete route (`DELETE /reservations/{reservation:uuid}`)
+- [x] Reservation delete controller — flash success message, redirect back
 
 **Frontend**
-- [ ] react-big-calendar CSS import setup
-- [ ] `ReservationCalendarItem.ts` TypeScript model matching `ReservationCalendarItemApiModel`
-- [ ] Reservations page (`resources/js/scheduling/pages/reservations/index.tsx`)
+- [x] react-big-calendar CSS import setup
+- [x] `ReservationCalendarItem.ts` TypeScript model matching `ReservationCalendarItemApiModel`
+- [x] Reservations page (`resources/js/scheduling/pages/reservations/index.tsx`)
   - Court dropdown (URL param driven, auto-redirect to first court on mount)
   - Week view default, day view on click
   - Blue events for regular reservations, orange for block reservations
-  - Month navigation triggers Inertia visit (updates `?date=` param)
-- [ ] `ReservationEventDialog` component — detail dialog for both types; delete button only for `type === 'reservation'`
-- [ ] Add Reservations to sidebar nav
+  - Month navigation triggers Inertia visit (updates `?month=` param)
+  - Empty state when listing has no courts
+- [x] `ReservationEventDialog` component — detail dialog for both types; delete button only for `type === 'reservation'`
+- [x] Add Reservations to sidebar nav
 
 ---
 

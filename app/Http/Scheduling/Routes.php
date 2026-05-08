@@ -20,6 +20,8 @@ class Routes
 
     const RESERVATIONS = 'reservations.show';
 
+    const DELETE_RESERVATION = 'reservations.delete-reservation';
+
     const BLOCK_RESERVATION = 'reservations.block-reservation';
 
     const SHOW_CREATE_BLOCK_RESERVATION = 'reservations.show-create-block-reservation';
