@@ -1,11 +1,14 @@
 import { useForm } from '@inertiajs/react';
 import { type FormEvent } from 'react';
 import { store } from '@/actions/App/Http/Scheduling/Court/Controllers/CreateBlockReservationController';
+import { toaster } from '../../../../../shared/components/ui/toaster';
 import courtSlotsToRange from '../../../../helpers/courtSlotToRange';
 import type CourtSlot from '../../../../models/CourtSlot';
 import { type DayOfTheWeek } from '../../../../types/DateTime';
 import { type UuidString } from '../../../../types/String';
 import { type CreateBlockReservationFormInterface } from '../types';
+
+const SUCCESS_MESSAGE_KEY = 'create-block-reservation-success';
 
 const useBlockReservationForm = () => {
     const { data, setData, post, transform, reset } = useForm<CreateBlockReservationFormInterface>({
@@ -55,7 +58,17 @@ const useBlockReservationForm = () => {
         });
 
         post(store().url, {
-            onSuccess: () => reset(),
+            onSuccess: (page) => {
+                const message = page.flash?.[SUCCESS_MESSAGE_KEY];
+                if (typeof message === 'string') {
+                    toaster.create({
+                        title: message,
+                        type: 'success',
+                        duration: 5000,
+                    });
+                }
+                reset();
+            },
         });
     };
 
