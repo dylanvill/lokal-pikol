@@ -5,18 +5,18 @@
 
 ---
 
-## 🔄 In Progress — Block Reservations (current branch: `feature/facility-booking-management`)
+## ✅ Done — Block Reservations (current branch: `feature/facility-booking-management`)
 
 - [x] Fix `BlockReservation.ts` type — updated to `slots: { id: UuidString, slots: CourtSlot[] }` to match API shape and expose the `id` needed for delete
 - [x] Build out `CourtBlockReservationSection` — render day groups with slot badges and a delete button per entry (`resources/js/scheduling/components/court/CourtBlockReservationSection/index.tsx`)
 - [x] Backend delete route — `DELETE /reservations/block-reservation/{blockReservation:uuid}` in `routes/scheduling.php`
 - [x] Backend delete controller — new `DeleteBlockReservationController`
 - [x] Confirmation dialog before delete — follow `ReserveCourtCardModal` Chakra `Dialog` pattern
-- [ ] Empty state per court — prompt to create when a court has no block reservations
+- [x] Empty state per court — prompt to create when a court has no block reservations
 
 ---
 
-## ⬜ Reservations Page
+## ✅ Done — Reservations Page
 
 **Design decisions:**
 - Monthly data loading — one Inertia visit per month navigation (`?court=uuid&month=YYYY-MM`)

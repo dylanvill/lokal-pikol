@@ -22,9 +22,9 @@ The scheduling tool is a standalone product sold to pickleball facility managers
 | Court creation (modal) | ✅ Done |
 | Reserve court (slot-first modal) | ✅ Done |
 | Block reservation create (multi-court/multi-day form) | ✅ Done |
-| Block reservation view (grouped by court) | 🔄 In progress |
-| Block reservation delete | 🔄 In progress |
-| Reservations page (calendar) | ⬜ Not started |
+| Block reservation view (grouped by court) | ✅ Done |
+| Block reservation delete | ✅ Done |
+| Reservations page (calendar) | ✅ Done |
 | Availability page | ⬜ Not started |
 | Facility Profile page | ⬜ Not started |
 | Nav update (add Reservations, Availability) | ⬜ Not started |
