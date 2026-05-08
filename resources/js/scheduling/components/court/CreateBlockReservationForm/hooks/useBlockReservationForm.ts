@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useCallback, type FormEvent } from 'react';
+import { type FormEvent } from 'react';
 import { store } from '@/actions/App/Http/Scheduling/Court/Controllers/CreateBlockReservationController';
 import courtSlotsToRange from '../../../../helpers/courtSlotToRange';
 import type CourtSlot from '../../../../models/CourtSlot';
@@ -19,26 +19,17 @@ const useBlockReservationForm = () => {
         setData('name', value);
     };
 
-    const handleCourtCheckChanged = useCallback(
-        (checked: boolean, id: UuidString) => {
-            setData('courts', checked ? [...data.courts, id] : data.courts.filter((courtId) => courtId !== id));
-        },
-        [data.courts, setData],
-    );
+    const handleCourtCheckChanged = (checked: boolean, id: UuidString) => {
+        setData('courts', checked ? [...data.courts, id] : data.courts.filter((courtId) => courtId !== id));
+    };
 
-    const handleDayCheckChanged = useCallback(
-        (checked: boolean, day: DayOfTheWeek) => {
-            setData('days', checked ? [...data.days, day] : data.days.filter((d) => d !== day));
-        },
-        [data.days, setData],
-    );
+    const handleDayCheckChanged = (checked: boolean, day: DayOfTheWeek) => {
+        setData('days', checked ? [...data.days, day] : data.days.filter((d) => d !== day));
+    };
 
-    const handleSlotCheckChanged = useCallback(
-        (checked: boolean, slot: string) => {
-            setData('slots', checked ? [...data.slots, slot] : data.slots.filter((s) => s !== slot));
-        },
-        [data.slots, setData],
-    );
+    const handleSlotCheckChanged = (checked: boolean, slot: string) => {
+        setData('slots', checked ? [...data.slots, slot] : data.slots.filter((s) => s !== slot));
+    };
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

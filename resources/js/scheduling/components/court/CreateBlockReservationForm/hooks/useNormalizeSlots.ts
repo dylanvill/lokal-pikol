@@ -11,7 +11,7 @@ export interface NormalizeSlotsProps {
     selectedCourts: UuidString[];
 }
 
-const useNormalizeSlots = ({ plainSlots, courts = [], selectedDays = [], selectedCourts = [] }: NormalizeSlotsProps) => {
+const useNormalizeSlots = ({ plainSlots, courts, selectedDays, selectedCourts }: NormalizeSlotsProps) => {
     const normalizedSlots = useMemo(() => {
         const filteredCourts = courts.filter((court) => selectedCourts.includes(court.id));
         const scheduleSlots = filteredCourts
@@ -21,13 +21,12 @@ const useNormalizeSlots = ({ plainSlots, courts = [], selectedDays = [], selecte
 
         return plainSlots.map((slot) => {
             const conflicts = scheduleSlots.filter((scheduleSlot) => scheduleSlot.slot === slot.slot);
-            if (!conflicts) return slot;
+            if (conflicts.length === 0) return slot;
 
-            const label = conflicts.flatMap((scheduleSlot) => scheduleSlot.label).join(', ');
             return {
                 ...slot,
-                isAvailable: conflicts.length > 0 ? false : true,
-                label: label,
+                isAvailable: false,
+                label: conflicts.map((scheduleSlot) => scheduleSlot.label).join(', '),
             };
         });
     }, [selectedDays, selectedCourts, plainSlots, courts]);

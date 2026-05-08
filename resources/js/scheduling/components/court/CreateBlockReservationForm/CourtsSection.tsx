@@ -1,5 +1,4 @@
 import { CheckboxCard, CheckboxGroup, Fieldset, SimpleGrid } from '@chakra-ui/react';
-import { memo } from 'react';
 import { type UuidString } from '../../../types/String';
 import { type CreateBlockReservationFormInterface } from './types';
 
@@ -10,7 +9,6 @@ export interface CourtsSectionProps {
 }
 
 function CourtsSection({ courtSelection, selectedCourts, onCheckChanged }: CourtsSectionProps) {
-    console.log('Courts section rendering');
     return (
         <Fieldset.Root>
             <CheckboxGroup>
@@ -38,4 +36,4 @@ function CourtsSection({ courtSelection, selectedCourts, onCheckChanged }: Court
     );
 }
 
-export default memo(CourtsSection);
+export default CourtsSection;

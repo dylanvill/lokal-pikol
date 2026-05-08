@@ -1,5 +1,4 @@
 import { CheckboxCard, CheckboxGroup, Fieldset, SimpleGrid } from '@chakra-ui/react';
-import { memo } from 'react';
 import { type CreateBlockReservationFormInterface, type DayOfTheWeek } from './types';
 
 const DAYS: DayOfTheWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -38,4 +37,4 @@ function DaysOfTheWeekSection({ selectedDays, onCheckChanged }: DaysOfTheWeekSec
     );
 }
 
-export default memo(DaysOfTheWeekSection);
+export default DaysOfTheWeekSection;
