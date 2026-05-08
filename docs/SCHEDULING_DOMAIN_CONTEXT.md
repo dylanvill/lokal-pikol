@@ -68,6 +68,12 @@ Calendar view of logged reservations for a selected court.
 - **Court selector:** Dropdown — defaults to first court if no `?court=` param (auto-redirect)
 - **Delete:** Per reservation, with a confirmation dialog
 - **Edit:** Not supported — delete and recreate via the Courts page
+- **Block reservations on calendar:** Block reservations appear as orange, read-only events with a `(Blocked)` name prefix (e.g. "(Blocked) Open Play"). Not deletable from this page.
+- **Regular reservations:** Blue events, name only as title.
+- **Data loading:** Monthly. Backend accepts `?court=uuid&date=YYYY-MM-DD`, computes the full calendar month, and returns all reservations + expanded block reservation instances for that month. Inertia page visit fires on month navigation; react-big-calendar handles week/day view transitions locally from the loaded dataset.
+- **API model:** Both reservation types are normalised into a single `ReservationCalendarItemApiModel` (Spatie Data) before reaching the frontend — standardised shape regardless of source type.
+- **Event click:** Opens a Chakra Dialog for both regular and block reservations. Data is sourced from the already-loaded monthly payload — no separate HTTP request on click. Regular reservations show name, date, time range, court. Block reservations show name, recurring day, time range, court (e.g. "Every Monday, 7PM – 10PM on Court 1"). Regular reservations have a delete button; block reservations are read-only from this page.
+- **Delete flow:** The detail Dialog acts as confirmation — no second step. Delete button submits immediately with a loading state, then page reloads for the same court and month with fresh data.
 
 ### Availability page (`/availability`)
 A utility page for generating shareable availability content. Facility managers use it to replicate the local social media behaviour of posting court availability on Facebook/Messenger.

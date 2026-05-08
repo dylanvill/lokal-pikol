@@ -9,27 +9,39 @@
 
 - [x] Fix `BlockReservation.ts` type — updated to `slots: { id: UuidString, slots: CourtSlot[] }` to match API shape and expose the `id` needed for delete
 - [x] Build out `CourtBlockReservationSection` — render day groups with slot badges and a delete button per entry (`resources/js/scheduling/components/court/CourtBlockReservationSection/index.tsx`)
-- [ ] Backend delete route — `DELETE /reservations/block-reservation/{blockReservation:uuid}` in `routes/scheduling.php`
-- [ ] Backend delete controller — new `DeleteBlockReservationController`
-- [ ] Confirmation dialog before delete — follow `ReserveCourtCardModal` Chakra `Dialog` pattern
+- [x] Backend delete route — `DELETE /reservations/block-reservation/{blockReservation:uuid}` in `routes/scheduling.php`
+- [x] Backend delete controller — new `DeleteBlockReservationController`
+- [x] Confirmation dialog before delete — follow `ReserveCourtCardModal` Chakra `Dialog` pattern
 - [ ] Empty state per court — prompt to create when a court has no block reservations
 
 ---
 
 ## ⬜ Reservations Page
 
+**Design decisions:**
+- Monthly data loading — one Inertia visit per month navigation (`?court=uuid&date=YYYY-MM-DD`)
+- Both reservation types normalised into `ReservationCalendarItemApiModel` (Spatie Data)
+- Regular reservations: blue events; block reservations: orange events with `(Blocked)` name prefix
+- Event click opens a Chakra Dialog — detail view from already-loaded payload, no extra HTTP request
+- Detail dialog: name, date/day, time range, court — delete button for regular reservations only
+- Delete: dialog acts as confirmation (no nested step), page reloads same court + month after
+
 **Backend**
-- [ ] Reservations controller — scoped to `?court=uuid`, `?date=YYYY-MM-DD`, auto-redirect to first court if no param
+- [ ] `ReservationCalendarItemApiModel` — unified Spatie Data model; fields: `id` (uuid, null for block), `type` (reservation|block_reservation), `title` (display name with prefix), `start` (ISO datetime), `end` (ISO datetime), `name`, `courtName`, `formattedDate`, `formattedTimeRange`
+- [ ] Reservations controller — `?court=uuid&date=YYYY-MM-DD`, loads full calendar month, auto-redirect to first court if no `?court=` param
 - [ ] Reservations route (`GET /reservations`)
 - [ ] Reservation delete route (`DELETE /reservations/{reservation:uuid}`)
-- [ ] Reservation delete controller
+- [ ] Reservation delete controller — flash success message, redirect back
 
 **Frontend**
-- [ ] Install `react-big-calendar` + types
+- [ ] react-big-calendar CSS import setup
+- [ ] `ReservationCalendarItem.ts` TypeScript model matching `ReservationCalendarItemApiModel`
 - [ ] Reservations page (`resources/js/scheduling/pages/reservations/index.tsx`)
-  - Court dropdown (URL param driven)
+  - Court dropdown (URL param driven, auto-redirect to first court on mount)
   - Week view default, day view on click
-  - Confirmation dialog on delete
+  - Blue events for regular reservations, orange for block reservations
+  - Month navigation triggers Inertia visit (updates `?date=` param)
+- [ ] `ReservationEventDialog` component — detail dialog for both types; delete button only for `type === 'reservation'`
 - [ ] Add Reservations to sidebar nav
 
 ---
