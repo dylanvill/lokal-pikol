@@ -243,6 +243,10 @@ A pickleball court directory and scheduling platform for the Negros region (Phil
 - **Frontend** (`resources/js/`): Domain-organised — `directory/`, `scheduling/`, `shared/`
 - Scheduling domain uses the `facility` auth guard + `FacilityAdmin` profile model linked to a `Listing`
 
+## Frontend Conventions
+
+- **Use `useForm` for every form-ish interaction** — including `delete` actions with no payload. Pass an empty object (`useForm({})`) when there is no data. The wrapper gives consistent `processing`, `onSuccess`, and `errors` handling across the app and avoids one-offs with `router.delete()` / `router.post()`.
+
 ## Key Docs (load only what's relevant)
 
 - `docs/DIRECTORY_DOMAIN_CONTEXT.md` — directory product context

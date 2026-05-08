@@ -1,6 +1,6 @@
 # Scheduling Domain — Todo
 
-**Last Updated:** 2026-05-06  
+**Last Updated:** 2026-05-08  
 **Build sequence:** See `SCHEDULING_DOMAIN_ROADMAP.md`
 
 ---
@@ -8,7 +8,7 @@
 ## 🔄 In Progress — Block Reservations (current branch: `feature/facility-booking-management`)
 
 - [x] Fix `BlockReservation.ts` type — updated to `slots: { id: UuidString, slots: CourtSlot[] }` to match API shape and expose the `id` needed for delete
-- [ ] Build out `CourtBlockReservationSection` — render day groups with slot badges and a delete button per entry (`resources/js/scheduling/components/court/CourtBlockReservationSection/index.tsx`)
+- [x] Build out `CourtBlockReservationSection` — render day groups with slot badges and a delete button per entry (`resources/js/scheduling/components/court/CourtBlockReservationSection/index.tsx`)
 - [ ] Backend delete route — `DELETE /reservations/block-reservation/{blockReservation:uuid}` in `routes/scheduling.php`
 - [ ] Backend delete controller — new `DeleteBlockReservationController`
 - [ ] Confirmation dialog before delete — follow `ReserveCourtCardModal` Chakra `Dialog` pattern

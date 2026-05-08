@@ -1,6 +1,6 @@
-import { Badge, Box, Button, Card, Text, VStack } from '@chakra-ui/react';
-import { LuTrash } from 'react-icons/lu';
+import { Badge, Box, Card, Text, VStack } from '@chakra-ui/react';
 import type BlockReservation from '../../../models/BlockReservation';
+import DeleteScheduleButton from './DeleteScheduleButton';
 
 interface DayOfTheWeekCardProps {
     dayOfTheWeek: BlockReservation['dayOfTheWeek'];
@@ -21,19 +21,17 @@ function DayOfTheWeekCard({ dayOfTheWeek, schedules }: DayOfTheWeekCardProps) {
                 {hasSchedules ? (
                     <VStack gap={6} justifyContent="flex-start" alignItems="flex-start">
                         {schedules.map((schedule) => (
-                            <Box>
+                            <Box key={schedule.id}>
                                 <Text fontSize="sm" marginBottom={2}>
                                     {schedule.name}
                                 </Text>
-                                <VStack key={schedule.id} gap={2} justifyContent="flex-start" alignItems="flex-start">
+                                <VStack gap={2} justifyContent="flex-start" alignItems="flex-start">
                                     {schedule.slots.map((slot) => (
                                         <Badge key={slot.slot} variant="outline" textAlign="center" colorPalette="blue" size="lg">
                                             {slot.display}
                                         </Badge>
                                     ))}
-                                    <Button size="xs" colorPalette="red">
-                                        <LuTrash /> Delete Schedule
-                                    </Button>
+                                    <DeleteScheduleButton scheduleId={schedule.id} scheduleName={schedule.name} />
                                 </VStack>
                             </Box>
                         ))}

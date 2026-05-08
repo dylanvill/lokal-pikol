@@ -18,7 +18,9 @@
       "Bash(vendor/bin/pint *)",
       "mcp__chakra-ui__get_component_example",
       "mcp__laravel-boost__browser-logs",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git add *)",
+      "mcp__laravel-boost__search-docs"
     ]
   },
   "enabledMcpjsonServers": [
