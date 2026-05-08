@@ -18,6 +18,8 @@ class Routes
 
     const RESERVE_COURT = 'courts.reserve';
 
+    const RESERVATIONS = 'reservations.show';
+
     const BLOCK_RESERVATION = 'reservations.block-reservation';
 
     const SHOW_CREATE_BLOCK_RESERVATION = 'reservations.show-create-block-reservation';
