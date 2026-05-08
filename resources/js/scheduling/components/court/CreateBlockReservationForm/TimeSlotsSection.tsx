@@ -1,4 +1,5 @@
 import { Fieldset, SimpleGrid } from '@chakra-ui/react';
+import { memo } from 'react';
 import type CourtSlot from '../../../models/CourtSlot';
 import { type Slot } from '../../../models/CourtSlot';
 import CheckboxSlotCard from '../../shared/CheckboxSlotCard';
@@ -11,6 +12,7 @@ export interface TimeSlotsSectionProps {
 }
 
 function TimeSlotsSection({ slots, selectedSlots, onCheckChanged }: TimeSlotsSectionProps) {
+    console.log("Time slots section rendering");
     return (
         <Fieldset.Root>
             <Fieldset.Legend>Time slots</Fieldset.Legend>
@@ -30,4 +32,4 @@ function TimeSlotsSection({ slots, selectedSlots, onCheckChanged }: TimeSlotsSec
     );
 }
 
-export default TimeSlotsSection;
+export default memo(TimeSlotsSection);

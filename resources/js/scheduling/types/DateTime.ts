@@ -8,3 +8,5 @@ export interface Range {
     startTime: TimeString;
     endTime: TimeString;
 }
+
+export type DayOfTheWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
