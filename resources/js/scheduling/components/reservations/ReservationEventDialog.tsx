@@ -1,24 +1,36 @@
-import { Badge, Box, Button, Dialog, HStack, Portal, Text, VStack } from '@chakra-ui/react';
-import { useForm } from '@inertiajs/react';
+import { Box, Button, Dialog, HStack, Portal, Text, VStack } from '@chakra-ui/react';
 import { LuCalendar, LuClock, LuMapPin } from 'react-icons/lu';
 import type ReservationCalendarItem from '../../models/ReservationCalendarItem';
+import useDeleteReservation from './useDeleteReservation';
 
 interface ReservationEventDialogProps {
     item: ReservationCalendarItem;
     onClose: () => void;
 }
 
-function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) {
-    const { delete: destroyReservation, processing } = useForm({});
+interface DetailRowProps {
+    icon: React.ReactNode;
+    text: string;
+}
 
-    const handleDelete = () => {
-        // TODO: wire up delete URL during data integration
-        destroyReservation('#', {
-            onSuccess: () => onClose(),
-        });
-    };
+function DetailRow({ icon, text }: DetailRowProps) {
+    return (
+        <HStack gap={2} color="gray.600">
+            <Box fontSize="sm">{icon}</Box>
+            <Text fontSize="sm">{text}</Text>
+        </HStack>
+    );
+}
+
+function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) {
+    const { handleDelete, processing } = useDeleteReservation(onClose);
 
     const isBlockReservation = item.type === 'block_reservation';
+
+    const onDelete = () => {
+        // TODO: wire up delete URL during data integration
+        handleDelete('#');
+    };
 
     return (
         <Dialog.Root open onOpenChange={(e) => !processing && !e.open && onClose()}>
@@ -27,37 +39,13 @@ function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) 
                 <Dialog.Positioner>
                     <Dialog.Content>
                         <Dialog.Header>
-                            <Dialog.Title>
-                                <HStack gap={2}>
-                                    {item.name}
-                                    {isBlockReservation && (
-                                        <Badge colorPalette="orange" size="sm">
-                                            Blocked
-                                        </Badge>
-                                    )}
-                                </HStack>
-                            </Dialog.Title>
+                            <Dialog.Title>{item.title}</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
                             <VStack align="start" gap={3}>
-                                <HStack gap={2} color="gray.600">
-                                    <Box fontSize="sm">
-                                        <LuCalendar />
-                                    </Box>
-                                    <Text fontSize="sm">{item.formattedDate}</Text>
-                                </HStack>
-                                <HStack gap={2} color="gray.600">
-                                    <Box fontSize="sm">
-                                        <LuClock />
-                                    </Box>
-                                    <Text fontSize="sm">{item.formattedTimeRange}</Text>
-                                </HStack>
-                                <HStack gap={2} color="gray.600">
-                                    <Box fontSize="sm">
-                                        <LuMapPin />
-                                    </Box>
-                                    <Text fontSize="sm">{item.courtName}</Text>
-                                </HStack>
+                                <DetailRow icon={<LuCalendar />} text={item.dateDisplay} />
+                                <DetailRow icon={<LuClock />} text={item.timeDisplay} />
+                                <DetailRow icon={<LuMapPin />} text={item.courtName} />
                             </VStack>
                         </Dialog.Body>
                         <Dialog.Footer>
@@ -67,7 +55,7 @@ function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) 
                                 </Button>
                             </Dialog.ActionTrigger>
                             {!isBlockReservation && (
-                                <Button colorPalette="red" loading={processing} onClick={handleDelete}>
+                                <Button colorPalette="red" loading={processing} onClick={onDelete}>
                                     Delete reservation
                                 </Button>
                             )}

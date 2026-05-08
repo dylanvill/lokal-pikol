@@ -3,15 +3,14 @@ import type { UuidString } from '../types/String';
 type ReservationCalendarItemType = 'reservation' | 'block_reservation';
 
 interface ReservationCalendarItem {
-    id: UuidString | null;
+    id: UuidString;
     type: ReservationCalendarItemType;
     title: string;
     start: string;
     end: string;
-    name: string;
     courtName: string;
-    formattedDate: string;
-    formattedTimeRange: string;
+    dateDisplay: string;
+    timeDisplay: string;
 }
 
 export type { ReservationCalendarItemType };
