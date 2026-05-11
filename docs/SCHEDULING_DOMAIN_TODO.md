@@ -213,6 +213,16 @@
 
 ---
 
+## To-Do — Auth & Navigation Polish
+
+- [ ] **Logout** — add a logout button/link to the sidebar navigation
+- [ ] **Scheduling dashboard branding** — add Lokal Pikol branding to the main dashboard/home screen
+- [ ] **Login page branding** — brand the facility admin login page (logo, colours, copy)
+- [ ] **Change password** — scaffolding for facility admins to set their initial password after account creation (triggered after the admin account is first created for a listing)
+- [ ] **Forgot password** — scaffolding for facility admins to reset their password via email
+
+---
+
 ## 💭 Deferred — Revisit Later
 
 - [ ] `BlockReservation.listing_id` redundancy — review when building availability search. If neither the search nor any admin view needs the direct FK, drop it via migration and remove `Listing::blockReservations()`

@@ -8,6 +8,7 @@ import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/Co
 import ReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/ReservationsController';
 import ProfileController from '@/actions/App/Http/Scheduling/Profile/Controllers/ProfileController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
+import type SchedulingPageProps from '../../types/SchedulingPageProps';
 
 interface NavItem {
     label: string;
@@ -28,7 +29,8 @@ function resolveItemPath(href: string): string {
 }
 
 function Sidebar() {
-    const { url } = usePage();
+    const { url, props } = usePage<SchedulingPageProps>();
+    const { facility } = props;
     const currentPath = url.split('?')[0];
 
     const activeIndex = navItems.reduce<number>((best, item, idx) => {
@@ -83,6 +85,26 @@ function Sidebar() {
                     );
                 })}
             </VStack>
+            <Box
+                px={{ base: 2, md: 4 }}
+                py={4}
+                borderTopWidth={1}
+                borderColor="blue.800"
+            >
+                <Flex align="center" gap={2} justify={{ base: 'center', md: 'flex-start' }}>
+                    <Box fontSize="lg" color="blue.300" flexShrink={0}>
+                        <LuBuilding2 />
+                    </Box>
+                    <Box display={{ base: 'none', md: 'block' }} minW={0}>
+                        <Text fontSize="sm" fontWeight="medium" color="white" truncate>
+                            {facility.name}
+                        </Text>
+                        <Text fontSize="xs" color="blue.300">
+                            {facility.city}
+                        </Text>
+                    </Box>
+                </Flex>
+            </Box>
         </Box>
     );
 }
