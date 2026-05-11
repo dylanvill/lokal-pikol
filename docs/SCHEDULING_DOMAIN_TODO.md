@@ -206,9 +206,9 @@
 
 ---
 
-## 🐛 Deferred — Correctness
+## ✅ Done — Correctness
 
-- [ ] `CheckReservationOverlap` — extend to also check `block_reservations` for the court on the matching `day_of_the_week` (currently only checks `reservations` table)
+- [x] `CheckReservationOverlap` — now checks both `reservations` (by date) and `block_reservations` (by day of the week) for the court. Regular reservations and blocked slots both produce a 403-style validation failure with distinct messages.
   - **File:** `app/Source/Scheduling/Court/Actions/ReserveCourt/Rules/CheckReservationOverlap.php`
 
 ---
