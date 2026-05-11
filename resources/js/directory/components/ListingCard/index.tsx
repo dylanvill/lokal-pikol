@@ -1,8 +1,8 @@
 import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button, Float } from '@chakra-ui/react';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useMemo } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
-import { LuArrowRight, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
+import { LuArrowRight, LuCalendar, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventController';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
@@ -26,6 +26,7 @@ function ListingCard({
     googleMapsUrl,
     socialLinks,
     bookingUrl,
+    scheduleUrl,
     email,
     phone,
     isNew = false,
@@ -168,13 +169,25 @@ function ListingCard({
                             }
                         />
                     )}
+                    {scheduleUrl && (
+                        <DetailWithIcon
+                            icon={<LuCalendar color="black" />}
+                            textProps={{ fontSize: 'sm' }}
+                            label={
+                                <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
+                                    <Link href={scheduleUrl}>View schedule</Link>
+                                    <LuArrowRight />
+                                </HStack>
+                            }
+                        />
+                    )}
                 </VStack>
             </Card.Body>
             <Card.Footer>
                 <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
                     {bookingUrl ? (
                         <Button size="sm" variant="ghost" marginTop={4} fontSize="sm" textAlign="right" onClick={onBookCourtClicked}>
-                            Book Court
+                            Booking link
                             <LuArrowRight />
                         </Button>
                     ) : (

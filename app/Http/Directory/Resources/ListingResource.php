@@ -30,7 +30,7 @@ class ListingResource extends JsonResource
             'closingTime' => $this->closing_time,
             'googleMapsUrl' => $this->google_maps_url,
             'bookingUrl' => $this->booking_url,
-            'scheduleUrl' => $this->is_scheduling_enabled ? route('schedule.show', ['slug' => $this->slug]) : null,
+            'scheduleUrl' => $this->is_scheduling_enabled ? route('directory.schedule.show', ['listing' => $this->slug]) : null,
             'courtType' => $this->court_type,
             'numberOfCourts' => $this->number_of_courts,
             'socialLinks' => LinkResource::collection($this->socialLinks),

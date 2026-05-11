@@ -105,6 +105,7 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
                                 googleMapsUrl={listing.googleMapsUrl}
                                 socialLinks={listing.socialLinks}
                                 bookingUrl={listing.bookingUrl}
+                                scheduleUrl={listing.scheduleUrl}
                                 email={listing.email}
                                 phone={listing.phone}
                                 isNew={isNew(listing.createdAt)}

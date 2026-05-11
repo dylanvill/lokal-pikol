@@ -16,6 +16,7 @@ interface ListingItem {
     city: string;
     googleMapsUrl: string | null;
     bookingUrl: string | null;
+    scheduleUrl: string | null;
     openingTime: string | null;
     closingTime: string | null;
     socialLinks: SocialLink[];

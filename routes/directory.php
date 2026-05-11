@@ -11,7 +11,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', ListingController::class)->name('home');
-Route::get('/schedule/{slug}', [ListingScheduleController::class, 'show'])->name('schedule.show');
+Route::get('/schedule/{listing:slug}', [ListingScheduleController::class, 'show'])->name('schedule.show');
 Route::post('/track/{listing:uuid}/{event}', TrackListingEventController::class)->name('track-event');
 Route::post('/ad/track/{ad:uuid}', TrackAdEventController::class)->name('track-ad-event');
 Route::get('/register', [CreateListingController::class, 'show'])->name('register.show')->middleware('signed');
