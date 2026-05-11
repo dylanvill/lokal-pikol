@@ -52,6 +52,8 @@ class Listing extends Model implements HasMedia
         'name',
         'city',
         'address',
+        'court_type',
+        'number_of_courts',
         'email',
         'phone',
         'opening_time',

@@ -8,7 +8,6 @@ use App\Source\Shared\Models\SocialLink;
 
 class UpdateSocialLink
 {
-
     public function __construct(protected Listing $listing) {}
 
     public function update(SocialLinkEnum $social, string $value): SocialLink
@@ -28,5 +27,12 @@ class UpdateSocialLink
         }
 
         return $socialLink;
+    }
+
+    public function delete(SocialLinkEnum $social): void
+    {
+        $this->listing->socialLinks()
+            ->where('platform', $social->value)
+            ->delete();
     }
 }

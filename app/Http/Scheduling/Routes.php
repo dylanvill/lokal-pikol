@@ -12,6 +12,18 @@ class Routes
 
     const PROFILE = 'profile';
 
+    const PROFILE_EDIT = 'profile.edit';
+
+    const PROFILE_UPDATE_PHOTOS = 'profile.update-photos';
+
+    const PROFILE_UPDATE_DETAILS = 'profile.update-details';
+
+    const PROFILE_UPDATE_HOURS = 'profile.update-hours';
+
+    const PROFILE_UPDATE_SOCIAL_LINKS = 'profile.update-social-links';
+
+    const PROFILE_DELETE_SOCIAL_LINK = 'profile.delete-social-link';
+
     const COURTS = 'courts';
 
     const CREATE_COURT = 'courts.create';

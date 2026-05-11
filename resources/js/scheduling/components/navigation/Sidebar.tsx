@@ -1,11 +1,12 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
 import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import { LuBuilding2, LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
 import AvailabilityController from '@/actions/App/Http/Scheduling/Court/Controllers/AvailabilityController';
 import BlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/BlockReservationsController';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 import ReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/ReservationsController';
+import ProfileController from '@/actions/App/Http/Scheduling/Profile/Controllers/ProfileController';
 import Logo from '../../../../images/logo/lokal-pikol-horizontal-white-out.svg';
 
 interface NavItem {
@@ -19,11 +20,25 @@ const navItems: NavItem[] = [
     { label: 'Reservations', href: ReservationsController.show.url(), icon: <LuCalendar /> },
     { label: 'Availability', href: AvailabilityController.show.url(), icon: <LuCalendarCheck /> },
     { label: 'Block reservations', href: BlockReservationsController.show.url(), icon: <LuCalendarX2 /> },
-    // { label: 'Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
+    { label: 'Facility Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
 ];
+
+function resolveItemPath(href: string): string {
+    return href.startsWith('http') ? new URL(href).pathname : href;
+}
 
 function Sidebar() {
     const { url } = usePage();
+    const currentPath = url.split('?')[0];
+
+    const activeIndex = navItems.reduce<number>((best, item, idx) => {
+        const path = resolveItemPath(item.href);
+        const matches = currentPath === path || currentPath.startsWith(path + '/');
+        if (!matches) return best;
+        if (best === -1) return idx;
+        return resolveItemPath(navItems[idx].href).length > resolveItemPath(navItems[best].href).length ? idx : best;
+    }, -1);
+
     return (
         <Box
             as="aside"
@@ -40,9 +55,8 @@ function Sidebar() {
                 <Image src={Logo} alt="Lokal Pikol" objectFit="contain" maxHeight={10} />
             </Flex>
             <VStack as="nav" align="stretch" gap={1} px={{ base: 2, md: 4 }} flex="1">
-                {navItems.map((item) => {
-                    const itemPath = item.href.startsWith('http') ? new URL(item.href).pathname : item.href;
-                    const isActive = url.startsWith(itemPath);
+                {navItems.map((item, idx) => {
+                    const isActive = idx === activeIndex;
                     return (
                         <ChakraLink
                             key={item.href}

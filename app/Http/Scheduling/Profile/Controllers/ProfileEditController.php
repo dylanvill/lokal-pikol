@@ -2,7 +2,7 @@
 
 namespace App\Http\Scheduling\Profile\Controllers;
 
-use App\Http\Directory\Resources\ListingResource;
+use App\Http\Scheduling\Profile\ApiModels\FacilityProfileEditApiModel;
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Shared\Enums\GuardEnum;
 use App\Source\Authentication\Models\User;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProfileController extends Controller
+class ProfileEditController extends Controller
 {
     public function show(): Response
     {
@@ -18,8 +18,8 @@ class ProfileController extends Controller
         $user = Auth::guard(GuardEnum::FACILITY->value)->user();
         $listing = $user->facilityAdmin->listing->load('socialLinks', 'media');
 
-        return Inertia::render('profile/profile', [
-            'listing' => new ListingResource($listing),
+        return Inertia::render('profile/edit', [
+            'facility' => FacilityProfileEditApiModel::fromListing($listing),
         ]);
     }
 }
