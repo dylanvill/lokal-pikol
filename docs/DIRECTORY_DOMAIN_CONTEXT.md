@@ -66,3 +66,15 @@ Court owners can update their listing via a secure, time-limited signed URL. No 
 A `Listing` in the Directory is the shared entity that connects both domains. When a listing is onboarded into the Scheduling tool, a `FacilityAdmin` account is created and linked to that listing's `id`. The scheduling tool then uses the listing's `opening_time` and `closing_time` to drive the court slot grid.
 
 Changes made via the Facility Profile page in the Scheduling tool write back to the `Listing` record and reflect immediately in the public directory.
+
+## Public Schedule Page
+
+Scheduling-enabled listings have a public read-only schedule page at `GET /schedule/{slug}` on the directory domain.
+
+**Key decisions:**
+
+- **Slugs** are auto-generated from `Listing.name` via `Str::slug()` at creation time, with `-2`, `-3` collision suffixes. They are locked permanently — never updated if the name changes. Developer edits the DB directly if ever needed. Both `CreateListing` action and `CreateListingCommand` generate the slug.
+- **`is_scheduling_enabled`** is an explicit boolean flag (default `false`), set manually by the developer. It is not derived from `FacilityAdmin` presence — the admin may need days to populate data before the page goes public.
+- **Slot labels** — unavailable slots are labelled "Reserved" regardless of whether they are a regular reservation or block reservation. Actual names are never exposed publicly. This anonymisation happens in `ListingScheduleController::anonymiseSlots()`.
+- **Cross-domain call** — `ListingScheduleController` (Directory HTTP) calls `GenerateCourtSlotsWithAvailability` (Scheduling Source). This is intentionally bidirectional and documented with a comment in the controller. The action is read-only and belongs in the scheduling domain.
+- **`scheduleUrl`** is exposed on `ListingResource` — resolved to the full `/schedule/{slug}` URL when `is_scheduling_enabled`, otherwise `null`. The `ListingCard` shows a "View schedule" row only when this is non-null.
