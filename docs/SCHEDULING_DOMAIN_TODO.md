@@ -1,6 +1,6 @@
 # Scheduling Domain — Todo
 
-**Last Updated:** 2026-05-08  
+**Last Updated:** 2026-05-11  
 **Build sequence:** See `SCHEDULING_DOMAIN_ROADMAP.md`
 
 ---
@@ -82,11 +82,108 @@
 
 ## ⬜ Facility Profile Page
 
-- [ ] Profile controller — load authenticated admin's linked `Listing`
-- [ ] Profile update route + request
-- [ ] Profile page (`resources/js/scheduling/pages/profile/profile.tsx`) — edit listing fields
-- [ ] Wire to Directory domain actions (`UpdateListing`, `UpdateListingMedia`, `UpdateSocialLink`)
-- [ ] Rename "Profile" → "Facility Profile" in sidebar nav
+**Design decisions:**
+
+### Architecture
+
+- **Two top-level routes.** `/profile` is a read-only card view (default landing — sidebar links here). `/profile/edit` is the form page. Save on any section redirects back to `/profile/edit` with a "Changes saved" toast (not `/profile` — admin often wants to edit multiple sections in one sitting).
+- **Card view (`/profile`):** Renders the same `ListingCard` component used on the public directory — the card itself is the "see what players see" confirmation. "Edit profile" button top-right links to `/profile/edit`. No "view on directory" link (the card already is the preview).
+- **Edit view (`/profile/edit`):** Single page, four sections stacked vertically. Each section is its own card-like container with its own form, its own validation, and its own "Save" button. Layout style draws from `resources/js/directory/pages/register.tsx`.
+- **Per-section saves.** No global form, no global "Save profile" button. Each section is an independent `useForm` submitting to its own endpoint. Each section's Save button is always visible but **disabled when the section is clean** (use `form.isDirty` from Inertia v2 useForm).
+- **Per-section success toast:** "Changes saved" via the existing `Inertia::flash(SUCCESS_MESSAGE_KEY, ...)` + `toaster.create({...})` pattern. Same wording across all sections.
+- **One-controller-per-action.** Matches the rest of `app/Http/Scheduling/Court/Controllers/` (`DeleteReservationController`, `CreateBlockReservationController`, etc.).
+
+### Sections
+
+| Section | Fields | Endpoint | Controller |
+|---|---|---|---|
+| **Photos** | Profile photo, cover photo | `POST /profile/photos` | `UpdateFacilityPhotosController@update` |
+| **Listing details** | Name, court type, number of courts, public contact email, phone, Google Maps URL, booking URL | `PATCH /profile/details` | `UpdateFacilityDetailsController@update` |
+| **Operating hours** | Opening time, closing time (hours-tightening rule applies; conflict banner renders inside this section card) | `PATCH /profile/hours` | `UpdateFacilityHoursController@update` |
+| **Social links** | Facebook URL, Instagram URL (each row has Save + Remove). Other `SocialLinkEnum` platforms (DUPR, Reclub, TikTok, etc.) deferred — to add when needed. | `PATCH /profile/social-links` (upsert array) + `DELETE /profile/social-links/{platform}` | `UpdateFacilitySocialLinksController@update`, `DeleteFacilitySocialLinkController@destroy` |
+
+### Field rules
+
+- **Editable:** `name`, `court_type`, `number_of_courts`, `email`, `phone`, `opening_time`, `closing_time`, `google_maps_url`, `booking_url`, profile photo, cover photo, Facebook URL, Instagram URL.
+- **Read-only:** `city`, `address` — facilities rarely change locations.
+- **`number_of_courts`:** Free integer, no constraint. It's a directory-filter/marketing number, not bound to the actual count of `Court` records. Drift is acceptable.
+- **Email:** Labelled "Public contact email" with helper text "Shown on your listing for players to reach you. This is not your login email." Same field as `register.tsx`, different label only.
+- **Phone:** Stored with `+63` prefix. The `FacilityProfileEditApiModel`'s factory method strips the prefix for the input value (kept in the HTTP layer where the concern belongs — not on the Listing model); controller re-prefixes on save. If a legacy listing's phone is stored without `+63`, pass it through as-is.
+- **Number of courts:** Chakra `RadioCard` component, values 1–10. Rebuild as a scheduling-specific component (do not reuse `directory/components/RegistrationForm/NumberOfCourtsSection.tsx` cross-domain).
+- **Court type:** Same — rebuild as a scheduling-specific component; do not reuse `directory/components/RegistrationForm/CourtTypesSection.tsx`.
+- **Photos:** Always required (consistent with create flow) — replace only, no remove action. Current photos pre-populate the upload widgets via a `currentPhotoUrl` prop on new scheduling-specific photo components.
+- **Validation:** Mirrors `CreateListingRequest` rules per field, no new constraints on edit.
+
+### Hours-tightening conflict rule (asymmetric — only tightening triggers validation)
+
+- **Opening LATER** (e.g. 06:00 → 08:00): block save if any future regular reservation (`reservation_date >= today`) **or** any block reservation has `start_time < new_opening` for any court at this listing.
+- **Closing EARLIER** (e.g. 22:00 → 20:00): block save if any future regular reservation **or** any block reservation has `end_time > new_closing` for any court at this listing.
+- **Loosening** hours in either direction: no validation, save always allowed.
+- **Conflict list** (court name + date for regular reservations / recurring day for block reservations + time range) flashed via `Inertia::flash('hours-conflicts', ...)` and rendered in a `DangerAlert` banner **inside the Operating Hours section card** (above the time inputs). Short inline error on the time field points to the banner.
+- **Past reservations are not flagged** — they stay in the DB and on the Reservations calendar regardless of hours change.
+
+### Cross-domain
+
+- Scheduling HTTP layer orchestrates Directory domain **actions** (`UpdateListing`, `UpdateListingMedia`, `UpdateSocialLink`) and reuses Directory **resources** for read shapes (`ListingResource` on the card view). Direction: Scheduling → Directory (Scheduling already depends on Directory via `FacilityAdmin → Listing`).
+- **Do not reuse Directory frontend components cross-domain.** Rebuild scheduling-specific sub-components (court type radio cards, number-of-courts radio cards, photo upload widgets) in `resources/js/scheduling/components/profile/`. Sharing would couple the two domains' UX evolution.
+
+### Out of scope (intentional)
+
+- Cancel button on the edit page.
+- Dirty-state warning when navigating away.
+- Frontend tests (no Jest/RTL setup in `resources/js/scheduling`).
+- Backend tests deferred for now — the `NoConflictingHoursRule` is the highest-value target when we revisit.
+
+---
+
+**Backend**
+
+- [ ] `UpdateListing` action — `app/Source/Directory/Actions/UpdateListing/UpdateListing.php` + `Dtos/UpdateListingData.php`.
+  - DTO has all editable Listing columns as **nullable**.
+  - Signature: `update(Listing $listing, UpdateListingData $data): Listing`.
+  - Body: `$listing->fill(array_filter($data->toArray(), fn ($v) => $v !== null))`, then save.
+  - Used by both the details and hours controllers — each builds a partial DTO with only its fields non-null.
+- [ ] Add `delete(Listing $listing, SocialLinkEnum $social): void` method to existing `UpdateSocialLink` action (`app/Source/Directory/Actions/UpdateSocialLink/UpdateSocialLink.php`). Removes the matching `SocialLink` row. No-op if not present.
+- [ ] Controllers (one per action, in `app/Http/Scheduling/Profile/Controllers/`):
+  - [ ] `ProfileController@show` — render `profile/profile` (card view). Passes the listing payload via `Directory\Resources\ListingResource` (reused; matches the card's data shape).
+  - [ ] `ProfileEditController@show` — render `profile/edit` (form). Passes a `FacilityProfileEditApiModel` (new) carrying current values for all four sections.
+  - [ ] `UpdateFacilityPhotosController@update` — calls `UpdateListingMedia` for profile + cover (only if files present in request). Flashes "Changes saved". Redirects back to `/profile/edit`.
+  - [ ] `UpdateFacilityDetailsController@update` — builds partial `UpdateListingData` (non-hours fields), calls `UpdateListing`. Flash + redirect.
+  - [ ] `UpdateFacilityHoursController@update` — builds partial `UpdateListingData` (opening/closing only), calls `UpdateListing`. Flash + redirect.
+  - [ ] `UpdateFacilitySocialLinksController@update` — iterates the `socialLinks` array from the request, calls `UpdateSocialLink::update()` for each non-empty entry. Flash + redirect.
+  - [ ] `DeleteFacilitySocialLinkController@destroy` — calls `UpdateSocialLink::delete()` for the `{platform}` route param. Flash + redirect.
+- [ ] Form Requests (in `app/Http/Scheduling/Profile/Requests/`):
+  - [ ] `UpdateFacilityPhotosRequest` — validates `profilePhoto` and `coverPhoto` as optional uploaded image files (jpeg/png).
+  - [ ] `UpdateFacilityDetailsRequest` — mirrors `CreateListingRequest` rules minus `city`, `address`, `openingTime`, `closingTime`.
+  - [ ] `UpdateFacilityHoursRequest` — validates `openingTime` and `closingTime` as required times. Applies `NoConflictingHoursRule` to both, using the directional check (compares against current stored values to decide whether to validate).
+  - [ ] `UpdateFacilitySocialLinksRequest` — validates `socialLinks` as a required array. Each item: `platform` required + `Rule::enum(SocialLinkEnum::class)`; `url` nullable + valid URL.
+- [ ] `NoConflictingHoursRule` — `app/Http/Scheduling/Profile/Rules/NoConflictingHoursRule.php`. Constructed with the authenticated admin's listing + the field being validated (`opening` or `closing`). The "tightening vs loosening" comparison reads the **current stored** `opening_time` / `closing_time` from the listing (not any prior form value). On validation:
+  - If new value loosens vs current stored value → pass.
+  - If new value tightens → query the listing's courts for conflicting `Reservation` rows (`reservation_date >= today`) and `BlockReservation` rows. If any → fail with short inline message and flash the structured conflict list via `Inertia::flash('hours-conflicts', [...])`.
+- [ ] `FacilityProfileEditApiModel` — Spatie Data ApiModel at `app/Http/Scheduling/Profile/ApiModels/FacilityProfileEditApiModel.php`. Fields: `name`, `courtType`, `numberOfCourts`, `email`, `phone` (with `+63` stripped), `openingTime`, `closingTime`, `googleMapsUrl`, `bookingUrl`, `facebookUrl`, `instagramUrl`, `currentProfilePhotoUrl`, `currentCoverPhotoUrl`.
+- [ ] Routes (`routes/scheduling.php`):
+  - `GET    /profile`                              → `ProfileController@show`
+  - `GET    /profile/edit`                         → `ProfileEditController@show`
+  - `POST   /profile/photos`                       → `UpdateFacilityPhotosController@update`
+  - `PATCH  /profile/details`                      → `UpdateFacilityDetailsController@update`
+  - `PATCH  /profile/hours`                        → `UpdateFacilityHoursController@update`
+  - `PATCH  /profile/social-links`                 → `UpdateFacilitySocialLinksController@update`
+  - `DELETE /profile/social-links/{platform}`      → `DeleteFacilitySocialLinkController@destroy`
+
+**Frontend**
+
+- [ ] `profile/profile.tsx` — card view. Renders `directory/components/ListingCard` with the authenticated admin's listing. "Edit profile" button (top-right) uses Wayfinder `ProfileEditController.show().url`.
+- [ ] `profile/edit.tsx` — edit page. Renders four section components stacked. Each section owns its own `useForm` instance.
+- [ ] Section components (in `resources/js/scheduling/components/profile/`):
+  - [ ] `FacilityPhotosSection` — single combined Save button for both photos. Uses new `FacilityProfilePhotoSection` + `FacilityCoverPhotoSection` sub-components, each accepting `currentPhotoUrl` to pre-populate.
+  - [ ] `FacilityDetailsSection` — name, court type, number of courts, public contact email (with helper text), phone (with `+63` startElement), Google Maps URL, booking URL.
+  - [ ] `FacilityHoursSection` — opening time, closing time. Hours conflict banner (`DangerAlert`) rendered inside this section, reading `hours-conflicts` from Inertia flash.
+  - [ ] `FacilitySocialLinksSection` — two rows (Facebook, Instagram). Each row: URL input + per-row "Remove" button when a link exists. Section-wide "Save" button submits the array of current URL values.
+  - [ ] `FacilityCourtTypeRadioCard` — Chakra `RadioCard` covering `FacilityCourtTypeEnum` values (Covered / Outdoor / Covered and Outdoor). Rebuild for scheduling — do not reuse Directory's `CourtTypesSection`.
+  - [ ] `FacilityNumberOfCourtsRadioCard` — Chakra `RadioCard`, values 1–10. Rebuild for scheduling — do not reuse Directory's `NumberOfCourtsSection`.
+- [ ] Disabled-when-clean Save button pattern: `disabled={form.processing || !form.isDirty}` on each section.
+- [ ] Wayfinder typed actions imported for all seven endpoints (`@/actions/App/Http/Scheduling/Profile/Controllers/...`).
+- [ ] Sidebar nav — uncomment and rename "Profile" → "Facility Profile" in `resources/js/scheduling/components/navigation/Sidebar.tsx`. Use `ProfileController.show().url`.
 
 ---
 
