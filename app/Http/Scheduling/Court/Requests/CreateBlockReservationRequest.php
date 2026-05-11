@@ -2,6 +2,7 @@
 
 namespace App\Http\Scheduling\Court\Requests;
 
+use App\Http\Scheduling\Court\Rules\CourtBelongsToAdminListing;
 use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class CreateBlockReservationRequest extends FormRequest
     {
         return [
             'courtIds' => ['required', 'array'],
-            'courtIds.*' => ['required', 'exists:courts,uuid'],
+            'courtIds.*' => ['required', 'exists:courts,uuid', new CourtBelongsToAdminListing],
             'name' => ['required', 'string'],
             'daysOfTheWeek' => ['required', 'array'],
             'daysOfTheWeek.*' => ['required', 'string', 'in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday'],

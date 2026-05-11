@@ -2,6 +2,7 @@
 
 namespace App\Http\Scheduling\Court\Controllers;
 
+use App\Http\Scheduling\Court\Requests\DeleteBlockReservationRequest;
 use App\Source\Scheduling\Court\Models\BlockReservation;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -11,7 +12,7 @@ class DeleteBlockReservationController
 {
     const SUCCESS_MESSAGE_KEY = 'delete-block-reservation-success';
 
-    public function destroy(BlockReservation $blockReservation): RedirectResponse
+    public function destroy(BlockReservation $blockReservation, DeleteBlockReservationRequest $request): RedirectResponse
     {
         $message = $this->buildSuccessMessage($blockReservation);
 

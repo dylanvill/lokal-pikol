@@ -1,6 +1,6 @@
 # Scheduling Domain — Todo
 
-**Last Updated:** 2026-05-11  
+**Last Updated:** 2026-05-11 (facility profile page + nav updates done)  
 **Build sequence:** See `SCHEDULING_DOMAIN_ROADMAP.md`
 
 ---
@@ -80,7 +80,7 @@
 
 ---
 
-## ⬜ Facility Profile Page
+## ✅ Done — Facility Profile Page
 
 **Design decisions:**
 
@@ -138,30 +138,30 @@
 
 **Backend**
 
-- [ ] `UpdateListing` action — `app/Source/Directory/Actions/UpdateListing/UpdateListing.php` + `Dtos/UpdateListingData.php`.
+- [x] `UpdateListing` action — `app/Source/Directory/Actions/UpdateListing/UpdateListing.php` + `Dtos/UpdateListingData.php`.
   - DTO has all editable Listing columns as **nullable**.
   - Signature: `update(Listing $listing, UpdateListingData $data): Listing`.
   - Body: `$listing->fill(array_filter($data->toArray(), fn ($v) => $v !== null))`, then save.
   - Used by both the details and hours controllers — each builds a partial DTO with only its fields non-null.
-- [ ] Add `delete(Listing $listing, SocialLinkEnum $social): void` method to existing `UpdateSocialLink` action (`app/Source/Directory/Actions/UpdateSocialLink/UpdateSocialLink.php`). Removes the matching `SocialLink` row. No-op if not present.
-- [ ] Controllers (one per action, in `app/Http/Scheduling/Profile/Controllers/`):
-  - [ ] `ProfileController@show` — render `profile/profile` (card view). Passes the listing payload via `Directory\Resources\ListingResource` (reused; matches the card's data shape).
-  - [ ] `ProfileEditController@show` — render `profile/edit` (form). Passes a `FacilityProfileEditApiModel` (new) carrying current values for all four sections.
-  - [ ] `UpdateFacilityPhotosController@update` — calls `UpdateListingMedia` for profile + cover (only if files present in request). Flashes "Changes saved". Redirects back to `/profile/edit`.
-  - [ ] `UpdateFacilityDetailsController@update` — builds partial `UpdateListingData` (non-hours fields), calls `UpdateListing`. Flash + redirect.
-  - [ ] `UpdateFacilityHoursController@update` — builds partial `UpdateListingData` (opening/closing only), calls `UpdateListing`. Flash + redirect.
-  - [ ] `UpdateFacilitySocialLinksController@update` — iterates the `socialLinks` array from the request, calls `UpdateSocialLink::update()` for each non-empty entry. Flash + redirect.
-  - [ ] `DeleteFacilitySocialLinkController@destroy` — calls `UpdateSocialLink::delete()` for the `{platform}` route param. Flash + redirect.
-- [ ] Form Requests (in `app/Http/Scheduling/Profile/Requests/`):
-  - [ ] `UpdateFacilityPhotosRequest` — validates `profilePhoto` and `coverPhoto` as optional uploaded image files (jpeg/png).
-  - [ ] `UpdateFacilityDetailsRequest` — mirrors `CreateListingRequest` rules minus `city`, `address`, `openingTime`, `closingTime`.
-  - [ ] `UpdateFacilityHoursRequest` — validates `openingTime` and `closingTime` as required times. Applies `NoConflictingHoursRule` to both, using the directional check (compares against current stored values to decide whether to validate).
-  - [ ] `UpdateFacilitySocialLinksRequest` — validates `socialLinks` as a required array. Each item: `platform` required + `Rule::enum(SocialLinkEnum::class)`; `url` nullable + valid URL.
-- [ ] `NoConflictingHoursRule` — `app/Http/Scheduling/Profile/Rules/NoConflictingHoursRule.php`. Constructed with the authenticated admin's listing + the field being validated (`opening` or `closing`). The "tightening vs loosening" comparison reads the **current stored** `opening_time` / `closing_time` from the listing (not any prior form value). On validation:
+- [x] Add `delete(Listing $listing, SocialLinkEnum $social): void` method to existing `UpdateSocialLink` action (`app/Source/Directory/Actions/UpdateSocialLink/UpdateSocialLink.php`). Removes the matching `SocialLink` row. No-op if not present.
+- [x] Controllers (one per action, in `app/Http/Scheduling/Profile/Controllers/`):
+  - [x] `ProfileController@show` — render `profile/profile` (card view). Passes the listing payload via `Directory\Resources\ListingResource` (reused; matches the card's data shape).
+  - [x] `ProfileEditController@show` — render `profile/edit` (form). Passes a `FacilityProfileEditApiModel` (new) carrying current values for all four sections.
+  - [x] `UpdateFacilityPhotosController@update` — calls `UpdateListingMedia` for profile + cover (only if files present in request). Flashes "Changes saved". Redirects back to `/profile/edit`.
+  - [x] `UpdateFacilityDetailsController@update` — builds partial `UpdateListingData` (non-hours fields), calls `UpdateListing`. Flash + redirect.
+  - [x] `UpdateFacilityHoursController@update` — builds partial `UpdateListingData` (opening/closing only), calls `UpdateListing`. Flash + redirect.
+  - [x] `UpdateFacilitySocialLinksController@update` — iterates the `socialLinks` array from the request, calls `UpdateSocialLink::update()` for each non-empty entry. Flash + redirect.
+  - [x] `DeleteFacilitySocialLinkController@destroy` — calls `UpdateSocialLink::delete()` for the `{platform}` route param. Flash + redirect.
+- [x] Form Requests (in `app/Http/Scheduling/Profile/Requests/`):
+  - [x] `UpdateFacilityPhotosRequest` — validates `profilePhoto` and `coverPhoto` as optional uploaded image files (jpeg/png).
+  - [x] `UpdateFacilityDetailsRequest` — mirrors `CreateListingRequest` rules minus `city`, `address`, `openingTime`, `closingTime`.
+  - [x] `UpdateFacilityHoursRequest` — validates `openingTime` and `closingTime` as required times. Applies `NoConflictingHoursRule` to both, using the directional check (compares against current stored values to decide whether to validate).
+  - [x] `UpdateFacilitySocialLinksRequest` — validates `socialLinks` as a required array. Each item: `platform` required + `Rule::enum(SocialLinkEnum::class)`; `url` nullable + valid URL.
+- [x] `NoConflictingHoursRule` — `app/Http/Scheduling/Profile/Rules/NoConflictingHoursRule.php`. Constructed with the authenticated admin's listing + the field being validated (`opening` or `closing`). The "tightening vs loosening" comparison reads the **current stored** `opening_time` / `closing_time` from the listing (not any prior form value). On validation:
   - If new value loosens vs current stored value → pass.
   - If new value tightens → query the listing's courts for conflicting `Reservation` rows (`reservation_date >= today`) and `BlockReservation` rows. If any → fail with short inline message and flash the structured conflict list via `Inertia::flash('hours-conflicts', [...])`.
-- [ ] `FacilityProfileEditApiModel` — Spatie Data ApiModel at `app/Http/Scheduling/Profile/ApiModels/FacilityProfileEditApiModel.php`. Fields: `name`, `courtType`, `numberOfCourts`, `email`, `phone` (with `+63` stripped), `openingTime`, `closingTime`, `googleMapsUrl`, `bookingUrl`, `facebookUrl`, `instagramUrl`, `currentProfilePhotoUrl`, `currentCoverPhotoUrl`.
-- [ ] Routes (`routes/scheduling.php`):
+- [x] `FacilityProfileEditApiModel` — Spatie Data ApiModel at `app/Http/Scheduling/Profile/ApiModels/FacilityProfileEditApiModel.php`. Fields: `name`, `courtType`, `numberOfCourts`, `email`, `phone` (with `+63` stripped), `openingTime`, `closingTime`, `googleMapsUrl`, `bookingUrl`, `facebookUrl`, `instagramUrl`, `currentProfilePhotoUrl`, `currentCoverPhotoUrl`.
+- [x] Routes (`routes/scheduling.php`):
   - `GET    /profile`                              → `ProfileController@show`
   - `GET    /profile/edit`                         → `ProfileEditController@show`
   - `POST   /profile/photos`                       → `UpdateFacilityPhotosController@update`
@@ -172,36 +172,37 @@
 
 **Frontend**
 
-- [ ] `profile/profile.tsx` — card view. Renders `directory/components/ListingCard` with the authenticated admin's listing. "Edit profile" button (top-right) uses Wayfinder `ProfileEditController.show().url`.
-- [ ] `profile/edit.tsx` — edit page. Renders four section components stacked. Each section owns its own `useForm` instance.
-- [ ] Section components (in `resources/js/scheduling/components/profile/`):
-  - [ ] `FacilityPhotosSection` — single combined Save button for both photos. Uses new `FacilityProfilePhotoSection` + `FacilityCoverPhotoSection` sub-components, each accepting `currentPhotoUrl` to pre-populate.
-  - [ ] `FacilityDetailsSection` — name, court type, number of courts, public contact email (with helper text), phone (with `+63` startElement), Google Maps URL, booking URL.
-  - [ ] `FacilityHoursSection` — opening time, closing time. Hours conflict banner (`DangerAlert`) rendered inside this section, reading `hours-conflicts` from Inertia flash.
-  - [ ] `FacilitySocialLinksSection` — two rows (Facebook, Instagram). Each row: URL input + per-row "Remove" button when a link exists. Section-wide "Save" button submits the array of current URL values.
-  - [ ] `FacilityCourtTypeRadioCard` — Chakra `RadioCard` covering `FacilityCourtTypeEnum` values (Covered / Outdoor / Covered and Outdoor). Rebuild for scheduling — do not reuse Directory's `CourtTypesSection`.
-  - [ ] `FacilityNumberOfCourtsRadioCard` — Chakra `RadioCard`, values 1–10. Rebuild for scheduling — do not reuse Directory's `NumberOfCourtsSection`.
-- [ ] Disabled-when-clean Save button pattern: `disabled={form.processing || !form.isDirty}` on each section.
-- [ ] Wayfinder typed actions imported for all seven endpoints (`@/actions/App/Http/Scheduling/Profile/Controllers/...`).
-- [ ] Sidebar nav — uncomment and rename "Profile" → "Facility Profile" in `resources/js/scheduling/components/navigation/Sidebar.tsx`. Use `ProfileController.show().url`.
+- [x] `profile/profile.tsx` — card view. Renders `directory/components/ListingCard` with the authenticated admin's listing. "Edit profile" button (top-right) uses Wayfinder `ProfileEditController.show().url`.
+- [x] `profile/edit.tsx` — edit page. Renders four section components stacked. Each section owns its own `useForm` instance.
+- [x] Section components (in `resources/js/scheduling/components/profile/`):
+  - [x] `FacilityPhotosSection` — single combined Save button for both photos. Uses new `FacilityProfilePhotoSection` + `FacilityCoverPhotoSection` sub-components, each accepting `currentPhotoUrl` to pre-populate.
+  - [x] `FacilityDetailsSection` — name, court type, number of courts, public contact email (with helper text), phone (with `+63` startElement), Google Maps URL, booking URL.
+  - [x] `FacilityHoursSection` — opening time, closing time. Hours conflict banner (`DangerAlert`) rendered inside this section, reading `hours-conflicts` from Inertia flash.
+  - [x] `FacilitySocialLinksSection` — two rows (Facebook, Instagram). Each row: URL input + per-row "Remove" button when a link exists. Section-wide "Save" button submits the array of current URL values.
+  - [x] `FacilityCourtTypeRadioCard` — Chakra `RadioCard` covering `FacilityCourtTypeEnum` values (Covered / Outdoor / Covered and Outdoor). Rebuild for scheduling — do not reuse Directory's `CourtTypesSection`.
+  - [x] `FacilityNumberOfCourtsRadioCard` — Chakra `RadioCard`, values 1–10. Rebuild for scheduling — do not reuse Directory's `NumberOfCourtsSection`.
+- [x] Disabled-when-clean Save button pattern: `disabled={form.processing || !form.isDirty}` on each section.
+- [x] Wayfinder typed actions imported for all seven endpoints (`@/actions/App/Http/Scheduling/Profile/Controllers/...`).
+- [x] Sidebar nav — uncomment and rename "Profile" → "Facility Profile" in `resources/js/scheduling/components/navigation/Sidebar.tsx`. Use `ProfileController.show().url`.
 
 ---
 
-## ⬜ Nav Updates
+## ✅ Done — Nav Updates
 
-- [ ] Add Reservations nav item with icon
-- [ ] Add Availability nav item with icon
-- [ ] Rename Profile → Facility Profile and uncomment in sidebar
+- [x] Add Reservations nav item with icon
+- [x] Add Availability nav item with icon
+- [x] Rename Profile → Facility Profile and uncomment in sidebar
 
 ---
 
-## 🔒 Deferred — Authorisation Pass
+## ✅ Done — Authorisation Pass
 
-> Do in one pass once all features are built. Low risk now (single admin).
-
-- [ ] `ReserveCourtRequest::authorize()` — verify court belongs to authenticated admin's listing
-- [ ] `CreateBlockReservationRequest::authorize()` — verify all `courtIds` belong to authenticated admin's listing (custom validation rule)
-- [ ] Audit all other routes for similar gaps
+- [x] `ReserveCourtRequest::authorize()` — checks `$this->route('court')->listing_id === admin->listing_id`
+- [x] `CreateBlockReservationRequest` — `courtIds.*` validated by new `CourtBelongsToAdminListing` rule (`app/Http/Scheduling/Court/Rules/`)
+- [x] `DeleteReservationRequest` (new thin Form Request) — checks `reservation->facility_id === admin->listing_id`
+- [x] `DeleteBlockReservationRequest` (new thin Form Request) — checks `blockReservation->listing_id === admin->listing_id`
+- [x] Profile routes — no cross-listing risk; listing always derived from authenticated admin
+- [x] `CreateCourtController` — listing always derived from authenticated admin
 
 ---
 

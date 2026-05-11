@@ -17,17 +17,19 @@ class ReserveCourtRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Auth::check(GuardEnum::FACILITY->value);
+        $adminListingId = Auth::guard(GuardEnum::FACILITY->value)->user()->facilityAdmin->listing_id;
+
+        return $this->route('court')->listing_id === $adminListingId;
     }
 
     public function rules(): array
     {
         return [
-            'courtId'         => ['required', 'string', 'exists:courts,uuid'],
+            'courtId' => ['required', 'string', 'exists:courts,uuid'],
             'reservationName' => ['required', 'string', 'max:255'],
-            'date'             => ['required', 'date_format:Y-m-d'],
-            'startTime'       => ['required', 'date_format:H:i'],
-            'endTime'         => ['required', 'date_format:H:i', 'after:start_time'],
+            'date' => ['required', 'date_format:Y-m-d'],
+            'startTime' => ['required', 'date_format:H:i'],
+            'endTime' => ['required', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Scheduling\Court\Controllers;
 
+use App\Http\Scheduling\Court\Requests\DeleteReservationRequest;
 use App\Source\Scheduling\Court\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -11,7 +12,7 @@ class DeleteReservationController
 {
     const SUCCESS_MESSAGE_KEY = 'delete-reservation-success';
 
-    public function destroy(Reservation $reservation): RedirectResponse
+    public function destroy(Reservation $reservation, DeleteReservationRequest $request): RedirectResponse
     {
         $message = $this->buildSuccessMessage($reservation);
 
