@@ -18,8 +18,8 @@ interface NavItem {
 const navItems: NavItem[] = [
     { label: 'Courts', href: CourtsController.show.url(), icon: <LuLayoutGrid /> },
     { label: 'Reservations', href: ReservationsController.show.url(), icon: <LuCalendar /> },
-    { label: 'Availability', href: AvailabilityController.show.url(), icon: <LuCalendarCheck /> },
     { label: 'Block reservations', href: BlockReservationsController.show.url(), icon: <LuCalendarX2 /> },
+    { label: 'Availability', href: AvailabilityController.show.url(), icon: <LuCalendarCheck /> },
     { label: 'Facility Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
 ];
 
