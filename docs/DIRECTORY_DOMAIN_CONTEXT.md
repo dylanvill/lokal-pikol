@@ -4,7 +4,7 @@
 
 ## What It Is
 
-A free, public pickleball court directory for the Negros region. Players browse to find courts near them. No accounts, no booking, no payments — pure discovery.
+A free, public pickleball court directory for Negros Oriental (Philippines). Players browse to find courts near them. No accounts, no booking, no payments — pure discovery.
 
 ## Who Uses It
 
@@ -17,7 +17,7 @@ A free, public pickleball court directory for the Negros region. Players browse 
 ## Core Features
 
 ### Public Directory
-- Searchable list of all Negros pickleball courts
+- Searchable list of all Negros Oriental pickleball courts
 - Filter by city
 - Each listing shows: name, location, operating hours, court type, number of courts, contact links (Facebook, Instagram, Google Maps, phone)
 - No login required to browse
@@ -39,7 +39,7 @@ Court owners can update their listing via a secure, time-limited signed URL. No 
 | Field | Notes |
 |-------|-------|
 | Name | Court facility name |
-| City | Negros city (drives city filter) |
+| City | Negros Oriental city (drives city filter) |
 | Address | Physical address |
 | Court type | Surface/type of court |
 | Number of courts | Display field — how many courts the facility has |

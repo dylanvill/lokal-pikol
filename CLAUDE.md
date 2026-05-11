@@ -226,7 +226,7 @@ Use Wayfinder to generate TypeScript functions for Laravel routes. Import from `
 
 # Project: Lokal Pikol
 
-A pickleball court directory and scheduling platform for the Negros region (Philippines).
+A pickleball court directory and scheduling platform for Negros Oriental (Philippines).
 
 ## Active Domains
 
@@ -249,6 +249,7 @@ A pickleball court directory and scheduling platform for the Negros region (Phil
 
 ## Key Docs (load only what's relevant)
 
+- `docs/PRODUCT_PLAN.md` — canonical business plan (vision, mode, pricing, partnerships, risk posture)
 - `docs/DIRECTORY_DOMAIN_CONTEXT.md` — directory product context and design decisions
 - `docs/DIRECTORY_DOMAIN_ROADMAP.md` — directory feature backlog
 - `docs/DIRECTORY_DOMAIN_TODO.md` — directory concrete todo list (start here for directory work)
