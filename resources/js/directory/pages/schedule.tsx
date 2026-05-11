@@ -116,7 +116,7 @@ function SchedulePage({ date, listing, courts }: SchedulePageProps) {
                     </DatePicker.Root>
                 </VStack>
 
-                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
+                <SimpleGrid columns={{ base: 1, md: 1, lg: 2, xl: 3 }} gap={4}>
                     {courts.map((court) => (
                         <ScheduleCourtCard key={court.id} court={court} />
                     ))}
