@@ -1,7 +1,8 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuBuilding2, LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid } from 'react-icons/lu';
+import { LuBuilding2, LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid, LuLogOut } from 'react-icons/lu';
+import LogoutController from '@/actions/App/Http/Scheduling/Auth/Controllers/LogoutController';
 import AvailabilityController from '@/actions/App/Http/Scheduling/Court/Controllers/AvailabilityController';
 import BlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/BlockReservationsController';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
@@ -29,9 +30,9 @@ function resolveItemPath(href: string): string {
 }
 
 function Sidebar() {
-    const { url, props } = usePage<SchedulingPageProps>();
-    const { facility } = props;
+    const { url } = usePage<SchedulingPageProps>();
     const currentPath = url.split('?')[0];
+    const { post, processing } = useForm({});
 
     const activeIndex = navItems.reduce<number>((best, item, idx) => {
         const path = resolveItemPath(item.href);
@@ -85,25 +86,28 @@ function Sidebar() {
                     );
                 })}
             </VStack>
-            <Box
-                px={{ base: 2, md: 4 }}
-                py={4}
-                borderTopWidth={1}
-                borderColor="blue.800"
-            >
-                <Flex align="center" gap={2} justify={{ base: 'center', md: 'flex-start' }}>
-                    <Box fontSize="lg" color="blue.300" flexShrink={0}>
-                        <LuBuilding2 />
+            <Box px={{ base: 2, md: 4 }} py={4} borderTopWidth={1} borderColor="blue.800">
+                <ChakraLink
+                    display="flex"
+                    alignItems="center"
+                    gap={3}
+                    px={3}
+                    py={2.5}
+                    borderRadius="md"
+                    fontSize="sm"
+                    fontWeight="medium"
+                    color="blue.100"
+                    cursor="pointer"
+                    _hover={{ bg: 'blue.800', color: 'white', textDecoration: 'none' }}
+                    justifyContent={{ base: 'center', md: 'flex-start' }}
+                    opacity={processing ? 0.6 : 1}
+                    onClick={() => post(LogoutController.logout.url())}
+                >
+                    <Box fontSize="lg" display="flex" alignItems="center">
+                        <LuLogOut />
                     </Box>
-                    <Box display={{ base: 'none', md: 'block' }} minW={0}>
-                        <Text fontSize="sm" fontWeight="medium" color="white" truncate>
-                            {facility.name}
-                        </Text>
-                        <Text fontSize="xs" color="blue.300">
-                            {facility.city}
-                        </Text>
-                    </Box>
-                </Flex>
+                    <Text display={{ base: 'none', md: 'inline' }}>Log out</Text>
+                </ChakraLink>
             </Box>
         </Box>
     );

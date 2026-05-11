@@ -10,6 +10,8 @@ class Routes
 
     const LOGIN_POST = 'login.post';
 
+    const LOGOUT = 'logout';
+
     const PROFILE = 'profile';
 
     const PROFILE_EDIT = 'profile.edit';

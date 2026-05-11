@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Scheduling\Auth\Controllers\LoginController;
+use App\Http\Scheduling\Auth\Controllers\LogoutController;
 use App\Http\Scheduling\Court\Controllers\AvailabilityController;
 use App\Http\Scheduling\Court\Controllers\BlockReservationsController;
 use App\Http\Scheduling\Court\Controllers\CourtsController;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [LoginController::class, 'show'])->name(Routes::LOGIN);
 Route::post('/login', [LoginController::class, 'login'])->name(Routes::LOGIN_POST);
+Route::post('/logout', [LogoutController::class, 'logout'])->name(Routes::LOGOUT);
 
 Route::group(['middleware' => [SchedulingAuthenticate::class.':'.GuardEnum::FACILITY->value]], function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name(Routes::PROFILE);
