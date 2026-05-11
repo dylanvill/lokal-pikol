@@ -21,7 +21,9 @@
       "Bash(git commit *)",
       "Bash(git add *)",
       "mcp__laravel-boost__search-docs",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "mcp__laravel-boost__database-schema"
     ]
   },
   "enabledMcpjsonServers": [

@@ -6,6 +6,7 @@ import { show } from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsCont
 import AddCourtModal from '../../components/court/AddCourtModal';
 import CourtCard from '../../components/court/CourtCard';
 import CourtPageDatePicker, { type ValueChangeDetails } from '../../components/court/CourtPageDatePicker';
+import CourtsEmptyState from '../../components/court/CourtsEmptyState';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type Court from '../../models/Court';
 import { type DateString } from '../../types/DateTime';
@@ -38,11 +39,15 @@ function CourtsPage() {
                     <AddCourtModal />
                 </HStack>
 
-                <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gap={4}>
-                    {courts.map((court) => (
-                        <CourtCard key={court.id} id={court.id} name={court.name} slots={court.slots} date={dateString} />
-                    ))}
-                </SimpleGrid>
+                {courts.length === 0 ? (
+                    <CourtsEmptyState />
+                ) : (
+                    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gap={4}>
+                        {courts.map((court) => (
+                            <CourtCard key={court.id} id={court.id} name={court.name} slots={court.slots} date={dateString} />
+                        ))}
+                    </SimpleGrid>
+                )}
             </VStack>
         </SchedulingLayout>
     );

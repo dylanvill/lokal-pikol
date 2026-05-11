@@ -2,12 +2,12 @@ import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import CourtsController from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 
-function ReservationsEmptyState() {
+function BlockReservationsEmptyState() {
     return (
         <Box py={12} px={6} borderWidth="1px" borderStyle="dashed" borderRadius="md" borderColor="gray.300" textAlign="center">
             <Stack gap={3} align="center">
                 <Text fontSize="md" color="gray.600">
-                    No courts yet. Add one to start logging reservations.
+                    No courts yet. Add a court before setting up block reservations.
                 </Text>
                 <Link href={CourtsController.show.url()}>
                     <Button size="sm" colorPalette="blue">
@@ -19,4 +19,4 @@ function ReservationsEmptyState() {
     );
 }
 
-export default ReservationsEmptyState;
+export default BlockReservationsEmptyState;
