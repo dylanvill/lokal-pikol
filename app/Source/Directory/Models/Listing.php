@@ -22,6 +22,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * @property int $id
  * @property string $uuid
+ * @property string|null $slug
+ * @property bool $is_scheduling_enabled
  * @property string $name
  * @property string $city
  * @property string $address
@@ -61,6 +63,13 @@ class Listing extends Model implements HasMedia
         'google_maps_url',
         'booking_url',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_scheduling_enabled' => 'boolean',
+        ];
+    }
 
     public function facilityAdmins(): HasMany
     {
