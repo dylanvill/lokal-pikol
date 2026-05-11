@@ -1,6 +1,6 @@
 # Scheduling Domain — Todo
 
-**Last Updated:** 2026-05-11 (facility profile page + nav updates done)  
+**Last Updated:** 2026-05-11 (logout + login page branding done)  
 **Build sequence:** See `SCHEDULING_DOMAIN_ROADMAP.md`
 
 ---
@@ -213,11 +213,11 @@
 
 ---
 
-## To-Do — Auth & Navigation Polish
+## ✅ Done — Auth & Navigation Polish
 
-- [ ] **Logout** — add a logout button/link to the sidebar navigation
+- [x] **Logout** — logout button in sidebar footer; `POST /logout` → `LogoutController`; uses `useForm({})` pattern
+- [x] **Login page branding** — logo, caption, and full-width submit button on the facility admin login page
 - [ ] **Scheduling dashboard branding** — add Lokal Pikol branding to the main dashboard/home screen
-- [ ] **Login page branding** — brand the facility admin login page (logo, colours, copy)
 - [ ] **Change password** — scaffolding for facility admins to set their initial password after account creation (triggered after the admin account is first created for a listing)
 - [ ] **Forgot password** — scaffolding for facility admins to reset their password via email
 
