@@ -1,7 +1,8 @@
 import { Box, Flex, Image, VStack, Link as ChakraLink, Text } from '@chakra-ui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import React from 'react';
-import { LuBuilding2, LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid, LuLogOut } from 'react-icons/lu';
+import { LuBuilding2, LuCalendar, LuCalendarCheck, LuCalendarX2, LuLayoutGrid, LuLogOut, LuUserRound } from 'react-icons/lu';
+import AccountController from '@/actions/App/Http/Scheduling/Account/Controllers/AccountController';
 import LogoutController from '@/actions/App/Http/Scheduling/Auth/Controllers/LogoutController';
 import AvailabilityController from '@/actions/App/Http/Scheduling/Court/Controllers/AvailabilityController';
 import BlockReservationsController from '@/actions/App/Http/Scheduling/Court/Controllers/BlockReservationsController';
@@ -23,6 +24,7 @@ const navItems: NavItem[] = [
     { label: 'Block reservations', href: BlockReservationsController.show.url(), icon: <LuCalendarX2 /> },
     { label: 'Availability', href: AvailabilityController.show.url(), icon: <LuCalendarCheck /> },
     { label: 'Facility Profile', href: ProfileController.show.url(), icon: <LuBuilding2 /> },
+    { label: 'Account', href: AccountController.show.url(), icon: <LuUserRound /> },
 ];
 
 function resolveItemPath(href: string): string {

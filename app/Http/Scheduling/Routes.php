@@ -10,6 +10,10 @@ class Routes
 
     const REGISTER_STORE = 'register.store';
 
+    const ACCOUNT = 'account';
+
+    const ACCOUNT_CHANGE_PASSWORD = 'account.change-password';
+
     const FORGOT_PASSWORD = 'forgot-password';
 
     const FORGOT_PASSWORD_STORE = 'forgot-password.store';

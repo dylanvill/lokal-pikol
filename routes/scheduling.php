@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Scheduling\Account\Controllers\AccountController;
+use App\Http\Scheduling\Account\Controllers\ChangePasswordController;
 use App\Http\Scheduling\Auth\Controllers\LoginController;
 use App\Http\Scheduling\Auth\Controllers\LogoutController;
 use App\Http\Scheduling\Auth\Controllers\ResetPasswordController;
@@ -41,6 +43,9 @@ Route::post('/login', [LoginController::class, 'login'])->name(Routes::LOGIN_POS
 Route::post('/logout', [LogoutController::class, 'logout'])->name(Routes::LOGOUT);
 
 Route::group(['middleware' => [SchedulingAuthenticate::class.':'.GuardEnum::FACILITY->value]], function () {
+    Route::get('/account', [AccountController::class, 'show'])->name(Routes::ACCOUNT);
+    Route::post('/account/change-password', [ChangePasswordController::class, 'store'])->name(Routes::ACCOUNT_CHANGE_PASSWORD);
+
     Route::get('/profile', [ProfileController::class, 'show'])->name(Routes::PROFILE);
     Route::get('/profile/edit', [ProfileEditController::class, 'show'])->name(Routes::PROFILE_EDIT);
     Route::post('/profile/photos', [UpdateFacilityPhotosController::class, 'update'])->name(Routes::PROFILE_UPDATE_PHOTOS);
