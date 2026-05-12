@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { InfiniteScroll, router } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -14,6 +14,7 @@ import EndOfListingCta from '../components/EndOfListingCta';
 import ListingCard from '../components/ListingCard';
 import useSkeletons from '../components/ListingCard/useSkeletons';
 import ListingCta from '../components/ListingCta';
+import SortDropdown from '../components/SortDropdown';
 import DirectoryLayout from '../layouts/DirectoryLayout';
 import type Ad from '../models/Ad';
 import type ListingFilters from '../models/ListingFilters';
@@ -58,6 +59,21 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
         );
     };
 
+    const handleSortChange = (value: string) => {
+        router.get(
+            invoke(),
+            {
+                ...filters,
+                sort: value || null,
+            },
+            {
+                reset: ['listings', 'filters'],
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
+    };
+
     const isNew = useCallback((createdAt: string): boolean => {
         const sevenDaysAgo = dayjs().subtract(7, 'day');
         const createdAtDate = dayjs(createdAt).isAfter(sevenDaysAgo);
@@ -71,7 +87,16 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
                     <ListingCta />
                 </Box>
             )}
-            {hasFilters && <ActiveFilters {...filters} onRemoveFilter={handleFilterRemove} />}
+            <Flex alignItems="flex-start" justifyContent="space-between" gap={4} marginBottom={4}>
+                {hasFilters && (
+                    <Box flex={1}>
+                        <ActiveFilters {...filters} onRemoveFilter={handleFilterRemove} />
+                    </Box>
+                )}
+                <Box>
+                    <SortDropdown value={filters.sort ?? ''} onChange={handleSortChange} />
+                </Box>
+            </Flex>
             {noMatchingCourts && (
                 <Empty
                     icon={<LuX />}
@@ -110,14 +135,16 @@ function ListingPage({ listings, filters, ad }: ListingPageProps) {
                                 phone={listing.phone}
                                 isNew={isNew(listing.createdAt)}
                             />
-                            {index === 4 && ad ? <AdCard
-                                id={ad.id}
-                                title={ad.title}
-                                description={ad.description}
-                                redirectUrl={ad.redirectUrl}
-                                ctaLabel={ad.ctaLabel}
-                                photo={ad.photo}
-                            /> : null}
+                            {index === 4 && ad ? (
+                                <AdCard
+                                    id={ad.id}
+                                    title={ad.title}
+                                    description={ad.description}
+                                    redirectUrl={ad.redirectUrl}
+                                    ctaLabel={ad.ctaLabel}
+                                    photo={ad.photo}
+                                />
+                            ) : null}
                         </>
                     ))}
                 </SimpleGrid>

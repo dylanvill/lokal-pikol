@@ -1,4 +1,4 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
+import { HStack, Text, VStack } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { LuGrid2X2, LuMapPin } from 'react-icons/lu';
 import listingItemCourtTypeIconParser from '../../helpers/listingItemCourtTypeIconParser';
@@ -18,22 +18,16 @@ function ActiveFilters({ city, courtType, numberOfCourts, onRemoveFilter }: Acti
     }, [numberOfCourts]);
 
     return (
-        <Flex
-            flexDirection={{
-                base: 'column',
-                md: 'row',
-            }}
-            gap={2}
-        >
+        <VStack alignItems="flex-start" justifyContent="flex-start">
             <Text fontSize="sm" color="gray.600">
                 Applied filters:
             </Text>
-            <HStack marginBottom={4}>
+            <HStack marginBottom={4} flexWrap="wrap">
                 {city && <FilterItem icon={<LuMapPin />} label={city} onRemove={() => onRemoveFilter('city')} />}
                 {courtType && <FilterItem icon={<CourtTypeIcon />} label={courtType} onRemove={() => onRemoveFilter('courtType')} />}
                 {numberOfCourts && <FilterItem icon={<LuGrid2X2 />} label={numberOfCourtsLabel} onRemove={() => onRemoveFilter('numberOfCourts')} />}
             </HStack>
-        </Flex>
+        </VStack>
     );
 }
 

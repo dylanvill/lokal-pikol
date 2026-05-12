@@ -2,8 +2,8 @@
 
 namespace App\Http\Directory\Requests;
 
-use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use App\Source\Shared\Enums\CityEnum;
+use App\Source\Shared\Enums\FacilityCourtTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
  * @property string $city
  * @property string $courtType
  * @property int $numberOfCourts
+ * @property string $sort
  */
 class ListingRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ class ListingRequest extends FormRequest
             'city' => ['nullable', 'string', Rule::enum(CityEnum::class)],
             'numberOfCourts' => ['nullable', 'integer', 'min:1'],
             'courtType' => ['nullable', 'string', Rule::enum(FacilityCourtTypeEnum::class)],
+            'sort' => ['nullable', 'string', Rule::in(['name', 'numberOfCourts', 'popularity'])],
         ];
     }
 }
