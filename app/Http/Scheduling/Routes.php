@@ -10,6 +10,14 @@ class Routes
 
     const REGISTER_STORE = 'register.store';
 
+    const FORGOT_PASSWORD = 'forgot-password';
+
+    const FORGOT_PASSWORD_STORE = 'forgot-password.store';
+
+    const RESET_PASSWORD = 'reset-password';
+
+    const RESET_PASSWORD_STORE = 'reset-password.store';
+
     const LOGIN = 'login';
 
     const LOGIN_POST = 'login.post';

@@ -2,18 +2,12 @@
 
 namespace App\Providers;
 
-use App\Source\Authentication\Mail\UserVerificationMail;
-use App\Source\Facility\Models\Facility;
-use App\Source\Facility\Policies\FacilityPolicy;
-use App\Source\Reservation\Models\Reservation;
-use App\Source\Reservation\Policies\ReservationPolicy;
+use App\Source\Scheduling\Facility\Mail\PasswordResetEmail;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -41,9 +35,19 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $this->configureDefaults();
+        $this->configurePasswordReset();
 
         // Remove the "data" wrapper from JSON resources for a cleaner API response
         JsonResource::withoutWrapping();
+    }
+
+    protected function configurePasswordReset(): void
+    {
+        ResetPassword::toMailUsing(function ($notifiable, string $token) {
+            $url = route('scheduling.reset-password', ['token' => $token]).'?email='.urlencode($notifiable->email);
+
+            return (new PasswordResetEmail($url))->to($notifiable->email);
+        });
     }
 
     protected function configureDefaults(): void
@@ -57,13 +61,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Password defaults
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null
         );
     }

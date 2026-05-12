@@ -1,6 +1,6 @@
 # Scheduling Domain — Todo
 
-**Last Updated:** 2026-05-12 (scheduling dashboard branding done; facility admin invitation designed)  
+**Last Updated:** 2026-05-12 (facility admin invitation flow complete)  
 **Build sequence:** See `SCHEDULING_DOMAIN_ROADMAP.md`
 
 ---
@@ -223,43 +223,44 @@
 
 ---
 
-## To-Do — Facility Admin Invitation
+## ✅ Done — Facility Admin Invitation
 
 **Design decisions:**
 
 **Shared token infrastructure:**
 - New general-purpose `InvitationToken` model in `app/Source/Shared/Models/` — supersedes the domain-specific `ListingRegistrationToken` pattern over time. Fields: `id`, `token` (hashed, unique), `type` (enum), `metadata` (JSON), `expires_at`, `used_at` (nullable).
-- Single high-entropy token in URL (`/register/{token}`) — DB stores hashed version; nothing in the URL reveals a DB row or listing ID.
+- Single high-entropy token in URL (`/register/{token}`) — DB stores SHA-256 hash; nothing in the URL reveals a DB row or listing ID. SHA-256 used (not `Hash::make`) because lookup requires determinism.
 - `InvitationTokenTypeEnum` in `app/Source/Shared/Enums/` — cases: `LISTING_REGISTRATION` (reserved for future refactor), `FACILITY_ADMIN_INVITE`.
+- `FacilityAdminInviteMetadata` DTO at `app/Source/Scheduling/Facility/Dtos/` — domain-level contract used by the action that writes it and the controllers that read it.
 - `ListingRegistrationToken` is **not** refactored as part of this work — directory flow stays untouched until a separate pass.
 
 **Invite flow:**
 - 1-day expiry — tighter than directory's 7 days; an admin invite grants system access, so shorter window reduces breach risk.
-- Command blocks at send time if the listing already has an admin.
+- Command blocks at send time if the listing already has an admin, or if the email is already registered in `users`.
 - Expired token → distinct error page (ask admin to resend).
-- Used or invalid token → redirect to login (no error page — listing already has an admin implies the invite was used).
+- Used or invalid token → redirect to login.
 - Email pre-filled and locked in the form — sourced from token metadata, read-only input.
 - Auto-login after registration via `facility` guard → redirect to `/courts`.
 - `CreateAdminForListing` called with `skipActivation = true` — user sets their own password via the form; email is considered verified by the invite itself.
+- Authenticated users visiting `/login` are redirected to `/courts`.
 
 **Backend**
-- [ ] `InvitationTokenTypeEnum` — `app/Source/Shared/Enums/InvitationTokenTypeEnum.php`; cases: `LISTING_REGISTRATION`, `FACILITY_ADMIN_INVITE`
-- [ ] `InvitationToken` model — `app/Source/Shared/Models/InvitationToken.php`; fields: `id`, `token` (hashed string, unique), `type` (cast to `InvitationTokenTypeEnum`), `metadata` (JSON array: `listing_id`, `email`), `expires_at` (datetime), `used_at` (nullable datetime)
-- [ ] Migration — `create_invitation_tokens_table`
-- [ ] `GenerateFacilityAdminInviteToken` action — `app/Source/Scheduling/Facility/Actions/GenerateFacilityAdminInviteToken/GenerateFacilityAdminInviteToken.php`; generates 64-char random token via `Str::random(64)`, stores hashed version, sets 1-day expiry, returns plain token for URL construction; metadata: `{ listing_id, email }`
-- [ ] `SendRegistrationLinkCommand` — `app/Source/Scheduling/Facility/Commands/SendRegistrationLinkCommand.php`; signature: `scheduling:send-registration-link`; interactive prompts: search listing by name (blocks with error if listing already has an admin), enter recipient email; calls `GenerateFacilityAdminInviteToken`, builds `scheduling.register.show` URL, sends `FacilityAdminInviteEmail`
-- [ ] `FacilityAdminInviteEmail` mailable — `app/Source/Scheduling/Facility/Mail/FacilityAdminInviteEmail.php`; markdown template
-- [ ] `resources/views/mail/scheduling/facility-admin-invite-email.blade.php` — markdown blade; same structural pattern as `listing-registration-email.blade.php`
-- [ ] `RegisterController` — `app/Http/Scheduling/Auth/Controllers/RegisterController.php`
-  - `show(string $token)`: hash token → look up `InvitationToken`; not found or `used_at` set → redirect to login; `expires_at` past → render expired error page; valid → render `auth/register` with email locked from metadata
-  - `store(RegisterRequest, string $token)`: re-validate token (same checks); resolve listing from metadata `listing_id`; call `CreateAdminForListing` with `skipActivation = true`; mark `used_at = now()`; login via `facility` guard; redirect to `/courts`
-- [ ] `RegisterRequest` — `app/Http/Scheduling/Auth/Requests/RegisterRequest.php`; validates: `firstName`, `lastName`, `phoneNumber` (all required strings), `password` (required, min 8)
-- [ ] Routes (`routes/scheduling.php`) — `GET /register/{token}` → `RegisterController@show`; `POST /register/{token}` → `RegisterController@store`; both under guest middleware
-- [ ] Add `REGISTER` constant to `app/Http/Scheduling/Routes.php`
+- [x] `InvitationTokenTypeEnum` — `app/Source/Shared/Enums/InvitationTokenTypeEnum.php`
+- [x] `InvitationToken` model — `app/Source/Shared/Models/InvitationToken.php`
+- [x] `FacilityAdminInviteMetadata` DTO — `app/Source/Scheduling/Facility/Dtos/FacilityAdminInviteMetadata.php`
+- [x] Migration — `create_invitation_tokens_table`
+- [x] `GenerateFacilityAdminInviteToken` action — `app/Source/Scheduling/Facility/Actions/GenerateFacilityAdminInviteToken/`
+- [x] `SendRegistrationLinkCommand` — `scheduling:send-registration-link`; interactive listing search; blocks if listing has admin or email already registered
+- [x] `FacilityAdminInviteEmail` mailable + `resources/views/mail/scheduling/facility-admin-invite-email.blade.php`
+- [x] `ShowRegistrationController@show` — token validation; expired → error page; used/invalid → redirect to login
+- [x] `StoreRegistrationController@store` — creates admin, marks token used, auto-logins, redirects to `/courts`
+- [x] `RegisterRequest` — validates `firstName`, `lastName`, `phoneNumber`, `password`
+- [x] Routes — `GET /register/{token}` + `POST /register/{token}`; `REGISTER` + `REGISTER_STORE` constants added
+- [x] `LoginController@show` — redirects authenticated users to `/courts`
 
 **Frontend**
-- [ ] `auth/register.tsx` — registration form page; email field read-only (pre-populated from page props); first name, last name, phone number, password inputs; `useForm` submit
-- [ ] `auth/invite-expired.tsx` — expired token error page; clear message directing the manager to ask for a new invite link
+- [x] `auth/register.tsx` — locked email, listing name in heading, registration fields, `useForm` submit
+- [x] `auth/invite-expired.tsx` — expired token error page with "Back to sign in" link
 
 ---
 

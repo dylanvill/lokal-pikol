@@ -1,23 +1,27 @@
-import { Box, Button, Card, Center, Container, Field, Image, Input, Link, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Card, Center, Container, Field, Image, Input, Text, VStack } from '@chakra-ui/react';
 import { Head, useForm } from '@inertiajs/react';
-import { login } from '@/actions/App/Http/Scheduling/Auth/Controllers/LoginController';
-import { show } from '@/actions/App/Http/Scheduling/Auth/Controllers/ShowForgotPasswordController';
+import { store } from '@/actions/App/Http/Scheduling/Auth/Controllers/SendPasswordResetLinkController';
 import Logo from '../../../../images/logo/lokal-pikol-primary.svg';
 
-export default function LoginPage() {
+interface Props {
+    status?: string;
+}
+
+export default function ForgotPasswordPage({ status }: Props) {
     const form = useForm({
         email: '',
-        password: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(login().url);
+        form.post(store().url, {
+            onSuccess: () => form.reset(),
+        });
     };
 
     return (
         <>
-            <Head title="Login" />
+            <Head title="Forgot Password" />
             <Container fluid backgroundColor="gray.50">
                 <Center width="full" height="100vh">
                     <Box width="md">
@@ -27,12 +31,17 @@ export default function LoginPage() {
                                     <VStack align="center" gap={3} py={2}>
                                         <Image src={Logo} alt="Lokal Pikol" maxH={20} />
                                         <Text fontSize="sm" color="gray.500" textAlign="center">
-                                            Sign in to manage your courts, reservations, and availability
+                                            Enter your email and we'll send you a link to reset your password.
                                         </Text>
                                     </VStack>
                                 </Card.Header>
                                 <Card.Body>
                                     <VStack align="stretch" gap={4}>
+                                        {status && (
+                                            <Text fontSize="sm" color="green.600" textAlign="center">
+                                                {status}
+                                            </Text>
+                                        )}
                                         <Field.Root invalid={!!form.errors.email}>
                                             <Field.Label>Email</Field.Label>
                                             <Input
@@ -42,27 +51,20 @@ export default function LoginPage() {
                                                 value={form.data.email}
                                                 onChange={(e) => form.setData('email', e.target.value)}
                                             />
-                                            {form.errors.email && <Field.ErrorText>{form.errors.email}</Field.ErrorText>}
-                                        </Field.Root>
-                                        <Field.Root invalid={!!form.errors.password}>
-                                            <Field.Label>Password</Field.Label>
-                                            <Input
-                                                type="password"
-                                                name="password"
-                                                required
-                                                value={form.data.password}
-                                                onChange={(e) => form.setData('password', e.target.value)}
-                                            />
-                                            <Link href={show().url} fontSize="xs" color="blue.500" ml="auto">
-                                                Forgot password?
-                                            </Link>
-                                            {form.errors.password && <Field.ErrorText>{form.errors.password}</Field.ErrorText>}
+                                            {form.errors.email && (
+                                                <Field.ErrorText>{form.errors.email}</Field.ErrorText>
+                                            )}
                                         </Field.Root>
                                     </VStack>
                                 </Card.Body>
                                 <Card.Footer>
-                                    <Button type="submit" colorPalette="blue" width="full" loading={form.processing}>
-                                        Sign in
+                                    <Button
+                                        type="submit"
+                                        colorPalette="blue"
+                                        width="full"
+                                        loading={form.processing}
+                                    >
+                                        Send reset link
                                     </Button>
                                 </Card.Footer>
                             </Card.Root>

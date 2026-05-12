@@ -2,7 +2,11 @@
 
 use App\Http\Scheduling\Auth\Controllers\LoginController;
 use App\Http\Scheduling\Auth\Controllers\LogoutController;
+use App\Http\Scheduling\Auth\Controllers\ResetPasswordController;
+use App\Http\Scheduling\Auth\Controllers\SendPasswordResetLinkController;
+use App\Http\Scheduling\Auth\Controllers\ShowForgotPasswordController;
 use App\Http\Scheduling\Auth\Controllers\ShowRegistrationController;
+use App\Http\Scheduling\Auth\Controllers\ShowResetPasswordController;
 use App\Http\Scheduling\Auth\Controllers\StoreRegistrationController;
 use App\Http\Scheduling\Court\Controllers\AvailabilityController;
 use App\Http\Scheduling\Court\Controllers\BlockReservationsController;
@@ -28,6 +32,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/register/{token}', [ShowRegistrationController::class, 'show'])->name(Routes::REGISTER);
 Route::post('/register/{token}', [StoreRegistrationController::class, 'store'])->name(Routes::REGISTER_STORE);
+Route::get('/forgot-password', [ShowForgotPasswordController::class, 'show'])->name(Routes::FORGOT_PASSWORD);
+Route::post('/forgot-password', [SendPasswordResetLinkController::class, 'store'])->name(Routes::FORGOT_PASSWORD_STORE);
+Route::get('/reset-password/{token}', [ShowResetPasswordController::class, 'show'])->name(Routes::RESET_PASSWORD);
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name(Routes::RESET_PASSWORD_STORE);
 Route::get('/login', [LoginController::class, 'show'])->name(Routes::LOGIN);
 Route::post('/login', [LoginController::class, 'login'])->name(Routes::LOGIN_POST);
 Route::post('/logout', [LogoutController::class, 'logout'])->name(Routes::LOGOUT);
