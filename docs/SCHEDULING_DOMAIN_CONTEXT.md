@@ -1,6 +1,6 @@
 # Scheduling Domain — Product Context
 
-**Last Updated:** 2026-05-06  
+**Last Updated:** 2026-05-12  
 **Supersedes:** `SCHEDULING_CONTEXT.md` (earlier planning doc — see deviations below)
 
 ## What It Is
@@ -13,10 +13,23 @@ This is a **tracking tool**, not a booking platform. No player accounts, no paym
 
 | User | How they get access |
 |------|-------------------|
-| **Facility manager** | Account created by admin (developer) — no self-registration |
-| **Admin (developer)** | Provisions accounts via Artisan command: `CreateAdminForListingCommand` |
+| **Facility manager** | Receives an email invite from the developer; follows a signed link to complete registration |
+| **Admin (developer)** | Sends invites via `scheduling:send-registration-link`; can also provision accounts directly via `facility:create-admin` |
 
 Each facility manager is linked to exactly one `Listing`. They only see and manage data for their own listing.
+
+### Invitation Flow
+
+The developer runs `php artisan scheduling:send-registration-link`, selects the listing interactively, and enters the manager's email. The command sends a markdown email containing a signed URL (`/register/{token}`). The token is a 64-char random string — the DB stores the hashed version alongside the listing ID, email, a 1-day expiry, and a `used_at` timestamp.
+
+When the manager visits the link:
+- **Expired** — distinct error page; ask developer to resend.
+- **Already used or invalid** — redirect to login.
+- **Valid** — registration form with email pre-filled and locked; fields: first name, last name, phone number, password.
+
+On submit, `CreateAdminForListing` runs with `skipActivation = true` (email verified by the invite, password set directly). The token is marked used, the manager is auto-logged in, and redirected to `/courts`.
+
+The token infrastructure lives in `app/Source/Shared/` (`InvitationToken` model, `InvitationTokenTypeEnum`) so it can be reused across domains. The existing `ListingRegistrationToken` in the directory domain is a predecessor pattern — it will be migrated to the shared model in a separate pass.
 
 ## Subdomain
 
