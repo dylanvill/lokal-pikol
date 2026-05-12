@@ -2,6 +2,8 @@
 
 use App\Http\Scheduling\Auth\Controllers\LoginController;
 use App\Http\Scheduling\Auth\Controllers\LogoutController;
+use App\Http\Scheduling\Auth\Controllers\ShowRegistrationController;
+use App\Http\Scheduling\Auth\Controllers\StoreRegistrationController;
 use App\Http\Scheduling\Court\Controllers\AvailabilityController;
 use App\Http\Scheduling\Court\Controllers\BlockReservationsController;
 use App\Http\Scheduling\Court\Controllers\CourtsController;
@@ -24,6 +26,8 @@ use App\Http\Scheduling\Routes;
 use App\Http\Shared\Enums\GuardEnum;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/register/{token}', [ShowRegistrationController::class, 'show'])->name(Routes::REGISTER);
+Route::post('/register/{token}', [StoreRegistrationController::class, 'store'])->name(Routes::REGISTER_STORE);
 Route::get('/login', [LoginController::class, 'show'])->name(Routes::LOGIN);
 Route::post('/login', [LoginController::class, 'login'])->name(Routes::LOGIN_POST);
 Route::post('/logout', [LogoutController::class, 'logout'])->name(Routes::LOGOUT);

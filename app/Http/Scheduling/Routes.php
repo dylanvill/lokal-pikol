@@ -6,6 +6,10 @@ class Routes
 {
     const NAMESPACE = 'scheduling';
 
+    const REGISTER = 'register';
+
+    const REGISTER_STORE = 'register.store';
+
     const LOGIN = 'login';
 
     const LOGIN_POST = 'login.post';
