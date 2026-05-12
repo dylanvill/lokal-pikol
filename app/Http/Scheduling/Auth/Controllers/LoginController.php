@@ -6,14 +6,19 @@ use App\Http\Scheduling\Auth\Requests\LoginRequest;
 use App\Http\Scheduling\Routes;
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Shared\Enums\GuardEnum;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class LoginController extends Controller
 {
-    public function show(): Response
+    public function show(): Response|RedirectResponse
     {
+        if (Auth::guard(GuardEnum::FACILITY->value)->check()) {
+            return redirect()->route(Routes::getFullName(Routes::COURTS));
+        }
+
         return Inertia::render('auth/login');
     }
 
