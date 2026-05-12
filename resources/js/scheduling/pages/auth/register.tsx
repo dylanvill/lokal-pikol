@@ -1,14 +1,15 @@
 import { Box, Button, Card, Center, Container, Field, Image, Input, Text, VStack } from '@chakra-ui/react';
 import { Head, useForm } from '@inertiajs/react';
-import Logo from '../../../../images/logo/lokal-pikol-primary.svg';
 import { store } from '@/actions/App/Http/Scheduling/Auth/Controllers/StoreRegistrationController';
+import Logo from '../../../../images/logo/lokal-pikol-primary.svg';
 
 type Props = {
     email: string;
     token: string;
+    listingName: string;
 };
 
-export default function RegisterPage({ email, token }: Props) {
+export default function RegisterPage({ email, token, listingName }: Props) {
     const form = useForm({
         firstName: '',
         lastName: '',
@@ -32,8 +33,11 @@ export default function RegisterPage({ email, token }: Props) {
                                 <Card.Header>
                                     <VStack align="center" gap={3} py={2}>
                                         <Image src={Logo} alt="Lokal Pikol" maxH={20} />
+                                        <Text fontWeight="semibold" fontSize="md" textAlign="center">
+                                            Register an admin account for {listingName}
+                                        </Text>
                                         <Text fontSize="sm" color="gray.500" textAlign="center">
-                                            Set up your account to start managing your courts
+                                            You'll be able to update your directory listing and manage court scheduling and availability.
                                         </Text>
                                     </VStack>
                                 </Card.Header>

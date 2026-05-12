@@ -4,6 +4,7 @@ namespace App\Http\Scheduling\Auth\Controllers;
 
 use App\Http\Scheduling\Routes;
 use App\Http\Shared\Contracts\Controller;
+use App\Source\Directory\Models\Listing;
 use App\Source\Scheduling\Facility\Dtos\FacilityAdminInviteMetadata;
 use App\Source\Shared\Models\InvitationToken;
 use Illuminate\Http\RedirectResponse;
@@ -25,10 +26,12 @@ class ShowRegistrationController extends Controller
         }
 
         $metadata = FacilityAdminInviteMetadata::fromArray($invitationToken->metadata);
+        $listing = Listing::findOrFail($metadata->listingId);
 
         return Inertia::render('auth/register', [
             'email' => $metadata->email,
             'token' => $token,
+            'listingName' => $listing->name,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Source\Scheduling\Facility\Commands;
 
 use App\Http\Scheduling\Routes;
+use App\Source\Authentication\Models\User;
 use App\Source\Directory\Models\Listing;
 use App\Source\Scheduling\Facility\Actions\GenerateFacilityAdminInviteToken\GenerateFacilityAdminInviteToken;
 use App\Source\Scheduling\Facility\Mail\FacilityAdminInviteEmail;
@@ -44,6 +45,12 @@ class SendRegistrationLinkCommand extends Command
             required: true,
             validate: ['email' => 'required|email'],
         );
+
+        if (User::where('email', $email)->exists()) {
+            error("A user with the email {$email} is already registered.");
+
+            return Command::FAILURE;
+        }
 
         $this->table(
             ['Listing', 'Recipient'],
