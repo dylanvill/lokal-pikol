@@ -46,6 +46,8 @@ class Routes
 
     const CREATE_COURT = 'courts.create';
 
+    const UPDATE_COURT = 'courts.update';
+
     const RESERVE_COURT = 'courts.reserve';
 
     const RESERVATIONS = 'reservations.show';

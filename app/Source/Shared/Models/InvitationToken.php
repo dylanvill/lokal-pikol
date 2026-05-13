@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $token SHA-256 hash of the plain token; never the raw value
  * @property InvitationTokenTypeEnum $type
  * @property array<string, mixed> $metadata Shape varies by type:
- *                                          - FACILITY_ADMIN_INVITE: array{listing_id: int, email: string}
+ *                                          - FACILITY_ADMIN_INVITE: array{listing_id: int, email: string, court_count: int}
  *                                          - LISTING_REGISTRATION:  (reserved — not yet migrated to this model)
  * @property \Illuminate\Support\Carbon $expires_at
  * @property \Illuminate\Support\Carbon|null $used_at Set when the token is consumed; null if unused

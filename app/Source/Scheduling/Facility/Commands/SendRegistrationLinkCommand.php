@@ -52,9 +52,20 @@ class SendRegistrationLinkCommand extends Command
             return Command::FAILURE;
         }
 
+        $courtCount = (int) text(
+            label: 'Number of courts to create',
+            required: true,
+            validate: fn (string $value) => match (true) {
+                ! ctype_digit($value) => 'Must be a whole number.',
+                (int) $value < 1 => 'Must be at least 1.',
+                (int) $value > 10 => 'Cannot exceed 10.',
+                default => null,
+            },
+        );
+
         $this->table(
-            ['Listing', 'Recipient'],
-            [[$listing->name, $email]],
+            ['Listing', 'Recipient', 'Courts'],
+            [[$listing->name, $email, $courtCount]],
         );
 
         if (! confirm('Send registration link?')) {
@@ -62,8 +73,8 @@ class SendRegistrationLinkCommand extends Command
         }
 
         spin(
-            callback: function () use ($action, $listing, $email) {
-                $plainToken = $action->generate($listing, $email);
+            callback: function () use ($action, $listing, $email, $courtCount) {
+                $plainToken = $action->generate($listing, $email, $courtCount);
                 $url = route(Routes::getFullName(Routes::REGISTER), ['token' => $plainToken]);
                 Mail::to($email)->send(new FacilityAdminInviteEmail($url, $listing->name));
             },

@@ -4,6 +4,7 @@ import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
 import { type UuidString } from '../../../types/String';
 import CheckboxSlotCard from '../../shared/CheckboxSlotCard';
+import CourtNameEditable from '../CourtNameEditable';
 import ReserveCourtCardModal from './ReserveCourtCardModal';
 
 interface CourtCardProps {
@@ -30,7 +31,7 @@ function CourtCard({ id, name, date, slots }: CourtCardProps) {
             <Card.Root variant="outline" size="md">
                 <Card.Body gap={3}>
                     <HStack justify="space-between" align="flex-start">
-                        <Card.Title fontSize="md">{name}</Card.Title>
+                        <CourtNameEditable id={id} name={name} />
                         <Badge colorPalette="green" size="sm">
                             Active
                         </Badge>

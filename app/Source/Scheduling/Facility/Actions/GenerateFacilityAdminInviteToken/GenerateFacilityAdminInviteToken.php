@@ -11,13 +11,14 @@ use Illuminate\Support\Str;
 
 class GenerateFacilityAdminInviteToken
 {
-    public function generate(Listing $listing, string $email): string
+    public function generate(Listing $listing, string $email, int $courtCount): string
     {
         $plainToken = Str::random(64);
 
         $metadata = new FacilityAdminInviteMetadata(
             listingId: $listing->id,
             email: $email,
+            courtCount: $courtCount,
         );
 
         InvitationToken::create([

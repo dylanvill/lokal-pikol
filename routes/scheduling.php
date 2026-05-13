@@ -20,6 +20,7 @@ use App\Http\Scheduling\Court\Controllers\DeleteReservationController;
 use App\Http\Scheduling\Court\Controllers\ReservationsController;
 use App\Http\Scheduling\Court\Controllers\ReserveCourtController;
 use App\Http\Scheduling\Court\Controllers\ShowCreateBlockReservationsController;
+use App\Http\Scheduling\Court\Controllers\UpdateCourtController;
 use App\Http\Scheduling\Middleware\SchedulingAuthenticate;
 use App\Http\Scheduling\Profile\Controllers\DeleteFacilitySocialLinkController;
 use App\Http\Scheduling\Profile\Controllers\ProfileController;
@@ -56,6 +57,7 @@ Route::group(['middleware' => [SchedulingAuthenticate::class.':'.GuardEnum::FACI
 
     Route::get('/courts', [CourtsController::class, 'show'])->name(Routes::COURTS);
     Route::post('/courts', [CreateCourtController::class, 'store'])->name(Routes::CREATE_COURT);
+    Route::patch('/courts/{court:uuid}', [UpdateCourtController::class, 'update'])->name(Routes::UPDATE_COURT);
 
     Route::post('/courts/{court:uuid}/reserve', [ReserveCourtController::class, 'reserve'])->name(Routes::RESERVE_COURT);
 
