@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:ital,opsz@0,14..32;1,14..32&display=swap" rel="stylesheet">
 
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/scheduling.tsx', "resources/js/scheduling/pages/{$page['component']}.tsx"])
+    @vite(['resources/css/app.css', 'resources/js/scheduling.tsx', "resources/js/scheduling/pages/{$page['component']}.tsx"], 'build/scheduling')
     @inertiaHead
 </head>
 

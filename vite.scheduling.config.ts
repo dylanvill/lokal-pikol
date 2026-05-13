@@ -8,6 +8,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/scheduling.tsx'],
+            buildDirectory: 'build/scheduling',
             refresh: true,
         }),
         react({

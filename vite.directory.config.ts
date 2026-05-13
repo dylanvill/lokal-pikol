@@ -8,6 +8,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/directory.tsx'],
+            buildDirectory: 'build/directory',
             refresh: true,
             // detectTls: 'lokal-pikol.test',
         }),
