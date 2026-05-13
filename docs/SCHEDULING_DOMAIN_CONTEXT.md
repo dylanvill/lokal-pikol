@@ -20,14 +20,22 @@ Each facility manager is linked to exactly one `Listing`. They only see and mana
 
 ### Invitation Flow
 
-The developer runs `php artisan scheduling:send-registration-link`, selects the listing interactively, and enters the manager's email. The command sends a markdown email containing a signed URL (`/register/{token}`). The token is a 64-char random string — the DB stores the hashed version alongside the listing ID, email, a 1-day expiry, and a `used_at` timestamp.
+The developer runs `php artisan scheduling:send-registration-link`, selects the listing interactively, enters the manager's email, and specifies the number of courts to auto-create (min 1, max 10). The command sends a markdown email containing a signed URL (`/register/{token}`). The token is a 64-char random string — the DB stores the hashed version alongside the listing ID, email, court count, a 1-day expiry, and a `used_at` timestamp.
+
+The court count is stored in `FacilityAdminInviteMetadata` (part of the token metadata) so it travels through to registration completion.
 
 When the manager visits the link:
 - **Expired** — distinct error page; ask developer to resend.
 - **Already used or invalid** — redirect to login.
 - **Valid** — registration form with email pre-filled and locked; fields: first name, last name, phone number, password.
 
-On submit, `CreateAdminForListing` runs with `skipActivation = true` (email verified by the invite, password set directly). The token is marked used, the manager is auto-logged in, and redirected to `/courts`.
+On submit, `StoreRegistrationController` wraps the following in a single `DB::transaction()`:
+1. `CreateAdminForListing` runs with `skipActivation = true` (email verified by the invite, password set directly).
+2. `CreateCourt` is called N times (from `court_count` in the token metadata), creating courts named "Court 1", "Court 2", … "Court N".
+
+The token is marked used, the manager is auto-logged in, and redirected to `/courts`.
+
+**`facility:create-admin` does not prompt for court count.** It is an edge-case command for provisioning a second admin for a listing that already has courts (e.g. staff change). Courts are not re-created.
 
 The token infrastructure lives in `app/Source/Shared/` (`InvitationToken` model, `InvitationTokenTypeEnum`) so it can be reused across domains. The existing `ListingRegistrationToken` in the directory domain is a predecessor pattern — it will be migrated to the shared model in a separate pass.
 
@@ -58,6 +66,7 @@ The primary working view. Shows all courts for the facility with an hourly slot 
 - See each court's slots — available, taken by a reservation (shows name), or blocked by a block reservation (shows block name)
 - Click available slots on a court to open the reservation modal and log a name
 - Add new courts via a modal
+- Rename courts inline — a pencil icon trigger activates a Chakra `Editable` input; on enter/blur a 500ms-delayed `PATCH /courts/{court}` fires; success shows a toast, errors keep the invalid name in the input and show an error toast
 
 **Slot rules:**
 - Slots taken by a regular reservation are unavailable
@@ -117,6 +126,7 @@ Facility manager can view and edit their linked `Listing` record. Changes reflec
 
 | Rule | Detail |
 |------|--------|
+| Court names | Required, max 100 chars, unique per listing — validated at HTTP layer only (no DB unique constraint) |
 | Block reservations are hard | Blocked slots cannot be overridden with regular reservations |
 | Delete only | No edit for regular or block reservations — delete and recreate |
 | Confirmation dialogs | Both reservation types require confirmation before deletion |
