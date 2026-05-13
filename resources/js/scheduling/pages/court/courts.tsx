@@ -1,4 +1,4 @@
-import { Box, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Box, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
 import { router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -32,12 +32,12 @@ function CourtsPage() {
     return (
         <SchedulingLayout title="Courts">
             <VStack align="stretch" gap={6}>
-                <HStack justify="space-between" align="center">
-                    <Box>
+                <Stack direction={{ base: 'column', md: 'row' }} justify="space-between" align={{ base: 'flex-start', md: 'center' }} gap={4}>
+                    <Box flexShrink={0}>
                         <CourtPageDatePicker date={date} dateDisplay={dateDisplay} onValueChange={handleDateChange} />
                     </Box>
                     <AddCourtModal />
-                </HStack>
+                </Stack>
 
                 {courts.length === 0 ? (
                     <CourtsEmptyState />

@@ -9,7 +9,7 @@ import type { UuidString } from '../../../types/String';
 
 function useReservationsPage(selectedCourtId: UuidString | null, selectedMonth: string) {
     const [selectedItem, setSelectedItem] = useState<ReservationCalendarItem | null>(null);
-    const [view, setView] = useState<View>(Views.MONTH);
+    const [view, setView] = useState<View>(() => (window.innerWidth < 768 ? Views.DAY : Views.MONTH));
     const [date, setDate] = useState(new Date());
 
     useEffect(() => {

@@ -14,7 +14,7 @@ function TimeSlotsSection({ slots, selectedSlots, onCheckChanged }: TimeSlotsSec
     return (
         <Fieldset.Root>
             <Fieldset.Legend>Time slots</Fieldset.Legend>
-            <SimpleGrid columns={3} gap={2} mt={1}>
+            <SimpleGrid columns={{base: 2, md: 3}} gap={2} mt={1}>
                 {slots.map((slot) => (
                     <CheckboxSlotCard
                         key={slot.slot}

@@ -39,7 +39,7 @@ function AvailabilityPage({ date, facilityName, courts }: AvailabilityPageProps)
                     <Card.Body>
                         <Stack gap={4}>
                             <HStack justify="space-between" align="center" wrap="wrap" gap={4}>
-                                <Box>
+                                <Box flexShrink={0}>
                                     <CourtPageDatePicker
                                         date={date}
                                         dateDisplay={dateDisplay}

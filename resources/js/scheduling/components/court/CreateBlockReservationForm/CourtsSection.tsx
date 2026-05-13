@@ -13,7 +13,7 @@ function CourtsSection({ courtSelection, selectedCourts, onCheckChanged }: Court
         <Fieldset.Root>
             <CheckboxGroup>
                 <Fieldset.Legend>Court</Fieldset.Legend>
-                <SimpleGrid columns={3} gap={4} width="full">
+                <SimpleGrid columns={{ base: 2, md: 3}} gap={4} width="full">
                     {courtSelection.map((court) => (
                         <CheckboxCard.Root
                             key={court.id}

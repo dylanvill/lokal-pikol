@@ -9,12 +9,12 @@ export interface DaysOfTheWeekSectionProps {
 }
 
 function DaysOfTheWeekSection({ selectedDays, onCheckChanged }: DaysOfTheWeekSectionProps) {
-    console.log("Day of the week section rendering");
+    console.log('Day of the week section rendering');
     return (
         <Fieldset.Root>
             <CheckboxGroup>
                 <Fieldset.Legend>Day of the week</Fieldset.Legend>
-                <SimpleGrid columns={3} gap={4} width="full">
+                <SimpleGrid columns={{ base: 2, md: 3 }} gap={4} width="full">
                     {DAYS.map((day) => (
                         <CheckboxCard.Root
                             key={day}

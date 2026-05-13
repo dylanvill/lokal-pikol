@@ -1,6 +1,6 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Box, Card, Flex, NativeSelect, Text } from '@chakra-ui/react';
+import { Box, Card, NativeSelect, Stack, Text } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { Calendar, Views, dayjsLocalizer } from 'react-big-calendar';
@@ -62,9 +62,9 @@ function ReservationsCalendar({
     return (
         <Card.Root variant="outline">
             <Card.Header>
-                <Flex justify="space-between" align="center">
+                <Stack direction={{ base: 'column', sm: 'row' }} justify="space-between" align={{ base: 'stretch', sm: 'center' }} gap={3}>
                     <Text fontWeight="semibold">{formattedDate}</Text>
-                    <NativeSelect.Root size="sm" width="200px">
+                    <NativeSelect.Root size="sm" width={{ base: 'full', sm: '200px' }}>
                         <NativeSelect.Field value={selectedCourtId ?? ''} onChange={onCourtChange}>
                             {courts.map((court) => (
                                 <option key={court.id} value={court.id}>
@@ -74,10 +74,10 @@ function ReservationsCalendar({
                         </NativeSelect.Field>
                         <NativeSelect.Indicator />
                     </NativeSelect.Root>
-                </Flex>
+                </Stack>
             </Card.Header>
             <Card.Body>
-                <Box height="75vh">
+                <Box height={{ base: '60vh', md: '75vh' }} minHeight="400px">
                     <Calendar<CalendarEvent, object>
                         localizer={localizer}
                         events={events}

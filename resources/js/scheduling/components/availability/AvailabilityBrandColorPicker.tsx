@@ -14,7 +14,7 @@ function AvailabilityBrandColorPicker({ value, onChange }: AvailabilityBrandColo
             <Text fontSize="sm" fontWeight="medium" color="gray.700">
                 Image background
             </Text>
-            <HStack gap={2}>
+            <HStack gap={2} flexWrap='wrap'>
                 {BRAND_COLOR_PALETTE.map((color) => {
                     const isSelected = color === value;
                     const checkColor = getContrastTextColor(color);
