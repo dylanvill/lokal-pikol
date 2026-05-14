@@ -69,51 +69,49 @@ The cold visits are for **content and relationships**, not for onboarding. The s
 
 **Price:** Only mention if asked. Answer: "₱150 for the first three months. Less than ₱2 a day."
 
-### The 6-Slide Sequence
+### The Slide Sequence
 
 **Slide 1 — Lokal Pikol is growing, but it's still just a directory**
 Lokal Pikol currently gets around 50 visitors a day — players looking for courts in Negros Oriental. Right now it only shows basic info: location, contact, photos. Players still have to message each court individually to find out what's free. That's the gap this tool closes.
 
-- **Title:** "Lokal Pikol gets 50 visitors a day. But it's still just a directory."
-- **Visual:** Lokal Pikol logo + "50 visitors/day" stat. Below it, a mock chat thread — player asking a court "is Court 2 free at 7pm?" Feels familiar.
+- **Title:** "50 players a day. Still just a directory."
+- **Visual:** Screenshot of a Lokal Pikol listing (basic info only) with a Facebook message thread overlaid — "Is Court 2 free at 7pm tonight?"
 
 **Slide 2 — A glorified spreadsheet. Connected to Lokal Pikol.**
 Think of it as a shared schedule your team logs reservations into — nothing you couldn't do in Excel. The difference is that whatever you log here gets published to Lokal Pikol, so players browsing the directory can already see your availability before they message you. Bookings still happen through your Facebook page — that doesn't change. This just means players arrive informed.
 
 - **Title:** "We built a glorified spreadsheet."
-- **Body:** "Log reservations. Block recurring slots. Your schedule publishes to Lokal Pikol automatically. Bookings still go through your Facebook — nothing changes there."
-- **Visual:** A simple before/after: left side is a plain spreadsheet, right side is the scheduling tool UI feeding into a Lokal Pikol listing.
+- **Visual:** Side by side — plain Excel spreadsheet on the left, the Courts page on the right.
 
 **Slide 3 — This is what you manage**
-You see all your courts laid out with hourly slots for any date you select. Taken slots show the player's name, blocked slots show your recurring schedules, and free slots are visible at a glance. Logging a reservation takes a few taps — no spreadsheet formulas, no formatting.
+The reservations calendar gives you the clearest picture of what's happening across your courts — who's booked, what's blocked, what's still free. Logging a reservation takes a few taps.
 
 - **Title:** "Your courts. Any date."
-- **Visual:** Screenshot or clean mockup of the Courts page — slot grid for two courts, one slot taken (name visible), one blocked, most slots free. Date picker at the top.
+- **Visual:** Screenshot of the reservations calendar — the most data-dense and readable view of the scheduling tool.
 
-**Slide 4 — This is what players see**
-When a player opens your listing on Lokal Pikol, they can see which slots are available for the day they're planning to play. They're not guessing, they're not messaging five different courts — they already know. Fewer "is Court 2 free at 7?" messages, more players arriving with a plan.
+**Slide 4 — This is a scheduling management tool, not a booking system**
+There are no player accounts, no payments, no automated confirmations — and that's deliberate. This is a tool for you to manage your own schedule. Players don't interact with it at all.
 
-- **Title:** "What players see on Lokal Pikol."
-- **Visual:** Split screen — left is the Courts page (your side), right is the Lokal Pikol directory listing showing availability. Arrow connecting the two.
+- **Title:** "This isn't a booking system. It's a scheduling management tool."
+- **Visual:** Simple icons for the things it deliberately doesn't do (player account, payment terminal, automated confirmations) — all greyed out. Clean, honest.
 
-**Slide 5 — This isn't meant to be a full booking system**
-There are no player accounts, no payments, no automated confirmations — and that's deliberate. If you already use a dedicated booking system, or you grow into one, this tool doesn't get in the way. The real purpose is giving Lokal Pikol a live data set so players can eventually search courts by availability. This tool makes that possible without asking you to overhaul how you operate.
+**Slide 5a — Nothing changes for players**
+Players still find you, message you, and pay you the same way they always have. The only thing that changes is on your end — you log reservations here instead of a spreadsheet.
 
-- **Title:** "This isn't a booking system. And it's not trying to be."
-- **Body:** "No player accounts. No payments. No lock-in. If you already use a booking platform, this sits alongside it. The goal is giving Lokal Pikol live availability data — nothing more."
-- **Visual:** Simple icons for the things it deliberately doesn't do (player account, payment terminal, automated emails) — all greyed out. Clean, honest.
+- **Title:** "Players still contact you. Nothing changes for them."
+- **Visual:** Simple 3-step flow — "Player messages your Facebook" → "You confirm and collect payment" → "You log it in the tool." Clean icons, no clutter.
 
-**Slide 6 — The ask**
-No hard sell. Your spreadsheet works fine today. But if you want your court to show up on Lokal Pikol with live availability — and you understand the vision — send a message.
+**Slide 5b — So why not just use Excel?**
+Your spreadsheet works fine today. But this scheduling tool is connected to your Lokal Pikol listing — so players browsing the directory can see your real schedule before they even message you. Fewer "is Court 2 free?" messages. Players arrive already knowing.
 
-- **Title:** "If the vision makes sense, send me a message."
-- **Visual:** Clean and minimal — name, phone number, QR code linking to lokalpikol.com, Lokal Pikol logo. Small footnote: "₱150 for the first 3 months."
+- **Title:** "Because this one is linked to your Lokal Pikol listing."
+- **Visual:** Arrow from the scheduling tool grid → Lokal Pikol listing showing live availability.
 
 ### Verbal Notes
 
-The pitch is not a features walkthrough — it's a vision pitch. The honest framing ("your spreadsheet works fine") is intentional and should not be softened. Slide 5 is the trust-builder for courts that already use or are considering Court Access, Picklepiper, or Courthub — it removes the fear of being locked in or displaced.
+The pitch is not a features walkthrough — it's a vision pitch. The honest framing ("your spreadsheet works fine") is intentional and should not be softened. Slide 4 is the trust-builder for courts that already use or are considering Court Access, Picklepiper, or Courthub — it removes the fear of being locked in or displaced.
 
-Lead with the demo if internet allows. The Courts page with the date picker is the centrepiece — change the date, watch everything update. If no internet, swipe through the slides and narrate.
+No "ask" slide — the pitch happens in person. Close the conversation directly after Slide 5b: "If the vision makes sense, we can set it up." Price only if asked: "₱150 for the first three months."
 
 ## Customer Acquisition — Demand Side (Players)
 
