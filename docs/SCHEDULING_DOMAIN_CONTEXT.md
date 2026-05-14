@@ -1,6 +1,6 @@
 # Scheduling Domain — Product Context
 
-**Last Updated:** 2026-05-12  
+**Last Updated:** 2026-05-14  
 **Supersedes:** `SCHEDULING_CONTEXT.md` (earlier planning doc — see deviations below)
 
 ## What It Is
@@ -133,6 +133,16 @@ Facility manager can view and edit their linked `Listing` record. Changes reflec
 | Courts inherit listing hours | No per-court operating hours |
 | Slot granularity | Hourly slots only |
 | Null hours guard | Manual onboarding process ensures `opening_time`/`closing_time` are set before a `FacilityAdmin` is provisioned |
+
+## Public Output — Directory Schedule Page
+
+Scheduling data is surfaced publicly via a read-only schedule page on the Directory domain (`GET /schedule/{slug}` on `directory.lokal-pikol.test`). This page is rendered by `ListingScheduleController` (Directory HTTP layer), which calls `GenerateCourtSlotsWithAvailability` (Scheduling Source layer) — a cross-domain read-only call documented with a comment in the controller.
+
+**Key details:**
+- Only visible when `Listing.is_scheduling_enabled = true` (an explicit flag set manually by the developer — not derived from `FacilityAdmin` presence)
+- Slot labels are anonymised — unavailable slots show "Reserved" regardless of reservation type; actual names are never exposed publicly
+- `scheduleUrl` is exposed on `ListingResource`; `ListingCard` shows a "View schedule" row when non-null
+- Full design decisions documented in `DIRECTORY_DOMAIN_CONTEXT.md` → "Public Schedule Page"
 
 ## What It Is Not
 

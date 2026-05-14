@@ -1,6 +1,6 @@
 # Lokal Pikol — Product Plan
 
-**Last Updated:** 2026-05-11
+**Last Updated:** 2026-05-14
 **Status:** Canonical business reference. Supersedes any conflicting plans in roadmap or todo docs.
 
 ---
@@ -139,7 +139,7 @@ Current baseline: ~50 players/day (~1,500 MAU) on a free directory with no searc
 
 ## Partnerships
 
-Three known booking systems in the local landscape. None have public APIs. Each integration will require their dev work, so the pitch must justify the effort.
+Three known booking systems in the local landscape. None have public APIs initially. For `webhook`-type partners (Court Access, Picklepiper), the only dev work required from them is implementing a single HTTP endpoint — Lokal Pikol owns the court name mapping and all translation logic. For Trafft, Lokal Pikol builds the integration directly using the court owner's API credentials.
 
 **Sequencing — sequential, not parallel:**
 
@@ -149,10 +149,78 @@ Three known booking systems in the local landscape. None have public APIs. Each 
 
 **Exchange (same for all three):**
 - **What Lokal Pikol offers:** free distribution to 1,500+ MAU; first-partner co-marketing moment; outgrown-customer referrals (courts using the scheduling tool that need full booking functionality get pointed to the partner).
-- **What Lokal Pikol asks:** availability data for Negros Oriental courts via any mechanism (API, CSV export, scraping with permission); bookings redirect to the partner's own system.
+- **What Lokal Pikol asks:** an endpoint implementing the standardised availability query spec (see below); bookings redirect to the partner's own system.
 - **No money in either direction.**
 
 **On "giving away customers":** referring courts that outgrow the scheduling tool is not a sacrifice. Those courts were never Lokal Pikol's natural customers — Lokal Pikol is intentionally not a full booking system. Referral aligns with brand positioning.
+
+### Partner Integration Spec — Availability Query
+
+Availability search is **real-time**: when a player searches for courts on Lokal Pikol, we call each relevant partner system's endpoint at query time and surface results immediately. No local cache of partner data.
+
+**`search_partner_integrations` table** (one row per listing):
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | bigint | |
+| `uuid` | uuid | |
+| `listing_id` | FK → listings | One integration per listing |
+| `driver` | enum | `webhook`, `trafft` — drives which integration handler runs |
+| `config` | json | Driver-specific connection config (see below) |
+| `created_at` / `updated_at` | timestamps | |
+
+`driver` is an enum, not a display name — it controls code dispatch. New drivers are added as new enum values.
+
+**Config shape per driver:**
+- `webhook` (Court Access, Picklepiper — custom HTTP endpoint they build):
+  ```json
+  {
+    "endpoint_url": "https://...",
+    "secret": "...",
+    "court_mappings": { "SLV Pickleball Club": "SLV" }
+  }
+  ```
+- `trafft` (Trafft API — queried directly by Lokal Pikol using the court owner's credentials):
+  ```json
+  {
+    "api_key": "...",
+    "court_mappings": { "SLV Pickleball Club": "trafft_service_id_abc" }
+  }
+  ```
+
+`court_mappings` keys are Lokal Pikol court names; values are whatever the partner system calls them internally. Lokal Pikol translates before sending the payload and translates back when mapping results to `ListingCard` data. Partner systems receive only names they already recognise — no mapping work on their end.
+
+**Request payload (Lokal Pikol → partner endpoint):**
+
+```json
+{
+  "courts": ["SLV", "Court A"],
+  "date": "YYYY-MM-DD",
+  "startTime": "HH:00",
+  "endTime": "HH:00"
+}
+```
+
+- `courts` — the **partner-side names** for the courts being queried, translated from Lokal Pikol's internal court names via `court_mappings` before the request is sent. Partners receive only names they already recognise. Scoped to courts registered in the Lokal Pikol directory — this preserves the incentive for court owners to join.
+- `date` — ISO date string.
+- `startTime` / `endTime` — 24-hour format, whole hours only (e.g. `18:00`, `21:00`).
+
+**Note on "webhook" terminology:** for Court Access and Picklepiper, Lokal Pikol is the caller — we POST to an endpoint *they* build and they respond synchronously. This is a custom HTTP integration, not a push webhook. The only dev work required from partners is: implement this endpoint.
+
+**Expected response:** the subset of the `courts` array that are available for the given date and time window. Partner systems return their own names; Lokal Pikol translates back via `court_mappings` to match results to `ListingCard` data.
+
+**Display:** results are grouped by source. Each group renders a heading, a grid of `ListingCard` components (using Lokal Pikol directory data — the driver response only determines *which* cards appear), and a group-level CTA.
+
+| Source | Group heading | Group CTA |
+|--------|--------------|-----------|
+| First-party (Lokal Pikol scheduling tool) | "Courts with live schedules" (or similar — doesn't imply booking) | Links to the listing's public schedule page (`/schedule/{slug}`) |
+| Partner (e.g. Court Access) | "Results from Court Access" | "Book these courts at Court Access" → partner's booking destination |
+
+All drivers are resolved in parallel from a single search.
+
+**Participation boundary (hard):** only listings with an integration (Lokal Pikol scheduling tool or a partner system) appear in availability search results. Listings with no integration are excluded entirely — they remain discoverable via the standard directory browse. This is intentional: availability search only answers questions it can answer, and the hard boundary creates a clear incentive for court owners to integrate.
+
+**City filtering:** no city filter on the search page initially — search across all of Negros Oriental. If city filtering is added later, it is handled at the Lokal Pikol HTTP layer (we filter which courts to include in the payload) rather than delegated to partner systems. Partners only answer availability questions; they do not need to understand our geographic structure.
 
 ## Risk Posture
 

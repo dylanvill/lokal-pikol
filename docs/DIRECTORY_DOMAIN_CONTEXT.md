@@ -1,6 +1,6 @@
 # Directory Domain — Product Context
 
-**Last Updated:** 2026-05-06
+**Last Updated:** 2026-05-14
 
 ## What It Is
 
@@ -53,11 +53,40 @@ Court owners can update their listing via a secure, time-limited signed URL. No 
 | Profile photo | Facility logo or secondary photo |
 | Social links | Facebook, Instagram |
 
+## Availability Search (Planned)
+
+The centrepiece of the product — what turns Lokal Pikol from a directory into a search engine. Lives at `/search` on the directory domain, separate from the directory browse. Search state in query params: `/search?date=YYYY-MM-DD&start=HH:00&end=HH:00`. Focused, clean, excellent.
+
+**Page structure:**
+- Header + short description
+- Search inputs: date, start time, end time + submit button
+- Results grouped by source (see below)
+
+**Search trigger:** explicit submit button — all three fields must be filled before searching. Avoids half-formed queries firing against partner APIs on every keystroke.
+
+**Time granularity:** on the hour only (6:00pm, 7:00pm etc.) — no half-hour steps. Aligns with how courts actually operate and keeps first-party slot matching unambiguous. Partner payloads use the same whole-hour values.
+
+**Loading:** progressive via Inertia v2 deferred props — each driver is a separate deferred prop, renders as soon as its call resolves. First-party DB results appear near-instantly; partner HTTP calls may take a second or two. Skeleton placeholder per group while in-flight.
+
+**How it works:**
+- Player enters a date and time window
+- Lokal Pikol queries all applicable drivers in parallel: first-party scheduling listings resolved via `GenerateCourtSlotsWithAvailability`; partner-integrated listings resolved via real-time HTTP calls to their endpoints
+- Results are grouped by source — first-party group ("Courts with live schedules" or similar) + one group per partner ("Results from Court Access", etc.)
+- Each group: heading + `ListingCard` grid + group-level CTA
+- Only listings with an integration (first-party or partner) participate — listings with no integration are excluded entirely
+
+Court names are included in every query payload deliberately: scopes results to courts registered in Lokal Pikol's directory, preserving the incentive for court owners to join. Partners must not return courts outside the provided list.
+
+**Driver failure handling:** failures are per-group, not per-page. If a partner call fails or times out, that group renders a transparent error message (e.g. "Couldn't load results from Court Access — you can try browsing courts manually through their website") with a link to the partner's site. Other groups that resolved successfully still render normally. Timeout threshold: 3–5 seconds.
+
+**Empty state (no results across all drivers):** a simple message — e.g. "No courts available for that time. Try a different date or time window." — with a soft link to the main directory ("Browse all courts →"). No CTA to external booking systems — this is a different context from a driver error; the player just got no matches, not a system failure.
+
+Full integration spec and driver details in `PRODUCT_PLAN.md` → "Partner Integration Spec — Availability Query".
+
 ## What It Is Not
 
 - Not a booking system — players contact courts directly via external links
 - No player accounts
-- No real-time availability (that's the Scheduling domain)
 - No court owner login (access is via signed URLs only)
 - No fees or transactions of any kind
 
