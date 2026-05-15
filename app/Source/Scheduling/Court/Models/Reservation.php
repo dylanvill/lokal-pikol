@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $facility_id
  * @property int $court_id
  * @property string $name
+ * @property string|null $notes
  * @property string $reservation_date
  * @property string $start_time
  * @property string $end_time

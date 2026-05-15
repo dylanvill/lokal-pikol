@@ -11,6 +11,7 @@ class ReserveCourtData
         public Listing $listing,
         public Court $court,
         public string $name,
+        public ?string $notes,
         public string $reservationDate,
         public string $startTime,
         public string $endTime

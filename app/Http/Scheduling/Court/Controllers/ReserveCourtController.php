@@ -24,6 +24,7 @@ class ReserveCourtController extends Controller
                 listing: $court->listing,
                 court: $court,
                 name: $request->reservationName,
+                notes: $request->notes ?? null,
                 reservationDate: $request->date,
                 startTime: $request->startTime,
                 endTime: $request->endTime,
@@ -31,6 +32,7 @@ class ReserveCourtController extends Controller
             DB::commit();
         } catch (ReservationConflictException $e) {
             DB::rollBack();
+
             return back()->withErrors(['start_time' => $e->getMessage()]);
         }
 

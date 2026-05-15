@@ -18,6 +18,7 @@ class ReservationCalendarItemApiModel extends Data
         public string $courtName,
         public string $dateDisplay,
         public string $timeDisplay,
+        public ?string $notes,
     ) {}
 
     public static function createFromReservation(Reservation $reservation): self
@@ -31,6 +32,7 @@ class ReservationCalendarItemApiModel extends Data
             courtName: $reservation->court->name,
             dateDisplay: Carbon::parse($reservation->reservation_date)->format('l, j F Y'),
             timeDisplay: self::formatTimeRange($reservation->start_time, $reservation->end_time),
+            notes: $reservation->notes,
         );
     }
 
@@ -47,6 +49,7 @@ class ReservationCalendarItemApiModel extends Data
             courtName: $blockReservation->court->name,
             dateDisplay: 'Every '.ucfirst($blockReservation->day_of_the_week),
             timeDisplay: self::formatTimeRange($blockReservation->start_time, $blockReservation->end_time),
+            notes: null,
         );
     }
 

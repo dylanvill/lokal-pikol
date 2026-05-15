@@ -27,6 +27,7 @@ class ReserveCourtRequest extends FormRequest
         return [
             'courtId' => ['required', 'string', 'exists:courts,uuid'],
             'reservationName' => ['required', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
             'date' => ['required', 'date_format:Y-m-d'],
             'startTime' => ['required', 'date_format:H:i'],
             'endTime' => ['required', 'date_format:H:i', 'after:start_time'],

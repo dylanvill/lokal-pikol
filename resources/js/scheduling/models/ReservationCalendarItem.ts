@@ -11,6 +11,7 @@ interface ReservationCalendarItem {
     courtName: string;
     dateDisplay: string;
     timeDisplay: string;
+    notes: string | null;
 }
 
 export type { ReservationCalendarItemType };

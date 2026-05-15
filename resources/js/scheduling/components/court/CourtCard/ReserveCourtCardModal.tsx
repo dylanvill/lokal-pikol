@@ -1,9 +1,10 @@
-import { Badge, Button, Dialog, Field, Input, Portal, Stack, Text, Wrap } from '@chakra-ui/react';
+import { Badge, Button, Dialog, Field, Input, Portal, Stack, Text, Textarea, Wrap } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { reserve } from '@/actions/App/Http/Scheduling/Court/Controllers/ReserveCourtController';
 import { toaster } from '../../../../shared/components/ui/toaster';
 import militaryTimeToAmPmTime from '../../../../shared/helpers/militaryTimeToAmPmTime';
+import useRecentNotes from '../../../hooks/useRecentNotes';
 import type Court from '../../../models/Court';
 import type CourtSlot from '../../../models/CourtSlot';
 import { type DateString } from '../../../types/DateTime';
@@ -25,10 +26,13 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
     const { data, setData, post, processing, errors, reset, transform } = useForm({
         courtId: court.id,
         reservationName: '',
+        notes: '',
         date,
         startTime: startTime,
         endTime: endTime,
     });
+
+    const { recentNotes, addNote } = useRecentNotes();
 
     const dateDisplay = dayjs(date).format('dddd MMM DD, YYYY');
 
@@ -48,8 +52,11 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
                 toaster.create({
                     title: `Reservation for ${data.reservationName} on ${dateDisplay} ${formattedStartTime} - ${formattedEndTime} has been created successfully.`,
                     type: 'success',
-                    duration: 5000
+                    duration: 5000,
                 });
+                if (data.notes.trim()) {
+                    addNote(data.notes);
+                }
                 reset();
                 onSuccess();
                 onOpenChange(false);
@@ -110,6 +117,39 @@ function ReserveCourtCardModal({ open, onOpenChange, court, selectedSlots, date,
                                         onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                                     />
                                     {errors.reservationName && <Field.ErrorText>{errors.reservationName}</Field.ErrorText>}
+                                </Field.Root>
+
+                                <Field.Root>
+                                    <Field.Label>Notes <Text as="span" color="gray.400" fontWeight="normal">(optional)</Text></Field.Label>
+                                    <Textarea
+                                        placeholder="e.g. Unpaid — collect on arrival"
+                                        value={data.notes}
+                                        onChange={(e) => setData('notes', e.target.value)}
+                                        rows={3}
+                                    />
+                                    {recentNotes.length > 0 && (
+                                        <Wrap gap={2} mt={2}>
+                                            {recentNotes.map((note) => (
+                                                <Badge
+                                                    key={note}
+                                                    variant="outline"
+                                                    colorPalette="gray"
+                                                    size="sm"
+                                                    cursor="pointer"
+                                                    onClick={() => {
+                                                        setData('notes', note);
+                                                        toaster.create({
+                                                            title: 'Previous note added — feel free to edit it.',
+                                                            type: 'info',
+                                                            duration: 2500,
+                                                        });
+                                                    }}
+                                                >
+                                                    {note}
+                                                </Badge>
+                                            ))}
+                                        </Wrap>
+                                    )}
                                 </Field.Root>
                             </Stack>
                         </Dialog.Body>

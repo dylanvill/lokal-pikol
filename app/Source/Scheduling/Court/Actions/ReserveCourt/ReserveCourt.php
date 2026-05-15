@@ -26,10 +26,11 @@ class ReserveCourt
             throw new ReservationConflictException($validator->errors()->first());
         }
 
-        $reservation = new Reservation();
+        $reservation = new Reservation;
         $reservation->facility_id = $data->listing->id;
         $reservation->court_id = $data->court->id;
         $reservation->name = $data->name;
+        $reservation->notes = $data->notes;
         $reservation->reservation_date = $data->reservationDate;
         $reservation->start_time = $data->startTime;
         $reservation->end_time = $data->endTime;

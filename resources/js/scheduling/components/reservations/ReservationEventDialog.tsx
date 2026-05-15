@@ -46,6 +46,12 @@ function ReservationEventDialog({ item, onClose }: ReservationEventDialogProps) 
                                 <DetailRow icon={<LuCalendar />} text={item.dateDisplay} />
                                 <DetailRow icon={<LuClock />} text={item.timeDisplay} />
                                 <DetailRow icon={<LuMapPin />} text={item.courtName} />
+                                {!isBlockReservation && item.notes && (
+                                    <Box borderTopWidth="1px" borderColor="gray.100" pt={3} w="full">
+                                        <Text fontSize="xs" color="gray.400" fontWeight="medium" mb={1}>Notes</Text>
+                                        <Text fontSize="sm" color="gray.600" whiteSpace="pre-wrap">{item.notes}</Text>
+                                    </Box>
+                                )}
                             </VStack>
                         </Dialog.Body>
                         <Dialog.Footer>
