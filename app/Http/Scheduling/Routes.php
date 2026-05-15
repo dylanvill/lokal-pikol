@@ -44,8 +44,6 @@ class Routes
 
     const COURTS = 'courts';
 
-    const CREATE_COURT = 'courts.create';
-
     const UPDATE_COURT = 'courts.update';
 
     const RESERVE_COURT = 'courts.reserve';

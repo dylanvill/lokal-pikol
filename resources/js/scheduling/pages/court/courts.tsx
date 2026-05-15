@@ -1,11 +1,10 @@
-import { SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import { SimpleGrid, VStack } from '@chakra-ui/react';
 import { type DateValue, parseDate } from '@chakra-ui/react';
 import { router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { show } from '@/actions/App/Http/Scheduling/Court/Controllers/CourtsController';
 import DatePickerField from '@/shared/components/DatePickerField';
-import AddCourtModal from '../../components/court/AddCourtModal';
 import CourtCard from '../../components/court/CourtCard';
 import CourtsEmptyState from '../../components/court/CourtsEmptyState';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
@@ -30,10 +29,7 @@ function CourtsPage() {
     return (
         <SchedulingLayout title="Courts">
             <VStack align="stretch" gap={6}>
-                <Stack direction={{ base: 'column', md: 'row' }} justify="space-between" align={{ base: 'flex-start', md: 'center' }} gap={4}>
-                    <DatePickerField value={parseDate(date)} onValueChange={handleDateChange} label="Viewing bookings on:" />
-                    <AddCourtModal />
-                </Stack>
+                <DatePickerField value={parseDate(date)} onValueChange={handleDateChange} label="Viewing bookings on:" />
 
                 {courts.length === 0 ? (
                     <CourtsEmptyState />
