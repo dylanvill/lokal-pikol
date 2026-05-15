@@ -7,8 +7,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -39,7 +40,6 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-
         $middleware->preventRequestsDuringMaintenance(except: [
             'privacy-policy',
             'terms-and-conditions',
@@ -54,14 +54,19 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__ . '/../app/Source/Directory/Listeners',
     ])
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+        $exceptions->respond(function (Response $response, Throwable $_exception, Request $request) {
+            $status = $response->getStatusCode();
 
-            if ($response->getStatusCode() === 419) {
-                return back()->with([
-                    'message' => 'The page expired, please try again.',
-                ]);
+            $tld = config('app.tld');
+
+            if ($request->getHost() === "directory.{$tld}") {
+                Inertia::setRootView('directory');
+            } elseif ($request->getHost() === "scheduling.{$tld}") {
+                Inertia::setRootView('scheduling');
             }
 
-            return $response;
+            return Inertia::render('ErrorPage', ['status' => $status])
+                ->toResponse($request)
+                ->setStatusCode($status);
         });
     })->create();
