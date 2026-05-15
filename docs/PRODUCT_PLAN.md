@@ -71,47 +71,55 @@ The cold visits are for **content and relationships**, not for onboarding. The s
 
 ### The Slide Sequence
 
-**Slide 1 — Lokal Pikol is growing, but it's still just a directory**
-Lokal Pikol currently gets around 50 visitors a day — players looking for courts in Negros Oriental. Right now it only shows basic info: location, contact, photos. Players still have to message each court individually to find out what's free. That's the gap this tool closes.
+This is the actual sequence used in the field. The flow is natural rather than fixed — slides are visual anchors for a conversation, not a strict script. These are warm pitches (courts already listed on Lokal Pikol), so the opener assumes familiarity.
 
-- **Title:** "50 players a day. Still just a directory."
-- **Visual:** Screenshot of a Lokal Pikol listing (basic info only) with a Facebook message thread overlaid — "Is Court 2 free at 7pm tonight?"
+**Slide 1 — Re-introduction**
+Quick reminder of what Lokal Pikol is and where it sits. Sets the stage without re-explaining from scratch.
 
-**Slide 2 — A glorified spreadsheet. Connected to Lokal Pikol.**
-Think of it as a shared schedule your team logs reservations into — nothing you couldn't do in Excel. The difference is that whatever you log here gets published to Lokal Pikol, so players browsing the directory can already see your availability before they message you. Bookings still happen through your Facebook page — that doesn't change. This just means players arrive informed.
+**Slide 2 — Growth of Lokal Pikol**
+130 courts listed. 30–50 player visits per day. The directory is alive and growing — this is why adding a scheduling layer matters now.
 
-- **Title:** "We built a glorified spreadsheet."
-- **Visual:** Side by side — plain Excel spreadsheet on the left, the Courts page on the right.
+**Slide 3 — "View Schedule" feature**
+Introduce the concept with screenshots of the current directory UI. The framing is: players are already coming to look up courts — this feature gives them something worth looking at.
 
-**Slide 3 — This is what you manage**
-The reservations calendar gives you the clearest picture of what's happening across your courts — who's booked, what's blocked, what's still free. Logging a reservation takes a few taps.
+**Slide 4+ — Facility dashboard walkthrough (screenshot sequence)**
+Walk through the actual scheduling UI screen by screen:
 
-- **Title:** "Your courts. Any date."
-- **Visual:** Screenshot of the reservations calendar — the most data-dense and readable view of the scheduling tool.
+- **Profile page** — you get access to this dashboard; you can edit your own listing info directly.
+- **Courts page** — manage which courts you're publishing availability for.
+- **Block booking page** — block time for private events, lessons, maintenance.
+- **Reservations page** — log confirmed reservations; this is the day-to-day view.
+- **What players see** — show the player-facing output that corresponds to each of the above. The explicit point: this tool is a data feed, not a booking interface.
 
-**Slide 4 — This is a scheduling management tool, not a booking system**
-There are no player accounts, no payments, no automated confirmations — and that's deliberate. This is a tool for you to manage your own schedule. Players don't interact with it at all.
+**Slide 8 — "This is not a booking system"**
+Hard stop. Clear and honest. Four things it deliberately doesn't do:
+- ✗ No player accounts
+- ✗ No payment upload
+- ✗ No automations
+- ✗ No emails
 
-- **Title:** "This isn't a booking system. It's a scheduling management tool."
-- **Visual:** Simple icons for the things it deliberately doesn't do (player account, payment terminal, automated confirmations) — all greyed out. Clean, honest.
+Trust-builder for courts already using or considering Court Access, Picklepiper, or Courthub. Removes displacement fear.
 
-**Slide 5a — Nothing changes for players**
-Players still find you, message you, and pay you the same way they always have. The only thing that changes is on your end — you log reservations here instead of a spreadsheet.
+**Slide 9 — "Nothing changes for players"**
+The player flow is unchanged:
+- ✓ Contact you via social media
+- ✓ Confirm booking via chat
 
-- **Title:** "Players still contact you. Nothing changes for them."
-- **Visual:** Simple 3-step flow — "Player messages your Facebook" → "You confirm and collect payment" → "You log it in the tool." Clean icons, no clutter.
+You just log it here instead of a spreadsheet.
 
-**Slide 5b — So why not just use Excel?**
-Your spreadsheet works fine today. But this scheduling tool is connected to your Lokal Pikol listing — so players browsing the directory can see your real schedule before they even message you. Fewer "is Court 2 free?" messages. Players arrive already knowing.
+**Slide 10 — Why not keep using Sheets / Excel / Calendar?**
+Honest framing — your current system works fine. The difference: this one is connected to the Lokal Pikol directory. Visual shows the flow: Player → Directory → Facebook → Client. The scheduling tool feeds the directory step. Players arrive already knowing what's free — fewer "is Court 2 available?" messages.
 
-- **Title:** "Because this one is linked to your Lokal Pikol listing."
-- **Visual:** Arrow from the scheduling tool grid → Lokal Pikol listing showing live availability.
+**Slides 11–12 — Bonus: Generate image feature**
+Show the AI-assisted listing image generation as a value-add. Not core to the pitch — just a moment of delight at the end.
 
 ### Verbal Notes
 
-The pitch is not a features walkthrough — it's a vision pitch. The honest framing ("your spreadsheet works fine") is intentional and should not be softened. Slide 4 is the trust-builder for courts that already use or are considering Court Access, Picklepiper, or Courthub — it removes the fear of being locked in or displaced.
+The pitch is not a features walkthrough — it's a vision pitch. The honest framing ("your spreadsheet works fine") is intentional and must not be softened. The "not a booking system" slide is a trust anchor, not a limitation — lean into it.
 
-No "ask" slide — the pitch happens in person. Close the conversation directly after Slide 5b: "If the vision makes sense, we can set it up." Price only if asked: "₱150 for the first three months."
+No "ask" slide — the pitch happens in person. Close directly after the last relevant slide: "If the vision makes sense, we can set it up." Price only if asked: "₱150 for the first three months."
+
+**If you face resistance:** Use the slide sequence as a diagnostic. Resistance at Slide 3 (the feature) usually means the value prop isn't landing — go back to Slide 2 and the player visit numbers. Resistance at Slide 8 (not a booking system) usually means fear of disruption — stay on that slide and let the checklist do the work. Resistance at Slide 10 (why not Excel) is the easiest to handle — point to the directory integration arrow.
 
 ## Customer Acquisition — Demand Side (Players)
 
