@@ -1,9 +1,10 @@
-import { Box, Card, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import { Card, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
+import { parseDate } from '@chakra-ui/react';
 import AvailabilityBrandColorPicker from '../../components/availability/AvailabilityBrandColorPicker';
 import AvailabilityCopyButton from '../../components/availability/AvailabilityCopyButton';
 import AvailabilityCourtCard from '../../components/availability/AvailabilityCourtCard';
 import AvailabilityEmptyState from '../../components/availability/AvailabilityEmptyState';
-import CourtPageDatePicker from '../../components/court/CourtPageDatePicker';
+import DatePickerField from '@/shared/components/DatePickerField';
 import { formatAllCourtsAvailabilityText } from '../../helpers/formatAvailabilityText';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type AvailabilityCourt from '../../models/AvailabilityCourt';
@@ -39,13 +40,11 @@ function AvailabilityPage({ date, facilityName, courts }: AvailabilityPageProps)
                     <Card.Body>
                         <Stack gap={4}>
                             <HStack justify="space-between" align="center" wrap="wrap" gap={4}>
-                                <Box flexShrink={0}>
-                                    <CourtPageDatePicker
-                                        date={date}
-                                        dateDisplay={dateDisplay}
-                                        onValueChange={handleDateChange}
-                                    />
-                                </Box>
+                                <DatePickerField
+                                    value={parseDate(date)}
+                                    onValueChange={handleDateChange}
+                                    label="Viewing availability on:"
+                                />
                                 <AvailabilityCopyButton
                                     text={allCourtsText}
                                     label="Copy all courts"
