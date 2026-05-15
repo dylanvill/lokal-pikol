@@ -21,7 +21,7 @@ function DatePickerField({ value, onValueChange, label, format = 'dddd, MMMM D, 
             <DatePicker.Label>{label}</DatePicker.Label>
             <DatePicker.Control maxWidth="xs">
                 <DatePicker.Trigger asChild unstyled textAlign="left">
-                    <DatePicker.Input />
+                    <DatePicker.Input backgroundColor="white" />
                 </DatePicker.Trigger>
                 <DatePicker.IndicatorGroup>
                     <DatePicker.Trigger>
