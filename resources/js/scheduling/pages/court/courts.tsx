@@ -1,4 +1,4 @@
-import { SimpleGrid, VStack } from '@chakra-ui/react';
+import { Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { type DateValue, parseDate } from '@chakra-ui/react';
 import { router, usePage } from '@inertiajs/react';
 import dayjs from 'dayjs';
@@ -18,7 +18,7 @@ interface CourtsPageProps extends SchedulingPageProps {
 }
 
 function CourtsPage() {
-    const { courts, date } = usePage<CourtsPageProps>().props;
+    const { courts, date, facilityAdmin, facility } = usePage<CourtsPageProps>().props;
 
     const dateString = useMemo(() => dayjs(date).format('YYYY-MM-DD'), [date]);
 
@@ -29,6 +29,11 @@ function CourtsPage() {
     return (
         <SchedulingLayout title="Courts">
             <VStack align="stretch" gap={6}>
+                <VStack align="flex-start" gap={0}>
+                    <Heading size="3xl">Hi, {facilityAdmin.firstName}.</Heading>
+                    <Text color="gray.500">Managing schedule for {facility.name}</Text>
+                </VStack>
+
                 <DatePickerField value={parseDate(date)} onValueChange={handleDateChange} label="Viewing bookings on:" />
 
                 {courts.length === 0 ? (
