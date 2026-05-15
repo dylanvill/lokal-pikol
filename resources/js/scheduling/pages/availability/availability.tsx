@@ -1,10 +1,10 @@
 import { Card, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react';
 import { parseDate } from '@chakra-ui/react';
+import DatePickerField from '@/shared/components/DatePickerField';
 import AvailabilityBrandColorPicker from '../../components/availability/AvailabilityBrandColorPicker';
 import AvailabilityCopyButton from '../../components/availability/AvailabilityCopyButton';
 import AvailabilityCourtCard from '../../components/availability/AvailabilityCourtCard';
 import AvailabilityEmptyState from '../../components/availability/AvailabilityEmptyState';
-import DatePickerField from '@/shared/components/DatePickerField';
 import { formatAllCourtsAvailabilityText } from '../../helpers/formatAvailabilityText';
 import SchedulingLayout from '../../layouts/SchedulingLayout';
 import type AvailabilityCourt from '../../models/AvailabilityCourt';
