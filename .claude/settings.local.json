@@ -24,7 +24,8 @@
       "Bash(npm install *)",
       "Bash(npm run *)",
       "mcp__laravel-boost__database-schema",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Skill(laravel-best-practices)"
     ]
   },
   "enabledMcpjsonServers": [

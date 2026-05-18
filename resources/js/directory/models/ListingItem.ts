@@ -1,6 +1,7 @@
 // Type equivalent for App\Http\Directory\Resources\ListingResource
 import type Photo from '../../shared/models/Photo';
 import type FacilityCourtType from './FacilityCourtType';
+import type ListingSchedule from './ListingSchedule';
 import type SocialLink from './SocialLink';
 
 interface ListingItem {
@@ -16,7 +17,7 @@ interface ListingItem {
     city: string;
     googleMapsUrl: string | null;
     bookingUrl: string | null;
-    scheduleUrl: string | null;
+    schedule: ListingSchedule | null;
     openingTime: string | null;
     closingTime: string | null;
     socialLinks: SocialLink[];

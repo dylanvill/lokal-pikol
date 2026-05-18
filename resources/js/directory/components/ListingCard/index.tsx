@@ -1,12 +1,13 @@
 import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button, Float } from '@chakra-ui/react';
 import { Link, router } from '@inertiajs/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { LuArrowRight, LuCalendar, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
 import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventController';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type ListingItem from '../../models/ListingItem';
+import ExternalScheduleDialog from './ExternalScheduleDialog';
 
 type ListingCardProps = Omit<ListingItem, 'createdAt' | 'updatedAt'> & {
     isNew?: boolean;
@@ -26,7 +27,7 @@ function ListingCard({
     googleMapsUrl,
     socialLinks,
     bookingUrl,
-    scheduleUrl,
+    schedule,
     email,
     phone,
     isNew = false,
@@ -43,6 +44,8 @@ function ListingCard({
         if (courtType === 'Outdoor') return <LuSun color="black" />;
         return <LuCheckCheck color="gray" />;
     }, [courtType]);
+
+    const [externalScheduleOpen, setExternalScheduleOpen] = useState(false);
 
     const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
     const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
@@ -169,17 +172,38 @@ function ListingCard({
                             }
                         />
                     )}
-                    {scheduleUrl && (
+                    {schedule && !schedule.isExternal && (
                         <DetailWithIcon
                             icon={<LuCalendar color="black" />}
                             textProps={{ fontSize: 'sm' }}
                             label={
                                 <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
-                                    <Link href={scheduleUrl}>View schedule</Link>
+                                    <Link href={schedule.url}>View schedule</Link>
                                     <LuArrowRight />
                                 </HStack>
                             }
                         />
+                    )}
+                    {schedule && schedule.isExternal && (
+                        <>
+                            <DetailWithIcon
+                                icon={<LuCalendar color="black" />}
+                                textProps={{ fontSize: 'sm' }}
+                                label={
+                                    <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
+                                        <ChakraLink cursor="pointer" onClick={() => setExternalScheduleOpen(true)}>
+                                            View schedule
+                                        </ChakraLink>
+                                        <LuArrowRight />
+                                    </HStack>
+                                }
+                            />
+                            <ExternalScheduleDialog
+                                open={externalScheduleOpen}
+                                onOpenChange={setExternalScheduleOpen}
+                                schedule={schedule}
+                            />
+                        </>
                     )}
                 </VStack>
             </Card.Body>

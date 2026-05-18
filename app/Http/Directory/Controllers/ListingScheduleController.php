@@ -6,6 +6,7 @@ use App\Http\Scheduling\Court\ApiModels\AvailabilityCourtApiModel;
 use App\Http\Shared\Contracts\Controller;
 use App\Http\Shared\Resources\LinkResource;
 use App\Source\Directory\Models\Listing;
+use App\Source\Directory\Models\ScheduleUrl\Enums\ScheduleProviderEnum;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 // Cross-domain call: Directory HTTP → Scheduling Source (scheduling business logic, read-only)
 use App\Source\Scheduling\Court\Actions\GenerateSlots\GenerateCourtSlotsWithAvailability;
@@ -19,11 +20,11 @@ class ListingScheduleController extends Controller
 {
     public function show(Request $request, GenerateCourtSlotsWithAvailability $generateSlots, Listing $listing): Response
     {
-        if (! $listing->is_scheduling_enabled) {
+        $listing->load('scheduleUrl', 'socialLinks', 'media');
+
+        if ($listing->scheduleUrl?->provider !== ScheduleProviderEnum::INTERNAL) {
             throw new NotFoundHttpException;
         }
-
-        $listing->load('socialLinks', 'media');
 
         $date = $request->input('date', now()->format('Y-m-d'));
 

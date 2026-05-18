@@ -134,12 +134,68 @@ Facility manager can view and edit their linked `Listing` record. Changes reflec
 | Slot granularity | Hourly slots only |
 | Null hours guard | Manual onboarding process ensures `opening_time`/`closing_time` are set before a `FacilityAdmin` is provisioned |
 
+## Schedule URL System
+
+The `schedule_urls` table is how the platform controls whether a "View schedule" link appears on a listing card. It replaces the retired `is_scheduling_enabled` boolean.
+
+### Design decisions
+
+- **One active row per listing** — a listing either has a schedule URL or it doesn't. Multiple providers simultaneously are not supported.
+- **Developer-controlled** — the row is created manually via `php artisan directory:register-schedule-url`. This preserves intentional decoupling: a `FacilityAdmin` existing does not automatically expose a public schedule link.
+- **Provider pattern** — a `ScheduleProviderEnum` identifies the provider (`internal` only for now). Each provider has a typed config class (`InternalProviderConfig extends ScheduleProviderConfig`) using Spatie Data (named `...ProviderConfig`, not `...ApiModel`). URL resolution is on the config class via `resolveUrl(Listing $listing): string` — no separate resolver service.
+- **Eloquent cast** — `ScheduleProviderConfigCast` reads `$attributes['provider']` and deserialises the `config` JSON column into the correct typed class.
+- **`InternalProviderConfig`** stores `{ listing_id: uuid }` for consistency even though the URL is computed from the listing slug at resolve time.
+
+### Directory structure
+
+```
+app/Source/Directory/Models/ScheduleUrl/
+├── ScheduleUrl.php
+├── ScheduleProviderConfigCast.php
+├── Enums/
+│   └── ScheduleProviderEnum.php
+└── Configs/
+    ├── ScheduleProviderConfig.php   (abstract Spatie Data base)
+    └── InternalProviderConfig.php
+app/Source/Directory/Actions/CreateScheduleUrl.php
+app/Source/Directory/Actions/RemoveScheduleUrl.php
+app/Source/Directory/Commands/RegisterScheduleUrlCommand.php   (directory:register-schedule-url)
+app/Source/Directory/Commands/RemoveScheduleUrlCommand.php     (directory:remove-schedule-url)
+```
+
+### Commands
+
+Both commands are interactive. `directory:register-schedule-url` prompts: select listing → select provider → collect provider config (none needed for `internal`). `directory:remove-schedule-url` prompts: select listing, confirms, then calls `RemoveScheduleUrl`.
+
+### Frontend
+
+`ListingResource` exposes a nested `schedule` object (or null):
+
+```json
+{
+  "schedule": {
+    "url": "https://...",
+    "isExternal": false,
+    "providerName": "Lokal Pikol"
+  }
+}
+```
+
+`ListingCard` shows "View schedule" when `schedule !== null`. When `isExternal` is false, the link navigates directly (Inertia). When `isExternal` is true, a confirmation modal fires before redirecting — message: "You are now leaving Lokal Pikol and moving to [providerName] to view its schedule."
+
+`providerName` comes from `displayName` on the config class. `isExternal` is derived server-side — any provider that isn't `internal` is external. `ListingItem.ts` types the field as `{ url: string; isExternal: boolean; providerName: string } | null`.
+
+### Deferred
+
+- **External provider classes** (`PicklepiperProviderConfig` etc.) — deferred until a third-party integration is scoped.
+- **Cross-domain read concern** — `ListingScheduleController` in the Directory domain will need to read `ScheduleUrl` records. Exact wiring deferred.
+
 ## Public Output — Directory Schedule Page
 
 Scheduling data is surfaced publicly via a read-only schedule page on the Directory domain (`GET /schedule/{slug}` on `directory.lokal-pikol.test`). This page is rendered by `ListingScheduleController` (Directory HTTP layer), which calls `GenerateCourtSlotsWithAvailability` (Scheduling Source layer) — a cross-domain read-only call documented with a comment in the controller.
 
 **Key details:**
-- Only visible when `Listing.is_scheduling_enabled = true` (an explicit flag set manually by the developer — not derived from `FacilityAdmin` presence)
+- Only visible when a `schedule_urls` row exists for the listing with provider `internal` (replaces the retired `is_scheduling_enabled` flag)
 - Slot labels are anonymised — unavailable slots show "Reserved" regardless of reservation type; actual names are never exposed publicly
 - `scheduleUrl` is exposed on `ListingResource`; `ListingCard` shows a "View schedule" row when non-null
 - Full design decisions documented in `DIRECTORY_DOMAIN_CONTEXT.md` → "Public Schedule Page"
@@ -174,3 +230,5 @@ See `SCHEDULING_DOMAIN_TODO.md` for the full todo list including deferred items.
 | Court ownership authorisation | Deferred — scaffold in one pass after all features are built |
 | `CheckReservationOverlap` doesn't check block reservations | Deferred — fix in correctness pass |
 | `BlockReservation.listing_id` redundancy | Deferred — revisit when building availability search |
+| External provider classes (Picklepiper etc.) | Deferred — no third-party integrations scoped yet |
+| Cross-domain read of `schedule_urls` in Directory HTTP layer | Deferred — wire up when building the schedule page visibility check |

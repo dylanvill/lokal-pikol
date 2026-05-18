@@ -3,6 +3,7 @@
 namespace App\Source\Directory\Models;
 
 use App\Source\Directory\Database\Factories\ListingFactory;
+use App\Source\Directory\Models\ScheduleUrl\ScheduleUrl;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use App\Source\MediaLibrary\Enums\MediaTypeEnum;
 use App\Source\Scheduling\Facility\Models\FacilityAdmin;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -23,7 +25,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $id
  * @property string $uuid
  * @property string|null $slug
- * @property bool $is_scheduling_enabled
  * @property string $name
  * @property string $city
  * @property string $address
@@ -38,6 +39,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read ScheduleUrl|null $scheduleUrl
  * @property-read \Illuminate\Database\Eloquent\Collection<int, FacilityAdmin> $facilityAdmins
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Scheduling\Court\Models\Court> $courts
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Source\Scheduling\Court\Models\BlockReservation> $blockReservations
@@ -64,11 +66,9 @@ class Listing extends Model implements HasMedia
         'booking_url',
     ];
 
-    protected function casts(): array
+    public function scheduleUrl(): HasOne
     {
-        return [
-            'is_scheduling_enabled' => 'boolean',
-        ];
+        return $this->hasOne(ScheduleUrl::class);
     }
 
     public function facilityAdmins(): HasMany

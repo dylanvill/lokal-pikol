@@ -24,7 +24,7 @@ class ListingController extends Controller
     {
         $seed = $this->getRandomSeed();
 
-        $listings = Listing::with('socialLinks')
+        $listings = Listing::with('socialLinks', 'scheduleUrl')
             ->when($request->city, function ($query, $city) {
                 $query->where('city', $city);
             })
