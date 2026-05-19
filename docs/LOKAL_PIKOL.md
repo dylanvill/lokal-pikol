@@ -155,12 +155,28 @@ Public, no-auth court directory. Players browse to find courts. No booking, no p
 { "schedule": null }
 ```
 
-`ListingCard` shows "View schedule" only when `schedule !== null`.
+`ListingCard` shows "View schedule on [providerName]" only when `schedule !== null`.
 
 - `isExternal: false` → Inertia navigation (internal schedule page).
 - `isExternal: true` → confirmation modal: "You are now leaving Lokal Pikol and moving to [providerName] to view its schedule." → external redirect.
 
 TypeScript type (`ListingItem.ts`): `{ url: string; isExternal: boolean; providerName: string } | null`.
+
+### ListingResource — `bookingPlatform` Field
+
+`bookingPlatform: string | null` is derived server-side from `booking_url` via `BookingPlatformResolver` (`app/Http/Directory/Support/BookingPlatformResolver.php`). No stored field — resolved at serialisation time.
+
+Known platforms:
+
+| Domain | Display name |
+|--------|-------------|
+| `facebook.com` | Facebook |
+| `instagram.com` | Instagram |
+| `court-access.com` | Court Access |
+| `picklepiper.com` | PicklePiper |
+| `playkorte.com` | PlayKorte |
+
+`ListingCard` footer shows "Book on [platform]" when `bookingPlatform` is non-null, "Book Court" otherwise. Footer only renders when `bookingUrl` exists — no "no booking link" fallback text.
 
 ### Public Schedule Page (`/schedule/{slug}`)
 
