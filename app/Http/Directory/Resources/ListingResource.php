@@ -2,6 +2,7 @@
 
 namespace App\Http\Directory\Resources;
 
+use App\Http\Directory\Support\BookingPlatformResolver;
 use App\Http\Shared\Resources\LinkResource;
 use App\Source\MediaLibrary\Enums\MediaConversionEnum;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class ListingResource extends JsonResource
             'closingTime' => $this->closing_time,
             'googleMapsUrl' => $this->google_maps_url,
             'bookingUrl' => $this->booking_url,
+            'bookingPlatform' => BookingPlatformResolver::resolve($this->booking_url),
             'schedule' => $this->scheduleUrl ? new ScheduleUrlResource($this->scheduleUrl) : null,
             'courtType' => $this->court_type,
             'numberOfCourts' => $this->number_of_courts,

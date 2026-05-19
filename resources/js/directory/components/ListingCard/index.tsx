@@ -27,6 +27,7 @@ function ListingCard({
     googleMapsUrl,
     socialLinks,
     bookingUrl,
+    bookingPlatform,
     schedule,
     email,
     phone,
@@ -178,7 +179,7 @@ function ListingCard({
                             textProps={{ fontSize: 'sm' }}
                             label={
                                 <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
-                                    <Link href={schedule.url}>View schedule</Link>
+                                    <Link href={schedule.url}>View schedule on {schedule.providerName}</Link>
                                     <LuArrowRight />
                                 </HStack>
                             }
@@ -192,7 +193,7 @@ function ListingCard({
                                 label={
                                     <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
                                         <ChakraLink cursor="pointer" onClick={() => setExternalScheduleOpen(true)}>
-                                            View schedule
+                                            View schedule on {schedule.providerName}
                                         </ChakraLink>
                                         <LuArrowRight />
                                     </HStack>
@@ -211,7 +212,7 @@ function ListingCard({
                 <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
                     {bookingUrl ? (
                         <Button size="sm" variant="ghost" marginTop={4} fontSize="sm" textAlign="right" onClick={onBookCourtClicked}>
-                            Booking link
+                            {bookingPlatform ? `Book on ${bookingPlatform}` : 'Book Court'}
                             <LuArrowRight />
                         </Button>
                     ) : (

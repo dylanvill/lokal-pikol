@@ -43,6 +43,7 @@ function RegistrationSuccessPage({ listing }: RegistrationSuccessPageProps) {
                 googleMapsUrl={listing.googleMapsUrl}
                 socialLinks={listing.socialLinks}
                 bookingUrl={listing.bookingUrl}
+                bookingPlatform={listing.bookingPlatform}
                 schedule={null}
                 email={listing.email}
                 phone={listing.phone}
