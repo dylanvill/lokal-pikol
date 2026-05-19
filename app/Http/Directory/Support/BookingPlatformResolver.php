@@ -9,6 +9,7 @@ class BookingPlatformResolver
      */
     private const PLATFORMS = [
         'facebook.com' => 'Facebook',
+        'instagram.com' => 'Instagram',
         'court-access.com' => 'Court Access',
         'picklepiper.com' => 'PicklePiper',
         'playkorte.com' => 'PlayKorte',
