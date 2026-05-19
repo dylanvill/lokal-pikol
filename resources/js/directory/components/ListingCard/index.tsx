@@ -1,4 +1,4 @@
-import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Text, Flex, Button, Float } from '@chakra-ui/react';
+import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Button, Float } from '@chakra-ui/react';
 import { Link, router } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
@@ -199,29 +199,28 @@ function ListingCard({
                                     </HStack>
                                 }
                             />
-                            <ExternalScheduleDialog
-                                open={externalScheduleOpen}
-                                onOpenChange={setExternalScheduleOpen}
-                                schedule={schedule}
-                            />
+                            <ExternalScheduleDialog open={externalScheduleOpen} onOpenChange={setExternalScheduleOpen} schedule={schedule} />
                         </>
                     )}
                 </VStack>
             </Card.Body>
-            <Card.Footer>
-                <Flex justifyContent="flex-end" alignItems="flex-end" width="full">
-                    {bookingUrl ? (
-                        <Button size="sm" variant="ghost" marginTop={4} fontSize="sm" textAlign="right" onClick={onBookCourtClicked}>
-                            {bookingPlatform ? `Book on ${bookingPlatform}` : 'Book Court'}
-                            <LuArrowRight />
-                        </Button>
-                    ) : (
-                        <Text marginTop={4} fontSize="sm" color="gray.500" textAlign="right">
-                            No booking link available
-                        </Text>
-                    )}
-                </Flex>
-            </Card.Footer>
+            {bookingUrl ? (
+                <Card.Footer padding={0} margin={0} borderBottomRadius={8}>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        fontSize="sm"
+                        textAlign="right"
+                        onClick={onBookCourtClicked}
+                        borderBottomRadius={8}
+                        borderTopRadius={0}
+                        width="full"
+                    >
+                        {bookingPlatform ? `Book on ${bookingPlatform}` : 'Book Court'}
+                        <LuArrowRight />
+                    </Button>
+                </Card.Footer>
+            ) : null}
         </Card.Root>
     );
 }
