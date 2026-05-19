@@ -247,12 +247,10 @@ A pickleball court directory and scheduling platform for Negros Oriental (Philip
 
 - **Use `useForm` for every form-ish interaction** — including `delete` actions with no payload. Pass an empty object (`useForm({})`) when there is no data. The wrapper gives consistent `processing`, `onSuccess`, and `errors` handling across the app and avoids one-offs with `router.delete()` / `router.post()`.
 
-## Key Docs (load only what's relevant)
+## Key Docs
 
-- `docs/PRODUCT_PLAN.md` — canonical business plan (vision, mode, pricing, partnerships, risk posture)
-- `docs/DIRECTORY_DOMAIN_CONTEXT.md` — directory product context and design decisions
-- `docs/DIRECTORY_DOMAIN_ROADMAP.md` — directory feature backlog
+- `docs/LOKAL_PIKOL.md` — single source of truth: all business and technical decisions, domain context, roadmap, and design decisions
 - `docs/DIRECTORY_DOMAIN_TODO.md` — directory concrete todo list (start here for directory work)
-- `docs/SCHEDULING_DOMAIN_CONTEXT.md` — scheduling product context and all design decisions
-- `docs/SCHEDULING_DOMAIN_ROADMAP.md` — scheduling build sequence and business vision
 - `docs/SCHEDULING_DOMAIN_TODO.md` — scheduling concrete todo list (start here for scheduling work)
+
+@docs/LOKAL_PIKOL.md
