@@ -11,7 +11,7 @@ class BookingPlatformResolver
         'facebook.com' => 'Facebook',
         'instagram.com' => 'Instagram',
         'court-access.com' => 'Court Access',
-        'picklepiper.com' => 'PicklePiper',
+        // 'picklepiper.com' => 'PicklePiper',
         'playkorte.com' => 'PlayKorte',
         'trafft.com' => 'Trafft',
         'sports360.ph' => 'Sports360',
