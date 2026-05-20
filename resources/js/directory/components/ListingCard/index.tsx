@@ -7,6 +7,7 @@ import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventCo
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type ListingItem from '../../models/ListingItem';
+import BookingDialog from './BookingDialog';
 import ExternalScheduleDialog from './ExternalScheduleDialog';
 
 type ListingCardProps = Omit<ListingItem, 'createdAt' | 'updatedAt'> & {
@@ -47,6 +48,7 @@ function ListingCard({
     }, [courtType]);
 
     const [externalScheduleOpen, setExternalScheduleOpen] = useState(false);
+    const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
 
     const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
     const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
@@ -211,7 +213,7 @@ function ListingCard({
                         variant="solid"
                         fontSize="sm"
                         textAlign="right"
-                        onClick={onBookCourtClicked}
+                        onClick={() => setBookingDialogOpen(true)}
                         borderBottomRadius={8}
                         borderTopRadius={0}
                         width="full"
@@ -219,6 +221,13 @@ function ListingCard({
                         {bookingPlatform ? `Book on ${bookingPlatform}` : 'Book Court'}
                         <LuArrowRight />
                     </Button>
+                    <BookingDialog
+                        open={bookingDialogOpen}
+                        onOpenChange={setBookingDialogOpen}
+                        courtName={name}
+                        bookingPlatform={bookingPlatform}
+                        onConfirm={onBookCourtClicked}
+                    />
                 </Card.Footer>
             ) : null}
         </Card.Root>
