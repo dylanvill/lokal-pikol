@@ -13,6 +13,11 @@ class BookingPlatformResolver
         'court-access.com' => 'Court Access',
         'picklepiper.com' => 'PicklePiper',
         'playkorte.com' => 'PlayKorte',
+        'trafft.com' => 'Trafft',
+        'sports360.ph' => 'Sports360',
+        'courthubapp.com' => 'CourtHub',
+        'playserve.app' => 'PlayServe',
+        'courtogo.com' => 'Courtogo',
     ];
 
     public static function resolve(?string $url): ?string
