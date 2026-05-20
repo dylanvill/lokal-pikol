@@ -12,6 +12,7 @@ use App\Source\Directory\Models\ScheduleUrl\Configs\ScheduleProviderConfig;
 use App\Source\Directory\Models\ScheduleUrl\Enums\ScheduleProviderEnum;
 use Illuminate\Console\Command;
 
+use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\text;
@@ -29,20 +30,18 @@ class RegisterScheduleUrlCommand extends Command
 
     public function handle(): void
     {
-        $listings = Listing::orderBy('name')->get();
-
-        if ($listings->isEmpty()) {
-            $this->error('No listings found.');
-
-            return;
-        }
-
-        $listingId = select(
+        $listingId = search(
             label: 'Select a listing',
-            options: $listings->pluck('name', 'id')->all(),
+            options: fn (string $value) => Listing::where('name', 'like', "%{$value}%")
+                ->orderBy('name')
+                ->limit(10)
+                ->pluck('name', 'id')
+                ->toArray(),
+            placeholder: 'Type to search listings...',
+            required: true,
         );
 
-        $listing = $listings->firstWhere('id', $listingId);
+        $listing = Listing::findOrFail($listingId);
 
         if ($listing->scheduleUrl) {
             $this->error("This listing already has a schedule URL registered (provider: {$listing->scheduleUrl->provider->value}).");
