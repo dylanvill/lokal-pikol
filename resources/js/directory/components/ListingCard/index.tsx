@@ -1,14 +1,14 @@
 import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Button, Float } from '@chakra-ui/react';
-import { Link, router } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { Link } from '@inertiajs/react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
-import { LuArrowRight, LuCalendar, LuCheckCheck, LuClock, LuGrid2X2, LuHouse, LuMapPin, LuSun, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
-import invoke from '@/actions/App/Http/Directory/Controllers/TrackListingEventController';
+import { LuArrowRight, LuCalendar, LuClock, LuGrid2X2, LuMapPin, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
-import militaryTimeToAmPmTime from '../../../shared/helpers/militaryTimeToAmPmTime';
 import type ListingItem from '../../models/ListingItem';
 import BookingDialog from './BookingDialog';
 import ExternalScheduleDialog from './ExternalScheduleDialog';
+import useListingActions from './hooks/useListingActions';
+import useListingDialogs from './hooks/useListingDialogs';
+import useListingDisplay from './hooks/useListingDisplay';
 
 type ListingCardProps = Omit<ListingItem, 'createdAt' | 'updatedAt'> & {
     isNew?: boolean;
@@ -34,54 +34,15 @@ function ListingCard({
     phone,
     isNew = false,
 }: ListingCardProps) {
-    const businessHoursDisplay = useMemo((): string | null => {
-        if (openingTime && closingTime) {
-            return `${militaryTimeToAmPmTime(openingTime)} - ${militaryTimeToAmPmTime(closingTime)}`;
-        }
-        return null;
-    }, [openingTime, closingTime]);
-
-    const typeIcon = useMemo((): React.ReactNode => {
-        if (courtType === 'Covered') return <LuHouse color="black" />;
-        if (courtType === 'Outdoor') return <LuSun color="black" />;
-        return <LuCheckCheck color="gray" />;
-    }, [courtType]);
-
-    const [externalScheduleOpen, setExternalScheduleOpen] = useState(false);
-    const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
-
-    const facebookLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'facebook');
-    const instagramLink = socialLinks?.find((link) => link.platform.toLowerCase() === 'instagram');
-
-    const trackSocialClick = (platform: string, url: string) => {
-        router.post(
-            invoke({ listing: id, event: platform }),
-            {},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                except: ['listings', 'filters'],
-            },
-        );
-
-        window.open(url, '_blank');
-    };
-
-    const onBookCourtClicked = () => {
-        router.post(
-            invoke({ listing: id, event: 'book' }),
-            {},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                except: ['listings', 'filters'],
-            },
-        );
-
-        if (bookingUrl) {
-            window.open(bookingUrl, '_blank');
-        }
-    };
+    const { businessHoursDisplay, typeIcon, facebookLink, instagramLink } = useListingDisplay(
+        openingTime,
+        closingTime,
+        courtType,
+        socialLinks,
+    );
+    const { trackSocialClick, onBookCourtClicked } = useListingActions(id, bookingUrl);
+    const { externalScheduleOpen, setExternalScheduleOpen, bookingDialogOpen, setBookingDialogOpen } =
+        useListingDialogs();
 
     return (
         <Card.Root padding={0} borderRadius={8} key={id}>
@@ -109,7 +70,6 @@ function ListingCard({
                             shadow="xs"
                             marginLeft={4}
                         />
-
                         <Badge marginBottom={4} fontFamily="sans-serif" fontWeight={400}>
                             {city}
                         </Badge>
