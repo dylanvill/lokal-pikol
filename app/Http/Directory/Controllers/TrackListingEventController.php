@@ -6,7 +6,6 @@ use App\Http\Shared\Contracts\Controller;
 use App\Source\Directory\Actions\TrackListingAnalytics\TrackListingAnalytics;
 use App\Source\Directory\Enums\ListingEventEnum;
 use App\Source\Directory\Models\Listing;
-use Inertia\Inertia;
 
 class TrackListingEventController extends Controller
 {
@@ -14,6 +13,7 @@ class TrackListingEventController extends Controller
         'facebook' => ListingEventEnum::FACEBOOK_CLICKED,
         'instagram' => ListingEventEnum::INSTAGRAM_CLICKED,
         'book' => ListingEventEnum::BOOK_COURT_CLICKED,
+        'schedule' => ListingEventEnum::SCHEDULE_CLICKED,
     ];
 
     public function __construct(protected TrackListingAnalytics $service) {}

@@ -32,5 +32,9 @@ export default function useListingActions(id: string, bookingUrl: string | null)
         }
     };
 
-    return { trackSocialClick, onBookCourtClicked };
+    const trackScheduleClick = () => {
+        router.post(invoke({ listing: id, event: 'schedule' }), {}, TRACKING_REQUEST_OPTIONS);
+    };
+
+    return { trackSocialClick, onBookCourtClicked, trackScheduleClick };
 }

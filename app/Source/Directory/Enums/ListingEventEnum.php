@@ -7,4 +7,5 @@ enum ListingEventEnum: string
     case FACEBOOK_CLICKED = 'facebook clicked';
     case INSTAGRAM_CLICKED = 'instagram clicked';
     case BOOK_COURT_CLICKED = 'book court clicked';
+    case SCHEDULE_CLICKED = 'schedule clicked';
 }

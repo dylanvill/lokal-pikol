@@ -40,7 +40,7 @@ function ListingCard({
         courtType,
         socialLinks,
     );
-    const { trackSocialClick, onBookCourtClicked } = useListingActions(id, bookingUrl);
+    const { trackSocialClick, onBookCourtClicked, trackScheduleClick } = useListingActions(id, bookingUrl);
     const { externalScheduleOpen, setExternalScheduleOpen, bookingDialogOpen, setBookingDialogOpen } =
         useListingDialogs();
 
@@ -141,7 +141,7 @@ function ListingCard({
                             textProps={{ fontSize: 'sm' }}
                             label={
                                 <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
-                                    <Link href={schedule.url}>View schedule on {schedule.providerName}</Link>
+                                    <Link href={schedule.url} onClick={trackScheduleClick}>View schedule on {schedule.providerName}</Link>
                                     <LuExternalLink />
                                 </HStack>
                             }
@@ -154,7 +154,7 @@ function ListingCard({
                                 textProps={{ fontSize: 'sm' }}
                                 label={
                                     <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
-                                        <ChakraLink cursor="pointer" onClick={() => setExternalScheduleOpen(true)}>
+                                        <ChakraLink cursor="pointer" onClick={() => { trackScheduleClick(); setExternalScheduleOpen(true); }}>
                                             View schedule on {schedule.providerName}
                                         </ChakraLink>
                                     <LuExternalLink />
