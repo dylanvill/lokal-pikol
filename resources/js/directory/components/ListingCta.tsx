@@ -4,7 +4,7 @@ import { LuArrowRight } from 'react-icons/lu';
 function ListingCta() {
     return (
         <ChakraLink href="https://facebook.com/lokalpikol" target="_blank" width="full">
-            <Alert.Root status="info">
+            <Alert.Root status="warning">
                 <Alert.Content color="fg">
                     <Alert.Title fontWeight="bold">Want to include your court in the directory?</Alert.Title>
                     <Alert.Description>

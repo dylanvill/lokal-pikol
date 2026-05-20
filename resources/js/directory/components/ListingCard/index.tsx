@@ -41,8 +41,16 @@ function ListingCard({
         socialLinks,
     );
     const { trackSocialClick, onBookCourtClicked, trackScheduleClick } = useListingActions(id, bookingUrl);
-    const { externalScheduleOpen, setExternalScheduleOpen, bookingDialogOpen, setBookingDialogOpen } =
-        useListingDialogs();
+    const {
+        externalScheduleOpen,
+        setExternalScheduleOpen,
+        bookingDialogOpen,
+        setBookingDialogOpen,
+        skipBookingDialog,
+        setSkipBookingDialog,
+        skipExternalScheduleDialog,
+        setSkipExternalScheduleDialog,
+    } = useListingDialogs();
 
     return (
         <Card.Root padding={0} borderRadius={8} key={id}>
@@ -154,14 +162,14 @@ function ListingCard({
                                 textProps={{ fontSize: 'sm' }}
                                 label={
                                     <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
-                                        <ChakraLink cursor="pointer" onClick={() => { trackScheduleClick(); setExternalScheduleOpen(true); }}>
+                                        <ChakraLink cursor="pointer" onClick={() => { trackScheduleClick(); if (skipExternalScheduleDialog) { window.open(schedule.url, '_blank'); } else { setExternalScheduleOpen(true); } }}>
                                             View schedule on {schedule.providerName}
                                         </ChakraLink>
                                     <LuExternalLink />
                                     </HStack>
                                 }
                             />
-                            <ExternalScheduleDialog open={externalScheduleOpen} onOpenChange={setExternalScheduleOpen} courtName={name} schedule={schedule} />
+                            <ExternalScheduleDialog open={externalScheduleOpen} onOpenChange={setExternalScheduleOpen} courtName={name} schedule={schedule} onSkipFuture={() => setSkipExternalScheduleDialog(true)} />
                         </>
                     )}
                 </VStack>
@@ -170,10 +178,10 @@ function ListingCard({
                 <Card.Footer padding={0} margin={0} borderBottomRadius={8}>
                     <Button
                         size="sm"
-                        variant="solid"
+                        variant="surface"
                         fontSize="sm"
                         textAlign="right"
-                        onClick={() => setBookingDialogOpen(true)}
+                        onClick={() => { if (skipBookingDialog) { onBookCourtClicked(); } else { setBookingDialogOpen(true); } }}
                         borderBottomRadius={8}
                         borderTopRadius={0}
                         width="full"
@@ -187,6 +195,7 @@ function ListingCard({
                         courtName={name}
                         bookingPlatform={bookingPlatform}
                         onConfirm={onBookCourtClicked}
+                        onSkipFuture={() => setSkipBookingDialog(true)}
                     />
                 </Card.Footer>
             ) : null}
