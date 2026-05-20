@@ -3,16 +3,17 @@
 namespace App\Source\Directory\Models\ScheduleUrl\Configs;
 
 use App\Source\Directory\Models\Listing;
+use App\Source\Directory\Models\ScheduleUrl\Enums\ScheduleProviderEnum;
 
-class InternalProviderConfig extends ScheduleProviderConfig
+class LokalPikolProviderConfig extends ScheduleProviderConfig
 {
     public function __construct(
         public readonly string $listingId,
     ) {}
 
-    public function displayName(): string
+    public function provider(): ScheduleProviderEnum
     {
-        return 'Lokal Pikol';
+        return ScheduleProviderEnum::LOKAL_PIKOL;
     }
 
     public function resolveUrl(Listing $listing): string

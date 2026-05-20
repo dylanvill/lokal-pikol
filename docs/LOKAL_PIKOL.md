@@ -85,14 +85,14 @@ Controls whether a "View schedule" link appears on a `ListingCard`. One row per 
 schedule_urls
   id, uuid
   listing_id  → listings
-  provider    ScheduleProviderEnum: internal | [future external values]
+  provider    ScheduleProviderEnum: lokal pikol | court access | playkorte
   config      JSON → cast via ScheduleProviderConfigCast to typed subclass
 ```
 
-- **`InternalProviderConfig`** — stores `{ listing_uuid }`. URL resolved from listing slug at runtime via `resolveUrl(Listing): string`.
-- **Future external configs** (e.g. `CourtAccessProviderConfig`) — store a direct URL to the court's page on the partner system. Architecture already supports this — add a new enum value + typed config class with `resolveUrl()` and `displayName`.
-- **`displayName`** on each config class → feeds `providerName` on the frontend.
-- **`isExternal`** — any provider that is not `internal`. External = confirmation modal before redirect.
+- **`LokalPikolProviderConfig`** — stores `{ listing_uuid }`. URL resolved from listing slug at runtime via `resolveUrl(Listing): string`.
+- **External configs** (`CourtAccessProviderConfig`, `PlayKorteProviderConfig`) — store `{ url }`. `resolveUrl()` returns the stored URL directly.
+- **`displayName`** — lives on `ScheduleProviderEnum` via `getDisplayName()`. `ScheduleProviderConfig::displayName()` is a concrete method that delegates to `$this->provider()->getDisplayName()`. Feeds `providerName` on the frontend.
+- **`isExternal`** — any provider that is not `lokal pikol`. External = confirmation modal before redirect.
 
 > **`is_scheduling_enabled` is retired.** It has been replaced by the `schedule_urls` table. Do not reference it. A `FacilityAdmin` existing does not automatically create a `schedule_urls` row — developer creates it manually via `php artisan directory:register-schedule-url`.
 
@@ -372,11 +372,12 @@ When a court uses its own booking system, rather than hosting an internal `/sche
 The "View schedule" label on `ListingCard` becomes "View schedule at [providerName]" when `isExternal: true`.
 
 **To add an external provider:**
-1. Add a new value to `ScheduleProviderEnum` (e.g. `court_access`).
-2. Create a typed config class (e.g. `CourtAccessProviderConfig extends ScheduleProviderConfig`) with `resolveUrl()` (returns the stored URL) and `displayName` (returns "Court Access").
+1. Add a new value to `ScheduleProviderEnum` (e.g. `NEW_PARTNER = 'new partner'` — use spaces, not underscores, in the string value). Add a `getDisplayName()` case for it.
+2. Create a typed config class (e.g. `NewPartnerProviderConfig extends ScheduleProviderConfig`) with `public readonly string $url`, `resolveUrl()` returning `$this->url`, and `provider()` returning the new enum case.
 3. Register it in `ScheduleProviderConfigCast`.
+4. The command (`directory:register-schedule-url`) will automatically prompt for a URL for any non-`LOKAL_PIKOL` provider.
 
-**Status:** Architecture in place. Court Access is in conversation. Picklepiper and Courthub pending. Implement first config class when a partner confirms.
+**Status:** Court Access and PlayKorte implemented. Picklepiper and Courthub pending.
 
 ---
 

@@ -2,7 +2,9 @@
 
 namespace App\Source\Directory\Models\ScheduleUrl;
 
-use App\Source\Directory\Models\ScheduleUrl\Configs\InternalProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\CourtAccessProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\LokalPikolProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\PlayKorteProviderConfig;
 use App\Source\Directory\Models\ScheduleUrl\Configs\ScheduleProviderConfig;
 use App\Source\Directory\Models\ScheduleUrl\Enums\ScheduleProviderEnum;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -20,7 +22,9 @@ class ScheduleProviderConfigCast implements CastsAttributes
         $data = json_decode($value, true);
 
         return match ($provider) {
-            ScheduleProviderEnum::INTERNAL => InternalProviderConfig::from($data),
+            ScheduleProviderEnum::LOKAL_PIKOL => LokalPikolProviderConfig::from($data),
+            ScheduleProviderEnum::COURT_ACCESS => CourtAccessProviderConfig::from($data),
+            ScheduleProviderEnum::PLAYKORTE => PlayKorteProviderConfig::from($data),
         };
     }
 

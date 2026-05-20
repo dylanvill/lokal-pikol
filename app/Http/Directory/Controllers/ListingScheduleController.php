@@ -22,7 +22,7 @@ class ListingScheduleController extends Controller
     {
         $listing->load('scheduleUrl', 'socialLinks', 'media');
 
-        if ($listing->scheduleUrl?->provider !== ScheduleProviderEnum::INTERNAL) {
+        if ($listing->scheduleUrl?->provider !== ScheduleProviderEnum::LOKAL_PIKOL) {
             throw new NotFoundHttpException;
         }
 

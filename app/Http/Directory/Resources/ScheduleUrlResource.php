@@ -15,7 +15,7 @@ class ScheduleUrlResource extends JsonResource
     {
         return [
             'url' => $this->config->resolveUrl($this->listing),
-            'isExternal' => $this->provider !== ScheduleProviderEnum::INTERNAL,
+            'isExternal' => $this->provider !== ScheduleProviderEnum::LOKAL_PIKOL,
             'providerName' => $this->config->displayName(),
         ];
     }

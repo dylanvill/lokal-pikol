@@ -5,11 +5,16 @@ namespace App\Source\Directory\Commands;
 use App\Source\Directory\Actions\CreateScheduleUrl\CreateScheduleUrl;
 use App\Source\Directory\Commands\Enums\DirectoryCommandNamespaceEnum;
 use App\Source\Directory\Models\Listing;
+use App\Source\Directory\Models\ScheduleUrl\Configs\CourtAccessProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\LokalPikolProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\PlayKorteProviderConfig;
+use App\Source\Directory\Models\ScheduleUrl\Configs\ScheduleProviderConfig;
 use App\Source\Directory\Models\ScheduleUrl\Enums\ScheduleProviderEnum;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\spin;
+use function Laravel\Prompts\text;
 
 class RegisterScheduleUrlCommand extends Command
 {
@@ -18,7 +23,7 @@ class RegisterScheduleUrlCommand extends Command
         parent::__construct();
     }
 
-    protected $signature = DirectoryCommandNamespaceEnum::DIRECTORY->value.':register-schedule-url';
+    protected $signature = DirectoryCommandNamespaceEnum::LISTING->value.':register-schedule-url';
 
     protected $description = 'Register a schedule URL for a listing';
 
@@ -47,14 +52,35 @@ class RegisterScheduleUrlCommand extends Command
 
         $provider = ScheduleProviderEnum::from(select(
             label: 'Select a provider',
-            options: collect(ScheduleProviderEnum::cases())->pluck('value', 'value')->all(),
+            options: collect(ScheduleProviderEnum::cases())
+                ->mapWithKeys(fn (ScheduleProviderEnum $case) => [$case->value => $case->getDisplayName()])
+                ->all(),
         ));
 
+        $config = $this->buildConfig($provider, $listing);
+
         spin(
-            callback: fn () => $this->createScheduleUrl->create($listing, $provider),
+            callback: fn () => $this->createScheduleUrl->create($listing, $config),
             message: 'Registering schedule URL...',
         );
 
-        $this->info("Schedule URL registered for \"{$listing->name}\" with provider \"{$provider->value}\".");
+        $this->info("Schedule URL registered for \"{$listing->name}\" with provider \"{$provider->getDisplayName()}\".");
+    }
+
+    private function buildConfig(ScheduleProviderEnum $provider, Listing $listing): ScheduleProviderConfig
+    {
+        if ($provider !== ScheduleProviderEnum::LOKAL_PIKOL) {
+            $url = text(
+                label: "Enter the {$provider->getDisplayName()} schedule URL for this listing",
+                required: true,
+            );
+
+            return match ($provider) {
+                ScheduleProviderEnum::COURT_ACCESS => new CourtAccessProviderConfig(url: $url),
+                ScheduleProviderEnum::PLAYKORTE => new PlayKorteProviderConfig(url: $url),
+            };
+        }
+
+        return new LokalPikolProviderConfig(listingId: $listing->uuid);
     }
 }
