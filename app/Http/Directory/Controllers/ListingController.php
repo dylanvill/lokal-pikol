@@ -37,6 +37,7 @@ class ListingController extends Controller
             ->withMedia()
             ->when($request->sort === 'name', fn ($q) => $q->orderBy('name'))
             ->when($request->sort === 'numberOfCourts', fn ($q) => $q->orderByDesc('number_of_courts'))
+            ->when($request->sort === 'newlyAdded', fn ($q) => $q->orderByDesc('created_at'))
             ->when($request->sort === 'popularity', function ($query) {
                 $query->orderByRaw('(
                     SELECT COUNT(*) FROM analytics

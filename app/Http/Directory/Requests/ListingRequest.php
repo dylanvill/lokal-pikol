@@ -31,7 +31,7 @@ class ListingRequest extends FormRequest
             'city' => ['nullable', 'string', Rule::enum(CityEnum::class)],
             'numberOfCourts' => ['nullable', 'integer', 'min:1'],
             'courtType' => ['nullable', 'string', Rule::enum(FacilityCourtTypeEnum::class)],
-            'sort' => ['nullable', 'string', Rule::in(['name', 'numberOfCourts', 'popularity'])],
+            'sort' => ['nullable', 'string', Rule::in(['name', 'numberOfCourts', 'popularity', 'newlyAdded'])],
         ];
     }
 }

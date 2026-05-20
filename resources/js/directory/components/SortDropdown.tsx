@@ -17,6 +17,7 @@ function SortDropdown({ value, onChange }: Props) {
                     <option value="name">Name (A–Z)</option>
                     <option value="numberOfCourts">Most courts</option>
                     <option value="popularity">Most popular</option>
+                    <option value="newlyAdded">Newly added</option>
                 </NativeSelect.Field>
                 <NativeSelect.Indicator />
             </NativeSelect.Root>
