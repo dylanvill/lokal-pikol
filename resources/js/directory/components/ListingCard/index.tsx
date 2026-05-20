@@ -1,7 +1,7 @@
 import { Badge, Card, Heading, HStack, Image, VStack, Link as ChakraLink, Button, Float } from '@chakra-ui/react';
 import { Link } from '@inertiajs/react';
 import { FaInstagram, FaFacebookF } from 'react-icons/fa';
-import { LuArrowRight, LuCalendar, LuClock, LuGrid2X2, LuMapPin, LuMail, LuPhone, LuSparkles } from 'react-icons/lu';
+import { LuArrowRight, LuCalendar, LuClock, LuGrid2X2, LuMapPin, LuMail, LuPhone, LuSparkles, LuExternalLink } from 'react-icons/lu';
 import DetailWithIcon from '../../../shared/components/DetailWithIcon';
 import type ListingItem from '../../models/ListingItem';
 import BookingDialog from './BookingDialog';
@@ -142,7 +142,7 @@ function ListingCard({
                             label={
                                 <HStack gap={0.5} color="var(--chakra-colors-blue-fg)">
                                     <Link href={schedule.url}>View schedule on {schedule.providerName}</Link>
-                                    <LuArrowRight />
+                                    <LuExternalLink />
                                 </HStack>
                             }
                         />
@@ -157,11 +157,11 @@ function ListingCard({
                                         <ChakraLink cursor="pointer" onClick={() => setExternalScheduleOpen(true)}>
                                             View schedule on {schedule.providerName}
                                         </ChakraLink>
-                                        <LuArrowRight />
+                                    <LuExternalLink />
                                     </HStack>
                                 }
                             />
-                            <ExternalScheduleDialog open={externalScheduleOpen} onOpenChange={setExternalScheduleOpen} schedule={schedule} />
+                            <ExternalScheduleDialog open={externalScheduleOpen} onOpenChange={setExternalScheduleOpen} courtName={name} schedule={schedule} />
                         </>
                     )}
                 </VStack>

@@ -1,13 +1,14 @@
-import { Button, Dialog, Portal } from '@chakra-ui/react';
+import { Button, Dialog, Portal, Text } from '@chakra-ui/react';
 import type ListingSchedule from '../../models/ListingSchedule';
 
 interface ExternalScheduleDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    courtName: string;
     schedule: ListingSchedule;
 }
 
-function ExternalScheduleDialog({ open, onOpenChange, schedule }: ExternalScheduleDialogProps) {
+function ExternalScheduleDialog({ open, onOpenChange, courtName, schedule }: ExternalScheduleDialogProps) {
     return (
         <Dialog.Root open={open} onOpenChange={(e) => onOpenChange(e.open)}>
             <Portal>
@@ -18,7 +19,12 @@ function ExternalScheduleDialog({ open, onOpenChange, schedule }: ExternalSchedu
                             <Dialog.Title>Leaving Lokal Pikol</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
-                            You are now leaving Lokal Pikol and moving to {schedule.providerName} to view its schedule.
+                            <Text>
+                                You are now leaving Lokal Pikol and moving to {schedule.providerName} to view {courtName}'s schedule.
+                            </Text>
+                            <Text mt={3}>
+                                Lokal Pikol is simply a court discovery platform. From here, {courtName} manages its own schedule directly through {schedule.providerName} and is outside Lokal Pikol's control.
+                            </Text>
                         </Dialog.Body>
                         <Dialog.Footer>
                             <Dialog.ActionTrigger asChild>
@@ -29,8 +35,9 @@ function ExternalScheduleDialog({ open, onOpenChange, schedule }: ExternalSchedu
                                     onOpenChange(false);
                                     window.open(schedule.url, '_blank');
                                 }}
+                                colorPalette="blue"
                             >
-                                Continue
+                                Continue to {schedule.providerName}
                             </Button>
                         </Dialog.Footer>
                     </Dialog.Content>
