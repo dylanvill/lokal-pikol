@@ -70,7 +70,7 @@ class CreateSessionCommand extends Command
             message: 'Creating session...',
         );
 
-        $url = route(Routes::getFullName(Routes::SESSION_SHOW), ['session_code' => $session->session_code]);
+        $url = route(Routes::getFullName(Routes::SESSION_SHOW), ['session' => $session->session_code]);
 
         $this->components->info("Session \"{$session->name}\" created successfully.");
         $this->line('');
