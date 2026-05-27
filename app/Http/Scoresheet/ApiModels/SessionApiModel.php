@@ -25,7 +25,7 @@ class SessionApiModel extends Data
             sessionCode: $session->session_code,
             name: $session->name,
             status: $session->status->value,
-            players: $session->players->sortBy('name')->map(fn (Player $p) => PlayerApiModel::fromPlayer($p))->values()->all(),
+            players: $session->players->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)->map(fn (Player $p) => PlayerApiModel::fromPlayer($p))->values()->all(),
             games: $session->games->sortBy('created_at')->map(fn (Game $g) => GameApiModel::fromGame($g))->values()->all(),
         );
     }
