@@ -1,6 +1,6 @@
 # Lokal Pikol — Master Context
 
-**Last Updated:** 2026-05-19  
+**Last Updated:** 2026-05-27  
 **Status:** Single source of truth. Replaces PRODUCT_PLAN.md, DIRECTORY_DOMAIN_CONTEXT.md, SCHEDULING_DOMAIN_CONTEXT.md, DIRECTORY_DOMAIN_ROADMAP.md, SCHEDULING_DOMAIN_ROADMAP.md.
 
 ---
@@ -23,6 +23,7 @@ A pickleball court directory and scheduling platform for **Negros Oriental, Phil
 |--------|-------------------|---------|
 | **Directory** | `directory.lokal-pikol.test` | Public court directory — browse, discover, search |
 | **Scheduling** | `scheduling.lokal-pikol.test` | Internal tool for facility managers |
+| **Scoresheet** | `scoresheet.lokal-pikol.test` | Public match result recorder for club sessions |
 | **Admin/Auth** | `lokal-pikol.test` | Developer-only admin routes |
 
 ---
@@ -484,7 +485,120 @@ Pitches happen opportunistically (at a court, phone only). Primary: live demo on
 
 ---
 
-## 13. Out of Scope — Do Not Build
+## 13. Scoresheet Domain
+
+### What It Is
+
+A lightweight, public web utility for recording pickleball match results during a weekly club session. Replaces a physical scoresheet. Players self-submit scores from their phone with no account or login required.
+
+### Subdomain
+
+`scoresheet.lokal-pikol.test` (local) / `scoresheet.lokalpikol.com` (production)
+
+### Users & Access Model
+
+| Role | Access |
+|------|--------|
+| Organiser | Creates session via Artisan command before the meet; shares the URL |
+| Players / other organisers | Visit the session URL — fully public, flat access |
+
+There is **no authentication, no login, and no user registration.** The session URL is the only access control. All visitors can submit scores.
+
+### Session Lifecycle
+
+- **`active`** — submission form is live; anyone can submit match results
+- **`finished`** — submission form is hidden, replaced with "This session has ended."; scoresheet remains fully viewable as a permanent record
+
+Status is changed via `php artisan scoresheet:end` — never auto-expires. A finished session is a safeguard against stale URLs, not a hard requirement.
+
+### Artisan Commands
+
+| Command | Purpose |
+|---------|---------|
+| `scoresheet:create` | Create a new session. Prompts for session name then a `textarea()` for player names. Accepts the raw Reclub numbered export (`1. Dylan`, `2. Doms`, …) pasted directly — strips numbers automatically. Also accepts plain comma-separated names as a fallback. Shows a confirmation list before creating. Outputs the shareable URL on success. |
+| `scoresheet:end {session_code}` | Set a session's status to `finished`. |
+
+### Roster Rules
+
+- Roster is **locked at creation time** — no adding players after the session is created.
+- "Late arrivals" means arriving late to the venue, not late registration. All players are pre-registered by the organiser before the meet starts.
+- Player source is the **Participants** section of the Reclub export. On Hold, waitlisted, and organiser entries are excluded.
+
+### Score Submission Flow (Single-Page JS Wizard)
+
+No URL changes between steps — pure JS state machine on a single Inertia page.
+
+1. **Select Team A** — tap 2 players from the roster
+2. **Select Team B** — tap 2 players from the remaining roster
+3. **Team A score** — tappable score buttons (0–11), team names shown
+4. **Team B score** — tappable score buttons (0–11), team names shown
+5. **Review** — full match summary
+6. **Submit** — result saved, wizard resets
+
+No deletion in v1. The multi-step flow is the mistake-prevention mechanism.
+
+### Score Range
+
+- **Current:** 0–11 (sudden death format)
+- **Future:** range is data-driven — extending to 15 or 21 is a config change, not a UI rewrite
+
+### Scoresheet View
+
+- Lists all submitted match results in reverse submission order (most recent at top)
+- Format: `Team A names | Score | Team B names | Score` — mirrors a physical scoresheet
+- Visible to all visitors at all times, including on finished sessions
+- **No live updates** — manual refresh only
+
+### Data Model
+
+```
+scoresheet_sessions
+  id, uuid (HasUuid trait)
+  session_code   string(8) — random alphanumeric, URL key (e.g. wx9k3p)
+  name           string
+  status         enum: active | finished
+  created_at, updated_at
+
+scoresheet_players
+  id, uuid (HasUuid trait)
+  session_id     → scoresheet_sessions
+  name           string
+  created_at
+
+scoresheet_matches
+  id, uuid (HasUuid trait)
+  session_id          → scoresheet_sessions
+  team_a_player_1_id  → scoresheet_players
+  team_a_player_2_id  → scoresheet_players
+  team_a_score        integer (0–11)
+  team_b_player_1_id  → scoresheet_players
+  team_b_player_2_id  → scoresheet_players
+  team_b_score        integer (0–11)
+  created_at
+```
+
+`scoresheet_` prefix used on all tables to avoid conflict with Laravel's own `sessions` table.
+
+### Routes
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/session/{session_code}` | Session page — scoresheet view + submission wizard (or "ended" state) |
+| `POST` | `/session/{session_code}/matches` | Submit a match result |
+
+### Out of Scope (v1)
+
+- Match deletion
+- Live/real-time scoresheet updates (polling, WebSockets)
+- Player statistics, DUPR ratings, or Reclub/DUPR API integration
+- Export (CSV, PDF)
+- Match history across sessions
+- Pairing suggestions or matchmaking
+- Editing the roster after session creation
+
+---
+
+## 14. Out of Scope — Do Not Build
 
 - Full booking system (player accounts, payments, automated approvals, transactional emails)
 - Player-side premium subscription
