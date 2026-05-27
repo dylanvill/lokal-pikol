@@ -530,12 +530,14 @@ No URL changes between steps — pure JS state machine on a single Inertia page.
 
 1. **Select Team A** — tap 2 players from the roster
 2. **Select Team B** — tap 2 players from the remaining roster
-3. **Team A score** — tappable score buttons (0–11), team names shown
-4. **Team B score** — tappable score buttons (0–11), team names shown
+3. **Select Loser** — tap the losing team (large "Which team lost?" prompt + 2 stacked buttons showing each pair's names)
+4. **Loser Score** — tappable score buttons 0–10, loser team's names shown
 5. **Review** — full match summary
 6. **Submit** — result saved, wizard resets
 
-No deletion in v1. The multi-step flow is the mistake-prevention mechanism.
+**Winner score is implicit.** The winning team is always assumed to have scored 11 (sudden-death format). The frontend derives the wire payload at submit time via `useForm.transform()` — UI state is `{ loserTeam, loserScore }`, the backend still receives `{ teamAScore, teamBScore }` unchanged.
+
+**Back-navigation rule:** Pressing Back at step N clears step N's data, forcing a conscious re-pick on each return. No deletion in v1. The multi-step flow is the mistake-prevention mechanism.
 
 ### Score Range
 

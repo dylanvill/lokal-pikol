@@ -4,18 +4,19 @@ import type Player from '../../models/Player';
 import type Session from '../../models/Session';
 import { toaster } from '../../shared/toaster';
 
+export type Team = 'A' | 'B';
+
 export interface MatchFormData {
     teamAPlayer1Id: string;
     teamAPlayer2Id: string;
     teamBPlayer1Id: string;
     teamBPlayer2Id: string;
-    teamAScore: number | null;
-    teamBScore: number | null;
+    loserTeam: Team | null;
+    loserScore: number | null;
 }
 
-export type Team = 'A' | 'B';
-
 export const STEP_COUNT = 5;
+export const WINNER_SCORE = 11;
 
 export interface MatchWizard {
     open: boolean;
@@ -34,13 +35,14 @@ export interface MatchWizard {
     goBack: () => void;
     goForward: () => void;
     togglePair: (team: Team, player: Player) => void;
-    setScore: (team: Team, score: number) => void;
+    setLoser: (team: Team) => void;
+    setLoserScore: (score: number) => void;
     submit: () => void;
 }
 
-const TEAM_FIELDS: Record<Team, { player1: keyof MatchFormData; player2: keyof MatchFormData; score: keyof MatchFormData }> = {
-    A: { player1: 'teamAPlayer1Id', player2: 'teamAPlayer2Id', score: 'teamAScore' },
-    B: { player1: 'teamBPlayer1Id', player2: 'teamBPlayer2Id', score: 'teamBScore' },
+const TEAM_FIELDS: Record<Team, { player1: keyof MatchFormData; player2: keyof MatchFormData }> = {
+    A: { player1: 'teamAPlayer1Id', player2: 'teamAPlayer2Id' },
+    B: { player1: 'teamBPlayer1Id', player2: 'teamBPlayer2Id' },
 };
 
 function useMatchWizard(session: Session): MatchWizard {
@@ -52,8 +54,8 @@ function useMatchWizard(session: Session): MatchWizard {
         teamAPlayer2Id: '',
         teamBPlayer1Id: '',
         teamBPlayer2Id: '',
-        teamAScore: null,
-        teamBScore: null,
+        loserTeam: null,
+        loserScore: null,
     });
 
     const playersById = useMemo(
@@ -97,15 +99,22 @@ function useMatchWizard(session: Session): MatchWizard {
         }
     }
 
-    function setScore(team: Team, score: number) {
-        const fields = TEAM_FIELDS[team];
-        form.setData(fields.score, score);
+    function setLoser(team: Team) {
+        form.setData('loserTeam', team);
+    }
+
+    function setLoserScore(score: number) {
+        form.setData('loserScore', score);
     }
 
     function goBack() {
         if (step === 1) {
             form.setData('teamBPlayer1Id', '');
             form.setData('teamBPlayer2Id', '');
+        } else if (step === 2) {
+            form.setData('loserTeam', null);
+        } else if (step === 3) {
+            form.setData('loserScore', null);
         }
         setStep((s) => s - 1);
     }
@@ -115,6 +124,17 @@ function useMatchWizard(session: Session): MatchWizard {
     }
 
     function submit() {
+        form.transform((data) => {
+            const loserScore = data.loserScore ?? 0;
+            return {
+                teamAPlayer1Id: data.teamAPlayer1Id,
+                teamAPlayer2Id: data.teamAPlayer2Id,
+                teamBPlayer1Id: data.teamBPlayer1Id,
+                teamBPlayer2Id: data.teamBPlayer2Id,
+                teamAScore: data.loserTeam === 'A' ? loserScore : WINNER_SCORE,
+                teamBScore: data.loserTeam === 'B' ? loserScore : WINNER_SCORE,
+            };
+        });
         form.post(`/session/${session.sessionCode}/matches`, {
             onSuccess: () => {
                 closeWizard();
@@ -126,8 +146,8 @@ function useMatchWizard(session: Session): MatchWizard {
     const canContinueByStep: Record<number, boolean> = {
         0: pairAIds.length === 2,
         1: pairBIds.length === 2,
-        2: form.data.teamAScore !== null,
-        3: form.data.teamBScore !== null,
+        2: form.data.loserTeam !== null,
+        3: form.data.loserScore !== null,
         4: true,
     };
 
@@ -148,7 +168,8 @@ function useMatchWizard(session: Session): MatchWizard {
         goBack,
         goForward,
         togglePair,
-        setScore,
+        setLoser,
+        setLoserScore,
         submit,
     };
 }

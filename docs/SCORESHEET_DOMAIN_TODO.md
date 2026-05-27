@@ -88,26 +88,32 @@ All commands live in `app/Source/Scoresheet/Commands/`. Register the directory i
 
 ---
 
-## ⬜ Phase 5b — Submission Wizard
+## ✅ Phase 5b — Submission Wizard
 
 Single-page JS state machine — no URL changes between steps. Back button is an explicit UI element, not the browser back button.
 
 **Steps:**
-1. **Select Team A** — tap 2 players from the full roster; selected players highlighted
-2. **Select Team B** — tap 2 from the remaining 18 (Team A players greyed out / removed)
-3. **Team A score** — tappable buttons 0–11 (score range is data-driven constant for future extension); Team A names shown above
-4. **Team B score** — tappable buttons 0–11; Team B names shown above
-5. **Review** — full match summary (both teams + scores); confirm before submit
-6. **Submit** — POST to `SubmitMatchController`; on success, wizard resets to step 1; new result appears at top of scoresheet list
+1. **Select Team A** — tap 2 players from the full roster
+2. **Select Team B** — tap 2 from the remaining roster (Team A players excluded)
+3. **Select Loser** — large "Which team lost?" prompt + 2 stacked buttons (one per pair, names stacked vertically); tap-to-switch, no toggle-to-null
+4. **Loser Score** — tappable buttons 0–10; loser team's names shown above
+5. **Review** — full match summary; both teams + derived scores; confirm before submit
+6. **Submit** — POST to `SubmitMatchController`; on success, wizard resets; success toast; new result appears at top of scoresheet list
 
-**Components** (`resources/js/scoresheet/components/wizard/`)
-- [ ] `SubmissionWizard` — top-level state machine; manages `step`, `teamA`, `teamB`, `teamAScore`, `teamBScore`
-- [ ] `WizardStepSelectTeamA` — player grid; tap to select; 2-player cap
-- [ ] `WizardStepSelectTeamB` — same grid, Team A players disabled
-- [ ] `WizardStepScore` — score picker grid (0–11); shows team names above
-- [ ] `WizardStepReview` — match summary; "Edit" goes back to step 1; "Submit" fires the form
-- [ ] `PlayerButton` — reusable tappable name button; states: default / selected / disabled
-- [ ] `ScoreButton` — reusable tappable score button; states: default / selected
+**Winner score = 11 is implicit in the UI.** Backend payload (`teamAScore`, `teamBScore`) is unchanged — derived at submit time via `useForm.transform()`. Form state holds `{ loserTeam: 'A' | 'B' | null, loserScore: number | null }` instead of per-team scores.
+
+**Back-navigation rule:** At step N, Back clears step N's own data, then decrements. Forces conscious re-pick on each return.
+
+**Components** (`resources/js/scoresheet/components/SubmitWizard/`)
+- [x] `index.tsx` — composition root: ActionBar trigger + Dialog shell + body + footer
+- [x] `useMatchWizard.ts` — state, derived data, navigation, `togglePair`, `setLoser`, `setLoserScore`, `submit` (with transform)
+- [x] `WizardBody.tsx` — step dispatch
+- [x] `WizardFooter.tsx` — Back / Continue / Submit
+- [x] `steps/SelectPairStep.tsx` — player grid; tap to select; 2-player cap
+- [x] `steps/SelectLoserStep.tsx` — two stacked team buttons; tap-to-switch
+- [x] `steps/SelectScoreStep.tsx` — score grid 0–10
+- [x] `steps/ReviewStep.tsx` — match summary; receives derived scores via props
+- [x] `steps/TeamCard.tsx` — per-team review card; auto-highlights winner via score comparison
 
 ---
 

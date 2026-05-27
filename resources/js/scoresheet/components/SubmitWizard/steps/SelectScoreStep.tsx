@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
-const SCORES = Array.from({ length: 12 }, (_, i) => i);
+const SCORES = Array.from({ length: 11 }, (_, i) => i);
 
 interface Props {
     player1Name: string;

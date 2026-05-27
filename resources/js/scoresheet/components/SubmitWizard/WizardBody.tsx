@@ -1,8 +1,9 @@
 import type Session from '../../models/Session';
 import ReviewStep from './steps/ReviewStep';
+import SelectLoserStep from './steps/SelectLoserStep';
 import SelectPairStep from './steps/SelectPairStep';
 import SelectScoreStep from './steps/SelectScoreStep';
-import type { MatchWizard } from './useMatchWizard';
+import { WINNER_SCORE, type MatchWizard } from './useMatchWizard';
 
 interface Props {
     session: Session;
@@ -10,6 +11,15 @@ interface Props {
 }
 
 function WizardBody({ session, wizard }: Props) {
+    const pairA = {
+        player1Name: wizard.pairAPlayer1Name,
+        player2Name: wizard.pairAPlayer2Name,
+    };
+    const pairB = {
+        player1Name: wizard.pairBPlayer1Name,
+        player2Name: wizard.pairBPlayer2Name,
+    };
+
     switch (wizard.step) {
         case 0:
             return (
@@ -31,38 +41,36 @@ function WizardBody({ session, wizard }: Props) {
             );
         case 2:
             return (
-                <SelectScoreStep
-                    player1Name={wizard.pairAPlayer1Name}
-                    player2Name={wizard.pairAPlayer2Name}
-                    score={wizard.form.data.teamAScore}
-                    onSelect={(score) => wizard.setScore('A', score)}
+                <SelectLoserStep
+                    pairA={pairA}
+                    pairB={pairB}
+                    selected={wizard.form.data.loserTeam}
+                    onSelect={wizard.setLoser}
                 />
             );
-        case 3:
+        case 3: {
+            const loserPair = wizard.form.data.loserTeam === 'A' ? pairA : pairB;
             return (
                 <SelectScoreStep
-                    player1Name={wizard.pairBPlayer1Name}
-                    player2Name={wizard.pairBPlayer2Name}
-                    score={wizard.form.data.teamBScore}
-                    onSelect={(score) => wizard.setScore('B', score)}
+                    player1Name={loserPair.player1Name}
+                    player2Name={loserPair.player2Name}
+                    score={wizard.form.data.loserScore}
+                    onSelect={wizard.setLoserScore}
                 />
             );
-        case 4:
+        }
+        case 4: {
+            const loserScore = wizard.form.data.loserScore ?? 0;
+            const teamAScore = wizard.form.data.loserTeam === 'A' ? loserScore : WINNER_SCORE;
+            const teamBScore = wizard.form.data.loserTeam === 'B' ? loserScore : WINNER_SCORE;
             return (
                 <ReviewStep
-                    pairA={{
-                        player1Name: wizard.pairAPlayer1Name,
-                        player2Name: wizard.pairAPlayer2Name,
-                        score: wizard.form.data.teamAScore ?? 0,
-                    }}
-                    pairB={{
-                        player1Name: wizard.pairBPlayer1Name,
-                        player2Name: wizard.pairBPlayer2Name,
-                        score: wizard.form.data.teamBScore ?? 0,
-                    }}
+                    pairA={{ ...pairA, score: teamAScore }}
+                    pairB={{ ...pairB, score: teamBScore }}
                     errors={wizard.form.errors}
                 />
             );
+        }
         default:
             return null;
     }
