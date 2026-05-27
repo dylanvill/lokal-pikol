@@ -18,7 +18,7 @@ function SessionShowPage() {
         <ScoresheetLayout title={session.name}>
             <VStack align="stretch" gap={4}>
                 <VStack alignItems="flex-start">
-                    <Heading>{session.name} asdfsadf asf sdaf dsaf sdfsafsdaf a</Heading>
+                    <Heading>{session.name}</Heading>
                     <Badge colorPalette={isActive ? 'green' : 'orange'} variant="solid" size="md">
                         {isActive ? 'Active' : 'Ended'}
                     </Badge>
@@ -29,9 +29,9 @@ function SessionShowPage() {
                     </Text>
                 )}
                 <GamesSection games={session.games} />
-
-                {isActive && <SubmitWizard session={session} />}
             </VStack>
+
+            <SubmitWizard session={session} />
         </ScoresheetLayout>
     );
 }

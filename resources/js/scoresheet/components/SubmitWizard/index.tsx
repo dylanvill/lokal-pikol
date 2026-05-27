@@ -1,42 +1,34 @@
-import { Box, Button, HStack, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { ActionBar, Button, CloseButton, Dialog, HStack, Portal, Steps } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import { LuPlus } from 'react-icons/lu';
 import type Player from '../../models/Player';
 import type Session from '../../models/Session';
+import ReviewStep from './steps/ReviewStep';
+import SelectPairStep from './steps/SelectPairStep';
+import SelectScoreStep from './steps/SelectScoreStep';
 
-type WizardStep = 'selectTeamA' | 'selectTeamB' | 'scoreTeamA' | 'scoreTeamB' | 'review';
-
-const STEPS: WizardStep[] = ['selectTeamA', 'selectTeamB', 'scoreTeamA', 'scoreTeamB', 'review'];
-
-const STEP_TITLES: Record<WizardStep, string> = {
-    selectTeamA: 'Select Team A',
-    selectTeamB: 'Select Team B',
-    scoreTeamA: 'Team A Score',
-    scoreTeamB: 'Team B Score',
-    review: 'Review',
-};
-
-const SCORES = Array.from({ length: 12 }, (_, i) => i);
-
-function teamLabel(players: Player[]): string {
-    return players.map((p) => p.name).join(' & ');
+interface FormData {
+    teamAPlayer1Id: string;
+    teamAPlayer2Id: string;
+    teamBPlayer1Id: string;
+    teamBPlayer2Id: string;
+    teamAScore: number | null;
+    teamBScore: number | null;
 }
 
 interface Props {
     session: Session;
 }
 
-function SubmitWizard({ session }: Props) {
-    const [step, setStep] = useState<WizardStep>('selectTeamA');
+const STEP_COUNT = 5;
 
-    const form = useForm<{
-        teamAPlayer1Id: string;
-        teamAPlayer2Id: string;
-        teamBPlayer1Id: string;
-        teamBPlayer2Id: string;
-        teamAScore: number | null;
-        teamBScore: number | null;
-    }>({
+function SubmitWizard({ session }: Props) {
+    const isActive = session.status === 'active';
+    const [open, setOpen] = useState(false);
+    const [step, setStep] = useState(0);
+
+    const form = useForm<FormData>({
         teamAPlayer1Id: '',
         teamAPlayer2Id: '',
         teamBPlayer1Id: '',
@@ -45,253 +37,217 @@ function SubmitWizard({ session }: Props) {
         teamBScore: null,
     });
 
-    const stepIndex = STEPS.indexOf(step);
+    const pairAIds = [form.data.teamAPlayer1Id, form.data.teamAPlayer2Id].filter(Boolean);
+    const pairBIds = [form.data.teamBPlayer1Id, form.data.teamBPlayer2Id].filter(Boolean);
 
-    const teamAIds = [form.data.teamAPlayer1Id, form.data.teamAPlayer2Id].filter(Boolean);
-    const teamBIds = [form.data.teamBPlayer1Id, form.data.teamBPlayer2Id].filter(Boolean);
-    const teamAPlayers = session.players.filter((p) => teamAIds.includes(p.id));
-    const teamBPlayers = session.players.filter((p) => teamBIds.includes(p.id));
+    const pairAPlayer1Name = session.players.find((p) => p.id === form.data.teamAPlayer1Id)?.name ?? '';
+    const pairAPlayer2Name = session.players.find((p) => p.id === form.data.teamAPlayer2Id)?.name ?? '';
+    const pairBPlayer1Name = session.players.find((p) => p.id === form.data.teamBPlayer1Id)?.name ?? '';
+    const pairBPlayer2Name = session.players.find((p) => p.id === form.data.teamBPlayer2Id)?.name ?? '';
 
-    function toggleTeamA(player: Player) {
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+        setStep(0);
+        form.reset();
+    }
+
+    function handleTogglePairA(player: Player) {
         if (form.data.teamAPlayer1Id === player.id) {
-            form.setData('teamAPlayer1Id', '');
+            form.setData({ ...form.data, teamAPlayer1Id: form.data.teamAPlayer2Id, teamAPlayer2Id: '' });
         } else if (form.data.teamAPlayer2Id === player.id) {
-            form.setData('teamAPlayer2Id', '');
-        } else if (!form.data.teamAPlayer1Id) {
-            form.setData('teamAPlayer1Id', player.id);
-        } else if (!form.data.teamAPlayer2Id) {
-            form.setData('teamAPlayer2Id', player.id);
+            form.setData({ ...form.data, teamAPlayer2Id: '' });
+        } else if (pairAIds.length < 2) {
+            if (!form.data.teamAPlayer1Id) {
+                form.setData({ ...form.data, teamAPlayer1Id: player.id });
+            } else {
+                form.setData({ ...form.data, teamAPlayer2Id: player.id });
+            }
         }
     }
 
-    function toggleTeamB(player: Player) {
+    function handleTogglePairB(player: Player) {
         if (form.data.teamBPlayer1Id === player.id) {
-            form.setData('teamBPlayer1Id', '');
+            form.setData({ ...form.data, teamBPlayer1Id: form.data.teamBPlayer2Id, teamBPlayer2Id: '' });
         } else if (form.data.teamBPlayer2Id === player.id) {
-            form.setData('teamBPlayer2Id', '');
-        } else if (!form.data.teamBPlayer1Id) {
-            form.setData('teamBPlayer1Id', player.id);
-        } else if (!form.data.teamBPlayer2Id) {
-            form.setData('teamBPlayer2Id', player.id);
+            form.setData({ ...form.data, teamBPlayer2Id: '' });
+        } else if (pairBIds.length < 2) {
+            if (!form.data.teamBPlayer1Id) {
+                form.setData({ ...form.data, teamBPlayer1Id: player.id });
+            } else {
+                form.setData({ ...form.data, teamBPlayer2Id: player.id });
+            }
         }
     }
 
     function goBack() {
-        const prev = STEPS[stepIndex - 1];
-        if (prev === 'selectTeamA') {
+        if (step === 1) {
             form.setData({ ...form.data, teamBPlayer1Id: '', teamBPlayer2Id: '' });
         }
-        setStep(prev);
+        setStep(step - 1);
     }
 
-    function goNext() {
-        setStep(STEPS[stepIndex + 1]);
+    function goForward() {
+        setStep(step + 1);
     }
 
     function handleSubmit() {
         form.post(`/session/${session.sessionCode}/matches`, {
-            onSuccess: () => {
-                form.reset();
-                setStep('selectTeamA');
-            },
+            onSuccess: handleClose,
         });
     }
 
+    const canContinue =
+        step === 0
+            ? pairAIds.length === 2
+            : step === 1
+              ? pairBIds.length === 2
+              : step === 2
+                ? form.data.teamAScore !== null
+                : step === 3
+                  ? form.data.teamBScore !== null
+                  : true;
+
     return (
-        <Box bg="white" borderWidth="1px" borderColor="gray.200" borderRadius="lg" overflow="hidden">
-            <HStack justify="space-between" px={4} py={3} borderBottomWidth="1px" borderColor="gray.100">
-                <HStack gap={2}>
-                    {stepIndex > 0 && (
-                        <Button variant="ghost" size="sm" px={1} onClick={goBack}>
-                            ← Back
-                        </Button>
-                    )}
-                    <Heading size="sm">{STEP_TITLES[step]}</Heading>
-                </HStack>
-                <Text fontSize="xs" color="gray.400">
-                    {stepIndex + 1} / {STEPS.length}
-                </Text>
-            </HStack>
+        <>
+            <ActionBar.Root open={isActive}>
+                <Portal>
+                    <ActionBar.Positioner>
+                        <ActionBar.Content>
+                            <Button colorPalette="blue" size="sm" onClick={handleOpen}>
+                                <LuPlus />
+                                Add Match
+                            </Button>
+                        </ActionBar.Content>
+                    </ActionBar.Positioner>
+                </Portal>
+            </ActionBar.Root>
 
-            <Box px={4} py={4}>
-                {step === 'selectTeamA' && (
-                    <VStack align="stretch" gap={4}>
-                        <Text fontSize="sm" color="gray.500">
-                            Select 2 players for Team A.
-                        </Text>
-                        <SimpleGrid columns={2} gap={2}>
-                            {session.players.map((player) => {
-                                const selected = teamAIds.includes(player.id);
-                                const full = teamAIds.length === 2 && !selected;
-                                return (
-                                    <Button
-                                        key={player.id}
-                                        variant={selected ? 'solid' : 'outline'}
-                                        colorPalette={selected ? 'blue' : 'gray'}
-                                        onClick={() => toggleTeamA(player)}
-                                        disabled={full}
-                                        size="lg"
-                                        h="auto"
-                                        py={3}
-                                        whiteSpace="normal"
-                                        textAlign="center"
-                                    >
-                                        {player.name}
-                                    </Button>
-                                );
-                            })}
-                        </SimpleGrid>
-                        <Button colorPalette="blue" disabled={teamAIds.length !== 2} onClick={goNext}>
-                            Continue
-                        </Button>
-                    </VStack>
-                )}
+            <Dialog.Root
+                open={open}
+                onOpenChange={(e) => {
+                    if (!e.open) handleClose();
+                }}
+                size={{ mdDown: 'full', md: 'md' }}
+                motionPreset="slide-in-bottom"
+                lazyMount
+            >
+                <Portal>
+                    <Dialog.Backdrop />
+                    <Dialog.Positioner>
+                        <Dialog.Content>
+                            <Dialog.Header>
+                                <Dialog.Title>Add Match</Dialog.Title>
+                            </Dialog.Header>
 
-                {step === 'selectTeamB' && (
-                    <VStack align="stretch" gap={4}>
-                        <HStack justify="space-between" align="flex-start">
-                            <Text fontSize="sm" color="gray.500">
-                                Select 2 players for Team B.
-                            </Text>
-                            <Text fontSize="sm" color="blue.600" fontWeight="medium" textAlign="right" flexShrink={0}>
-                                A: {teamLabel(teamAPlayers)}
-                            </Text>
-                        </HStack>
-                        <SimpleGrid columns={2} gap={2}>
-                            {session.players.map((player) => {
-                                const isTeamA = teamAIds.includes(player.id);
-                                const selected = teamBIds.includes(player.id);
-                                const full = teamBIds.length === 2 && !selected;
-                                return (
-                                    <Button
-                                        key={player.id}
-                                        variant={selected ? 'solid' : 'outline'}
-                                        colorPalette={selected ? 'blue' : 'gray'}
-                                        onClick={() => !isTeamA && toggleTeamB(player)}
-                                        disabled={isTeamA || full}
-                                        size="lg"
-                                        h="auto"
-                                        py={3}
-                                        whiteSpace="normal"
-                                        textAlign="center"
-                                        opacity={isTeamA ? 0.35 : 1}
-                                    >
-                                        {player.name}
-                                    </Button>
-                                );
-                            })}
-                        </SimpleGrid>
-                        <Button colorPalette="blue" disabled={teamBIds.length !== 2} onClick={goNext}>
-                            Continue
-                        </Button>
-                    </VStack>
-                )}
+                            <Steps.Root step={step} count={STEP_COUNT} size="xs" linear px={6} pb={3}>
+                                <Steps.List>
+                                    {Array.from({ length: STEP_COUNT }, (_, i) => (
+                                        <Steps.Item key={i} index={i}>
+                                            <Steps.Indicator />
+                                            <Steps.Separator />
+                                        </Steps.Item>
+                                    ))}
+                                </Steps.List>
+                            </Steps.Root>
 
-                {step === 'scoreTeamA' && (
-                    <VStack align="stretch" gap={4}>
-                        <Text fontSize="sm" color="gray.500">
-                            {teamLabel(teamAPlayers)}
-                        </Text>
-                        <SimpleGrid columns={3} gap={2}>
-                            {SCORES.map((score) => (
-                                <Button
-                                    key={score}
-                                    variant={form.data.teamAScore === score ? 'solid' : 'outline'}
-                                    colorPalette={form.data.teamAScore === score ? 'blue' : 'gray'}
-                                    onClick={() => form.setData('teamAScore', score)}
-                                    size="lg"
-                                    fontSize="xl"
-                                    fontWeight="bold"
-                                >
-                                    {score}
-                                </Button>
-                            ))}
-                        </SimpleGrid>
-                        <Button colorPalette="blue" disabled={form.data.teamAScore === null} onClick={goNext}>
-                            Continue
-                        </Button>
-                    </VStack>
-                )}
+                            <Dialog.Body>
+                                {step === 0 && (
+                                    <SelectPairStep
+                                        players={session.players}
+                                        selectedIds={pairAIds}
+                                        excludeIds={[]}
+                                        onToggle={handleTogglePairA}
+                                    />
+                                )}
+                                {step === 1 && (
+                                    <SelectPairStep
+                                        players={session.players}
+                                        selectedIds={pairBIds}
+                                        excludeIds={pairAIds}
+                                        onToggle={handleTogglePairB}
+                                    />
+                                )}
+                                {step === 2 && (
+                                    <SelectScoreStep
+                                        player1Name={pairAPlayer1Name}
+                                        player2Name={pairAPlayer2Name}
+                                        score={form.data.teamAScore}
+                                        onSelect={(score) => form.setData('teamAScore', score)}
+                                    />
+                                )}
+                                {step === 3 && (
+                                    <SelectScoreStep
+                                        player1Name={pairBPlayer1Name}
+                                        player2Name={pairBPlayer2Name}
+                                        score={form.data.teamBScore}
+                                        onSelect={(score) => form.setData('teamBScore', score)}
+                                    />
+                                )}
+                                {step === 4 && (
+                                    <ReviewStep
+                                        pairA={{
+                                            player1Name: pairAPlayer1Name,
+                                            player2Name: pairAPlayer2Name,
+                                            score: form.data.teamAScore ?? 0,
+                                        }}
+                                        pairB={{
+                                            player1Name: pairBPlayer1Name,
+                                            player2Name: pairBPlayer2Name,
+                                            score: form.data.teamBScore ?? 0,
+                                        }}
+                                        errors={form.errors}
+                                    />
+                                )}
+                            </Dialog.Body>
 
-                {step === 'scoreTeamB' && (
-                    <VStack align="stretch" gap={4}>
-                        <Text fontSize="sm" color="gray.500">
-                            {teamLabel(teamBPlayers)}
-                        </Text>
-                        <SimpleGrid columns={3} gap={2}>
-                            {SCORES.map((score) => (
-                                <Button
-                                    key={score}
-                                    variant={form.data.teamBScore === score ? 'solid' : 'outline'}
-                                    colorPalette={form.data.teamBScore === score ? 'blue' : 'gray'}
-                                    onClick={() => form.setData('teamBScore', score)}
-                                    size="lg"
-                                    fontSize="xl"
-                                    fontWeight="bold"
-                                >
-                                    {score}
-                                </Button>
-                            ))}
-                        </SimpleGrid>
-                        <Button colorPalette="blue" disabled={form.data.teamBScore === null} onClick={goNext}>
-                            Continue
-                        </Button>
-                    </VStack>
-                )}
-
-                {step === 'review' && (
-                    <VStack align="stretch" gap={4}>
-                        <Box borderWidth="1px" borderColor="gray.100" borderRadius="md" p={4}>
-                            <VStack align="stretch" gap={4}>
-                                <HStack justify="space-between" align="flex-start">
-                                    <VStack align="flex-start" gap={0}>
-                                        <Text fontSize="xs" color="gray.400" fontWeight="semibold" letterSpacing="wide">
-                                            TEAM A
-                                        </Text>
-                                        {teamAPlayers.map((p) => (
-                                            <Text key={p.id} fontWeight="semibold">
-                                                {p.name}
-                                            </Text>
-                                        ))}
-                                    </VStack>
-                                    <Text fontWeight="bold" fontSize="5xl" lineHeight="1" color="gray.800">
-                                        {form.data.teamAScore}
-                                    </Text>
+                            <Dialog.Footer>
+                                <HStack justify="space-between" w="full">
+                                    {step > 0 ? (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={goBack}
+                                            disabled={form.processing}
+                                        >
+                                            Back
+                                        </Button>
+                                    ) : (
+                                        <span />
+                                    )}
+                                    {step < STEP_COUNT - 1 ? (
+                                        <Button
+                                            colorPalette="blue"
+                                            size="sm"
+                                            onClick={goForward}
+                                            disabled={!canContinue}
+                                        >
+                                            Continue
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            colorPalette="blue"
+                                            size="sm"
+                                            onClick={handleSubmit}
+                                            loading={form.processing}
+                                        >
+                                            Submit
+                                        </Button>
+                                    )}
                                 </HStack>
+                            </Dialog.Footer>
 
-                                <Box h="1px" bg="gray.100" />
-
-                                <HStack justify="space-between" align="flex-start">
-                                    <VStack align="flex-start" gap={0}>
-                                        <Text fontSize="xs" color="gray.400" fontWeight="semibold" letterSpacing="wide">
-                                            TEAM B
-                                        </Text>
-                                        {teamBPlayers.map((p) => (
-                                            <Text key={p.id} fontWeight="semibold">
-                                                {p.name}
-                                            </Text>
-                                        ))}
-                                    </VStack>
-                                    <Text fontWeight="bold" fontSize="5xl" lineHeight="1" color="gray.800">
-                                        {form.data.teamBScore}
-                                    </Text>
-                                </HStack>
-                            </VStack>
-                        </Box>
-
-                        {(form.errors as Record<string, string | undefined>).players && (
-                            <Text color="red.500" fontSize="sm">
-                                {(form.errors as Record<string, string | undefined>).players}
-                            </Text>
-                        )}
-
-                        <Button colorPalette="blue" loading={form.processing} onClick={handleSubmit}>
-                            Submit
-                        </Button>
-                    </VStack>
-                )}
-            </Box>
-        </Box>
+                            <Dialog.CloseTrigger asChild>
+                                <CloseButton size="sm" />
+                            </Dialog.CloseTrigger>
+                        </Dialog.Content>
+                    </Dialog.Positioner>
+                </Portal>
+            </Dialog.Root>
+        </>
     );
 }
 
