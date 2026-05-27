@@ -1,6 +1,7 @@
 import { Badge, Box, Flex, HStack, Heading, Text, VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
+import SubmitWizard from '../../components/SubmitWizard';
 import ScoresheetLayout from '../../layouts/ScoresheetLayout';
 import type Game from '../../models/Game';
 import type Session from '../../models/Session';
@@ -71,8 +72,7 @@ function SessionShowPage() {
                     )}
                 </VStack>
 
-                {/* Submission wizard — added in Phase 5b */}
-                {isActive && <Box id="submit-wizard-placeholder" />}
+                {isActive && <SubmitWizard session={session} />}
 
                 <Box bg="white" borderWidth="1px" borderColor="gray.200" borderRadius="lg" px={4}>
                     <HStack justify="space-between" py={3} borderBottomWidth="1px" borderColor="gray.100">

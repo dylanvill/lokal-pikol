@@ -5,7 +5,9 @@ namespace App\Http\Scoresheet\Requests;
 use App\Http\Scoresheet\Rules\AllPlayersDistinct;
 use App\Source\Scoresheet\Enums\SessionStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator as FacadeValidator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class SubmitGameRequest extends FormRequest
 {
@@ -32,12 +34,16 @@ class SubmitGameRequest extends FormRequest
     public function after(): array
     {
         return [
-            new AllPlayersDistinct([
-                $this->input('teamAPlayer1Id'),
-                $this->input('teamAPlayer2Id'),
-                $this->input('teamBPlayer1Id'),
-                $this->input('teamBPlayer2Id'),
-            ]),
+            function (Validator $validator) {
+                $players = [
+                    $this->input('teamAPlayer1Id'),
+                    $this->input('teamAPlayer2Id'),
+                    $this->input('teamBPlayer1Id'),
+                    $this->input('teamBPlayer2Id'),
+                ];
+                $validated = FacadeValidator::make(['players' => $players], [new AllPlayersDistinct]);
+                $validated->validate();
+            },
         ];
     }
 }

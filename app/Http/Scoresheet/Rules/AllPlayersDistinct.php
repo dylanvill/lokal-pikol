@@ -6,12 +6,12 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class AllPlayersDistinct implements ValidationRule
 {
-    /** @param string[] $playerIds */
-    public function __construct(private array $playerIds) {}
-
+    /**
+     * @param  array  $value
+     */
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
-        $ids = array_filter($this->playerIds);
+        $ids = array_filter($value);
 
         if (count($ids) !== count(array_unique($ids))) {
             $fail('All four players must be different.');
