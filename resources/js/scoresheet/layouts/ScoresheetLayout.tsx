@@ -12,7 +12,7 @@ function ScoresheetLayout({ title, children }: ScoresheetLayoutProps) {
         <>
             <Head title={title} />
             <Box minH="100vh" bg="gray.50">
-                <Container maxW="2xl" py={8} px={4}>
+                <Container maxW="2xl" py={4} pb={8} px={4}>
                     {children}
                 </Container>
             </Box>
