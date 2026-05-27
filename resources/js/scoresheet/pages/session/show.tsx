@@ -1,4 +1,4 @@
-import { Badge, Heading, Text, VStack } from '@chakra-ui/react';
+import { Badge, Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import GamesSection from '../../components/GamesSection';
@@ -30,7 +30,9 @@ function SessionShowPage() {
                 )}
                 <GamesSection games={session.games} />
             </VStack>
-
+            <Box
+                height="60px"
+            />
             <SubmitWizard session={session} />
         </ScoresheetLayout>
     );
