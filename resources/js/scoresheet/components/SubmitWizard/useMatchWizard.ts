@@ -2,6 +2,7 @@ import { useForm, type InertiaFormProps } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import type Player from '../../models/Player';
 import type Session from '../../models/Session';
+import { toaster } from '../../shared/toaster';
 
 export interface MatchFormData {
     teamAPlayer1Id: string;
@@ -115,7 +116,10 @@ function useMatchWizard(session: Session): MatchWizard {
 
     function submit() {
         form.post(`/session/${session.sessionCode}/matches`, {
-            onSuccess: closeWizard,
+            onSuccess: () => {
+                closeWizard();
+                toaster.success({ title: 'Match recorded', duration: 4000 });
+            },
         });
     }
 
