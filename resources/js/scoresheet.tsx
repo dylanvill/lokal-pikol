@@ -1,0 +1,26 @@
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createRoot } from 'react-dom/client';
+import '../css/app.css';
+import { Provider } from '@/shared/components/ui/provider';
+import { Toaster } from './shared/components/ui/toaster';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Lokal Pikol';
+
+createInertiaApp({
+    title: (title) => (title ? `${title} - ${appName}` : appName),
+    resolve: (name) => resolvePageComponent(`./scoresheet/pages/${name}.tsx`, import.meta.glob('./scoresheet/pages/**/*.tsx')),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
+
+        root.render(
+            <Provider>
+                <App {...props} />
+                <Toaster />
+            </Provider>,
+        );
+    },
+    progress: {
+        color: '#FDC20C',
+    },
+});
