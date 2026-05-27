@@ -25,10 +25,8 @@ class Session extends Model
 
     protected $table = 'scoresheet_sessions';
 
-    protected static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::creating(function (self $model) {
             if (empty($model->session_code)) {
                 $model->session_code = self::generateUniqueCode();

@@ -55,6 +55,7 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__.'/../app/Source/Directory/Commands',
         __DIR__.'/../app/Source/Ad/Commands',
         __DIR__.'/../app/Source/Scheduling/Facility/Commands',
+        __DIR__.'/../app/Source/Scoresheet/Commands',
     ])
     ->withEvents(discover: [
         __DIR__.'/../app/Source/Directory/Listeners',
