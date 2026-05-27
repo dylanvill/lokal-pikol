@@ -45,7 +45,7 @@ function SubmitWizard({ session }: Props) {
                                 <Dialog.Title>Add Match</Dialog.Title>
                             </Dialog.Header>
 
-                            <Steps.Root step={wizard.step} count={STEP_COUNT} size="xs" linear px={6} pb={3}>
+                            <Steps.Root step={wizard.step} count={STEP_COUNT} size="xs" linear px={6} pb={3} colorPalette="blue">
                                 <Steps.List>
                                     {Array.from({ length: STEP_COUNT }, (_, i) => (
                                         <Steps.Item key={i} index={i}>
@@ -56,7 +56,7 @@ function SubmitWizard({ session }: Props) {
                                 </Steps.List>
                             </Steps.Root>
 
-                            <Dialog.Body>
+                            <Dialog.Body paddingTop={4}>
                                 <WizardBody session={session} wizard={wizard} />
                             </Dialog.Body>
 

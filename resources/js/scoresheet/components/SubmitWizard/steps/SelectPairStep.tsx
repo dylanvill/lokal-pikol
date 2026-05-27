@@ -1,24 +1,22 @@
-import { Button, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Button, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import type Player from '../../../models/Player';
 
 interface Props {
+    heading: string;
     players: Player[];
     selectedIds: string[];
     excludeIds: string[];
     onToggle: (player: Player) => void;
 }
 
-function SelectPairStep({ players, selectedIds, excludeIds, onToggle }: Props) {
+function SelectPairStep({ heading, players, selectedIds, excludeIds, onToggle }: Props) {
     const isComplete = selectedIds.length === 2;
-    const remaining = 2 - selectedIds.length;
 
     return (
         <VStack align="stretch" gap={3}>
-            <Text fontSize="sm" color="gray.500">
-                {isComplete
-                    ? 'Pair selected. Tap a player to deselect.'
-                    : `Select ${remaining} more player${remaining !== 1 ? 's' : ''}.`}
-            </Text>
+            <Heading size="xl" textAlign="center">
+                {heading}
+            </Heading>
             <SimpleGrid columns={2} gap={2}>
                 {players.map((player) => {
                     const isSelected = selectedIds.includes(player.id);

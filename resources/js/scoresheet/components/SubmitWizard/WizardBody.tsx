@@ -24,6 +24,7 @@ function WizardBody({ session, wizard }: Props) {
         case 0:
             return (
                 <SelectPairStep
+                    heading="Select first team"
                     players={session.players}
                     selectedIds={wizard.pairAIds}
                     excludeIds={[]}
@@ -33,6 +34,7 @@ function WizardBody({ session, wizard }: Props) {
         case 1:
             return (
                 <SelectPairStep
+                    heading="Select second team"
                     players={session.players}
                     selectedIds={wizard.pairBIds}
                     excludeIds={wizard.pairAIds}

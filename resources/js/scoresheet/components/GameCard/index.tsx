@@ -18,13 +18,9 @@ function GameCard({ teamA, teamB }: GameCardProps) {
     const teamAWon = teamA.score > teamB.score;
     const teamBWon = teamB.score > teamA.score;
 
-    const teamAGradient = teamAWon
-        ? { bgGradient: 'to-r', gradientFrom: 'green.100', gradientTo: 'transparent' }
-        : {};
+    const teamAGradient = teamAWon ? { bgGradient: 'to-r', gradientFrom: 'green.100', gradientTo: 'transparent' } : {};
 
-    const teamBGradient = teamBWon
-        ? { bgGradient: 'to-l', gradientFrom: 'green.100', gradientTo: 'transparent' }
-        : {};
+    const teamBGradient = teamBWon ? { bgGradient: 'to-l', gradientFrom: 'green.100', gradientTo: 'transparent' } : {};
 
     return (
         <Box borderBottomWidth="1px" borderColor="gray.200" _last={{ borderBottomWidth: 0 }}>
