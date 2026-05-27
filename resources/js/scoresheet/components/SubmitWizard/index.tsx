@@ -1,8 +1,8 @@
 import { Box, Button, HStack, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import type Player from '../models/Player';
-import type Session from '../models/Session';
+import type Player from '../../models/Player';
+import type Session from '../../models/Session';
 
 type WizardStep = 'selectTeamA' | 'selectTeamB' | 'scoreTeamA' | 'scoreTeamB' | 'review';
 
