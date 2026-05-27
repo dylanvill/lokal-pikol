@@ -565,7 +565,7 @@ scoresheet_players
   name           string
   created_at
 
-scoresheet_matches
+scoresheet_games
   id, uuid (HasUuid trait)
   session_id          → scoresheet_sessions
   team_a_player_1_id  → scoresheet_players
@@ -577,7 +577,7 @@ scoresheet_matches
   created_at
 ```
 
-`scoresheet_` prefix used on all tables to avoid conflict with Laravel's own `sessions` table.
+`scoresheet_` prefix used on all tables to avoid conflict with Laravel's own `sessions` table. PHP models live in `App\Source\Scoresheet\Models\` as `Session`, `Player`, and `Game` — no prefix at the class level since the namespace already provides domain context.
 
 ### Routes
 

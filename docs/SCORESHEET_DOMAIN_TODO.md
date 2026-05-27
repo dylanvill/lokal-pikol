@@ -10,15 +10,15 @@
 **Migrations**
 - [ ] `create_scoresheet_sessions_table` — `id`, `uuid`, `session_code` (string 8, unique), `name`, `status` (enum: `active`/`finished`), `timestamps`
 - [ ] `create_scoresheet_players_table` — `id`, `uuid`, `session_id` (FK → `scoresheet_sessions`), `name`, `created_at`
-- [ ] `create_scoresheet_matches_table` — `id`, `uuid`, `session_id` (FK → `scoresheet_sessions`), `team_a_player_1_id`, `team_a_player_2_id`, `team_a_score`, `team_b_player_1_id`, `team_b_player_2_id`, `team_b_score` (all player FKs → `scoresheet_players`), `created_at`
+- [ ] `create_scoresheet_games_table` — `id`, `uuid`, `session_id` (FK → `scoresheet_sessions`), `team_a_player_1_id`, `team_a_player_2_id`, `team_a_score`, `team_b_player_1_id`, `team_b_player_2_id`, `team_b_score` (all player FKs → `scoresheet_players`), `created_at`
 
 **Enums**
-- [ ] `ScoresheetSessionStatusEnum` — `app/Source/Scoresheet/Enums/` — cases: `ACTIVE`, `FINISHED`
+- [ ] `SessionStatusEnum` — `app/Source/Scoresheet/Enums/` — cases: `ACTIVE`, `FINISHED`
 
 **Models** (`app/Source/Scoresheet/Models/`)
-- [ ] `ScoresheetSession` — uses `HasUuid` trait; `session_code` auto-generated on creating; `status` cast to `ScoresheetSessionStatusEnum`; has-many `ScoresheetPlayer`, has-many `ScoresheetMatch`
-- [ ] `ScoresheetPlayer` — uses `HasUuid` trait; belongs-to `ScoresheetSession`
-- [ ] `ScoresheetMatch` — uses `HasUuid` trait; belongs-to `ScoresheetSession`; four `belongsTo` relations for `teamAPlayer1`, `teamAPlayer2`, `teamBPlayer1`, `teamBPlayer2`
+- [ ] `Session` — uses `HasUuid` trait; `session_code` auto-generated on creating; `status` cast to `SessionStatusEnum`; has-many `Player`, has-many `Game`
+- [ ] `Player` — uses `HasUuid` trait; belongs-to `Session`
+- [ ] `Game` — uses `HasUuid` trait; belongs-to `Session`; four `belongsTo` relations for `teamAPlayer1`, `teamAPlayer2`, `teamBPlayer1`, `teamBPlayer2`
 
 ---
 
@@ -26,9 +26,9 @@
 
 All actions live in `app/Source/Scoresheet/Actions/`.
 
-- [ ] `CreateScoresheetSession` — accepts session name + array of player name strings; generates a unique `session_code`; creates the `ScoresheetSession` row; bulk-inserts `ScoresheetPlayer` rows; returns the created session
-- [ ] `EndScoresheetSession` — accepts a `ScoresheetSession`; sets `status` to `FINISHED`; returns the updated session
-- [ ] `SubmitScoresheetMatch` — accepts a `ScoresheetSession` + four `ScoresheetPlayer` IDs + two scores; validates players belong to the session; creates the `ScoresheetMatch` row; returns the created match
+- [ ] `CreateSession` — accepts session name + array of player name strings; generates a unique `session_code`; creates the `Session` row; bulk-inserts `Player` rows; returns the created session
+- [ ] `EndSession` — accepts a `Session`; sets `status` to `FINISHED`; returns the updated session
+- [ ] `SubmitGame` — accepts a `Session` + four `Player` IDs + two scores; validates players belong to the session; creates the `Game` row; returns the created match
 
 ---
 
@@ -40,13 +40,13 @@ All commands live in `app/Source/Scoresheet/Commands/`. Register the directory i
   - Prompt for session name (text input)
   - Prompt for player names via `textarea()` — accepts raw Reclub numbered export (`1. Dylan`, `2. Doms`, …) or plain comma-separated; strips numbering, trims whitespace, excludes blank lines
   - Display parsed name list for confirmation before proceeding
-  - Calls `CreateScoresheetSession` action
+  - Calls `CreateSession` action
   - Outputs the shareable URL: `scoresheet.[tld]/session/{session_code}`
 
 - [ ] `scoresheet:end`
   - Prompt to select session by `session_code` (searchable select or text input)
   - Displays session name + current status for confirmation
-  - Calls `EndScoresheetSession` action
+  - Calls `EndSession` action
   - Outputs confirmation message
 
 ---
@@ -54,7 +54,7 @@ All commands live in `app/Source/Scoresheet/Commands/`. Register the directory i
 ## ⬜ Phase 4 — Controllers, Form Requests & Routes
 
 **Controllers** (`app/Http/Scoresheet/Controllers/`)
-- [ ] `SessionController@show` — loads `ScoresheetSession` by `session_code`; 404 if not found; eager-loads players + matches (with all four player relations); renders `session/show`
+- [ ] `SessionController@show` — loads `Session` by `session_code`; 404 if not found; eager-loads players + matches (with all four player relations); renders `session/show`
 - [ ] `SubmitMatchController@store` — validates + submits a match result; redirects back to session page on success
 
 **Form Requests** (`app/Http/Scoresheet/Requests/`)
@@ -74,9 +74,9 @@ All commands live in `app/Source/Scoresheet/Commands/`. Register the directory i
 **Frontend** (`resources/js/scoresheet/`)
 
 - [ ] TypeScript models (`scoresheet/types/`)
-  - [ ] `ScoresheetSession.ts` — `sessionCode`, `name`, `status: 'active' | 'finished'`, `players: ScoresheetPlayer[]`, `matches: ScoresheetMatch[]`
-  - [ ] `ScoresheetPlayer.ts` — `id`, `uuid`, `name`
-  - [ ] `ScoresheetMatch.ts` — `id`, `uuid`, `teamAPlayer1`, `teamAPlayer2`, `teamAScore`, `teamBPlayer1`, `teamBPlayer2`, `teamBScore`, `createdAt`
+  - [ ] `Session.ts` — `sessionCode`, `name`, `status: 'active' | 'finished'`, `players: Player[]`, `games: Game[]`
+  - [ ] `Player.ts` — `id`, `uuid`, `name`
+  - [ ] `Game.ts` — `id`, `uuid`, `teamAPlayer1`, `teamAPlayer2`, `teamAScore`, `teamBPlayer1`, `teamBPlayer2`, `teamBScore`, `createdAt`
 
 - [ ] `session/show.tsx` — session page shell
   - Session name as heading
