@@ -1,6 +1,7 @@
-import { Badge, Box, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Link, Text, VStack } from '@chakra-ui/react';
 import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
+import { FaCircle } from 'react-icons/fa';
 import GamesSection from '../../components/GamesSection';
 import SubmitWizard from '../../components/SubmitWizard';
 import ScoresheetLayout from '../../layouts/ScoresheetLayout';
@@ -16,13 +17,26 @@ function SessionShowPage() {
 
     return (
         <ScoresheetLayout title={session.name}>
+            <Box maxWidth="xs" marginBottom={4} marginX="auto">
+                <Text textAlign="center" fontSize="sm" color="gray.500">
+                    A free scoresheet for{' '}
+                    <Text as="span" fontWeight="semibold">
+                        Recplays Duma
+                    </Text>{' '}
+                    in partnership with{' '}
+                    <Link href="https://directory.lokalpikol.com/" target="_blank" rel="noopener noreferrer" fontWeight="semibold" color="blue.500">
+                        Lokal Pikol
+                    </Link>
+                    .
+                </Text>
+            </Box>
             <VStack align="stretch" gap={4}>
-                <VStack alignItems="flex-start">
-                    <Heading>{session.name}</Heading>
-                    <Badge colorPalette={isActive ? 'green' : 'orange'} variant="solid" size="md">
-                        {isActive ? 'Active' : 'Ended'}
-                    </Badge>
-                </VStack>
+                <Flex>
+                    <Box marginTop={2.5}>
+                        <FaCircle size={8} color={isActive ? 'green' : 'orange'} />
+                    </Box>
+                    <Heading marginLeft={2}>{session.name}</Heading>
+                </Flex>
                 {!isActive && (
                     <Text color="gray.500" fontSize="sm">
                         This session has ended. Results are still viewable below:
@@ -30,9 +44,7 @@ function SessionShowPage() {
                 )}
                 <GamesSection games={session.games} />
             </VStack>
-            <Box
-                height="60px"
-            />
+            <Box height="60px" />
             <SubmitWizard session={session} />
         </ScoresheetLayout>
     );
