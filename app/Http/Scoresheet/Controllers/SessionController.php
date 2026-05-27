@@ -2,6 +2,7 @@
 
 namespace App\Http\Scoresheet\Controllers;
 
+use App\Http\Scoresheet\ApiModels\SessionApiModel;
 use App\Http\Shared\Contracts\Controller;
 use App\Source\Scoresheet\Models\Session;
 use Inertia\Inertia;
@@ -20,7 +21,7 @@ class SessionController extends Controller
         ]);
 
         return Inertia::render('session/show', [
-            'session' => $session,
+            'session' => SessionApiModel::fromSession($session),
         ]);
     }
 }
