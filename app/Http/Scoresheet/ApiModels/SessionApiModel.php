@@ -17,6 +17,8 @@ class SessionApiModel extends Data
         public array $players,
         /** @var GameApiModel[] */
         public array $games,
+        /** @var LeaderboardItemApiModel[] */
+        public array $leaderboard,
     ) {}
 
     public static function fromSession(Session $session): self
@@ -27,6 +29,7 @@ class SessionApiModel extends Data
             status: $session->status->value,
             players: $session->players->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)->map(fn (Player $p) => PlayerApiModel::fromPlayer($p))->values()->all(),
             games: $session->games->sortBy('created_at')->map(fn (Game $g) => GameApiModel::fromGame($g))->values()->all(),
+            leaderboard: LeaderboardItemApiModel::fromGames($session->games),
         );
     }
 }

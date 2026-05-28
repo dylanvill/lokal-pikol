@@ -1,4 +1,5 @@
 import type Game from './Game';
+import type LeaderboardItem from './LeaderboardItem';
 import type Player from './Player';
 
 interface Session {
@@ -7,6 +8,7 @@ interface Session {
     status: 'active' | 'finished';
     players: Player[];
     games: Game[];
+    leaderboard: LeaderboardItem[];
 }
 
 export default Session;

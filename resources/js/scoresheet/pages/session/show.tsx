@@ -3,6 +3,7 @@ import { type PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import { FaCircle } from 'react-icons/fa';
 import GamesSection from '../../components/GamesSection';
+import LeaderboardDrawer from '../../components/LeaderboardDrawer';
 import SubmitWizard from '../../components/SubmitWizard';
 import ScoresheetLayout from '../../layouts/ScoresheetLayout';
 import type Session from '../../models/Session';
@@ -31,11 +32,14 @@ function SessionShowPage() {
                 </Text>
             </Box>
             <VStack align="stretch" gap={4}>
-                <Flex>
-                    <Box marginTop={2.5}>
-                        <FaCircle size={8} color={isActive ? 'green' : 'orange'} />
-                    </Box>
-                    <Heading marginLeft={2}>{session.name}</Heading>
+                <Flex align="center" justify="space-between">
+                    <Flex align="center">
+                        <Box marginTop={0.5}>
+                            <FaCircle size={8} color={isActive ? 'green' : 'orange'} />
+                        </Box>
+                        <Heading marginLeft={2}>{session.name}</Heading>
+                    </Flex>
+                    <LeaderboardDrawer leaderboard={session.leaderboard} />
                 </Flex>
                 {!isActive && (
                     <Text color="gray.500" fontSize="sm">
