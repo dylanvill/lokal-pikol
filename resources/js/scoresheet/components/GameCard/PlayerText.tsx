@@ -8,7 +8,7 @@ interface PlayerTextProps {
 
 function PlayerText({ name, won, textAlign = 'left' }: PlayerTextProps) {
     return (
-        <Text fontWeight={won ? 'semibold' : 'normal'} fontSize="sm" textAlign={textAlign}>
+        <Text fontWeight={won ? 'semibold' : 'normal'} color={won ? 'green.600' : 'gray.600'} fontSize="sm" textAlign={textAlign}>
             {name}
         </Text>
     );

@@ -7,7 +7,7 @@ interface ScoreProps {
 
 function Score({ value, won }: ScoreProps) {
     return (
-        <Text fontWeight="bold" fontSize="2xl" w="8" textAlign="center" color={won ? 'green.600' : 'gray.700'}>
+        <Text fontWeight="bold" fontSize="2xl" textAlign="center" color={won ? 'green.600' : 'gray.600'}>
             {value}
         </Text>
     );

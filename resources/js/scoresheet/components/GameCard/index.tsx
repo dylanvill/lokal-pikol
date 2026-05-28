@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import PlayerText from './PlayerText';
 import Score from './Score';
 
@@ -24,19 +24,17 @@ function GameCard({ teamA, teamB }: GameCardProps) {
 
     return (
         <Box borderBottomWidth="1px" borderColor="gray.200" _last={{ borderBottomWidth: 0 }}>
-            <Flex align="center" gap={3}>
+            <Flex align="center" gap={2}>
                 <VStack align="flex-start" flex="1" gap={0} px={4} py={2} {...teamAGradient}>
+                    <Score value={teamA.score} won={teamAWon} />
                     <PlayerText name={teamA.player1} won={teamAWon} />
                     <PlayerText name={teamA.player2} won={teamAWon} />
                 </VStack>
-
-                <HStack gap={2} flexShrink={0}>
-                    <Score value={teamA.score} won={teamAWon} />
-                    <Text>–</Text>
-                    <Score value={teamB.score} won={teamBWon} />
-                </HStack>
-
+                <Text fontSize="sm" color="gray.400">
+                    vs
+                </Text>
                 <VStack align="flex-end" flex="1" gap={0} px={4} py={2} {...teamBGradient}>
+                    <Score value={teamB.score} won={teamBWon} />
                     <PlayerText name={teamB.player1} won={teamBWon} textAlign="right" />
                     <PlayerText name={teamB.player2} won={teamBWon} textAlign="right" />
                 </VStack>
